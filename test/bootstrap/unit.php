@@ -6,6 +6,6 @@ $basedir = dirname(__FILE__);
 
 $autoload = nbAutoload::getInstance();
 $autoload->register();
-$autoload->addDirectory('lib/vendor/', '*.php', true);
-$autoload->addDirectory('lib/', '*.class.php', true);
-$autoload->addDirectory('tests/lib/', '*.class.php', true);
+$autoload->addDirectory('vendor/', '*.php', true);
+$autoload->addDirectory('lib/', '*.php', true);
+$autoload->addDirectory('tests/lib/', '*.php', true);
