@@ -1,10 +1,10 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../lib/autoload/Autoload.class.php';
+require_once dirname(__FILE__) . '/../../lib/core/autoload/nbAutoload.php';
 
 $basedir = dirname(__FILE__);
 
-$autoload = Autoload::getInstance();
+$autoload = nbAutoload::getInstance();
 $autoload->register();
 $autoload->addDirectory('lib/vendor/', '*.php', true);
 $autoload->addDirectory('lib/', '*.class.php', true);
