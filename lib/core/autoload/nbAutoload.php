@@ -1,6 +1,6 @@
 <?php
 
-include_once dirname(__FILE__) . '/../util/FileFinder.class.php';
+include_once dirname(__FILE__) . '/../system/nbFileFinder.php';
 
 class nbAutoload
 {
@@ -13,9 +13,7 @@ class nbAutoload
     $classes      = array(),
     $overriden    = array();
 
-  protected function __construct()
-  {
-  }
+  protected function __construct() { }
 
   /**
    * Retrieves the singleton instance of this class.
@@ -26,7 +24,7 @@ class nbAutoload
   static public function getInstance()
   {
     if (!isset(self::$instance))
-      self::$instance = new Autoload();
+      self::$instance = new nbAutoload();
 
     return self::$instance;
   }
@@ -92,12 +90,11 @@ class nbAutoload
    */
   public function addDirectory($dir, $ext = '.php', $recursive = false)
   {
-    $finder = FileFinder::type('file');
+    $finder = nbFileFinder::type('file');
     if(!$recursive)
         $finder->maxdepth(0);
 
     $finder->follow_link()->name('*'.$ext);
-
     $this->addFiles($finder->in($dir), false);
   }
 
