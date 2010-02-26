@@ -21,4 +21,3 @@ try {
 catch(Exception $e) {
   $t->pass('exception thrown');
 }
-
