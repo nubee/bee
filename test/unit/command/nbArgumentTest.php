@@ -10,7 +10,7 @@ $t->is($argument->getName(), 'foo', '->getName() is "foo"');
 $t->is($argument->getValue(), 'default', '->getValue() returns "default"');
 $t->is($argument->getDescription(), 'The argument', '->getDescription() is "The argument"');
 
-$t->comment('nbArgument - Test required argument');
+$t->comment('nbArgumentTest - Test required argument');
 $argument = new nbArgument('command', nbArgument::REQUIRED, 'The command to execute');
 $t->is($argument->getName(), 'command', '->getName() argument name is "command"');
 $t->is($argument->isRequired(), true, '->isRequired() argument is required');
@@ -26,14 +26,14 @@ catch(LogicException $e) {
 $argument->setValue("list");
 $t->is($argument->getValue(), "list", "->getValue() returns 'list'");
 
-$t->comment('nbArgument - Test optional argument');
+$t->comment('nbArgumentTest - Test optional argument');
 $argument = new nbArgument('command', nbArgument::OPTIONAL, 'The command to execute', 'description');
 $t->is($argument->getName(), 'command', '->getName() argument name is "command"');
 $t->is($argument->isRequired(), false, '->isRequired() argument is not required');
 //$t->is($argument->getValue(), "description", "argument value is 'description'");
 //$t->is($argument->toString(), "[command]", "argument toString is '[command]'");
 
-$t->comment('nbArgument - Test ctor');
+$t->comment('nbArgumentTest - Test ctor');
 try {
   $argument = new nbArgument('foo', 'ANOTHER_ONE');
   $t->fail('->__construct() throws an Exception if the mode is not valid');
@@ -41,7 +41,7 @@ try {
   $t->pass('->__construct() throws an Exception if the mode is not valid');
 }
 
-$t->comment('nbArgument - Test if an argument is an array');
+$t->comment('nbArgumentTest - Test if an argument is an array');
 $argument = new nbArgument('foo', nbArgument::IS_ARRAY);
 $t->ok($argument->isArray(), '->isArray() returns true if the argument can be an array');
 $argument = new nbArgument('foo', nbArgument::OPTIONAL | nbArgument::IS_ARRAY);
@@ -49,6 +49,6 @@ $t->ok($argument->isArray(), '->isArray() returns true if the argument can be an
 $argument = new nbArgument('foo', nbArgument::OPTIONAL);
 $t->ok(!$argument->isArray(), '->isArray() returns false if the argument can not be an array');
 
-$t->comment('nbArgument - Test default value (->setDefault())');
+$t->comment('nbArgumentTest - Test default value (->setDefault())');
 $argument->setValue('value');
 $t->is($argument->getValue(), 'value', '->getValue() returns "value"');
