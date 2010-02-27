@@ -2,15 +2,24 @@
 
 class nbFormatter
 {
-  public function format($text, $style = 'INFO') {
-    return $text;
+  public function format($message)
+  {
+    $message = preg_replace_callback('#<([a-z][a-z0-9\-_]+)>#i', array($this, 'replaceStartStyle'), $message);
+
+    return preg_replace_callback('#</([a-z][a-z0-9\-_]+)>#i', array($this, 'replaceEndStyle'), $message);
   }
 
-  public function formatLine($text, $style = 'INFO') {
-    return $this->format($text, $style) + "\n\r";
+  public function formatLine($text) {
+    return $this->format($text) + "\n\r";
   }
 
-  public function formatText($text) {
-    return preg_replace("/\[(.+?)\|(\w+)\]/se", '$this->format("$1", "$2")', $text);
+  protected function replaceStartStyle($match)
+  {
+    return '';
+  }
+
+  protected function replaceEndStyle($match)
+  {
+    return '';
   }
 }
