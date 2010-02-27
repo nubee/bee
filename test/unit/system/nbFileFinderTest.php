@@ -1,10 +1,6 @@
 <?php
 
-//require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
-require_once dirname(__FILE__) . '/../../../vendor/lime/lime.php';
-require_once dirname(__FILE__) . '/../../../lib/core/system/nbFileFinder.php';
-require_once dirname(__FILE__) . '/../../../lib/core/system/nbFileSystem.php';
-require_once dirname(__FILE__) . '/../../../lib/core/util/nbGlob.php';
+require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
 $dataDir = dirname(__FILE__) . '/../../data/system';
 
