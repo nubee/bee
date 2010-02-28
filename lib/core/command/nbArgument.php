@@ -27,7 +27,7 @@ class nbArgument
    * @param string  $description    A description text
    * @param mixed   $default The default value (for self::OPTIONAL mode only)
    */
-  public function __construct($name, $mode = null, $description = '', $default = null)
+  public function __construct($name, $mode = self::OPTIONAL, $description = '', $default = null)
   {
     if (is_string($mode) || $mode > 7)
       throw new InvalidArgumentException('[nbArgument::__construct] Argument mode "%s" is not valid.');

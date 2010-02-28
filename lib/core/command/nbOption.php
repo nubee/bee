@@ -10,20 +10,22 @@ class nbOption {
 
   function __construct($name, $shortcut = '', $mode = self::PARAMETER_NONE, $description = '', $default = null)
   {
-    if(! isset ($name))
+    if(!isset($name))
       throw new InvalidArgumentException("Invalid argument: name");
     if(strlen($name) < 3)
       throw new InvalidArgumentException("Invalid argument: name too short");
-    if(! is_string($shortcut))
+    if(!is_string($shortcut))
       throw new InvalidArgumentException("Invalid argument: shortcut must be a string");
     if(strlen($shortcut) > 1)
       throw new InvalidArgumentException("Invalid argument: shortcut too long");
+
     $this->name = $name;
     $this->shortcut = $shortcut;
     $this->description = $description;
 
     if($this->checkMode($mode))
       $this->mode = $mode;
+    
     $this->setDefault($default);
   }
 
