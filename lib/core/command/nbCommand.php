@@ -11,11 +11,13 @@ abstract class nbCommand
   private
     $name,
     $namespace,
-    $arguments = null;
+    $arguments = null,
+    $options = null;
 
   public function __construct()
   {
-    $this->arguments = new nbArguments();
+    $this->arguments = new nbArgumentSet();
+    $this->options = new nbOptionSet();
   }
   
   public function setName($name)
@@ -61,10 +63,21 @@ abstract class nbCommand
     return $this->arguments;
   }
 
+  public function setOptions(nbOptionSet $options)
+  {
+    $this->options = $options;
+  }
+
+  public function getOptions()
+  {
+    return $this->options;
+  }
+
   public function getSynopsys()
   {
     $synopsys = 'bee ' . $this->getFullname();
     $synopsys .= (string)$this->arguments;
+    $synopsys .= (string)$this->options;
     return $synopsys;
   }
 }

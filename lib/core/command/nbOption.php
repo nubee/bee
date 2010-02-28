@@ -23,6 +23,8 @@ class nbOption {
     $this->shortcut = $shortcut;
     $this->description = $description;
 
+    if($mode === self::IS_ARRAY)
+      $mode |= self::PARAMETER_NONE;
     if($this->checkMode($mode))
       $this->mode = $mode;
     
@@ -99,14 +101,28 @@ class nbOption {
 
   public function checkMode($mode)
   {
-    if( is_string($mode) || self::IS_ARRAY === $mode ||
-        (self::IS_ARRAY | self::PARAMETER_NONE) === $mode || $mode > 15 ) {
-
-        throw new InvalidArgumentException('Argument mode is not valid.');
-      }
-      return true;
+    if(is_string($mode)
+        || self::IS_ARRAY === $mode
+        || $mode > 15 ) {
+      throw new InvalidArgumentException('Argument mode is not valid.');
+    }
+    
+    return true;
   }
 
+  public function  __toString()
+  {
+    $result = $this->hasShortcut() ? '-' . $this->getShortcut() . '|' : '';
+    $result .= '--' . $this->getName();
+    if($this->hasOptionalParameter())
+      $result .= sprintf('=[%s]', strtoupper($this->getName()));
 
-  
+    if($this->hasRequiredParameter())
+      $result .= sprintf('=%s', strtoupper($this->getName()));
+
+    if($this->isArray())
+      return sprintf('[%s] ... [%s]', $result, $result);
+
+    return '[' . $result . ']';
+  }
 }

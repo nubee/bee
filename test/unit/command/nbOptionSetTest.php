@@ -2,9 +2,9 @@
 
 require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
-$t = new lime_test(24);
+$t = new lime_test(26);
 
-$foo = new nbOption('foo','f');
+$foo = new nbOption('foo', 'f');
 $bar = new nbOption('bar');
 $bas = new nbOption('bas');
 
@@ -13,15 +13,15 @@ $requiredOption = new nbOption('require','r', nbOption::PARAMETER_REQUIRED);
 
 $t->comment('nbOptionSetTest - Test default constructor');
 $set = new nbOptionSet();
-$t->is($set->getOptionCount(), 0, '->__construct() has no Options');
-$t->is($set->getOptionRequiredCount(), 0, '->__construct() has no required Options');
+$t->is($set->count(), 0, '->__construct() has no Options');
+$t->is($set->countRequired(), 0, '->__construct() has no required Options');
 $t->is($set->getOptions(), array(), '->__construct() builds an empty set');
 $t->is($set->hasOption('foo'), false, '->__construct() has no Option "foo"');
 
 $t->comment('nbOptionSetTest - Test constructor with options');
 $set = new nbOptionSet(array($foo));
-$t->is($set->getOptionCount(), 1, '->__construct() has 1 Option');
-$t->is($set->getOptionRequiredCount(), 0, '->__contruct() has no required Options');
+$t->is($set->count(), 1, '->__construct() has 1 Option');
+$t->is($set->countRequired(), 0, '->__contruct() has no required Options');
 $t->is($set->hasOption('foo'), true, '->__construct() built a set with Option "foo"');
 
 // ->addOptions()
@@ -40,10 +40,10 @@ $t->is($set->getOptions(), array('foo' => $foo), '->addOption() added Option "fo
 
 try {
   $set->addOption($foo);
-  $t->fail('->addOption() throws an InvalidArgumentException if an Option with the same name is added');
+  $t->fail('->addOption() throws an InvalidOptionException if an Option with the same name is added');
 }
 catch(InvalidArgumentException $e) {
-  $t->pass('->addOption() throws an InvalidArgumentException if an Option with the same name is added');
+  $t->pass('->addOption() throws an InvalidOptionException if an Option with the same name is added');
 }
 
 // ->getOption()
@@ -67,20 +67,20 @@ $t->is($set->hasOption('foo'), true, '->hasOption() returns true if an nbOption 
 $t->is($set->hasOption('f'), true, '->hasOption() returns true if an nbOption exists for the given shortcut');
 $t->is($set->hasOption('bar'), false, '->hasOption() returns false if an nbOption does not exists for the given name');
 
-// ->getOptionRequiredCount()
+// ->countRequired()
 $t->comment('nbOptionSetTest - Test Option required count');
 $set = new nbOptionSet(array($requiredOption));
-$t->is($set->getOptionRequiredCount(), 1, '->getOptionRequiredCount() returns the number of required Options');
+$t->is($set->countRequired(), 1, '->countRequired() returns the number of required Options');
 $set->addOption($foo);
-$t->is($set->getOptionRequiredCount(), 1, '->getOptionRequiredCount() returns the number of required Options');
+$t->is($set->countRequired(), 1, '->countRequired() returns the number of required Options');
 
-// ->getOptionCount()
+// ->count()
 $t->comment('nbOptionSetTest - Test get Option count');
 $set = new nbOptionSet();
 $set->addOption($foo);
-$t->is($set->getOptionCount(), 1, '->getOptionCount() returns the number of Options');
+$t->is($set->count(), 1, '->count() returns the number of Options');
 $set->addOption($bar);
-$t->is($set->getOptionCount(), 2, '->getOptionCount() returns the number of Options');
+$t->is($set->count(), 2, '->count() returns the number of Options');
 
 // ->getValues()
 $t->comment('nbOptionSetTest - Test get values()');
@@ -111,3 +111,9 @@ try {
 catch(LogicException $e) {
   $t->pass('->getValues() throws a LogicException if a required Option is not set');
 }
+
+$t->comment('nbOptionSet - Test to string');
+$set = new nbOptionSet();
+$t->is((string)$set, '', '->__toString() returns ""');
+$set = new nbOptionSet(array($foo));
+$t->is((string)$set, ' [-f|--foo]', '->__toString() returns " [-f|--foo]"');

@@ -8,12 +8,12 @@ class nbOptionSet {
     $this->addOptions($options);
   }
 
-  public function getOptionCount()
+  public function count()
   {
     return count($this->options);
   }
 
-  public function getOptionRequiredCount()
+  public function countRequired()
   {
     return $this->requiredCount;
   }
@@ -65,5 +65,14 @@ class nbOptionSet {
       $res[$option->getName()] = $option->getValue();
     }
     return $res;
+  }
+
+  public function  __toString()
+  {
+    $result = '';
+    foreach($this->options as $option)
+      $result .= ' ' . $option;
+
+    return $result;
   }
 }
