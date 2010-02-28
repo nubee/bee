@@ -12,6 +12,12 @@ class nbOption {
   {
     if(! isset ($name))
       throw new InvalidArgumentException("Invalid argument: name");
+    if(strlen($name) < 3)
+      throw new InvalidArgumentException("Invalid argument: name too short");
+    if(! is_string($shortcut))
+      throw new InvalidArgumentException("Invalid argument: shortcut must be a string");
+    if(strlen($shortcut) > 1)
+      throw new InvalidArgumentException("Invalid argument: shortcut too long");
     $this->name = $name;
     $this->shortcut = $shortcut;
     $this->description = $description;
@@ -29,6 +35,11 @@ class nbOption {
   public function getShortcut()
   {
     return $this->shortcut;
+  }
+
+  public function hasShortcut()
+  {
+    return (1 == strlen($this->shortcut));
   }
 
   public function getDescritpion()
@@ -71,16 +82,16 @@ class nbOption {
       throw new LogicException('Option has not parameter');
     if($this->isArray() && !(is_array($value) || is_null($value)))
       throw new InvalidArgumentException('Value must be an array or null');
-    $this->value = $value;
+      $this->value = $value;
   }
 
-  public function setDefault($value)
+  private function setDefault($value)
   {
     if(!$this->hasParameter() && null !== $value)
       throw new InvalidArgumentException('Couldn\'t set default value for option with PARAMETER_NONE');
-    if($this->hasRequiredParameter() && null !== $value)
-      throw new InvalidArgumentException('Couldn\'t set default value for option with PARAMETER_REQUIRED');
-    if($this->hasOptionalParameter())
+//    if($this->hasRequiredParameter() && null !== $value)
+//      throw new InvalidArgumentException('Couldn\'t set default value for option with PARAMETER_REQUIRED');
+    if($this->hasParameter())
       $this->setValue($value);
   }
 
@@ -93,4 +104,7 @@ class nbOption {
       }
       return true;
   }
+
+
+  
 }
