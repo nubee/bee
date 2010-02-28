@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
-$t = new lime_test(14);
+$t = new lime_test(18);
 
 $t->comment('nbArgumentTest - Test constructor');
 $argument = new nbArgument('foo', nbArgument::OPTIONAL, 'The argument', 'default');
@@ -52,3 +52,16 @@ $t->ok(!$argument->isArray(), '->isArray() returns false if the argument can not
 $t->comment('nbArgumentTest - Test default value (->setDefault())');
 $argument->setValue('value');
 $t->is($argument->getValue(), 'value', '->getValue() returns "value"');
+
+$t->comment('nbArgumentTest - Test to string');
+$argument = new nbArgument('foo', nbArgument::OPTIONAL);
+$t->is((string)$argument, '[foo]', '->__toString() returns "[foo]"');
+
+$argument = new nbArgument('foo', nbArgument::REQUIRED);
+$t->is((string)$argument, 'foo', '->__toString() returns "foo"');
+
+$argument = new nbArgument('foo', nbArgument::IS_ARRAY);
+$t->is((string)$argument, '[foo1] ... [fooN]', '->__toString() returns "[foo1] ... [fooN]"');
+
+$argument = new nbArgument('foo', nbArgument::REQUIRED | nbArgument::IS_ARRAY);
+$t->is((string)$argument, 'foo1 ... fooN', '->__toString() returns "foo1 ... fooN"');

@@ -8,4 +8,4 @@ $basedir = dirname(__FILE__);
 $autoload = nbAutoload::getInstance();
 $autoload->register();
 $autoload->addDirectory('lib', '*.php', true);
-$autoload->addDirectory('tests/lib/', '*.php', true);
+$autoload->addDirectory('test/lib/', '*.php', true);

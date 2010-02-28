@@ -110,7 +110,7 @@ class nbArgumentSet
    *
    * @return integer The number of arguments
    */
-  public function getArgumentCount()
+  public function count()
   {
     return $this->hasAnArrayArgument ? PHP_INT_MAX : count($this->arguments);
   }
@@ -120,7 +120,7 @@ class nbArgumentSet
    *
    * @return integer The number of required arguments
    */
-  public function getArgumentRequiredCount()
+  public function countRequired()
   {
     return $this->requiredCount;
   }
@@ -137,5 +137,14 @@ class nbArgumentSet
       $values[$argument->getName()] = $argument->getValue();
 
     return $values;
+  }
+
+  public function  __toString()
+  {
+    $result = '';
+    foreach($this->arguments as $argument)
+      $result .= ' ' . $argument;
+
+    return $result;
   }
 }

@@ -2,44 +2,44 @@
 
 require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
-$t = new lime_test(24);
+$t = new lime_test(28);
 
-$foo = new nbArgument('foo');
-$bar = new nbArgument('bar');
-$bas = new nbArgument('bas');
+$fooArgument = new nbArgument('foo');
+$barArgument = new nbArgument('bar');
+$basArgument = new nbArgument('bas');
 $arrayArgument = new nbArgument('array', nbArgument::IS_ARRAY);
-$requiredArgument = new nbArgument('array', nbArgument::REQUIRED);
+$requiredArgument = new nbArgument('required', nbArgument::REQUIRED);
 
 // ->__construct()
 $t->comment('nbArgumentSetTest - Test default constructor');
 $set = new nbArgumentSet();
-$t->is($set->getArgumentCount(), 0, '->__construct() has no arguments');
-$t->is($set->getArgumentRequiredCount(), 0, '->__construct() has no required arguments');
+$t->is($set->count(), 0, '->__construct() has no arguments');
+$t->is($set->countRequired(), 0, '->__construct() has no required arguments');
 $t->is($set->getArguments(), array(), '->__construct() builds an empty set');
 $t->is($set->hasArgument('foo'), false, '->__construct() has no argument "foo"');
 
 $t->comment('nbArgumentSetTest - Test constructor with an argument');
-$set = new nbArgumentSet(array($foo));
-$t->is($set->getArgumentCount(), 1, '->__construct() has 1 argument');
-$t->is($set->getArgumentRequiredCount(), 0, '->__contruct() has no required arguments');
+$set = new nbArgumentSet(array($fooArgument));
+$t->is($set->count(), 1, '->__construct() has 1 argument');
+$t->is($set->countRequired(), 0, '->__contruct() has no required arguments');
 $t->is($set->hasArgument('foo'), true, '->__construct() built a set with argument "foo"');
 
 // ->addArguments()
 $t->comment('nbArgumentSetTest - Test add arguments array');
 $set = new nbArgumentSet();
-$set->addArguments(array($foo, $bar));
-$t->is($set->getArguments(), array('foo' => $foo, 'bar' => $bar), '->addArguments() added an array of arguments');
-$set->addArguments(array($bas));
-$t->is($set->getArguments(), array('foo' => $foo, 'bar' => $bar, 'bas' => $bas), '->addArguments() does not clear previous arguments');
+$set->addArguments(array($fooArgument, $barArgument));
+$t->is($set->getArguments(), array('foo' => $fooArgument, 'bar' => $barArgument), '->addArguments() added an array of arguments');
+$set->addArguments(array($basArgument));
+$t->is($set->getArguments(), array('foo' => $fooArgument, 'bar' => $barArgument, 'bas' => $basArgument), '->addArguments() does not clear previous arguments');
 
 // ->addArgument()
 $t->comment('nbArgumentSetTest - Test add argument');
 $set = new nbArgumentSet();
-$set->addArgument($foo);
-$t->is($set->getArguments(), array('foo' => $foo), '->addArgument() added argument "foo"');
+$set->addArgument($fooArgument);
+$t->is($set->getArguments(), array('foo' => $fooArgument), '->addArgument() added argument "foo"');
 
 try {
-  $set->addArgument($foo);
+  $set->addArgument($fooArgument);
   $t->fail('->addArgument() throws an InvalidArgumentException if an argument with the same name is added');
 }
 catch(InvalidArgumentException $e) {
@@ -48,7 +48,7 @@ catch(InvalidArgumentException $e) {
 
 $set = new nbArgumentSet(array($arrayArgument));
 try {
-  $set->addArgument($foo);
+  $set->addArgument($fooArgument);
   $t->fail('->addArgument() throws an InvalidArgumentException if there is an array parameter already registered');
 }
 catch (InvalidArgumentException $e) {
@@ -56,7 +56,7 @@ catch (InvalidArgumentException $e) {
 }
 
 // cannot add a required argument after an optional one
-$set = new nbArgumentSet(array($foo));
+$set = new nbArgumentSet(array($fooArgument));
 try {
   $set->addArgument($requiredArgument);
   $t->fail('->addArgument() throws an InvalidArgumentException if you try to add a required argument after an optional one');
@@ -67,8 +67,8 @@ catch (InvalidArgumentException $e) {
 
 // ->getArgument()
 $t->comment('nbArgumentSetTest - Test get argument');
-$set = new nbArgumentSet(array($foo));
-$t->is($set->getArgument('foo'), $foo, '->getArgument() returns an nbArgument by its name');
+$set = new nbArgumentSet(array($fooArgument));
+$t->is($set->getArgument('foo'), $fooArgument, '->getArgument() returns an nbArgument by its name');
 try {
   $set->getArgument('bar');
   $t->fail('->getArgument() throws a RangeException exception if the argument name does not exist');
@@ -79,24 +79,24 @@ catch (RangeException $e) {
 
 // ->hasArgument()
 $t->comment('nbArgumentSetTest - Test has argument');
-$set = new nbArgumentSet(array($foo));
+$set = new nbArgumentSet(array($fooArgument));
 $t->is($set->hasArgument('foo'), true, '->hasArgument() returns true if an nbArgument exists for the given name');
 $t->is($set->hasArgument('bar'), false, '->hasArgument() returns false if an nbArgument does not exists for the given name');
 
-// ->getArgumentRequiredCount()
+// ->countRequired()
 $t->comment('nbArgumentSetTest - Test argument required count');
 $set = new nbArgumentSet(array($requiredArgument));
-$t->is($set->getArgumentRequiredCount(), 1, '->getArgumentRequiredCount() returns the number of required arguments');
-$set->addArgument($foo);
-$t->is($set->getArgumentRequiredCount(), 1, '->getArgumentRequiredCount() returns the number of required arguments');
+$t->is($set->countRequired(), 1, '->countRequired() returns the number of required arguments');
+$set->addArgument($fooArgument);
+$t->is($set->countRequired(), 1, '->countRequired() returns the number of required arguments');
 
-// ->getArgumentCount()
+// ->count()
 $t->comment('nbArgumentSetTest - Test get argument count');
 $set = new nbArgumentSet();
-$set->addArgument($foo);
-$t->is($set->getArgumentCount(), 1, '->getArgumentCount() returns the number of arguments');
-$set->addArgument($bar);
-$t->is($set->getArgumentCount(), 2, '->getArgumentCount() returns the number of arguments');
+$set->addArgument($fooArgument);
+$t->is($set->count(), 1, '->count() returns the number of arguments');
+$set->addArgument($barArgument);
+$t->is($set->count(), 2, '->count() returns the number of arguments');
 
 // ->getValues()
 $t->comment('nbArgumentSetTest - Test get values()');
@@ -125,3 +125,13 @@ try {
 catch(LogicException $e) {
   $t->pass('->getValues() throws a LogicException if a required argument is not set');
 }
+
+$t->comment('nbArgumentSet - Test to string');
+$set = new nbArgumentSet();
+$t->is((string)$set, '', '->__toString() returns ""');
+$set = new nbArgumentSet(array($fooArgument));
+$t->is((string)$set, ' [foo]', '->__toString() returns " [foo]"');
+$set = new nbArgumentSet(array($requiredArgument, $fooArgument));
+$t->is((string)$set, ' required [foo]', '->__toString() returns " required [foo]"');
+$set = new nbArgumentSet(array($requiredArgument, $fooArgument, $arrayArgument));
+$t->is((string)$set, ' required [foo] [array1] ... [arrayN]', '->__toString() returns " required [foo] [array1] ... [arrayN]"');

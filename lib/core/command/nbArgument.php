@@ -8,8 +8,8 @@
  */
 class nbArgument
 {
-  const REQUIRED = 1;
-  const OPTIONAL = 2;
+  const OPTIONAL = 1;
+  const REQUIRED = 2;
   const IS_ARRAY = 4;
 
   protected
@@ -29,14 +29,18 @@ class nbArgument
    */
   public function __construct($name, $mode = null, $description = '', $default = null)
   {
-    if (null === $mode)
-      $mode = self::OPTIONAL;
-    else if (is_string($mode) || $mode > 7)
+    if (is_string($mode) || $mode > 7)
       throw new InvalidArgumentException('[nbArgument::__construct] Argument mode "%s" is not valid.');
 
     $this->name = $name;
     $this->mode = $mode;
     $this->description = $description;
+
+    if(!($this->isOptional() || $this->isRequired()))
+      $this->mode = nbArgument::OPTIONAL | $this->mode;
+    
+    if($this->isOptional() && $this->isRequired())
+      throw new InvalidArgumentException('[nbArgument::__construct] Argument can\'t be required and optional at the same time.');
 
     if($this->isRequired() && $default !== null)
       throw new InvalidArgumentException('[nbArgument::__construct] Cannot set a default value to a required argument.');
@@ -124,5 +128,20 @@ class nbArgument
   public function getDescription()
   {
     return $this->description;
+  }
+
+  public function  __toString()
+  {
+    if($this->isArray()) {
+      if($this->isOptional())
+        return sprintf('[%s1] ... [%sN]', $this->getName(), $this->getName());
+
+      return sprintf('%s1 ... %sN', $this->getName(), $this->getName());
+    }
+
+    if($this->isOptional())
+      return sprintf('[%s]', $this->getName());
+
+    return $this->getName();
   }
 }
