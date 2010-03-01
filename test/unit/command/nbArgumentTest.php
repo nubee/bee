@@ -2,13 +2,21 @@
 
 require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
-$t = new lime_test(18);
+$t = new lime_test(19);
 
 $t->comment('nbArgumentTest - Test constructor');
 $argument = new nbArgument('foo', nbArgument::OPTIONAL, 'The argument', 'default');
 $t->is($argument->getName(), 'foo', '->getName() is "foo"');
 $t->is($argument->getValue(), 'default', '->getValue() returns "default"');
 $t->is($argument->getDescription(), 'The argument', '->getDescription() is "The argument"');
+
+try {
+  new nbArgument('');
+  $t->fail('argument name can\'t be empty');
+}
+catch(InvalidArgumentException $e) {
+  $t->pass('argument name can\'t be empty');
+}
 
 $t->comment('nbArgumentTest - Test required argument');
 $argument = new nbArgument('command', nbArgument::REQUIRED, 'The command to execute');

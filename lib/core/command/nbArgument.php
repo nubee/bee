@@ -29,6 +29,9 @@ class nbArgument
    */
   public function __construct($name, $mode = self::OPTIONAL, $description = '', $default = null)
   {
+    if(empty($name))
+      throw new InvalidArgumentException('[nbArgument::__construct] Argument name can\'t be empty.');
+
     if (is_string($mode) || $mode > 7)
       throw new InvalidArgumentException('[nbArgument::__construct] Argument mode "%s" is not valid.');
 
