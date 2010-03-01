@@ -3,20 +3,72 @@ class nbConfiguration {
 
   public static $configuration = array();
 
-  public static function has($key)
+  public static function has($keyPath)
   {
-    return array_key_exists($key, self::$configuration);
+    try {
+     self::getElementByPath($keyPath);
+     return true;
+    }
+    catch (InvalidArgumentException $e) {
+      return false;
+    }
   }
 
-  public static function add($key, $value)
+  public static function add($keyPath, $value)
   {
-    self::$configuration[$key] = $value;
+    self::setElementByPath($keyPath, $value);
   }
 
-  public static function get($key, $default = null)
+  public static function get($keyPath, $default = null)
   {
-    if(!self::has($key))
+    try {
+     return self::getElementByPath($keyPath);
+    }
+    catch (InvalidArgumentException $e) {
       return $default;
-    return self::$configuration[$key];
+    }
+  }
+
+  public static function reset()
+  {
+    self::$configuration = array();
+  }
+
+  public static function getAll()
+  {
+    return self::$configuration;
+  }
+
+  public static function remove($key)
+  {
+    unset(self::$configuration[$key]);
+  }
+
+  private static function getElementByPath($path)
+  {
+    $keys = explode('_', $path);
+    $conf = self::$configuration;
+    while($k = array_shift($keys)) {
+      if(!isset($conf[$k]))
+        throw new InvalidArgumentException('[nbConfiguration::getElementByPath] Invalid key');
+      $conf = $conf[$k];
+    }
+    return $conf;
+  }
+
+  private static function setElementByPath($path, $value, &$ary = null)
+  {
+    $keys = explode('_', $path);
+    if(is_null($ary))
+      $ary =& self::$configuration;
+    $k = array_shift($keys);
+    if(0 === count($keys))
+      $ary[$k] = $value;
+    else {
+      $path = implode('_', $keys);
+      if(!is_array($ary[$k]))
+        $ary[$k] = array();
+      self::setElementByPath($path, $value, $ary[$k]);
+    }
   }
 }
