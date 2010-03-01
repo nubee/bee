@@ -28,6 +28,25 @@ class nbOptionSet {
     return array_key_exists($optionName, $this->options) || array_key_exists($optionName, $this->shortcuts);
   }
 
+  public function hasShortcut($shortcut)
+  {
+    foreach($this->options as $option)
+      if($option->hasShortcut($shortcut) && $option->getShortcut() == $shortcut)
+        return true;
+
+    return false;
+  }
+
+  public function getByShortcut($shortcut)
+  {
+    foreach($this->options as $option)
+      if($option->hasShortcut($shortcut) && $option->getShortcut() == $shortcut)
+        return $option;
+
+    throw new RangeException(sprintf('[nbOptionSet::getByShortcut] Option with shortcut %s does not exist.', $shortcut));
+  }
+
+
   public function addOptions($options = array())
   {
     if(! is_array($options))
