@@ -10,4 +10,4 @@ $autoload->register();
 
 $autoload->addDirectory('vendor/', '*.php', true);
 $autoload->addDirectory('lib/', '*.php', true);
-$autoload->addDirectory('tests/lib/', '*.php', true);
+$autoload->addDirectory('test/lib/', '*.php', true);
