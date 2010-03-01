@@ -1,4 +1,5 @@
 <?php
+
 class nbOptionSet {
 
   private $options = array(),$shortcuts = array(), $requiredCount = 0;
