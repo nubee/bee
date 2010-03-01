@@ -6,9 +6,11 @@
  * @package    bee
  * @subpackage application
  */
-class nbApplication
+abstract class nbApplication
 {
-  private
+  protected
+    $name = 'UNDEFINED',
+    $version = 'UNDEFINED',
     $arguments = null,
     $options = null,
     $commands = null;
@@ -24,7 +26,20 @@ class nbApplication
     $this->setArguments($arguments);
     $this->setOptions($options);
     $this->setCommands(new nbCommandSet());
+    $this->configure();
   }
+
+  public function getName()
+  {
+    return $this->name;
+  }
+  
+  public function getVersion()
+  {
+    return $this->version;
+  }
+  
+  protected abstract function configure();
 
   public function setArguments(nbArgumentSet $arguments)
   {
