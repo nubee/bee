@@ -23,6 +23,7 @@ class nbApplication
 
     $this->setArguments($arguments);
     $this->setOptions($options);
+    $this->setCommands(new nbCommandSet());
   }
 
   public function setArguments(nbArgumentSet $arguments)

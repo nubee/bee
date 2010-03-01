@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
-$t = new lime_test(6);
+$t = new lime_test(7);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
