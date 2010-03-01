@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(43);
+$t = new lime_test(45);
 
 // __construct()
 $t->comment('nbCommandLineParserTest - Test constructor');
@@ -53,12 +53,14 @@ $options = new nbOptionSet(array(
   new nbOption('foo9', 's', nbOption::PARAMETER_OPTIONAL, '', 'default9'),
   new nbOption('foo10', 'u', nbOption::PARAMETER_OPTIONAL, '', 'default10'),
   new nbOption('foo11', 'v', nbOption::PARAMETER_OPTIONAL, '', 'default11'),
+  new nbOption('foo12', 'w', nbOption::PARAMETER_NONE),
+  new nbOption('foo13', 'x', nbOption::PARAMETER_REQUIRED),
 ));
 $parser = new nbCommandLineParser($arguments, $options);
-$parser->process('--foo1 -f --foo3 --foo4="foo4" --foo5=foo5 -r"foo6 foo6" -t foo7 --foo8="foo" --foo8=bar -s -u foo10 -vfoo11 foo1 foo2 foo3 foo4');
+$parser->process('--foo1 -f --foo3 --foo4="foo4" --foo5=foo5 -r"foo6 foo6" -t foo7 --foo8="foo" --foo8=bar -s -u foo10 -vfoo11 -wx foo13 foo1 foo2 foo3 foo4 "foo5 foo5"');
 $arguments = array(
   'foo1' => 'foo1',
-  'foo2' => array('foo2', 'foo3', 'foo4')
+  'foo2' => array('foo2', 'foo3', 'foo4', 'foo5 foo5')
 );
 $options = array(
   'foo1' => true,
@@ -72,6 +74,8 @@ $options = array(
   'foo9' => 'default9',
   'foo10' => 'foo10',
   'foo11' => 'foo11',
+  'foo12' => true,
+  'foo13' => 'foo13',
 );
 $t->ok($parser->isValid(), '->process() processes CLI options');
 $t->is($parser->getOptionValues(), $options, '->process() processes CLI options');
