@@ -69,7 +69,7 @@ class nbArgumentSet
   }
 
   /**
-   * Add merges two argument sets.
+   * Merges two argument sets.
    *
    * @param array $set A nbArgumentSet object
    */

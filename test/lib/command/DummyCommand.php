@@ -6,6 +6,7 @@ class DummyCommand extends nbCommand
   
   public function __construct($name = null, nbArgumentSet $arguments = null, nbOptionSet $options = null)
   {
+    parent::__construct();
     if(!$arguments)
       $arguments = new nbArgumentSet();
     if(!$options)
@@ -16,6 +17,11 @@ class DummyCommand extends nbCommand
       ->setOptions($options);
   }
 
+  protected function configure()
+  {
+
+  }
+  
   protected function execute(array $arguments = array(), array $options = array())
   {
     $this->arguments = $arguments;

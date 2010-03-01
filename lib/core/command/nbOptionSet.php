@@ -58,7 +58,7 @@ class nbOptionSet {
 
 
   /**
-   * Add merges two option sets.
+   * Merges two option sets.
    *
    * @param array $set A nbOptionSet object
    */

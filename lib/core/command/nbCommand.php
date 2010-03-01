@@ -18,6 +18,8 @@ abstract class nbCommand
   {
     $this->arguments = new nbArgumentSet();
     $this->options = new nbOptionSet();
+
+    $this->configure();
   }
 
   public function run(nbCommandLineParser $parser, $commandLine)
@@ -30,6 +32,7 @@ abstract class nbCommand
     $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
   }
 
+  protected abstract function configure();
   protected abstract function execute(array $arguments = array(), array $options = array());
   
   public function setName($name)
