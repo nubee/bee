@@ -46,6 +46,16 @@ class nbCommandLineParser
   }
 
   /**
+   * Adds to the argument set.
+   *
+   * @param array $arguments An array of arguments
+   */
+  public function addArguments(nbArgumentSet $arguments)
+  {
+    $this->arguments->mergeArguments($arguments);
+  }
+
+  /**
    * Gets the argument set.
    *
    * @return nbArgumentSet A nbArgumentSet object
@@ -63,6 +73,16 @@ class nbCommandLineParser
   public function setOptions(nbOptionSet $options)
   {
     $this->options = $options;
+  }
+
+  /**
+   * Adds to the option set.
+   *
+   * @param array $options An array of options
+   */
+  public function addOptions(nbOptionSet $options)
+  {
+    $this->options->mergeOptions($options);
   }
 
   /**
