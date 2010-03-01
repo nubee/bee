@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(43);
+$t = new lime_test(45);
 
 // __construct()
 $t->comment('nbCommandLineParserTest - Test constructor');
@@ -35,8 +35,8 @@ $options = new nbOptionSet();
 $parser->setOptions($options);
 $t->is($parser->getOptions(), $options, '->setOptions() sets the manager option set');
 
-// ->process()
-$t->comment('nbCommandLineParserTest - Test process');
+// ->parse()
+$t->comment('nbCommandLineParserTest - Test parse');
 $arguments = new nbArgumentSet(array(
   new nbArgument('foo1', nbArgument::REQUIRED),
   new nbArgument('foo2', nbArgument::OPTIONAL | nbArgument::IS_ARRAY),
@@ -53,12 +53,14 @@ $options = new nbOptionSet(array(
   new nbOption('foo9', 's', nbOption::PARAMETER_OPTIONAL, '', 'default9'),
   new nbOption('foo10', 'u', nbOption::PARAMETER_OPTIONAL, '', 'default10'),
   new nbOption('foo11', 'v', nbOption::PARAMETER_OPTIONAL, '', 'default11'),
+  new nbOption('foo12', 'w', nbOption::PARAMETER_NONE),
+  new nbOption('foo13', 'x', nbOption::PARAMETER_REQUIRED),
 ));
 $parser = new nbCommandLineParser($arguments, $options);
-$parser->process('--foo1 -f --foo3 --foo4="foo4" --foo5=foo5 -r"foo6 foo6" -t foo7 --foo8="foo" --foo8=bar -s -u foo10 -vfoo11 foo1 foo2 foo3 foo4');
+$parser->parse('--foo1 -f --foo3 --foo4="foo4" --foo5=foo5 -r"foo6 foo6" -t foo7 --foo8="foo" --foo8=bar -s -u foo10 -vfoo11 -wx foo13 foo1 foo2 foo3 foo4 "foo5 foo5"');
 $arguments = array(
   'foo1' => 'foo1',
-  'foo2' => array('foo2', 'foo3', 'foo4')
+  'foo2' => array('foo2', 'foo3', 'foo4', 'foo5 foo5')
 );
 $options = array(
   'foo1' => true,
@@ -72,10 +74,12 @@ $options = array(
   'foo9' => 'default9',
   'foo10' => 'foo10',
   'foo11' => 'foo11',
+  'foo12' => true,
+  'foo13' => 'foo13',
 );
-$t->ok($parser->isValid(), '->process() processes CLI options');
-$t->is($parser->getOptionValues(), $options, '->process() processes CLI options');
-$t->is($parser->getArgumentValues(), $arguments, '->process() processes CLI options');
+$t->ok($parser->isValid(), '->parse() parsees CLI options');
+$t->is($parser->getOptionValues(), $options, '->parse() parsees CLI options');
+$t->is($parser->getArgumentValues(), $arguments, '->parse() parsees CLI options');
 
 // ->getOptionValue()
 $t->comment('nbCommandLineParserTest - Test get option value');
@@ -107,51 +111,51 @@ catch (RangeException $e) {
 $t->comment('nbCommandLineParserTest - Test validity and errors');
 $arguments = new nbArgumentSet();
 $parser = new nbCommandLineParser($arguments);
-$parser->process('foo');
+$parser->parse('foo');
 $t->ok(!$parser->isValid(), '->isValid() returns false if the arguments are not valid');
 $t->is(count($parser->getErrors()), 1, '->getErrors() returns an array of errors');
 
 $arguments = new nbArgumentSet(array(new nbArgument('foo', nbArgument::REQUIRED)));
 $parser = new nbCommandLineParser($arguments);
-$parser->process('');
+$parser->parse('');
 $t->ok(!$parser->isValid(), '->isValid() returns false if the arguments are not valid');
 $t->is(count($parser->getErrors()), 1, '->getErrors() returns an array of errors');
 
 $options = new nbOptionSet(array(new nbOption('foo', '', nbOption::PARAMETER_REQUIRED)));
 $parser = new nbCommandLineParser(null, $options);
-$parser->process('--foo');
+$parser->parse('--foo');
 $t->ok(!$parser->isValid(), '->isValid() returns false if the options are not valid');
 $t->is(count($parser->getErrors()), 1, '->getErrors() returns an array of errors');
 
 $options = new nbOptionSet(array(new nbOption('foo', 'f', nbOption::PARAMETER_REQUIRED)));
 $parser = new nbCommandLineParser(null, $options);
-$parser->process('-f');
+$parser->parse('-f');
 $t->ok(!$parser->isValid(), '->isValid() returns false if the options are not valid');
 $t->is(count($parser->getErrors()), 1, '->getErrors() returns an array of errors');
 
 $options = new nbOptionSet(array(new nbOption('foo', '', nbOption::PARAMETER_NONE)));
 $parser = new nbCommandLineParser(null, $options);
-$parser->process('--foo="bar"');
+$parser->parse('--foo="bar"');
 $t->ok(!$parser->isValid(), '->isValid() returns false if the options are not valid');
 $t->is(count($parser->getErrors()), 1, '->getErrors() returns an array of errors');
 
 $parser = new nbCommandLineParser();
-$parser->process('--bar');
+$parser->parse('--bar');
 $t->ok(!$parser->isValid(), '->isValid() returns false if the options are not valid');
 $t->is(count($parser->getErrors()), 1, '->getErrors() returns an array of errors');
 
 $parser = new nbCommandLineParser();
-$parser->process('-b');
+$parser->parse('-b');
 $t->ok(!$parser->isValid(), '->isValid() returns false if the options are not valid');
 $t->is(count($parser->getErrors()), 1, '->getErrors() returns an array of errors');
 
 $parser = new nbCommandLineParser();
-$parser->process('--bar="foo"');
+$parser->parse('--bar="foo"');
 $t->ok(!$parser->isValid(), '->isValid() returns false if the options are not valid');
 $t->is(count($parser->getErrors()), 1, '->getErrors() returns an array of errors');
 
 // ->getArgumentValue()
 $t->comment('nbCommandLineParserTest - Test -- as last option');
 $parser = new nbCommandLineParser();
-$parser->process('-- bar');
-$t->is($parser->isValid(), true, '->process() with "--" stops parsing the command line');
+$parser->parse('-- bar');
+$t->is($parser->isValid(), true, '->parse() with "--" stops parsing the command line');

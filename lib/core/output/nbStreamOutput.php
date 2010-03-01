@@ -11,6 +11,8 @@ class nbStreamOutput extends nbOutput
 
   public function getStream()
   {
-    return $this->stream;
+    $stream = $this->stream;
+    $this->stream = '';
+    return $stream;
   }
 }

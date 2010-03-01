@@ -76,11 +76,11 @@ class nbCommandLineParser
   }
 
   /**
-   * Processes command line arguments.
+   * Parses command line arguments.
    *
    * @param mixed $arguments A string or an array of command line parameters
    */
-  public function process($commandLine = null)
+  public function parse($commandLine = null)
   {
     if (null === $commandLine) {
       $this->commandLineArguments = $_SERVER['argv'];

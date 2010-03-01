@@ -73,6 +73,26 @@ abstract class nbCommand
     return $this->options;
   }
 
+  public function hasShortcut($shortcut)
+  {
+    $pos = strpos($shortcut, ':');
+    if (false !== $pos) {
+      $namespace = substr($shortcut, 0, $pos);
+      $name = substr($shortcut, $pos + 1);
+    }
+    else {
+      $namespace = '';
+      $name = $shortcut;
+    }
+
+    if(substr($this->namespace, 0, strlen($namespace)) != $namespace)
+      return false;
+    if(substr($this->name, 0, strlen($name)) != $name)
+      return false;
+
+    return true;
+  }
+
   public function getSynopsys()
   {
     $synopsys = 'bee ' . $this->getFullname();
