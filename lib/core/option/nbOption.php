@@ -27,10 +27,21 @@ class nbOption
     $this->setDefault($default);
   }
 
+  public function getName()
+  {
+    return $this->name;
+  }
+
   public function getShortcut()
   {
     return $this->shortcut;
   }
+
+  public function hasNoneParameter()
+  {
+    return self::PARAMETER_NONE === (self::PARAMETER_NONE & $this->mode);
+  }
+
   public function hasOptionalParameter()
   {
     return self::PARAMETER_OPTIONAL === (self::PARAMETER_OPTIONAL & $this->mode);
@@ -53,6 +64,12 @@ class nbOption
 
   public function getValue()
   {
+    if(null === $this->value && $this->hasRequiredParameter())
+      throw new LogicException("Value name not found");
+    if(null === $this->value && $this->hasOptionalParameter())
+      return null;
+    if(null === $this->value && $this->hasNoneParameter())
+      throw new LogicException("Value name not found");
     return $this->value;
   }
 
@@ -63,5 +80,10 @@ class nbOption
       $this->value = $default;
     else
       throw new LogicException("Can't pass default value for non optional parameter");
+  }
+
+  public function acceptParameter()
+  {
+    return $this->hasOptionalParameter() || $this->hasRequiredParameter();
   }
 }

@@ -2,9 +2,13 @@
 
 require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
-$t = new lime_test(23);
+$t = new lime_test(25);
 
 $t->comment("nbOptionTest");
+
+$t->comment("->getName()");
+$option = new nbOption('foo', 'f');
+$t->is($option->getName(), 'foo', '->getName() returns the option name');
 
 $t->comment("->getShortcut()");
 $option = new nbOption('foo', 'f');
@@ -14,23 +18,20 @@ $option = new nbOption('foo');
 $t->is($option->getShortcut(), null, '->getShortcut() returns null if shortcut is not set');
 
 $t->comment("->__constructor()");
-try
-{
+
+try {
   $option = new nbOption();
   $t->fail("Couldn't create Option without name");
 }
-catch (Exception $e)
-{
+catch (Exception $e) {
     $t->pass("Couldn't create Option without name");
 }
 
-try
-{
+try {
   $option = new nbOption('');
   $t->fail("Couldn't create Option with empty name");
 }
-catch (Exception $e)
-{
+catch (Exception $e) {
     $t->pass("Couldn't create Option without name");
 }
 
@@ -50,13 +51,11 @@ $t->is($option->hasRequiredParameter(), true, '->hasRequiredParameter() returns 
 $option = new nbOption('foo','f', nbOption::PARAMETER_NONE);
 $t->is($option->hasRequiredParameter(), false, '->hasRequiredParameter() returns false if option parameter is not required');
 
-try
-{
+try {
   $option = new nbOption('foo','f', 27);
   $t->fail("__constructor() accept only defined modes");
 }
-catch(Exception $e)
-{
+catch(Exception $e) {
   $t->pass("__constructor() accept only defined modes");
 }
 
@@ -73,6 +72,8 @@ $option = new nbOption('foo','f', nbOption::PARAMETER_REQUIRED | nbOption::IS_AR
 $t->is($option->hasRequiredParameter(), true, '->hasRequiredParameter() returns true if option has required array parameter');
 $t->is($option->isArray(), true, '->isArray() returns true if option parameter is an array');
 
+$t->comment("->getValue()");
+
 $option = new nbOption('foo','f', nbOption::PARAMETER_OPTIONAL);
 $option->setValue("bar");
 $t->is($option->getValue(), "bar", '->getValue() returns a value if it is set');
@@ -80,32 +81,48 @@ $t->is($option->getValue(), "bar", '->getValue() returns a value if it is set');
 $option = new nbOption('foo','f', nbOption::PARAMETER_OPTIONAL);
 $t->is($option->getValue(), null, '->getValue() returns a value if it is set');
 
+$option = new nbOption('foo','f', nbOption::PARAMETER_OPTIONAL, 'default');
+$t->is($option->getValue(), 'default', '->getValue() returns a value if it is set');
+
 $option = new nbOption('foo','f', nbOption::PARAMETER_OPTIONAL);
 $option->setValue("bar car");
 $t->is($option->getValue(), "bar car", '->getValue() returns a value if it is set');
 
-$option = new nbOption('foo','f', nbOption::PARAMETER_OPTIONAL);
-$t->is($option->getValue(), null, '->getValue() returns null if it is not set');
-
-$option = new nbOption('foo','f', nbOption::PARAMETER_OPTIONAL, 'default');
-$t->is($option->getValue(), 'default', '->getValue() returns a value if it is set');
-
-try
-{
+try {
   $option = new nbOption('foo','f', nbOption::PARAMETER_NONE, 'default');
   $t->fail("Can't pass default value for non optional parameter");
 }
-catch(Exception $e)
-{
+catch(Exception $e) {
   $t->pass("Can't pass default value for non optional parameter");
 }
 
-try
-{
+$option = new nbOption('foo','f', nbOption::PARAMETER_NONE);
+
+try {
+  $option->getValue();
+  $t->fail("->GetValue() throws exceptions if option with PARAMETER_NONE");
+}
+catch(Exception $e) {
+  $t->pass("->GetValue() throws exceptions if option with PARAMETER_NONE");
+}
+
+$option = new nbOption('foo','f', nbOption::PARAMETER_REQUIRED);
+
+try {
+  $option->getValue();
+  $t->fail("->GetValue() throws exceptions if option with PARAMETER_REQUIRE has null value");
+}
+catch(Exception $e) {
+  $t->pass("->GetValue() throws exceptions if option with PARAMETER_REQUIRE has null value");
+}
+$option->setValue("val");
+
+$t->is($option->getValue(),"val","->GetValue() returns value");
+
+try {
   $option = new nbOption('foo','f', nbOption::PARAMETER_REQUIRED, 'default');
   $t->fail("Can't pass default value for non optional parameter");
 }
-catch(Exception $e)
-{
+catch(Exception $e) {
   $t->pass("Can't pass default value for non optional parameter");
 }

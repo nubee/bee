@@ -1,6 +1,7 @@
 <?php
 
 include_once dirname(__FILE__) . '/../system/nbFileFinder.php';
+include_once dirname(__FILE__) . '/../util/nbGlob.php';
 
 class nbAutoload
 {
@@ -90,11 +91,11 @@ class nbAutoload
    */
   public function addDirectory($dir, $ext = '.php', $recursive = false)
   {
-    $finder = nbFileFinder::type('file');
+    $finder = nbFileFinder::create('file');
     if(!$recursive)
         $finder->maxdepth(0);
 
-    $finder->follow_link()->name('*'.$ext);
+    $finder->followLink()->add('*' . $ext);
     $this->addFiles($finder->in($dir), false);
   }
 
