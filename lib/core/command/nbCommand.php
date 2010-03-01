@@ -19,6 +19,18 @@ abstract class nbCommand
     $this->arguments = new nbArgumentSet();
     $this->options = new nbOptionSet();
   }
+
+  public function run(nbCommandLineParser $parser, $commandLine)
+  {
+    $parser->addArguments($this->getArguments());
+    $parser->addOptions($this->getOptions());
+
+    $parser->parse($commandLine);
+    
+    $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
+  }
+
+  protected abstract function execute(array $arguments = array(), array $options = array());
   
   public function setName($name)
   {
@@ -35,6 +47,8 @@ abstract class nbCommand
 
     $this->namespace = $namespace;
     $this->name = $name;
+
+    return $this;
   }
 
   public function getName()
@@ -56,6 +70,7 @@ abstract class nbCommand
   public function setArguments(nbArgumentSet $arguments)
   {
     $this->arguments = $arguments;
+    return $this;
   }
 
   public function getArguments()
@@ -66,6 +81,7 @@ abstract class nbCommand
   public function setOptions(nbOptionSet $options)
   {
     $this->options = $options;
+    return $this;
   }
 
   public function getOptions()

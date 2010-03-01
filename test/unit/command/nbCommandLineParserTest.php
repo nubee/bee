@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(45);
+$t = new lime_test(47);
 
 // __construct()
 $t->comment('nbCommandLineParserTest - Test constructor');
@@ -28,12 +28,26 @@ $arguments = new nbArgumentSet();
 $parser->setArguments($arguments);
 $t->is($parser->getArguments(), $arguments, '->setArguments() sets the manager argument set');
 
+// ->addArguments()
+$t->comment('nbCommandLineParserTest - Test add arguments');
+$arguments = new nbArgumentSet(array(new nbArgument('foo1', nbArgument::REQUIRED)));
+$parser = new nbCommandLineParser($arguments);
+$parser->addArguments(new nbArgumentSet(array(new nbArgument('foo2', nbArgument::REQUIRED))));
+$t->is($parser->getArguments()->count(), 2, '->addArguments() does not clear the argument set');
+
 // ->setOptions() ->getOptions()
 $t->comment('nbCommandLineParserTest - Test set and get options');
 $parser = new nbCommandLineParser();
 $options = new nbOptionSet();
 $parser->setOptions($options);
 $t->is($parser->getOptions(), $options, '->setOptions() sets the manager option set');
+
+// ->addOptions()
+$t->comment('nbCommandLineParserTest - Test add options');
+$options = new nbOptionSet(array(new nbOption('foo1')));
+$parser = new nbCommandLineParser(null, $options);
+$parser->addOptions(new nbOptionSet(array(new nbOption('foo2'))));
+$t->is($parser->getOptions()->count(), 2, '->addOptions() does not clear the option set');
 
 // ->parse()
 $t->comment('nbCommandLineParserTest - Test parse');

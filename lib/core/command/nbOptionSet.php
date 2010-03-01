@@ -56,6 +56,18 @@ class nbOptionSet {
       $this->addOption($option);
   }
 
+
+  /**
+   * Add merges two option sets.
+   *
+   * @param array $set A nbOptionSet object
+   */
+  public function mergeOptions(nbOptionSet $set)
+  {
+    foreach($set->options as $option)
+      $this->addOption($option);
+  }
+
   public function addOption(nbOption $option)
   {
     if($this->hasOption($option->getName()))

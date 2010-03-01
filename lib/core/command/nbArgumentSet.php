@@ -69,6 +69,17 @@ class nbArgumentSet
   }
 
   /**
+   * Add merges two argument sets.
+   *
+   * @param array $set A nbArgumentSet object
+   */
+  public function mergeArguments(nbArgumentSet $set)
+  {
+    foreach($set->arguments as $argument)
+      $this->addArgument($argument);
+  }
+
+  /**
    * Returns an argument by name.
    *
    * @param string $name The argument name
