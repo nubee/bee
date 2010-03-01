@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
 $dataDir = dirname(__FILE__).'/../../data/configuration';
 
-$t = new lime_test(16);
+$t = new lime_test(5);
 
 $parser = new nbYamlConfigurationParser();
 
