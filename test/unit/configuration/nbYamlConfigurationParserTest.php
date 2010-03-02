@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
 $dataDir = dirname(__FILE__).'/../../data/configuration';
 
-$t = new lime_test(2);
+$t = new lime_test(3);
 
 $parser = new nbYamlConfigurationParser();
 
@@ -27,3 +27,11 @@ $main = array('main' => array(
                     'key2' => 'appValue2')
         );
 $t->is(nbConfiguration::get('main'),$main['main'],'->parseFile() parse a yaml file and set configuration');
+
+try {
+  $parser->parseFile($dataDir.'/fake-file.yml');
+  $t->fail("->parseFile() throws if file doesn\'t exist");
+}
+catch(InvalidArgumentException $e) {
+    $t->pass("->parseFile() throws if file doesn\'t exist");
+}

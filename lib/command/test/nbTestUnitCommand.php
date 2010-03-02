@@ -33,7 +33,7 @@ TXT
       foreach($arguments['name'] as $name) {
         $finder = nbFileFinder::create('file')->followLink()->add(basename($name) . 'Test.php');
         //$files = array_merge($files, $finder->in(sfConfig::get('sf_test_dir').'/unit/'.dirname($name)));
-        $files = array_merge($files, $finder->in(dirname(__FILE__) . '/../../../test/unit/' . dirname($name)));
+        $files = array_merge($files, $finder->in(nbConfiguration::get('nb_test_dir','test/unit').dirname($name)));
       }
 
       if(count($files) > 0) {
@@ -45,26 +45,14 @@ TXT
     }
     else
     {
-      require_once dirname(__FILE__) . '/../../../vendor/lime/lime.php';
 
       $h = new lime_harness();
 
       // filter and register unit tests
       $finder = nbFileFinder::create('file')->add('*Test.php');
-      $h->register($finder->in(dirname(__FILE__) . '/../../../test/unit/'));
+      $h->register($finder->in(nbConfiguration::get('nb_test_dir','test/unit')));
 
       $ret = $h->run() ? 0 : 1;
-
-//      // filter and register unit tests
-//      $finder = sfFinder::type('file')->follow_link()->name('*Test.php');
-//      $h->register($this->filterTestFiles($finder->in($h->base_dir), $arguments, $options));
-//
-//      $ret = $h->run() ? 0 : 1;
-//
-//      if ($options['xml'])
-//      {
-//        file_put_contents($options['xml'], $h->to_xml());
-//      }
 
       return $ret;
     }

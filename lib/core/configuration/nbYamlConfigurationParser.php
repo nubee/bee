@@ -15,6 +15,8 @@ class nbYamlConfigurationParser
 
   public function parseFile($filePath)
   {
+    if(! file_exists($filePath))
+      throw new InvalidArgumentException(sprintf('[nbYamlConfigurationParser::parseFile] file \'%s\' does not exist',$filePath ));
     $this->parse(file_get_contents($filePath));
   }
 }
