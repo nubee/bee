@@ -22,7 +22,7 @@ class nbConfiguration {
   public static function get($keyPath, $default = null)
   {
     try {
-     return self::getElementByPath($keyPath);
+      return self::getElementByPath($keyPath);
     }
     catch (InvalidArgumentException $e) {
       return $default;
@@ -50,7 +50,7 @@ class nbConfiguration {
     $conf = self::$configuration;
     while($k = array_shift($keys)) {
       if(!isset($conf[$k]))
-        throw new InvalidArgumentException('[nbConfiguration::getElementByPath] Invalid key');
+        throw new InvalidArgumentException('[nbConfiguration::getElementByPath] Invalid key: ' . $path);
       $conf = $conf[$k];
     }
     return $conf;
@@ -66,7 +66,7 @@ class nbConfiguration {
       $ary[$k] = $value;
     else {
       $path = implode('_', $keys);
-      if(!is_array($ary[$k]))
+      if(!isset($ary[$k]) || !is_array($ary[$k]))
         $ary[$k] = array();
       self::setElementByPath($path, $value, $ary[$k]);
     }

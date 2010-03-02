@@ -9,7 +9,6 @@ nbLogger::getInstance()->setOutput($output);
 
 $application = new DummyApplication();
 $cmd = new nbHelpCommand($application);
-$cmd->setOutput($output);
 $application->setCommands(new nbCommandSet(array(new DummyCommand('dummy1'), $cmd)));
 
 $t->comment('nbHelpCommandTest - Test get name');

@@ -9,27 +9,21 @@
 class nbHelpCommand extends nbCommand
 {
   private $application = null;
-  private $output = null;
 
   public function  __construct(nbApplication $application)
   {
     parent::__construct();
     $this->application = $application;
-    $this->output = new nbConsoleOutput();
-  }
-
-  public function setOutput(nbOutput $output)
-  {
-    $this->output = $output;
   }
 
   protected function configure()
   {
     $this->setName('help')
-      ->setBriefDescription('print command help')
+      ->setBriefDescription('Displays help for a command')
       ->setDescription(<<<TXT
-The <info>help</info> task displays help for a given task:
-   ./bee help test:all
+The <info>help</info> command displays help for a given task:
+
+   <info>./bee help</info>
 TXT
         );
     
@@ -46,32 +40,49 @@ TXT
       $command = $this->application->getCommands()->getCommand($commandName);
     }
 
-    nbLogger::getInstance()->log($this->printSynopsys($command));
-    return true;
+    $max = 0;
+    foreach($command->getArgumentsArray() as $argument) {
+      $length = strlen($argument->getName()) + 2;
+      if($max < $length) $max = $length;
+    }
+    foreach($command->getOptionsArray() as $option) {
+      $length = strlen($option->getName()) + 2;
+      if($max < $length) $max = $length;
+    }
+
+    $res = $this->printSynopsys($command);
+
+    $res .= $this->printArguments($command, $max);
+    $res .= $this->printOptions($command, $max);
+    $res .= $this->printDescription($command);
+
+    $this->log($res);
   }
 
   public function printSynopsys($command)
   {
-    $res = nbLogger::getInstance()->format("Usage:", 'comment') . "\n";
-    $res .= ' ' . $command->getSynopsys() . "\n";
-    $res .= $this->printArguments($command, 0);
-    $res .= $this->printOptions($command, 0);
-    $res .= $this->printDescription($command);
+    $res = $this->format("Usage:", 'comment') . "\n";
+    $res .= ' ' . $this->format($command->getSynopsys(), 'info') . "\n";
+    
     return $res;
   }
 
   public function printArguments($command, $max)
   {
-    $argumentSet = $command->getArguments();
-    if(count($argumentSet->getArguments()) == 0)
+    $arguments = $command->getArgumentsArray();
+    if(count($arguments) == 0)
       return '';
 
-    $res = "\n" . nbLogger::getInstance()->format("Arguments:", 'comment') . "\n";
-    foreach($argumentSet->getArguments() as $argument) {
-      $res .= sprintf(' %-' . ($max + 7) . 's', nbLogger::getInstance()->format($argument->getName(), 'info'));
-      $res .= ' ' . $argument->getDescription();
-      if(!$argument->isRequired())
-        $res .= nbLogger::getInstance()->format(' (default: ' . $argument->getValue() . ')', 'comment');
+    $res = "\n";
+    $res .= $this->format("Arguments:", 'comment') . "\n";
+
+    foreach($arguments as $argument) {
+      $res .= $this->format(sprintf(" %-{$max}s ", $argument->getName()), 'info');
+      $res .= $argument->getDescription();
+      if($argument->isRequired())
+        $res .= $this->format(' (required)', 'comment');
+      else if(null !== $argument->getValue() && !$argument->isArray())
+        $res .= $this->format(' (default: ' . $argument->getValue() . ')', 'comment');
       $res .= "\n";
     }
     return $res;
@@ -79,16 +90,17 @@ TXT
 
   public function printOptions($command, $max)
   {
-    $optionSet = $command->getOptions();
-    if(count($optionSet->getOptions()) == 0)
+    $options = $command->getOptionsArray();
+    if(count($options) == 0)
       return '';
 
-    $res = "\n" . nbLogger::getInstance()->format("Options:", 'comment') . "\n";
-    foreach($optionSet->getOptions() as $option) {
-      $res .= sprintf(' %-' . ($max + 7) . 's', nbLogger::getInstance()->format($option->getName(), 'info'));
+    $res = "\n";
+    $res .= $this->format("Options:", 'comment') . "\n";
+    foreach($options as $option) {
+      $res .= $this->format(sprintf(" %-{$max}s %s", $option->getName(), $option->getShortcut()), 'info');
       $res .= ' ' . $option->getDescription();
-      if($option->hasOptionalParameter())
-        $res .= nbLogger::getInstance()->format(' (default: ' . $option->getValue() . ')', 'comment');
+      if($option->hasOptionalParameter() && !$option->isArray())
+        $res .= $this->format(' (default: ' . $option->getValue() . ')', 'comment');
       $res .= "\n";
     }
     return $res;
@@ -96,13 +108,15 @@ TXT
 
   public function printDescription($command, $indent = ' ')
   {
-    if($command->getDescription() == '')
+    $detailedDescription = $command->getDescription();
+    if(!$detailedDescription)
       return '';
 
-    $res = "\n" . nbLogger::getInstance()->format("Description:", 'comment') . "\n";
-    $lines = preg_split("/[\n\r]/", $command->getDescription());
-    foreach($lines as $line)
-      $res .= $indent . $line . "\n";
+    $res = "\n";
+    $res .= $this->format('Description:', 'comment') . "\n";
+
+    $res .= ' ' . implode("\n ", explode("\n", $detailedDescription)) . "\n";
+
     return $res;
   }
 }

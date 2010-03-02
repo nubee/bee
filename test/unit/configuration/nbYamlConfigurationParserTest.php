@@ -23,8 +23,8 @@ $t->is(nbConfiguration::get('key'),'value','->parse() parse a yaml string and se
 
 $parser->parseFile($dataDir.'/application.yml');
 $main = array('main' => array(
-                    'key1' => 'appValue1',
-                    'key2' => 'appValue2')
+          'key1' => 'appValue1',
+          'key2' => 'appValue2')
         );
 $t->is(nbConfiguration::get('main'),$main['main'],'->parseFile() parse a yaml file and set configuration');
 

@@ -16,11 +16,14 @@ abstract class nbCommand
     $arguments = null,
     $options = null;
 
+  private $logger;
+
   public function __construct()
   {
-    $this->arguments = new nbArgumentSet();
-    $this->options = new nbOptionSet();
+    $this->argumentSet = new nbArgumentSet();
+    $this->optionSet = new nbOptionSet();
 
+    $this->logger = nbLogger::getInstance();
     $this->configure();
   }
 
@@ -74,24 +77,34 @@ abstract class nbCommand
 
   public function setArguments(nbArgumentSet $arguments)
   {
-    $this->arguments = $arguments;
+    $this->argumentSet = $arguments;
     return $this;
   }
 
   public function getArguments()
   {
-    return $this->arguments;
+    return $this->argumentSet;
+  }
+
+  public function getArgumentsArray()
+  {
+    return $this->argumentSet->getArguments();
   }
 
   public function setOptions(nbOptionSet $options)
   {
-    $this->options = $options;
+    $this->optionSet = $options;
     return $this;
   }
 
   public function getOptions()
   {
-    return $this->options;
+    return $this->optionSet;
+  }
+
+  public function getOptionsArray()
+  {
+    return $this->optionSet->getOptions();
   }
 
   public function hasShortcut($shortcut)
@@ -139,15 +152,23 @@ abstract class nbCommand
   public function getSynopsys()
   {
     $synopsys = 'bee ' . $this->getFullname();
-    $synopsys .= (string)$this->arguments;
-    $synopsys .= (string)$this->options;
+    $synopsys .= (string)$this->argumentSet;
+    $synopsys .= (string)$this->optionSet;
     return $synopsys;
   }
 
-  public function log($text, $level)
+  public function log($text, $level = null)
   {
-    $logger = nbLogger::getInstance();
-    $logger->log($text, 'error');
+    $this->logger->log($text, $level);
+  }
 
+  public function format($text, $level)
+  {
+    return $this->logger->format($text, $level);
+  }
+
+  public function formatLine($text, $level)
+  {
+    return $this->logger->formatLine($text, $level);
   }
 }
