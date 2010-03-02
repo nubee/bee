@@ -197,10 +197,22 @@ class nbCommandLineParser
    */
   public function getArgumentValue($name)
   {
-    if (!$this->arguments->hasArgument($name))
-      throw new RangeException(sprintf('The "%s" argument does not exist.', $name));
+    if (!$this->hasArgumentValue($name))
+      throw new RangeException(sprintf('[nbCommandLineParser::getArgumentValue] The "%s" argument does not exist.', $name));
 
     return $this->argumentValues[$name];
+  }
+
+  /**
+   * Returns true if the argument exists.
+   *
+   * @param string $name The argument name
+   *
+   * @return Boolean true if the argument exists
+   */
+  public function hasArgumentValue($name)
+  {
+    return isset($this->argumentValues[$name]);
   }
 
   /**
@@ -222,10 +234,23 @@ class nbCommandLineParser
    */
   public function getOptionValue($name)
   {
-    if (!$this->options->hasOption($name))
+    if (!$this->hasOptionValue($name))
       throw new RangeException(sprintf('The "%s" option does not exist.', $name));
 
     return $this->optionValues[$name];
+  }
+
+
+  /**
+   * Returns true if the option exists.
+   *
+   * @param string $name The option name
+   *
+   * @return Boolean true if the option exists
+   */
+  public function hasOptionValue($name)
+  {
+    return isset($this->optionValues[$name]);
   }
 
   /**

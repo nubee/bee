@@ -42,8 +42,12 @@ abstract class nbApplication
 
     if($this->handleOptions($this->parser->getOptionValues()))
       return;
-    
-    $command = $this->commands->getCommand($this->parser->getArgumentValue('command'));
+
+    $commandName = 'list';
+    if($this->parser->hasArgumentValue('command'))
+      $commandName = $this->parser->getArgumentValue('command');
+
+    $command = $this->commands->getCommand($commandName);
     $command->run($this->parser, $commandLine);
   }
 

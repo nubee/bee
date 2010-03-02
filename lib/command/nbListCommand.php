@@ -27,7 +27,7 @@ The <info>list</info> command displays all available commands:
 TXT
         );
     $this->setArguments(new nbArgumentSet(array(
-      new nbArgument('namespace', nbArgument::OPTIONAL, 'The namespace name', '')
+      new nbArgument('namespace', nbArgument::OPTIONAL, 'The namespace name')
     )));
   }
 

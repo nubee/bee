@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__).'/../../../bootstrap/unit.php');
 
-$t = new lime_test(44);
+$t = new lime_test(48);
 
 // __construct()
 $t->comment('nbCommandLineParserTest - Test constructor');
@@ -139,6 +139,14 @@ try {
 catch (RangeException $e) {
   $t->pass('->getArgumentValue() throws a nbCommandException if the argument name does not exist');
 }
+
+$t->comment('nbCommandLineParserTest - Test has option value');
+$t->ok($parser->hasOptionValue('foo3'), '->hasOptionValue() returns true for the option "foo3"');
+$t->ok(!$parser->hasOptionValue('foo15'), '->hasOptionValue() returns false for the argument "foo15"');
+
+$t->comment('nbCommandLineParserTest - Test has argument value');
+$t->ok($parser->hasArgumentValue('foo1'), '->hasArgumentValue() returns true for the argument "foo1"');
+$t->ok(!$parser->hasArgumentValue('foo3'), '->hasArgumentValue() returns false for the argument "foo3"');
 
 // ->isValid() ->getErrors()
 $t->comment('nbCommandLineParserTest - Test validity and errors');
