@@ -16,7 +16,7 @@ try {
   $application = new nbBeeApplication();
   $commandSet = new nbCommandSet();
   $commandSet->addCommand(new nbTestUnitCommand());
-  $commandSet->addCommand(new nbHelpCommand());
+  $commandSet->addCommand(new nbHelpCommand($application));
   $application->setCommands($commandSet);
   $application->run();
 }

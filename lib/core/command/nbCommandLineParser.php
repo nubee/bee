@@ -104,7 +104,6 @@ class nbCommandLineParser
   {
     if (null === $commandLine) {
       $this->commandLineArguments = $_SERVER['argv'];
-      print_r($_SERVER['argv']);
 
       // we strip command line program
       if (isset($this->commandLineArguments[0]) && '-' != $this->commandLineArguments[0][0])
