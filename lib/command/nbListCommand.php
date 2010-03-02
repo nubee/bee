@@ -19,10 +19,11 @@ class nbListCommand extends nbCommand
   protected function configure()
   {
     $this->setName('list')
-      ->setBriefDescription('print command list')
+      ->setBriefDescription('List commands')
       ->setDescription(<<<TXT
 The <info>list</info> command displays all available commands:
-   ./bee list
+
+   <info>./bee list</info>
 TXT
         );
   }
@@ -31,10 +32,12 @@ TXT
   {
     // TODO: set list format (tabs?)
     $commandSet = $this->application->getCommands();
-    $string = nbLogger::getInstance()->format('Available commands:', 'comment') . "\n";
+    $res = $this->formatLine('Available commands:', 'comment');
+
     foreach ($commandSet->getCommands() as $command)
-      $string .= nbLogger::getInstance()->format($command->getFullName(), 'info') . ' ' . $command->getBriefDescription() . "\n";
-    nbLogger::getInstance()->log($string);
+      $res .= $this->format($command->getFullName(), 'info') . ' ' . $command->getBriefDescription() . "\n";
+
+    $this->log($res);
     return true;
   }
 }

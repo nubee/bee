@@ -40,6 +40,11 @@ class nbLogger
     return sprintf('<%s>%s</%s>', $level, $text, $level);
   }
 
+  public function formatLine($text, $level)
+  {
+    return $this->format($text, $level) . "\n";
+  }
+
   public static function formatLevel($level)
   {
     switch($level) {

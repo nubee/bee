@@ -16,11 +16,14 @@ abstract class nbCommand
     $arguments = null,
     $options = null;
 
+  private $logger;
+
   public function __construct()
   {
     $this->arguments = new nbArgumentSet();
     $this->options = new nbOptionSet();
 
+    $this->logger = nbLogger::getInstance();
     $this->configure();
   }
 
@@ -144,10 +147,18 @@ abstract class nbCommand
     return $synopsys;
   }
 
-  public function log($text, $level)
+  public function log($text, $level = null)
   {
-    $logger = nbLogger::getInstance();
-    $logger->log($text, 'error');
+    $this->logger->log($text, $level);
+  }
 
+  public function format($text, $level)
+  {
+    return $this->logger->format($text, $level);
+  }
+
+  public function formatLine($text, $level)
+  {
+    return $this->logger->formatLine($text, $level);
   }
 }
