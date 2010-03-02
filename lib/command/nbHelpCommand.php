@@ -40,35 +40,49 @@ TXT
       $command = $this->application->getCommands()->getCommand($commandName);
     }
 
-    $this->log($this->printSynopsys($command));
-    return true;
+    $max = 0;
+    foreach($command->getArgumentsArray() as $argument) {
+      $length = strlen($argument->getName()) + 2;
+      if($max < $length) $max = $length;
+    }
+    foreach($command->getOptionsArray() as $option) {
+      $length = strlen($option->getName()) + 2;
+      if($max < $length) $max = $length;
+    }
+    echo $max;
+
+    $res = $this->printSynopsys($command);
+
+    $res .= $this->printArguments($command, $max);
+    $res .= $this->printOptions($command, $max);
+    $res .= $this->printDescription($command);
+
+    $this->log($res);
   }
 
   public function printSynopsys($command)
   {
     $res = $this->format("Usage:", 'comment') . "\n";
     $res .= ' ' . $this->format($command->getSynopsys(), 'info') . "\n";
-    $res .= $this->printArguments($command, 0);
-    $res .= $this->printOptions($command, 0);
-    $res .= $this->printDescription($command);
+    
     return $res;
   }
 
   public function printArguments($command, $max)
   {
-    $argumentSet = $command->getArguments();
-    if(count($argumentSet->getArguments()) == 0)
+    $arguments = $command->getArgumentsArray();
+    if(count($arguments) == 0)
       return '';
 
     $res = "\n";
     $res .= $this->format("Arguments:", 'comment') . "\n";
 
-    foreach($argumentSet->getArguments() as $argument) {
-      $res .= sprintf(' %-' . ($max + 7) . 's ', $this->format($argument->getName(), 'info'));
+    foreach($arguments as $argument) {
+      $res .= $this->format(sprintf(' %-' . ($max + 2) . 's ', $argument->getName()), 'info');
       $res .= $argument->getDescription();
       if($argument->isRequired())
         $res .= $this->format(' (required)', 'comment');
-      else if(null !== $argument->getValue())
+      else if(null !== $argument->getValue() && !$argument->isArray())
         $res .= $this->format(' (default: ' . $argument->getValue() . ')', 'comment');
       $res .= "\n";
     }
@@ -77,17 +91,16 @@ TXT
 
   public function printOptions($command, $max)
   {
-    $optionSet = $command->getOptions();
-    if(count($optionSet->getOptions()) == 0)
+    $options = $command->getOptionsArray();
+    if(count($options) == 0)
       return '';
 
-    $res = "\n\n";
-    $this->format("Options:", 'comment') . "\n";
-    foreach($optionSet->getOptions() as $option) {
-      $res .= sprintf(' %-' . ($max) . 's', $this->format($option->getName(), 'info'));
-      $res .= $option->hasShortcut() ? sprintf('%5s', $option->getShortcut()) :
+    $res = "\n";
+    $res .= $this->format("Options:", 'comment') . "\n";
+    foreach($options as $option) {
+      $res .= $this->format(sprintf(" %-{$max}s %s", $option->getName(), $option->getShortcut()), 'info');
       $res .= ' ' . $option->getDescription();
-      if($option->hasOptionalParameter())
+      if($option->hasOptionalParameter() && !$option->isArray())
         $res .= $this->format(' (default: ' . $option->getValue() . ')', 'comment');
       $res .= "\n";
     }
