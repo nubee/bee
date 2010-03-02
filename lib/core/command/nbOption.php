@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * Represents a command line option.
+ *
+ * @package    bee
+ * @subpackage option
+ */
 class nbOption {
 
   const PARAMETER_NONE = 1;
