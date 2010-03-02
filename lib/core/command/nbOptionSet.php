@@ -91,11 +91,13 @@ class nbOptionSet {
       return $this->shortcuts[$optionName];
   }
 
-  public function getValues() {
+  public function getDefaultValues() {
     $res = array();
     foreach ($this->options as $option) {
-      $res[$option->getName()] = $option->getValue();
+      if($option->hasOptionalParameter())
+        $res[$option->getName()] = $option->getValue();
     }
+
     return $res;
   }
 

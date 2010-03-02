@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(dirname(__FILE__).'/../../../bootstrap/unit.php');
 
-$t = new lime_test(47);
+$t = new lime_test(43);
 
 // __construct()
 $t->comment('nbCommandLineParserTest - Test constructor');
@@ -51,18 +51,18 @@ $t->is($parser->getOptions()->count(), 2, '->addOptions() does not clear the opt
 
 // ->parse()
 $t->comment('nbCommandLineParserTest - Test parse');
-$arguments = new nbArgumentSet(array(
+$argumentSet = new nbArgumentSet(array(
   new nbArgument('foo1', nbArgument::REQUIRED),
   new nbArgument('foo2', nbArgument::OPTIONAL | nbArgument::IS_ARRAY),
 ));
-$options = new nbOptionSet(array(
+$optionSet = new nbOptionSet(array(
   new nbOption('foo1', '', nbOption::PARAMETER_NONE),
   new nbOption('foo2', 'f', nbOption::PARAMETER_NONE),
   new nbOption('foo3', '', nbOption::PARAMETER_OPTIONAL, '', 'default3'),
   new nbOption('foo4', '', nbOption::PARAMETER_OPTIONAL, '', 'default4'),
   new nbOption('foo5', '', nbOption::PARAMETER_OPTIONAL, '', 'default5'),
-  new nbOption('foo6', 'r', nbOption::PARAMETER_REQUIRED, '', 'default5'),
-  new nbOption('foo7', 't', nbOption::PARAMETER_REQUIRED, '', 'default7'),
+  new nbOption('foo6', 'r', nbOption::PARAMETER_REQUIRED),
+  new nbOption('foo7', 't', nbOption::PARAMETER_REQUIRED),
   new nbOption('foo8', '', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY),
   new nbOption('foo9', 's', nbOption::PARAMETER_OPTIONAL, '', 'default9'),
   new nbOption('foo10', 'u', nbOption::PARAMETER_OPTIONAL, '', 'default10'),
@@ -70,7 +70,7 @@ $options = new nbOptionSet(array(
   new nbOption('foo12', 'w', nbOption::PARAMETER_NONE),
   new nbOption('foo13', 'x', nbOption::PARAMETER_REQUIRED),
 ));
-$parser = new nbCommandLineParser($arguments, $options);
+$parser = new nbCommandLineParser($argumentSet, $optionSet);
 $parser->parse('--foo1 -f --foo3 --foo4="foo4" --foo5=foo5 -r"foo6 foo6" -t foo7 --foo8="foo" --foo8=bar -s -u foo10 -vfoo11 -wx foo13 foo1 foo2 foo3 foo4 "foo5 foo5"');
 $arguments = array(
   'foo1' => 'foo1',
@@ -90,6 +90,25 @@ $options = array(
   'foo11' => 'foo11',
   'foo12' => true,
   'foo13' => 'foo13',
+);
+$t->ok($parser->isValid(), '->parse() parsees CLI options');
+$t->is($parser->getOptionValues(), $options, '->parse() parsees CLI options');
+$t->is($parser->getArgumentValues(), $arguments, '->parse() parsees CLI options');
+
+// ->parse
+$parser = new nbCommandLineParser($argumentSet, $optionSet);
+$parser->parse('foo1');
+$arguments = array(
+  'foo1' => 'foo1',
+  'foo2' => array()
+);
+$options = array(
+  'foo3' => 'default3',
+  'foo4' => 'default4',
+  'foo5' => 'default5',
+  'foo9' => 'default9',
+  'foo10' => 'default10',
+  'foo11' => 'default11',
 );
 $t->ok($parser->isValid(), '->parse() parsees CLI options');
 $t->is($parser->getOptionValues(), $options, '->parse() parsees CLI options');

@@ -116,9 +116,8 @@ class nbCommandLineParser
       $this->commandLineArguments = str_replace('__PLACEHOLDER__', ' ', $this->commandLineArguments);
     }
 
-//    $this->arguments            = $arguments;
-//    $this->optionValues         = $this->options->getValues();
-//    $this->argumentValues       = $this->arguments->getValues();
+    $this->optionValues         = $this->options->getDefaultValues();
+    $this->argumentValues       = $this->arguments->getDefaultValues();
     $this->parsedArgumentValues = array();
     $this->errors               = array();
 
@@ -150,8 +149,6 @@ class nbCommandLineParser
       }
       ++$position;
     }
-
-    //$this->arguments = $arguments;
 
     if (count($this->parsedArgumentValues) < $this->arguments->countRequired())
       $this->errors[] = 'Not enough arguments.';

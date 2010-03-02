@@ -1,14 +1,16 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
+require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(30);
+$t = new lime_test(29);
 
 $foo = new nbOption('foo', 'f');
 $bar = new nbOption('bar');
 $bas = new nbOption('bas');
 
-$requiredOption = new nbOption('require','r', nbOption::PARAMETER_REQUIRED);
+$noneOption = new nbOption('none', 'o', nbOption::PARAMETER_NONE);
+$optionalOption = new nbOption('optional', 'o', nbOption::PARAMETER_OPTIONAL, '', 'default');
+$requiredOption = new nbOption('required', 'r', nbOption::PARAMETER_REQUIRED);
 
 
 $t->comment('nbOptionSetTest - Test default constructor');
@@ -82,35 +84,25 @@ $t->is($set->count(), 1, '->count() returns the number of options');
 $set->addOption($bar);
 $t->is($set->count(), 2, '->count() returns the number of options');
 
-// ->getValues()
+// ->getDefaultValues()
 $t->comment('nbOptionSetTest - Test get values');
 $set = new nbOptionSet();
 $set->addOptions(array(
-  new nbOption('foo', '', nbOption::PARAMETER_REQUIRED, '', 'req'),
+  new nbOption('foo', '', nbOption::PARAMETER_REQUIRED),
   new nbOption('foo1', '', nbOption::PARAMETER_OPTIONAL),
   new nbOption('foo2', '', nbOption::PARAMETER_OPTIONAL, '', 'default'),
   new nbOption('foo3', '', nbOption::PARAMETER_OPTIONAL | nbOption::IS_ARRAY)
 ));
-$t->is($set->getValues(), array(
-  'foo' => 'req',
+$t->is($set->getDefaultValues(), array(
   'foo1' => null,
   'foo2' => 'default',
-  'foo3' => array()), '->getValues() returns the default values for each option');
+  'foo3' => array()), '->getDefaultValues() returns the default values for each option');
 
 $set = new nbOptionSet();
 $set->addOptions(array(
   new nbOption('foo4', '', nbOption::PARAMETER_OPTIONAL | nbOption::IS_ARRAY, '', array(1, 2)),
 ));
-$t->is($set->getValues(), array('foo4' => array(1, 2)), '->getValues() return the default values for each option');
-
-$set = new nbOptionSet(array($requiredOption));
-try {
-  $set->getValues();
-  $t->fail('->getValues() throws a LogicException if a required option is not set');
-}
-catch(LogicException $e) {
-  $t->pass('->getValues() throws a LogicException if a required option is not set');
-}
+$t->is($set->getDefaultValues(), array('foo4' => array(1, 2)), '->getDefaultValues() return the default values for each option');
 
 $t->comment('nbOptionSet - Test shortcuts');
 $set = new nbOptionSet(array(

@@ -11,3 +11,8 @@ $autoload->register();
 $autoload->addDirectory('vendor/', '*.php', true);
 $autoload->addDirectory('lib/', '*.php', true);
 $autoload->addDirectory('test/lib/', '*.php', true);
+
+$output = new nbConsoleOutput();
+$output->setFormatter(new nbAnsiColorFormatter());
+$logger = nbLogger::getInstance();
+$logger->setOutput($output);

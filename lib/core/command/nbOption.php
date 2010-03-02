@@ -6,18 +6,23 @@ class nbOption {
   const PARAMETER_REQUIRED = 4;
   const IS_ARRAY = 8;
 
-  private $name, $shortcut, $mode, $description ,$value;
+  private $name,
+    $shortcut,
+    $mode,
+    $description,
+    $value,
+    $valueSet = false;
 
   function __construct($name, $shortcut = '', $mode = self::PARAMETER_NONE, $description = '', $default = null)
   {
     if(!isset($name))
-      throw new InvalidArgumentException("Invalid argument: name");
+      throw new InvalidArgumentException("[nbOption::__construct] Undefined name");
     if(strlen($name) < 3)
-      throw new InvalidArgumentException("Invalid argument: name too short");
+      throw new InvalidArgumentException("[nbOption::__construct] Name too short");
     if(!is_string($shortcut))
-      throw new InvalidArgumentException("Invalid argument: shortcut must be a string");
+      throw new InvalidArgumentException("[nbOption::__construct] Shortcut must be a string");
     if(strlen($shortcut) > 1)
-      throw new InvalidArgumentException("Invalid argument: shortcut too long");
+      throw new InvalidArgumentException("[nbOption::__construct] Shortcut too long");
 
     $this->name = $name;
     $this->shortcut = $shortcut;
@@ -25,10 +30,15 @@ class nbOption {
 
     if($mode === self::IS_ARRAY)
       $mode |= self::PARAMETER_NONE;
+
     if($this->checkMode($mode))
       $this->mode = $mode;
+
+    if($default && !$this->hasOptionalParameter())
+      throw new InvalidArgumentException("[nbOption::__construct] Can\'t set default value if option parameter is not optional.");
     
-    $this->setDefault($default);
+    if($this->hasOptionalParameter())
+      $this->setDefault($default);
   }
 
   public function getName()
@@ -73,20 +83,25 @@ class nbOption {
 
   public function getValue()
   {
-    if(! $this->hasParameter())
+    if(!$this->valueSet)
+      throw new LogicException(sprintf('[nbOption::getValue] Option %s value not set', $this->getName()));
+/*    if(!$this->hasParameter())
       throw new LogicException('Option has PARAMETER_NONE mode');
     if($this->hasRequiredParameter() && null === $this->value)
-      throw new LogicException('Option value not set');
+      throw new LogicException('Option value not set');*/
     return $this->value;
   }
 
   public function setValue($value)
   {
-    if(! $this->hasParameter())
-      throw new LogicException('Option has not parameter');
+    if(!$this->hasParameter())
+      throw new LogicException('[nbOption::setValue] Option has no parameter');
+    
     if($this->isArray() && !(is_array($value) || is_null($value)))
-      throw new InvalidArgumentException('Value must be an array or null');
-      $this->value = $value;
+      throw new InvalidArgumentException('[nbOptionValue::setValue] Value must be an array or null');
+
+    $this->valueSet = true;
+    $this->value = $value;
   }
 
   private function setDefault($value)

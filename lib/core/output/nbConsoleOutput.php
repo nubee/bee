@@ -4,6 +4,6 @@ class nbConsoleOutput extends nbOutput
 {
   public function write($text)
   {
-    echo $text;
+    echo $this->formatter->format($text);
   }
 }

@@ -11,6 +11,8 @@ abstract class nbCommand
   private
     $name,
     $namespace,
+    $briefDescription = '',
+    $description = '',
     $arguments = null,
     $options = null;
 
@@ -112,11 +114,40 @@ abstract class nbCommand
     return true;
   }
 
+  public function setBriefDescription($description)
+  {
+    $this->briefDescription = $description;
+    return $this;
+  }
+
+  public function getBriefDescription()
+  {
+    return $this->briefDescription;
+  }
+
+  public function setDescription($description)
+  {
+    $this->description = $description;
+    return $this;
+  }
+
+  public function getDescription()
+  {
+    return $this->description;
+  }
+
   public function getSynopsys()
   {
     $synopsys = 'bee ' . $this->getFullname();
     $synopsys .= (string)$this->arguments;
     $synopsys .= (string)$this->options;
     return $synopsys;
+  }
+
+  public function log($text, $level)
+  {
+    $logger = nbLogger::getInstance();
+    $logger->log($text, 'error');
+
   }
 }
