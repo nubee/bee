@@ -1,11 +1,21 @@
 <?php
 
-require_once dirname(__FILE__) . '/lib/core/autoload/nbAutoload.php';
+{
+//BOOTSTRAP
+  require_once dirname(__FILE__) . '/lib/core/autoload/nbAutoload.php';
 
-$autoload = nbAutoload::getInstance();
-$autoload->register();
+  $autoload = nbAutoload::getInstance();
+  $autoload->register();
+  $autoload->addDirectory(dirname(__FILE__).'/lib/', '*.php', true);
+  $autoload->addDirectory(dirname(__FILE__).'/vendor/', '*.php', true);
 
-$autoload->addDirectory('lib/', '*.php', true);
+  $yaml = new nbYamlConfigurationParser();
+  $yaml->parseFile(dirname(__FILE__).'/configuration/settings.yml');
+  if(file_exists(nbConfiguration::get('project_configuration_file')))
+    $yaml->parseFile(nbConfiguration::get('project_configuration_file'));
+
+  $autoload->addDirectory(nbConfiguration::get('bee_commanddir'), 'Command.php', true);
+}
 
 $output = new nbConsoleOutput();
 $output->setFormatter(new nbAnsiColorFormatter());
