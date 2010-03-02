@@ -11,6 +11,8 @@ abstract class nbCommand
   private
     $name,
     $namespace,
+    $briefDescription = '',
+    $description = '',
     $arguments = null,
     $options = null;
 
@@ -110,6 +112,28 @@ abstract class nbCommand
       return false;
 
     return true;
+  }
+
+  public function setBriefDescription($description)
+  {
+    $this->briefDescription = $description;
+    return $this;
+  }
+
+  public function getBriefDescription()
+  {
+    return $this->briefDescription;
+  }
+
+  public function setDescription($description)
+  {
+    $this->description = $description;
+    return $this;
+  }
+
+  public function getDescription()
+  {
+    return $this->description;
   }
 
   public function getSynopsys()

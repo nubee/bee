@@ -8,9 +8,11 @@
  */
 class nbTestUnitCommand extends nbCommand
 {
-  protected function  configure()
+  protected function configure()
   {
     $this->setName('test:unit')
+      ->setBriefDescription('run unit tests')
+      ->setDescription('')
       ->setArguments(new nbArgumentSet(array(
         new nbArgument('name', nbArgument::OPTIONAL | nbArgument::IS_ARRAY, 'The test name'),
       )));
