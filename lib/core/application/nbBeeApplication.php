@@ -8,7 +8,6 @@
  */
 class nbBeeApplication extends nbApplication
 {
-
   protected function configure()
   {
     $this->name = 'bee';

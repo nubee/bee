@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(dirname(__FILE__).'/../../../bootstrap/unit.php');
 
-$t = new lime_test(43);
+$t = new lime_test(44);
 
 // __construct()
 $t->comment('nbCommandLineParserTest - Test constructor');
@@ -192,3 +192,16 @@ $t->comment('nbCommandLineParserTest - Test -- as last option');
 $parser = new nbCommandLineParser();
 $parser->parse('-- bar');
 $t->is($parser->isValid(), true, '->parse() with "--" stops parsing the command line');
+
+$t->comment('nbCommandLineParserTest - Test pass commandline as array');
+$argumentSet = new nbArgumentSet(array(
+  new nbArgument('foo1', nbArgument::REQUIRED),
+  new nbArgument('foo2', nbArgument::OPTIONAL | nbArgument::IS_ARRAY),
+));
+$optionSet = new nbOptionSet(array(
+  new nbOption('foo1', '', nbOption::PARAMETER_NONE),
+  new nbOption('foo2', 'f', nbOption::PARAMETER_NONE)
+));
+$parser = new nbCommandLineParser($argumentSet, $optionSet);
+$parser->parse(array('foo1Value'));
+$t->is($parser->isValid(), true, '->parse() with command line set as array');

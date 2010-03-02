@@ -14,8 +14,10 @@ $logger->setOutput($output);
 
 try {
   $application = new nbBeeApplication();
-  $command = new nbTestUnitCommand();
-  $application->setCommands(new nbCommandSet(array($command)));
+  $commandSet = new nbCommandSet();
+  $commandSet->addCommand(new nbTestUnitCommand());
+  $commandSet->addCommand(new nbHelpCommand());
+  $application->setCommands($commandSet);
   $application->run();
 }
 catch(Exception $e) {

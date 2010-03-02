@@ -104,6 +104,7 @@ class nbCommandLineParser
   {
     if (null === $commandLine) {
       $this->commandLineArguments = $_SERVER['argv'];
+      print_r($_SERVER['argv']);
 
       // we strip command line program
       if (isset($this->commandLineArguments[0]) && '-' != $this->commandLineArguments[0][0])
@@ -115,6 +116,8 @@ class nbCommandLineParser
       $this->commandLineArguments = preg_split('/\s+/', $commandLine);
       $this->commandLineArguments = str_replace('__PLACEHOLDER__', ' ', $this->commandLineArguments);
     }
+    else
+      $this->commandLineArguments = $commandLine;
 
     $this->optionValues         = $this->options->getDefaultValues();
     $this->argumentValues       = $this->arguments->getDefaultValues();

@@ -8,7 +8,15 @@
  */
 class nbHelpCommand extends nbCommand
 {
-  private $output;// = new nbConsoleOutput();
+  private $application = null;
+  private $output = null;
+
+  public function  __construct(nbApplication $application)
+  {
+    parent::__construct();
+    $this->application = $application;
+    $this->output = new nbConsoleOutput();
+  }
 
   public function setOutput(nbOutput $output)
   {
@@ -21,18 +29,18 @@ class nbHelpCommand extends nbCommand
       ->setBriefDescription('print command help')
       ->setDescription('')
       ->setArguments(new nbArgumentSet(array(
-        new nbArgument('command', nbArgument::OPTIONAL, 'The command name'),
+        new nbArgument('commandName', nbArgument::OPTIONAL, 'The command name'),
       )));
   }
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    if(count($arguments['commands'])) {
-      $cmd = $arguments['commands'];
-      $this->output->write($cmd);
+    if(count($arguments['commandName'])) {
+      $commandName = $arguments['commandName'];
+      $command = $this->application->getCommands()->getCommand($commandName);
+      $this->output->write($command->getName());
     }
-    else
-    {
+    else {
       $this->output->write('help');
     }
     return true;
