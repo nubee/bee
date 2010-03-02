@@ -11,11 +11,18 @@ class nbTestUnitCommand extends nbCommand
   protected function configure()
   {
     $this->setName('test:unit')
-      ->setBriefDescription('run unit tests')
-      ->setDescription('')
-      ->setArguments(new nbArgumentSet(array(
-        new nbArgument('name', nbArgument::OPTIONAL | nbArgument::IS_ARRAY, 'The test name'),
-      )));
+      ->setBriefDescription('Run unit tests')
+      ->setDescription(<<<TXT
+The <info>test:unit</info> command
+TXT
+        );
+    $this->setArguments(new nbArgumentSet(array(
+      new nbArgument('name', nbArgument::OPTIONAL | nbArgument::IS_ARRAY, 'The test name'),
+    )));
+
+    $this->setOptions(new nbOptionSet(array(
+      new nbOption('xml', 'x', nbOption::PARAMETER_OPTIONAL, 'Outputs in xml format', 'output.xml'),
+    )));
   }
   
   protected function execute(array $arguments = array(), array $options = array())

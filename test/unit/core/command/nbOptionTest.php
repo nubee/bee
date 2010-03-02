@@ -37,7 +37,7 @@ $t->comment('nbOptionTest - Test getters');
 $option = new nbOption('foo');
 $t->is($option->getName(), 'foo', '->getName() is "foo"');
 $t->is($option->getShortcut(), null, 'shortcut is optional');
-$t->is($option->getDescritpion(), '', 'default description is empty string');
+$t->is($option->getDescription(), '', 'default description is empty string');
 $t->is($option->hasParameter(), false, 'default mode is "nbOption::PARAMETER_NONE"');
 $t->is($option->hasShortcut(), false, '->hasShortcut() returns false if option has not shortcut');
 
@@ -45,7 +45,7 @@ $foo = new nbOption('foo', 'f', nbOption::PARAMETER_OPTIONAL, 'foo description')
 $bar = new nbOption('bar', 'b', nbOption::PARAMETER_REQUIRED);
 $t->is($foo->hasShortcut(), true, '->hasShortcut() returns true if option has shortcut');
 $t->is($foo->getShortcut(), 'f', '->getShortcut() returns shortcut if present');
-$t->is($foo->getDescritpion(), 'foo description', '->getDescritpion() returns the description');
+$t->is($foo->getDescription(), 'foo description', '->getDescription() returns the description');
 
 $t->comment('nbOptiontest - test mode');
 

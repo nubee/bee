@@ -87,12 +87,16 @@ class nbOption {
     return (1 == strlen($this->shortcut));
   }
 
+<<<<<<< HEAD
   /**
    * Returns the description.
    *
    * @return string The description.
    */
   public function getDescritpion()
+=======
+  public function getDescription()
+>>>>>>> afd0ab556a88cfd5e044642fd8a8be00c6621254
   {
     return $this->description;
   }
