@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
-$t = new lime_test(27);
+$t = new lime_test(31);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
@@ -66,3 +66,15 @@ $t->is($command2->hasShortcut('ns:b'), true, '->hasShortcut() is true with "ns:b
 $t->is($command2->hasShortcut('b'), true, '->hasShortcut() is true with "b"');
 $t->is($command2->hasShortcut(':b'), true, '->hasShortcut() is true with ":b"');
 $t->is($command2->hasShortcut('ns:d'), false, '->hasShortcut() is true with "ns:d"');
+
+$t->comment('nbCommandTest - Test brief description');
+$command = new DummyCommand('foo');
+$t->is($command->getBriefDescription(), '', '->getBriefDescrition() is ""');
+$command->setBriefDescription('command brief description');
+$t->is($command->getBriefDescription(), 'command brief description', '->getBriefDescrition() is "command brief description"');
+
+$t->comment('nbCommandTest - Test detailed description');
+$command = new DummyCommand('foo');
+$t->is($command->getDescription(), '', '->getDescription() is ""');
+$command->setDescription('command description');
+$t->is($command->getDescription(), 'command description', '->getDescription() is "command description"');
