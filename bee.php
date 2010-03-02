@@ -27,6 +27,7 @@ try {
   $commandSet = new nbCommandSet();
   $commandSet->addCommand(new nbTestUnitCommand());
   $commandSet->addCommand(new nbHelpCommand($application));
+  $commandSet->addCommand(new nbListCommand($application));
   $application->setCommands($commandSet);
   $application->run();
 }

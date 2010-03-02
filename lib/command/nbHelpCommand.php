@@ -9,18 +9,11 @@
 class nbHelpCommand extends nbCommand
 {
   private $application = null;
-  private $output = null;
 
   public function  __construct(nbApplication $application)
   {
     parent::__construct();
     $this->application = $application;
-    $this->output = new nbConsoleOutput();
-  }
-
-  public function setOutput(nbOutput $output)
-  {
-    $this->output = $output;
   }
 
   protected function configure()
@@ -28,7 +21,7 @@ class nbHelpCommand extends nbCommand
     $this->setName('help')
       ->setBriefDescription('print command help')
       ->setDescription(<<<TXT
-The <info>help</info> task displays help for a given task:
+The <info>help</info> command displays help for a given task:
    ./bee help test:all
 TXT
         );
