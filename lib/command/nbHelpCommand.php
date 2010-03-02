@@ -49,7 +49,6 @@ TXT
       $length = strlen($option->getName()) + 2;
       if($max < $length) $max = $length;
     }
-    echo $max;
 
     $res = $this->printSynopsys($command);
 
@@ -78,7 +77,7 @@ TXT
     $res .= $this->format("Arguments:", 'comment') . "\n";
 
     foreach($arguments as $argument) {
-      $res .= $this->format(sprintf(' %-' . ($max + 2) . 's ', $argument->getName()), 'info');
+      $res .= $this->format(sprintf(" %-{$max}s ", $argument->getName()), 'info');
       $res .= $argument->getDescription();
       if($argument->isRequired())
         $res .= $this->format(' (required)', 'comment');
