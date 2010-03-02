@@ -26,18 +26,32 @@ The <info>list</info> command displays all available commands:
    <info>./bee list</info>
 TXT
         );
+    $this->setArguments(new nbArgumentSet(array(
+      new nbArgument('namespace', nbArgument::OPTIONAL, 'The namespace name', '')
+    )));
   }
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    // TODO: set list format (tabs?)
+    $commandList = array();
     $commandSet = $this->application->getCommands();
-    $res = $this->formatLine('Available commands:', 'comment');
 
     foreach ($commandSet->getCommands() as $command)
-      $res .= $this->format($command->getFullName(), 'info') . ' ' . $command->getBriefDescription() . "\n";
+      if ($arguments['namespace'] != '' && $command->getNamespace() == $arguments['namespace']
+         || $arguments['namespace'] == '')
+        $commandList[$command->getNamespace()][] = $command;
 
-    $this->log($res);
+    $string = nbLogger::getInstance()->format('Available commands:', 'comment') . "\n";
+    ksort($commandList);
+    foreach ($commandList as $namespace => $commands) {
+      if ($namespace != '')
+        $string .= $this->format($namespace . ':', 'comment') . "\n";
+
+      foreach ($commands as $command)                                                 // TODO: set list format (tabs?)
+        $string .= '  ' . $this->format($command->getName(), 'info') . ' ' . $command->getBriefDescription() . "\n";
+    }
+    
+    $this->log($string);
     return true;
   }
 }

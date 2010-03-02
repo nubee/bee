@@ -19,7 +19,7 @@ class nbHelpCommand extends nbCommand
   protected function configure()
   {
     $this->setName('help')
-      ->setBriefDescription('print command help')
+      ->setBriefDescription('Displays help for a command')
       ->setDescription(<<<TXT
 The <info>help</info> command displays help for a given task:
 

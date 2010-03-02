@@ -4,7 +4,7 @@
  * Represents a command line option.
  *
  * @package    bee
- * @subpackage option
+ * @subpackage command
  */
 class nbOption {
 
@@ -20,6 +20,15 @@ class nbOption {
     $value,
     $valueSet = false;
 
+  /**
+   * Constructor.
+   *
+   * @param string  $name         The option name
+   * @param string  $shortcut     The shortcut (can be null)
+   * @param integer $mode         The option mode: self::PARAMETER_REQUIRED, self::PARAMETER_NONE or self::PARAMETER_OPTIONAL
+   * @param string  $description  The description
+   * @param mixed   $default      The default value (must be null for self::PARAMETER_REQUIRED or self::PARAMETER_NONE)
+   */
   function __construct($name, $shortcut = '', $mode = self::PARAMETER_NONE, $description = '', $default = null)
   {
     if(!isset($name))
@@ -48,46 +57,91 @@ class nbOption {
       $this->setDefault($default);
   }
 
+  /**
+   * Returns the name.
+   *
+   * @return string The name.
+   */
   public function getName()
   {
     return $this->name;
   }
 
+  /**
+   * Returns the shortcut.
+   *
+   * @return string The shortcut
+   */
   public function getShortcut()
   {
     return $this->shortcut;
   }
 
+  /**
+   * Returns true if  the option has the shortcut.
+   *
+   * @return Boolean true if option has shortcut, false otherwise
+   */
   public function hasShortcut()
   {
     return (1 == strlen($this->shortcut));
   }
 
+  /**
+   * Returns the description.
+   *
+   * @return string The description.
+   */
   public function getDescription()
   {
     return $this->description;
   }
 
+  /**
+   * Returns true if  the option has parameter.
+   *
+   * @return Boolean true if option has parameter, false otherwise
+   */
   public function hasParameter()
   {
     return $this->hasOptionalParameter() || $this->hasRequiredParameter();
   }
 
+  /**
+   * Returns true if the option takes an optional parameter.
+   *
+   * @return Boolean true if parameter mode is self::PARAMETER_OPTIONAL, false otherwise
+   */
   public function hasOptionalParameter()
   {
     return self::PARAMETER_OPTIONAL === ($this->mode & self::PARAMETER_OPTIONAL);
   }
 
-  public function hasRequiredParameter()
+ /**
+   * Returns true if the option requires a parameter.
+   *
+   * @return Boolean true if parameter mode is self::PARAMETER_REQUIRED, false otherwise
+   */
+   public function hasRequiredParameter()
   {
     return self::PARAMETER_REQUIRED === ($this->mode & self::PARAMETER_REQUIRED);
   }
 
+  /**
+   * Returns true if the option can take multiple values.
+   *
+   * @return Boolean true if mode is self::IS_ARRAY, false otherwise
+   */
   public function isArray()
   {
     return self::IS_ARRAY === (self::IS_ARRAY & $this->mode);
   }
 
+  /**
+   * Returns the value.
+   *
+   * @return mixed the value.
+   */
   public function getValue()
   {
     if(!$this->valueSet)
@@ -99,6 +153,11 @@ class nbOption {
     return $this->value;
   }
 
+  /**
+   * Sets the value.
+   *
+   * @param mixed $value The value.
+   */
   public function setValue($value)
   {
     if(!$this->hasParameter())
@@ -111,6 +170,11 @@ class nbOption {
     $this->value = $value;
   }
 
+  /**
+   * Sets the default value.
+   *
+   * @param mixed $default The default value
+   */
   private function setDefault($value)
   {
     if(!$this->hasParameter() && null !== $value)
@@ -121,6 +185,11 @@ class nbOption {
       $this->setValue($value);
   }
 
+  /**
+   * Returns true if option mode is defined.
+   *
+   * @return Boolean true if option mode is defined, false otherwise
+   */
   public function checkMode($mode)
   {
     if(is_string($mode)
