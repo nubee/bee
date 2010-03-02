@@ -11,8 +11,8 @@ $t->comment('nbApplicationTest - Test constructor');
 $application = new DummyApplication();
 $t->is($application->getName(), 'UNDEFINED', '->getName() is "UNDEFINED"');
 $t->is($application->getVersion(), 'UNDEFINED', '->getVersion() is "UNDEFINED"');
-$t->is($application->hasArguments(), true, '__construct() returns an application with an argument');
-$t->is($application->hasOptions(), false, '__construct() returns an application without options');
+$t->is($application->hasArguments(), true, '__construct() returns an application with arguments');
+$t->is($application->hasOptions(), true, '__construct() returns an application with options');
 $t->is($application->hasCommands(), false, '__construct() returns an application without commands');
 
 $application = new DummyApplication(array($fooArgument));
@@ -21,7 +21,7 @@ $t->is($application->getArguments()->count(), 2, '__construct() returns an appli
 
 $application = new DummyApplication(array(), array($barOption));
 $t->is($application->hasOptions(), true, '__construct() returns an application with an option');
-$t->is($application->getOptions()->count(), 1, '__construct() returns an application with an option');
+$t->is($application->getOptions()->count(), 4, '__construct() returns an application with 4 options');
 
 $t->comment('ApplicationTest - Test run');
 $application = new DummyApplication();

@@ -22,19 +22,17 @@ class nbTestUnitCommand extends nbCommand
       $files = array();
 
       foreach($arguments['name'] as $name) {
-        $finder = nbFileFinder::create('file')->add('*Test.php');
+        $finder = nbFileFinder::create('file')->followLink()->add(basename($name) . 'Test.php');
         //$files = array_merge($files, $finder->in(sfConfig::get('sf_test_dir').'/unit/'.dirname($name)));
         $files = array_merge($files, $finder->in(dirname(__FILE__) . '/../../../test/unit/' . dirname($name)));
       }
 
-//      if($allFiles = $this->filterTestFiles($files, $arguments, $options)) {
+      if(count($files) > 0) {
         foreach ($files as $file)
           include($file);
-//      }
-//      else
-//      {
-//        $this->logSection('test', 'no tests found', null, 'ERROR');
-//      }
+      }
+      else
+        $this->log('no tests found', 'error');
     }
     else
     {

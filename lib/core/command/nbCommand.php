@@ -119,4 +119,11 @@ abstract class nbCommand
     $synopsys .= (string)$this->options;
     return $synopsys;
   }
+
+  public function log($text, $level)
+  {
+    $logger = nbLogger::getInstance();
+    $logger->log($text, 'error');
+
+  }
 }

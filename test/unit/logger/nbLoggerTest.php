@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
-$t = new lime_test(5);
+$t = new lime_test(6);
 
 $t->comment('nbLoggerTest - Test log');
 $output = new nbStreamOutput();
@@ -18,3 +18,5 @@ $t->is(nbLogger::formatLevel(nbLogger::ERROR), 'ERROR', '->formatLevel() has ERR
 $t->is(nbLogger::formatLevel(nbLogger::INFO), 'INFO', '->formatLevel() has INFO level');
 $t->is(nbLogger::formatLevel(nbLogger::COMMENT), 'COMMENT', '->formatLevel() has COMMENT level');
 $t->is(nbLogger::formatLevel(nbLogger::QUESTION), 'QUESTION', '->formatLevel() has QUESTION level');
+
+$t->is($logger->format('text', 'info'), '<info>text</info>', '->format() formats "text" as "<info>text</info"');

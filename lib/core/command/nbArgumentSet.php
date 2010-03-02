@@ -141,11 +141,13 @@ class nbArgumentSet
    *
    * @return array An array of default values
    */
-  public function getValues()
+  public function getDefaultValues()
   {
     $values = array();
-    foreach ($this->arguments as $argument)
-      $values[$argument->getName()] = $argument->getValue();
+    foreach ($this->arguments as $argument) {
+      if($argument->isOptional())
+        $values[$argument->getName()] = $argument->getValue();
+    }
 
     return $values;
   }

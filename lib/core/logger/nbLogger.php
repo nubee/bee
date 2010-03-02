@@ -28,9 +28,16 @@ class nbLogger
     $this->output = $output;
   }
 
-  public function log($text)
+  public function log($text, $level = null)
   {
+    if($level)
+      $text = $this->format($text, $level);
     $this->output->write($text);
+  }
+
+  public function format($text, $level)
+  {
+    return sprintf('<%s>%s</%s>', $level, $text, $level);
   }
 
   public static function formatLevel($level)

@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
-$t = new lime_test(28);
+$t = new lime_test(27);
 
 $fooArgument = new nbArgument('foo');
 $barArgument = new nbArgument('bar');
@@ -98,33 +98,25 @@ $t->is($set->count(), 1, '->count() returns the number of arguments');
 $set->addArgument($barArgument);
 $t->is($set->count(), 2, '->count() returns the number of arguments');
 
-// ->getValues()
+// ->getDefaultValues()
 $t->comment('nbArgumentSetTest - Test get values()');
 $set = new nbArgumentSet();
 $set->addArguments(array(
+  new nbArgument('foo', nbArgument::REQUIRED),
   new nbArgument('foo1', nbArgument::OPTIONAL),
   new nbArgument('foo2', nbArgument::OPTIONAL, '', 'default'),
   new nbArgument('foo3', nbArgument::OPTIONAL | nbArgument::IS_ARRAY)
 ));
-$t->is($set->getValues(), array(
+$t->is($set->getDefaultValues(), array(
   'foo1' => null,
   'foo2' => 'default',
-  'foo3' => array()), '->getValues() returns the default values for each argument');
+  'foo3' => array()), '->getDefaultValues() returns the default values for each argument');
 
 $set = new nbArgumentSet();
 $set->addArguments(array(
   new nbArgument('foo4', nbArgument::OPTIONAL | nbArgument::IS_ARRAY, '', array(1, 2)),
 ));
-$t->is($set->getValues(), array('foo4' => array(1, 2)), '->getValues() return the default values for each argument');
-
-$set = new nbArgumentSet(array($requiredArgument));
-try {
-  $set->getValues();
-  $t->fail('->getValues() throws a LogicException if a required argument is not set');
-}
-catch(LogicException $e) {
-  $t->pass('->getValues() throws a LogicException if a required argument is not set');
-}
+$t->is($set->getDefaultValues(), array('foo4' => array(1, 2)), '->getDefaultValues() return the default values for each argument');
 
 $t->comment('nbArgumentSet - Test to string');
 $set = new nbArgumentSet();

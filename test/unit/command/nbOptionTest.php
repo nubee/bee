@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 
-$t = new lime_test(36);
+$t = new lime_test(37);
 
 $t->comment('nbOptionTest - Test constructor');
 try {
@@ -100,17 +100,26 @@ $t->is($option->getValue(), 'a value', '->setValue() sets correct value');
 
 $t->comment('nbOptionTest - Test "default" value');
 try {
-  $foo = new nbOption('foo', 'f', nbOption::PARAMETER_NONE, 'foo description', 'defaultValue');
-  $t->fail('"nbOption with mode "nbOption::PARAMETER_NONE" couldn\'t have default value');
+  $foo = new nbOption('foo', 'f', nbOption::PARAMETER_NONE, '', 'defaultValue');
+  $t->fail('option with mode "nbOption::PARAMETER_NONE" can\'t have default value');
 }
 catch(InvalidArgumentException $e) {
-  $t->pass('"nbOption with mode "nbOption::PARAMETER_NONE" couldn\'t have default value');
+  $t->pass('option with mode "nbOption::PARAMETER_NONE" can\'t have default value');
 }
 
 $option = new nbOption('foo', 'f', nbOption::PARAMETER_OPTIONAL, 'foo description', 'defaultValue');
 $t->is($option->getValue(), 'defaultValue', '"ctor" sets default value');
 $option->setValue('a value');
 $t->is($option->getValue(), 'a value', '->setValue() overwrites default value');
+
+$t->comment('nbOptionTest - Test "default" value');
+try {
+  $foo = new nbOption('foo', 'f', nbOption::PARAMETER_REQUIRED, '', 'defaultValue');
+  $t->fail('option with mode "nbOption::PARAMETER_REQUIRED" can\'t have default value');
+}
+catch(InvalidArgumentException $e) {
+  $t->pass('option with mode "nbOption::PARAMETER_REQUIRED" can\'t have default value');
+}
 
 $foo = new nbOption('foo', 'f', nbOption::PARAMETER_OPTIONAL, 'foo description', 'defaultValue');
 
@@ -144,17 +153,17 @@ $foo->setValue(array("val1", "val2", "val3"));
 $t->is($foo->getValue(), array("val1", "val2", "val3"), '->setValue() append parameter to value if option has IS_ARRAY mode');
 
 $t->comment('nbOptionTest - Test to string');
-$Option = new nbOption('foo', '', nbOption::PARAMETER_NONE);
-$t->is((string)$Option, '[--foo]', '->__toString() returns "[--foo]"');
+$option = new nbOption('foo', '', nbOption::PARAMETER_NONE);
+$t->is((string)$option, '[--foo]', '->__toString() returns "[--foo]"');
 
-$Option = new nbOption('foo', '', nbOption::PARAMETER_OPTIONAL);
-$t->is((string)$Option, '[--foo=[FOO]]', '->__toString() returns "[--foo=[FOO]]"');
+$option = new nbOption('foo', '', nbOption::PARAMETER_OPTIONAL);
+$t->is((string)$option, '[--foo=[FOO]]', '->__toString() returns "[--foo=[FOO]]"');
 
-$Option = new nbOption('foo', '', nbOption::PARAMETER_REQUIRED);
-$t->is((string)$Option, '[--foo=FOO]', '->__toString() returns "[--foo=FOO]"');
+$option = new nbOption('foo', '', nbOption::PARAMETER_REQUIRED);
+$t->is((string)$option, '[--foo=FOO]', '->__toString() returns "[--foo=FOO]"');
 
-$Option = new nbOption('foo', '', nbOption::PARAMETER_NONE | nbOption::IS_ARRAY);
-$t->is((string)$Option, '[--foo] ... [--foo]', '->__toString() returns "[--foo] ... [--foo]"');
+$option = new nbOption('foo', '', nbOption::PARAMETER_NONE | nbOption::IS_ARRAY);
+$t->is((string)$option, '[--foo] ... [--foo]', '->__toString() returns "[--foo] ... [--foo]"');
 
-$Option = new nbOption('foo', 'f', nbOption::PARAMETER_NONE);
-$t->is((string)$Option, '[-f|--foo]', '->__toString() returns "[-f|--foo]"');
+$option = new nbOption('foo', 'f', nbOption::PARAMETER_NONE);
+$t->is((string)$option, '[-f|--foo]', '->__toString() returns "[-f|--foo]"');
