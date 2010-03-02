@@ -10,11 +10,11 @@
   $autoload->addDirectory(dirname(__FILE__).'/vendor/', '*.php', true);
 
   $yaml = new nbYamlConfigurationParser();
-  $yaml->parseFile(dirname(__FILE__).'/configuration/settings.yml');
+  $yaml->parseFile(dirname(__FILE__).'/config/config.yml');
   if(file_exists(nbConfiguration::get('project_configuration_file')))
     $yaml->parseFile(nbConfiguration::get('project_configuration_file'));
 
-  $autoload->addDirectory(nbConfiguration::get('bee_commanddir'), 'Command.php', true);
+  $autoload->addDirectory(nbConfiguration::get('bee_command_dir'), 'Command.php', true);
 }
 
 $output = new nbConsoleOutput();
@@ -27,6 +27,7 @@ try {
   $commandSet = new nbCommandSet();
   $commandSet->addCommand(new nbTestUnitCommand());
   $commandSet->addCommand(new nbHelpCommand($application));
+  $commandSet->addCommand(new nbListCommand($application));
   $application->setCommands($commandSet);
   $application->run();
 }

@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * Represents a command line option.
+ *
+ * @package    bee
+ * @subpackage option
+ */
 class nbOption {
 
   const PARAMETER_NONE = 1;
@@ -56,7 +63,7 @@ class nbOption {
     return (1 == strlen($this->shortcut));
   }
 
-  public function getDescritpion()
+  public function getDescription()
   {
     return $this->description;
   }
