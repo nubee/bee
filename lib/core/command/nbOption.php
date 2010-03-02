@@ -56,7 +56,7 @@ class nbOption {
     return (1 == strlen($this->shortcut));
   }
 
-  public function getDescritpion()
+  public function getDescription()
   {
     return $this->description;
   }

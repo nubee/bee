@@ -5,6 +5,7 @@ require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
 $t = new lime_test(5);
 
 $output = new nbStreamOutput();
+nbLogger::getInstance()->setOutput($output);
 
 $application = new DummyApplication();
 $cmd = new nbHelpCommand($application);
@@ -16,7 +17,7 @@ $t->is($cmd->getName(), 'help', '->getName() is "help"');
 
 $t->comment('nbHelpCommandTest - Test print command help');
 $cmd->run(new nbCommandLineParser(), array('help'));
-$t->is($output->getStream(), 'help');
+$t->isnt($output->getStream(), '');
 
 $t->comment('nbHelpCommandTest - Test unknown command');
 try {
@@ -29,4 +30,4 @@ $t->is($output->getStream(), '');
 
 $t->comment('nbHelpCommandTest - Test existing command');
 $cmd->run(new nbCommandLineParser(), array('dummy1'));
-$t->is($output->getStream(), 'dummy1', '->run() prints help for command "dummy1"');
+$t->isnt($output->getStream(), '', '->run() prints help for command "dummy1"');
