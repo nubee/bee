@@ -14,7 +14,7 @@ class nbConfiguration {
     }
   }
 
-  public static function add($keyPath, $value)
+  public static function set($keyPath, $value)
   {
     self::setElementByPath($keyPath, $value);
   }
@@ -71,4 +71,38 @@ class nbConfiguration {
       self::setElementByPath($path, $value, $ary[$k]);
     }
   }
+  
+  public static function add($ary = array())
+  {
+    foreach(self::getAssociative($ary) as $path=>$value)
+      self::set($path,$value);
+  }
+
+  public static function getAssociative($ary, $path='')
+  {
+    $result = array();
+    foreach($ary as $key => $value)
+    {
+//      if(! (is_array($value) &&  self::is_assoc($value)))
+//        $result[$key] = $value;
+        if(strlen($path))
+          $key = $path.'_'.$key;
+        if(self::is_assoc($value))
+        {
+          $result = array_merge(self::getAssociative($value,$key),$result);
+        }
+        else
+        {
+          $result[$key] = $value;
+        }
+    }
+    return $result;
+  }
+
+  //TODO: must be moved in a common file (ArrayUtils ???)
+  private function is_assoc($array)
+  {
+      return (is_array($array) && 0 !== count(array_diff_key($array, array_keys(array_keys($array)))));
+  }
+
 }
