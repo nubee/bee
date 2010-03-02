@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sfYamlInline</title>
+			<link rel="stylesheet" href="../../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name"><img src="../../media/images/Class_logo.png"
+														alt=" Class"
+														title=" Class"
+														style="vertical-align: middle"> sfYamlInline</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+											<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+						
+			</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">sfYamlInline implements a YAML parser/dumper for the YAML inline syntax.</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Fabien Potencier &lt;<a href="mailto:fabien.potencier@symfony-project.com">fabien.potencier@symfony-project.com</a>&gt;</li>
+				<li><span class="field">version:</span> SVN: $Id: sfYamlInline.class.php 16177 2009-03-11 08:32:48Z fabien $</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_vendor---yaml---lib---sfYamlInline.php.html">/vendor/yaml/lib/sfYamlInline.php</a> (line <span class="field">21</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Constants</span> (<a href="#sec-consts">details</a>)
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#REGEX_QUOTED_STRING" title="details" class="const-name">REGEX_QUOTED_STRING</a> = 					<span class="var-type"> '(?:&quot;([^&quot;\\\\]*(?:\\\\.[^&quot;\\\\]*)*)&quot;|\'([^\']*(?:\'\'[^\']*)*)\')'</span>
+
+				</div>
+							</div>
+		</div>
+	</div>
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+									<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+												<div class="method-definition">
+					<img src="../../media/images/StaticMethod.png" alt=" "/>
+											static <span class="method-result">string</span>
+										<a href="#dump" title="details" class="method-name">dump</a>
+											(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/StaticMethod.png" alt=" "/>
+											static <span class="method-result">string</span>
+										<a href="#dumpArray" title="details" class="method-name">dumpArray</a>
+											(<span class="var-type">array</span>&nbsp;<span class="var-name">$value</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/StaticMethod.png" alt=" "/>
+											static <span class="method-result">string</span>
+										<a href="#evaluateScalar" title="details" class="method-name">evaluateScalar</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$scalar</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/StaticMethod.png" alt=" "/>
+											static <span class="method-result">void</span>
+										<a href="#getTimestampRegex" title="details" class="method-name">getTimestampRegex</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/StaticMethod.png" alt=" "/>
+											static <span class="method-result">array</span>
+										<a href="#load" title="details" class="method-name">load</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$value</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/StaticMethod.png" alt=" "/>
+											static <span class="method-result">string</span>
+										<a href="#parseMapping" title="details" class="method-name">parseMapping</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$mapping</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">&$i</span> = <span class="var-default">0</span>], <span class="var-type">integer</span>&nbsp;<span class="var-name">$i</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/StaticMethod.png" alt=" "/>
+											static <span class="method-result">string</span>
+										<a href="#parseQuotedScalar" title="details" class="method-name">parseQuotedScalar</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$scalar</span>, <span class="var-type"></span>&nbsp;<span class="var-name">&$i</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$i</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/StaticMethod.png" alt=" "/>
+											static <span class="method-result">string</span>
+										<a href="#parseScalar" title="details" class="method-name">parseScalar</a>
+											(<span class="var-type">scalar</span>&nbsp;<span class="var-name">$scalar</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$delimiters</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$stringDelimiters</span> = <span class="var-default">array('&quot;', &quot;'&quot;)</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">&$i</span> = <span class="var-default">0</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$evaluate</span> = <span class="var-default">true</span>], <span class="var-type">array</span>&nbsp;<span class="var-name">$stringDelimiter</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$i</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/StaticMethod.png" alt=" "/>
+											static <span class="method-result">string</span>
+										<a href="#parseSequence" title="details" class="method-name">parseSequence</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$sequence</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">&$i</span> = <span class="var-default">0</span>], <span class="var-type">integer</span>&nbsp;<span class="var-name">$i</span>)
+									</div>
+																																																																																							</div>
+		</div>
+	</div>		
+
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+													<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methoddump" id="dump"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/StaticMethod.png" />
+		<span class="method-title">static dump</span> (line <span class="line-number">59</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Dumps a given PHP variable to a YAML string.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The YAML string representing the PHP array</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			dump
+		</span>
+					(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$value</span><span class="var-description">: The PHP variable to convert</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddumpArray" id="dumpArray"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/StaticMethod.png" />
+		<span class="method-title">static dumpArray</span> (line <span class="line-number">116</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Dumps a PHP array to a YAML string.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The YAML string representing the PHP array</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			dumpArray
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$value</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$value</span><span class="var-description">: The PHP array to dump</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodevaluateScalar" id="evaluateScalar"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/StaticMethod.png" />
+		<span class="method-title">static evaluateScalar</span> (line <span class="line-number">359</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Evaluates scalars and replaces magic values.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> A YAML string</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			evaluateScalar
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$scalar</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$scalar</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetTimestampRegex" id="getTimestampRegex"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/StaticMethod.png" />
+		<span class="method-title">static getTimestampRegex</span> (line <span class="line-number">410</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getTimestampRegex
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodload" id="load"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/StaticMethod.png" />
+		<span class="method-title">static load</span> (line <span class="line-number">32</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Convert a YAML string to a PHP array.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> A PHP array representing the YAML string</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			load
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$value</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$value</span><span class="var-description">: A YAML string</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodparseMapping" id="parseMapping"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/StaticMethod.png" />
+		<span class="method-title">static parseMapping</span> (line <span class="line-number">293</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Parses a mapping to a YAML string.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> A YAML string</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			parseMapping
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$mapping</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">&$i</span> = <span class="var-default">0</span>], <span class="var-type">integer</span>&nbsp;<span class="var-name">$i</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$mapping</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$i</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">&$i</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodparseQuotedScalar" id="parseQuotedScalar"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/StaticMethod.png" />
+		<span class="method-title">static parseQuotedScalar</span> (line <span class="line-number">200</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Parses a quoted scalar to YAML.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> A YAML string</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			parseQuotedScalar
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$scalar</span>, <span class="var-type"></span>&nbsp;<span class="var-name">&$i</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$i</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$scalar</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$i</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">&$i</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodparseScalar" id="parseScalar"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/StaticMethod.png" />
+		<span class="method-title">static parseScalar</span> (line <span class="line-number">155</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Parses a scalar to a YAML string.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> A YAML string</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			parseScalar
+		</span>
+					(<span class="var-type">scalar</span>&nbsp;<span class="var-name">$scalar</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$delimiters</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$stringDelimiters</span> = <span class="var-default">array('&quot;', &quot;'&quot;)</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">&$i</span> = <span class="var-default">0</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$evaluate</span> = <span class="var-default">true</span>], <span class="var-type">array</span>&nbsp;<span class="var-name">$stringDelimiter</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$i</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">scalar</span>
+				<span class="var-name">$scalar</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$delimiters</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$stringDelimiter</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$i</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$evaluate</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$stringDelimiters</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">&$i</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodparseSequence" id="parseSequence"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/StaticMethod.png" />
+		<span class="method-title">static parseSequence</span> (line <span class="line-number">233</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Parses a sequence to a YAML string.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> A YAML string</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			parseSequence
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$sequence</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">&$i</span> = <span class="var-default">0</span>], <span class="var-type">integer</span>&nbsp;<span class="var-name">$i</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$sequence</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$i</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">&$i</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="constREGEX_QUOTED_STRING" id="REGEX_QUOTED_STRING"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">REGEX_QUOTED_STRING</span>
+			 = <span class="const-default"> '(?:&quot;([^&quot;\\\\]*(?:\\\\.[^&quot;\\\\]*)*)&quot;|\'([^\']*(?:\'\'[^\']*)*)\')'</span>
+			(line <span class="line-number">23</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+						
+		</div>
+	</div>
+	
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 02 Mar 2010 18:32:22 +0100 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>
