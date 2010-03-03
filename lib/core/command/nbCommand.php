@@ -13,8 +13,8 @@ abstract class nbCommand
     $namespace,
     $briefDescription = '',
     $description = '',
-    $arguments = null,
-    $options = null;
+    $argumentSet = null,
+    $optionSet = null;
 
   private $logger;
 
