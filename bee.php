@@ -21,11 +21,14 @@ $logger->setOutput($output);
 
 try {
   $application = new nbBeeApplication();
-  $commandSet = new nbCommandSet();
-  $commandSet->addCommand(new nbTestUnitCommand());
-  $commandSet->addCommand(new nbHelpCommand($application));
-  $commandSet->addCommand(new nbListCommand($application));
-  $application->setCommands($commandSet);
+
+  //$application->loadCommands();
+/*  $commandSet->addCommand(new nbTestUnitCommand());
+  $commandSet->addCommand(new nbHelpCommand());
+  $commandSet->addCommand(new nbListCommand());
+  $commandSet->addCommand(new nbGitInitCommand());
+  $commandSet->addCommand(new nbGitCloneCommand());*/
+  //$application->setCommands($commandSet);
   $application->run();
 }
 catch(Exception $e) {

@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(30);
+$t = new lime_test(34);
 
 $foo = new DummyCommand("foo");
 $bar = new DummyCommand("ns:bar");
@@ -110,3 +110,12 @@ try {
 catch(LogicException $e) {
   $t->pass('->getByShortcut() throw a RangeException for shortcut "ns:ba" because ambiguous');
 }
+
+$t->comment('nbCommandSetTest - Test aliases');
+$command = new DummyCommand("foo");
+$command->setAliases(array('b', 'bar'));
+$set = new nbCommandSet(array($command));
+$t->ok($set->hasCommand('b'), '->hasCommand() returns true for alias "b"');
+$t->ok($set->hasCommand('bar'), '->hasCommand() returns true for alias "bar"');
+$t->isa_ok($set->getCommand('b'), 'DummyCommand', '->getCommand() returns a command for alias "b"');
+$t->isa_ok($set->getCommand('bar'), 'DummyCommand', '->getCommand() returns a command for alias "bar"');

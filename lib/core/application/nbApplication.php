@@ -18,7 +18,9 @@ abstract class nbApplication
     $trace = false,
     $logger = null;
 
-  public function __construct()
+  private $commandFiles = array();
+
+  public function __construct(array $commands = null)
   {
     $this->logger = nbLogger::getInstance();
     $this->arguments = new nbArgumentSet();
@@ -36,6 +38,8 @@ abstract class nbApplication
     ));
 
     $this->configure();
+
+    $this->registerCommands($commands);
   }
 
   public function run($commandLine = null)
@@ -51,6 +55,9 @@ abstract class nbApplication
       $commandName = $this->parser->getArgumentValue('command');
 
     $command = $this->commands->getCommand($commandName);
+    $r = new ReflectionClass($command);
+    if($r->isSubclassOf('nbApplicationCommand'))
+      $command->setApplication($this);
     $command->run($this->parser, $commandLine);
   }
 
@@ -175,6 +182,84 @@ abstract class nbApplication
     return $this->commands;
   }
 
+    /**
+   * Registers an array of command objects.
+   *
+   * If you pass null, this method will register all available commands.
+   *
+   * @param array  $commands  An array of commands
+   */
+  public function registerCommands(array $commands = null)
+  {
+    if (null === $commands)
+      $commands = $this->autodiscoverCommands();
+
+    $this->setCommands(new nbCommandSet($commands));
+  }
+
+
+  /**
+   * Autodiscovers command classes.
+   *
+   * @return array An array of command instances
+   */
+  public function autodiscoverCommands()
+  {
+    $commands = array();
+    foreach (get_declared_classes() as $class) {
+      $r = new ReflectionClass($class);
+
+      if($r->isSubclassOf('nbCommand') && !$r->isAbstract()) {
+        $commands[] = new $class();
+      }
+    }
+
+    return $commands;
+  }
+
+  public function loadCommands()
+  {
+    // Symfony core tasks
+    //$dirs = array(sfConfig::get('sf_symfony_lib_dir').'/commmand');
+    $dirs = array(dirname(__FILE__) . '/../../command');
+    //$dirs[] = sfConfig::get('sf_lib_dir').'/command';
+
+    $finder = nbFileFinder::create('file')->add('*Command.php');
+    foreach ($finder->in($dirs) as $file)
+      $this->commandFiles[basename($file, '.php')] = $file;
+
+    // register local autoloader for tasks
+    spl_autoload_register(array($this, 'autoloadCommand'));
+
+    // require tasks
+    foreach ($this->commandFiles as $command => $file) {
+      // forces autoloading of each task class
+      class_exists($command, true);
+    }
+
+    // unregister local autoloader
+    spl_autoload_unregister(array($this, 'autoloadCommand'));
+  }
+
+
+  /**
+   * Autoloads a command class
+   *
+   * @param  string  $class  The command class name
+   *
+   * @return Boolean true if the command exists
+   */
+  public function autoloadCommand($class)
+  {
+    if (isset($this->commandFiles[$class])) {
+      require_once $this->commandFiles[$class];
+
+      return true;
+    }
+
+    return false;
+  }
+
   /**
    * Renders an exception.
    *
@@ -206,7 +291,7 @@ abstract class nbApplication
     $logger->setOutput($output);
     $logger->log("\n");
     foreach ($messages as $message) {
-      $logger->log($message, 'error');
+      $logger->log($message, nbLogger::ERROR);
       $logger->log("\n");
     }
 
@@ -217,14 +302,14 @@ abstract class nbApplication
 
     if ($this->trace) {
       $logger->log("\n");
-      $logger->log("Exception trace:\n", 'comment');
+      $logger->log("Exception trace:\n", nbLogger::COMMENT);
 
       // exception related properties
       $trace = $e->getTrace();
       $file = $e->getFile() != null ? $e->getFile() : 'n/a';
       $line = $e->getLine() != null ? $e->getLine() : 'n/a';
 
-      $logger->log(sprintf(" %s:%s\n", $file, $line), 'info');
+      $logger->log(sprintf(" %s:%s\n", $file, $line), nbLogger::INFO);
 
       for ($i = 0, $count = count($trace); $i < $count; ++$i) {
         $class = isset($trace[$i]['class']) ? $trace[$i]['class'] : '';
@@ -234,7 +319,7 @@ abstract class nbApplication
         $line = isset($trace[$i]['line']) ? $trace[$i]['line'] : 'n/a';
 
         $message = sprintf(" %s%s%s at %s:%s\n", $class, $type, $function, $file, $line);
-        $logger->log($message, 'info');
+        $logger->log($message, nbLogger::INFO);
       }
     }
   }

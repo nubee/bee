@@ -5,10 +5,11 @@ class nbLogger
   static $instance = null;
   private $output = null;
 
-  const ERROR = 0;
-  const INFO = 1;
-  const COMMENT = 2;
-  const QUESTION = 3;
+  const NONE = 0;
+  const ERROR = 1;
+  const INFO = 2;
+  const COMMENT = 3;
+  const QUESTION = 4;
 
   protected function __construct()
   {
@@ -37,6 +38,7 @@ class nbLogger
 
   public function format($text, $level)
   {
+    $level = self::formatLevel($level);
     return sprintf('<%s>%s</%s>', $level, $text, $level);
   }
 
@@ -48,10 +50,10 @@ class nbLogger
   public static function formatLevel($level)
   {
     switch($level) {
-      case nbLogger::ERROR : return 'ERROR';
-      case nbLogger::INFO : return 'INFO';
-      case nbLogger::COMMENT : return 'COMMENT';
-      case nbLogger::QUESTION : return 'QUESTION';
+      case nbLogger::ERROR : return 'error';
+      case nbLogger::INFO : return 'info';
+      case nbLogger::COMMENT : return 'comment';
+      case nbLogger::QUESTION : return 'question';
     }
 
     throw new RangeException("[nbLogger::formatLevel] Undefined level: " . $level);

@@ -27,7 +27,7 @@ class nbCommandSet {
 
     $count = 0;
     foreach($this->commands as $command) {
-      if($command->hasShortcut($commandName))
+      if($command->hasShortcut($commandName) || $command->hasAlias($commandName))
         ++$count;
     }
 
@@ -58,7 +58,7 @@ class nbCommandSet {
 
     $commands = array();
     foreach($this->commands as $command) {
-      if($command->hasShortcut($commandName))
+      if($command->hasShortcut($commandName) || $command->hasAlias($commandName))
         $commands[] = $command;
     }
 
