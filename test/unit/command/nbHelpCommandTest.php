@@ -7,7 +7,7 @@ $t = new lime_test(5);
 $output = new nbStreamOutput();
 nbLogger::getInstance()->setOutput($output);
 
-$application = new nbBeeApplication();
+$application = new DummyApplication();
 $cmd = new nbHelpCommand($application);
 $application->setCommands(new nbCommandSet(array(new DummyCommand('dummy1'), $cmd)));
 
@@ -16,7 +16,8 @@ $t->is($cmd->getName(), 'help', '->getName() is "help"');
 
 $t->comment('nbHelpCommandTest - Test print command help');
 $cmd->run(new nbCommandLineParser(), array('help'));
-$t->isnt($output->getStream(), '');
+$t->ok($application->executedFormatHelpString, '->run() called nbApplication::formatHelpString()');
+$application->executedFormatHelpString = false;
 
 $t->comment('nbHelpCommandTest - Test unknown command');
 try {
@@ -25,8 +26,8 @@ try {
 } catch (Exception $e) {
   $t->pass('->run() throws an Exception if command is not found');
 }
-$t->is($output->getStream(), '');
+$t->ok(!$application->executedFormatHelpString, '->run() didn\'t call nbApplication::formatHelpString()');
 
 $t->comment('nbHelpCommandTest - Test existing command');
 $cmd->run(new nbCommandLineParser(), array('dummy1'));
-$t->isnt($output->getStream(), '', '->run() prints help for command "dummy1"');
+$t->ok($application->executedFormatHelpString, '->run() called nbApplication::formatHelpString()');

@@ -2,6 +2,8 @@
 
 class DummyApplication extends nbApplication
 {
+  public $executedFormatHelpString = false;
+
   public function __construct(array $arguments = array(), array $options = array())
   {
     parent::__construct();
@@ -16,6 +18,12 @@ class DummyApplication extends nbApplication
     $this->addOptions($options);
   }
 
+  public function formatHelpString()
+  {
+    $this->executedFormatHelpString = true;
+    return 'formatHelpString';
+  }
+
   protected function configure()
   {
     
@@ -26,18 +34,18 @@ class DummyApplication extends nbApplication
   }
   protected function formatSynopsys($synopsys)
   {
-
+    return $synopsys;
   }
   protected function formatArguments(nbArgumentSet $argumentSet, $max)
   {
-
+    return (string)$argumentSet;
   }
   protected function formatOptions(nbOptionSet $optionSet, $max)
   {
-
+    return (string)$argumentSet;
   }
   protected function formatDescription($description)
   {
-
+    return $description;
   }
 }
