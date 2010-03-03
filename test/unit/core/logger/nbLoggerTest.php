@@ -19,4 +19,5 @@ $t->is(nbLogger::formatLevel(nbLogger::INFO), 'INFO', '->formatLevel() has INFO 
 $t->is(nbLogger::formatLevel(nbLogger::COMMENT), 'COMMENT', '->formatLevel() has COMMENT level');
 $t->is(nbLogger::formatLevel(nbLogger::QUESTION), 'QUESTION', '->formatLevel() has QUESTION level');
 
-$t->is($logger->format('text', nbLogger::INFO), '<info>text</info>', '->format() formats "text" as "<info>text</info"');
+//$t->is($logger->format('text', nbLogger::INFO), '<info>text</info>', '->format() formats "text" as "<info>text</info"');
+$t->is($logger->format('text', 'info'), '<info>text</info>', '->format() formats "text" as "<info>text</info"');
