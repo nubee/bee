@@ -1,14 +1,14 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../../vendor/lime/lime.php';
-require_once dirname(__FILE__) . '/../../../lib/core/autoload/nbAutoload.php';
+require_once dirname(__FILE__) . '/../../../../vendor/lime/lime.php';
+require_once dirname(__FILE__) . '/../../../../lib/core/autoload/nbAutoload.php';
 
 $t = new lime_test(4);
 
 $autoload = nbAutoload::getInstance();
 $autoload->unregister();
 
-$dir = dirname(__FILE__)."/../../data/autoload";
+$dir = dirname(__FILE__)."/../../../data/autoload";
 
 $autoload->addDirectory($dir, '*.php', false);
 $t->comment("nbAutoladTest");

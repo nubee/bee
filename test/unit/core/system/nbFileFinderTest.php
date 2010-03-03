@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
+require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$dataDir = dirname(__FILE__) . '/../../data/system';
+$dataDir = dirname(__FILE__) . '/../../../data/system';
 
 $t = new lime_test(22);
 
