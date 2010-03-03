@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../bootstrap/unit.php';
+require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
 $output = new nbStreamOutput();
 $logger = nbLogger::getInstance();
