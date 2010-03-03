@@ -149,14 +149,6 @@ abstract class nbCommand
     return $this->description;
   }
 
-//  public function getSynopsys()
-//  {
-//    $synopsys = 'bee ' . $this->getFullname();
-//    $synopsys .= (string)$this->argumentSet;
-//    $synopsys .= (string)$this->optionSet;
-//    return $synopsys;
-//  }
-
   public function log($text, $level = null)
   {
     $this->logger->log($text, $level);

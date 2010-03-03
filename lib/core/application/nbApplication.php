@@ -206,7 +206,7 @@ abstract class nbApplication
     $logger->setOutput($output);
     $logger->log("\n");
     foreach ($messages as $message) {
-      $logger->log($message, 'error');
+      $logger->log($message, nbLogger::ERROR);
       $logger->log("\n");
     }
 
@@ -217,14 +217,14 @@ abstract class nbApplication
 
     if ($this->trace) {
       $logger->log("\n");
-      $logger->log("Exception trace:\n", 'comment');
+      $logger->log("Exception trace:\n", nbLogger::COMMENT);
 
       // exception related properties
       $trace = $e->getTrace();
       $file = $e->getFile() != null ? $e->getFile() : 'n/a';
       $line = $e->getLine() != null ? $e->getLine() : 'n/a';
 
-      $logger->log(sprintf(" %s:%s\n", $file, $line), 'info');
+      $logger->log(sprintf(" %s:%s\n", $file, $line), nbLogger::INFO);
 
       for ($i = 0, $count = count($trace); $i < $count; ++$i) {
         $class = isset($trace[$i]['class']) ? $trace[$i]['class'] : '';
@@ -234,7 +234,7 @@ abstract class nbApplication
         $line = isset($trace[$i]['line']) ? $trace[$i]['line'] : 'n/a';
 
         $message = sprintf(" %s%s%s at %s:%s\n", $class, $type, $function, $file, $line);
-        $logger->log($message, 'info');
+        $logger->log($message, nbLogger::INFO);
       }
     }
   }

@@ -49,18 +49,18 @@ TXT
     }
 
     if($showSingleNamespace)
-      $res = $this->formatLine(sprintf('Available commands in namespace "%s":', $namespace), 'comment');
+      $res = $this->formatLine(sprintf('Available commands in namespace "%s":', $namespace), nbLogger::COMMENT);
     else
-      $res = $this->formatLine('Available commands:', 'comment');
+      $res = $this->formatLine('Available commands:', nbLogger::COMMENT);
 
     ksort($list);
     $lastNamespace = '';
     foreach ($list as $ns => $commands) {
       if ($ns != $lastNamespace && !$showSingleNamespace)
-        $res .= $this->format($ns . ':', 'comment') . "\n";
+        $res .= $this->format($ns . ':', nbLogger::COMMENT) . "\n";
 
       foreach ($commands as $command) {
-        $res .= '  ' . $this->format(sprintf("%-{$max}s", $command->getName()), 'info');
+        $res .= '  ' . $this->format(sprintf("%-{$max}s", $command->getName()), nbLogger::INFO);
         $res .= '  ' . $command->getBriefDescription() . "\n";
       }
     }
