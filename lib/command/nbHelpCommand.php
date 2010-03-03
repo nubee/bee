@@ -6,16 +6,8 @@
  * @package    bee
  * @subpackage command
  */
-class nbHelpCommand extends nbCommand
+class nbHelpCommand extends nbApplicationCommand
 {
-  private $application = null;
-
-  public function  __construct(nbApplication $application)
-  {
-    parent::__construct();
-    $this->application = $application;
-  }
-
   protected function configure()
   {
     $this->setName('help')
@@ -37,7 +29,7 @@ TXT
     $command = $this;
     if(isset($arguments['command_name'])) {
       $commandName = $arguments['command_name'];
-      $command = $this->application->getCommands()->getCommand($commandName);
+      $command = $this->getApplication()->getCommands()->getCommand($commandName);
     }
 
     $max = 0;
@@ -50,7 +42,7 @@ TXT
       if($max < $length) $max = $length;
     }
     
-    $res = $this->application->formatHelpString($command->getFullName(),
+    $res = $this->getApplication()->formatHelpString($command->getFullName(),
             $command->getArguments(),
             $command->getOptions(),
             $command->getDescription());

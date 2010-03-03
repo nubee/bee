@@ -18,6 +18,8 @@ abstract class nbApplication
     $trace = false,
     $logger = null;
 
+  private $commandFiles = array();
+
   public function __construct()
   {
     $this->logger = nbLogger::getInstance();
@@ -36,6 +38,8 @@ abstract class nbApplication
     ));
 
     $this->configure();
+
+    $this->registerCommands();
   }
 
   public function run($commandLine = null)
@@ -51,6 +55,9 @@ abstract class nbApplication
       $commandName = $this->parser->getArgumentValue('command');
 
     $command = $this->commands->getCommand($commandName);
+    $r = new ReflectionClass($command);
+    if($r->isSubclassOf('nbApplicationCommand'))
+      $command->setApplication($this);
     $command->run($this->parser, $commandLine);
   }
 
@@ -173,6 +180,84 @@ abstract class nbApplication
   public function getCommands()
   {
     return $this->commands;
+  }
+
+    /**
+   * Registers an array of command objects.
+   *
+   * If you pass null, this method will register all available commands.
+   *
+   * @param array  $commands  An array of commands
+   */
+  public function registerCommands(array $commands = null)
+  {
+    if (null === $commands)
+      $commands = $this->autodiscoverCommands();
+
+    $this->setCommands(new nbCommandSet($commands));
+  }
+
+
+  /**
+   * Autodiscovers command classes.
+   *
+   * @return array An array of command instances
+   */
+  public function autodiscoverCommands()
+  {
+    $commands = array();
+    foreach (get_declared_classes() as $class) {
+      $r = new ReflectionClass($class);
+
+      if($r->isSubclassOf('nbCommand') && !$r->isAbstract()) {
+        $commands[] = new $class();
+      }
+    }
+
+    return $commands;
+  }
+
+  public function loadCommands()
+  {
+    // Symfony core tasks
+    //$dirs = array(sfConfig::get('sf_symfony_lib_dir').'/commmand');
+    $dirs = array(dirname(__FILE__) . '/../../command');
+    //$dirs[] = sfConfig::get('sf_lib_dir').'/command';
+
+    $finder = nbFileFinder::create('file')->add('*Command.php');
+    foreach ($finder->in($dirs) as $file)
+      $this->commandFiles[basename($file, '.php')] = $file;
+
+    // register local autoloader for tasks
+    spl_autoload_register(array($this, 'autoloadCommand'));
+
+    // require tasks
+    foreach ($this->commandFiles as $command => $file) {
+      // forces autoloading of each task class
+      class_exists($command, true);
+    }
+
+    // unregister local autoloader
+    spl_autoload_unregister(array($this, 'autoloadCommand'));
+  }
+
+
+  /**
+   * Autoloads a command class
+   *
+   * @param  string  $class  The command class name
+   *
+   * @return Boolean true if the command exists
+   */
+  public function autoloadCommand($class)
+  {
+    if (isset($this->commandFiles[$class])) {
+      require_once $this->commandFiles[$class];
+
+      return true;
+    }
+
+    return false;
   }
 
   /**

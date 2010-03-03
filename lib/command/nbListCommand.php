@@ -6,16 +6,8 @@
  * @package    bee
  * @subpackage command
  */
-class nbListCommand extends nbCommand
+class nbListCommand extends nbApplicationCommand
 {
-  private $application = null;
-
-  public function  __construct(nbApplication $application)
-  {
-    parent::__construct();
-    $this->application = $application;
-  }
-
   protected function configure()
   {
     $this->setName('list')
@@ -34,7 +26,7 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $list = array();
-    $commandSet = $this->application->getCommands();
+    $commandSet = $this->getApplication()->getCommands();
 
     $namespace = $arguments['namespace'];
     $showSingleNamespace = $namespace != '';

@@ -75,7 +75,7 @@ class nbAutoload
 
     // we have a class path, let's include it
     if (isset($this->classes[$class])) {
-        require $this->classes[$class];
+      require $this->classes[$class];
 
       return true;
     }
