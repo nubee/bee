@@ -7,7 +7,7 @@ $t = new lime_test(5);
 $output = new nbStreamOutput();
 nbLogger::getInstance()->setOutput($output);
 
-$application = new DummyApplication();
+$application = new nbBeeApplication();
 $cmd = new nbHelpCommand($application);
 $application->setCommands(new nbCommandSet(array(new DummyCommand('dummy1'), $cmd)));
 

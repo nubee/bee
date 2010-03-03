@@ -15,10 +15,12 @@ abstract class nbApplication
     $options = null,
     $commands = null,
     $verbose = false,
-    $trace = false;
+    $trace = false,
+    $logger = null;
 
   public function __construct()
   {
+    $this->logger = nbLogger::getInstance();
     $this->arguments = new nbArgumentSet();
     $this->options = new nbOptionSet();
     $this->commands = new nbCommandSet();
@@ -29,7 +31,8 @@ abstract class nbApplication
     $this->options->addOptions(array(
       new nbOption('version', 'V', nbOption::PARAMETER_NONE, 'Shows the version'),
       new nbOption('verbose', 'v', nbOption::PARAMETER_NONE, 'Set verbosity'),
-      new nbOption('trace', 't', nbOption::PARAMETER_NONE, 'Shows exception trace')
+      new nbOption('trace', 't', nbOption::PARAMETER_NONE, 'Shows exception trace'),
+      new nbOption('help', '?', nbOption::PARAMETER_NONE, 'Shows application help')
     ));
 
     $this->configure();
@@ -60,7 +63,37 @@ abstract class nbApplication
   {
     return $this->version;
   }
-  
+
+  public function formatHelpString($name, $argumentSet, $optionSet, $description)
+  {
+    $max = 0;
+    foreach($argumentSet->getArguments() as $argument) {
+      $length = strlen($argument->getName()) + 2;
+      if($max < $length) $max = $length;
+    }
+    foreach($optionSet->getOptions() as $option) {
+      $length = strlen($option->getName()) + 2;
+      if($max < $length) $max = $length;
+    }
+
+    $synopsys = $this->getName();
+    if ($name != '')
+      $synopsys .= ' '. $name;
+    $synopsys .= $argumentSet . $optionSet;
+
+    $res = $this->formatSynopsys($synopsys);
+    $res .= $this->formatArguments($argumentSet, $max);
+    $res .= $this->formatOptions($optionSet, $max);
+    $res .= $this->formatDescription($description);
+
+    return $res;
+  }
+
+  protected abstract function formatSynopsys($synopsys);
+  protected abstract function formatArguments(nbArgumentSet $argumentSet, $max);
+  protected abstract function formatOptions(nbOptionSet $optionSet, $max);
+  protected abstract function formatDescription($description);
+
   protected abstract function configure();
 
   protected function handleOptions(array $options)
@@ -79,7 +112,22 @@ abstract class nbApplication
       return true;
     }
 
+    if(isset($options['help'])) {
+      $logger->log($this->formatHelpString('', $this->arguments, $this->options, ''));
+      return true;
+    }
+
     return false;
+  }
+
+  protected function log($text, $level = null)
+  {
+    $this->logger->log($text, $level);
+  }
+
+  protected function format($text, $level)
+  {
+    return $this->logger->format($text, $level);
   }
 
   public function addArguments(array $arguments)

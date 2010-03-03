@@ -21,7 +21,7 @@ $t->is($application->getArguments()->count(), 2, '__construct() returns an appli
 
 $application = new DummyApplication(array(), array($barOption));
 $t->is($application->hasOptions(), true, '__construct() returns an application with an option');
-$t->is($application->getOptions()->count(), 4, '__construct() returns an application with 4 options');
+$t->is($application->getOptions()->count(), 5, '__construct() returns an application with 5 options');
 
 $t->comment('ApplicationTest - Test run');
 $application = new DummyApplication();

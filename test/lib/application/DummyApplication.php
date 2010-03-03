@@ -20,8 +20,23 @@ class DummyApplication extends nbApplication
   {
     
   }
-
   protected function handleOptions(array $options)
+  {
+
+  }
+  protected function formatSynopsys($synopsys)
+  {
+
+  }
+  protected function formatArguments(nbArgumentSet $argumentSet, $max)
+  {
+
+  }
+  protected function formatOptions(nbOptionSet $optionSet, $max)
+  {
+
+  }
+  protected function formatDescription($description)
   {
 
   }
