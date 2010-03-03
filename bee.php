@@ -25,6 +25,8 @@ try {
   $commandSet->addCommand(new nbTestUnitCommand());
   $commandSet->addCommand(new nbHelpCommand($application));
   $commandSet->addCommand(new nbListCommand($application));
+  $commandSet->addCommand(new nbGitInitCommand());
+  $commandSet->addCommand(new nbGitCloneCommand());
   $application->setCommands($commandSet);
   $application->run();
 }

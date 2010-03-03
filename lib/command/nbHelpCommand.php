@@ -23,7 +23,7 @@ class nbHelpCommand extends nbCommand
       ->setDescription(<<<TXT
 The <info>help</info> command displays help for a given task:
 
-   <info>./bee help</info>
+   <info>./bee help command</info>
 TXT
         );
     

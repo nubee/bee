@@ -33,25 +33,39 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $commandList = array();
+    $list = array();
     $commandSet = $this->application->getCommands();
 
-    foreach ($commandSet->getCommands() as $command)
-      if ($arguments['namespace'] != '' && $command->getNamespace() == $arguments['namespace']
-         || $arguments['namespace'] == '')
-        $commandList[$command->getNamespace()][] = $command;
+    $namespace = $arguments['namespace'];
+    $showSingleNamespace = $namespace != '';
 
-    $string = nbLogger::getInstance()->format('Available commands:', 'comment') . "\n";
-    ksort($commandList);
-    foreach ($commandList as $namespace => $commands) {
-      if ($namespace != '')
-        $string .= $this->format($namespace . ':', 'comment') . "\n";
+    $max = 0;
+    foreach ($commandSet->getCommands() as $command) {
+      if (!$showSingleNamespace || $command->getNamespace() == $namespace)
+        $list[$command->getNamespace()][] = $command;
 
-      foreach ($commands as $command)                                                 // TODO: set list format (tabs?)
-        $string .= '  ' . $this->format($command->getName(), 'info') . ' ' . $command->getBriefDescription() . "\n";
+      if($max < strlen($command->getName()))
+        $max = strlen($command->getName());
+    }
+
+    if($showSingleNamespace)
+      $res = $this->formatLine(sprintf('Available commands in namespace "%s":', $namespace), 'comment');
+    else
+      $res = $this->formatLine('Available commands:', 'comment');
+
+    ksort($list);
+    $lastNamespace = '';
+    foreach ($list as $ns => $commands) {
+      if ($ns != $lastNamespace && !$showSingleNamespace)
+        $res .= $this->format($ns . ':', 'comment') . "\n";
+
+      foreach ($commands as $command) {
+        $res .= '  ' . $this->format(sprintf("%-{$max}s", $command->getName()), 'info');
+        $res .= '  ' . $command->getBriefDescription() . "\n";
+      }
     }
     
-    $this->log($string);
+    $this->log($res);
     return true;
   }
 }
