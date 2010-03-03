@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(14);
+$t = new lime_test(15);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
@@ -24,12 +24,14 @@ $t->is($application->hasOptions(), true, '__construct() returns an application w
 $t->is($application->getOptions()->count(), 5, '__construct() returns an application with 5 options');
 
 $t->comment('ApplicationTest - Test run');
-$application = new DummyApplication();
 $foo = new DummyCommand('foo');
 $bar = new DummyCommand('bar', new nbArgumentSet(array(new nbArgument('first', nbArgument::REQUIRED))));
 $bas = new DummyCommand('bas', null, new nbOptionSet(array(new nbOption('first', 'f'))));
+$fas = new DummyCommand('fas');
+$fas->setAlias('fou');
 
-$application->setCommands(new nbCommandSet(array($foo, $bar, $bas)));
+$application = new DummyApplication();
+$application->setCommands(new nbCommandSet(array($foo, $bar, $bas, $fas)));
 $application->run('foo');
 $t->ok($foo->hasExecuted(), '->run() executes command "foo"');
 $application->run('bar test');
@@ -38,3 +40,6 @@ $t->is($bar->getArgument('first'), 'test', '->run() executes command "bar test"'
 $application->run('bas -f');
 $t->ok($bas->hasExecuted(), '->run() executes command "bas -f"');
 $t->is($bas->getOption('first'), true, '->run() executes command "bas -f"');
+$application->run('fou');
+$t->ok($fas->hasExecuted(), '->run() executes command "fas" with alias "fou"');
+

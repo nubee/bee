@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(29);
+$t = new lime_test(37);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
@@ -78,3 +78,25 @@ $command = new DummyCommand('foo');
 $t->is($command->getDescription(), '', '->getDescription() is ""');
 $command->setDescription('command description');
 $t->is($command->getDescription(), 'command description', '->getDescription() is "command description"');
+
+$t->comment('nbCommandTest - Test aliases');
+$command = new DummyCommand("foo");
+$t->ok(!$command->hasAliases(), '->hasAliases() returns false');
+$t->ok(!$command->hasAlias('f'), '->hasAlias() returns false');
+$command->setAlias('f');
+$t->ok($command->hasAliases(), '->hasAliases() returns true');
+$t->ok($command->hasAlias('f'), '->hasAlias() returns true');
+
+$command = new DummyCommand("foo");
+$command->setAliases(array('f', 'fo'));
+$t->ok($command->hasAliases(), '->setAliases() sets 2 alias');
+$t->ok($command->hasAlias('f'), '->hasAlias() returns true');
+$t->ok($command->hasAlias('fo'), '->hasAlias() returns true');
+
+try {
+  $command->setAlias('f');
+  $t->fail('->setAlias() throws an InvalidArgumentException if command alias already defined');
+}
+catch(InvalidArgumentException $e) {
+  $t->pass('->setAlias() throws an InvalidArgumentException if command alias already defined');
+}

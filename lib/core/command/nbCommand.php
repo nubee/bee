@@ -14,7 +14,8 @@ abstract class nbCommand
     $briefDescription = '',
     $description = '',
     $argumentSet = null,
-    $optionSet = null;
+    $optionSet = null,
+    $aliases = array();
 
   private $logger;
 
@@ -125,6 +126,45 @@ abstract class nbCommand
       return false;
 
     return true;
+  }
+
+  /*
+   * Returns true if the command has aliases
+   */
+  public function hasAliases()
+  {
+    return count($this->aliases) > 0;
+  }
+
+  /*
+   * Returns true if the command has alias with given name
+   */
+  public function hasAlias($alias)
+  {
+    return isset($this->aliases[$alias]);
+  }
+
+  /*
+   * Sets an alias
+   */
+  public function setAlias($alias)
+  {
+    if($this->hasAlias($alias))
+      throw new InvalidArgumentException(sprintf('[nbCommand::setAlias] Alias %s already defined.', $alias));
+
+    $this->aliases[$alias] = $alias;
+    return $this;
+  }
+
+  /*
+   * Sets an array of aliases
+   */
+  public function setAliases(array $aliases)
+  {
+    foreach($aliases as $alias)
+      $this->setAlias($alias);
+
+    return $this;
   }
 
   public function setBriefDescription($description)

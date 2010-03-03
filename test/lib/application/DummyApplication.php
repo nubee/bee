@@ -6,7 +6,7 @@ class DummyApplication extends nbApplication
 
   public function __construct(array $arguments = array(), array $options = array())
   {
-    parent::__construct();
+    parent::__construct(array());
 
     if(null === $arguments)
       $arguments = new nbArgumentSet();

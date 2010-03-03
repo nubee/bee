@@ -20,7 +20,7 @@ abstract class nbApplication
 
   private $commandFiles = array();
 
-  public function __construct()
+  public function __construct(array $commands = null)
   {
     $this->logger = nbLogger::getInstance();
     $this->arguments = new nbArgumentSet();
@@ -39,7 +39,7 @@ abstract class nbApplication
 
     $this->configure();
 
-    $this->registerCommands();
+    $this->registerCommands($commands);
   }
 
   public function run($commandLine = null)
