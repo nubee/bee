@@ -64,7 +64,6 @@ TXT
 
     // print output to file
     if (isset($options['filename'])) {
-    echo $options['filename'];
       $fileName = $options['filename'];
       $fh = fopen($fileName, 'w');
       if ($fh === false)
