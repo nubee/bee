@@ -2,12 +2,12 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
+$t = new lime_test(4);
+
 $output = new nbStreamOutput();
 $logger = nbLogger::getInstance();
 $logger->setOutput($output);
 
-
-$t = new lime_test(4);
 
 $t->comment('nbBeeApplicationTest - Test constructor');
 $application = new nbBeeApplication();

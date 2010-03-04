@@ -21,8 +21,9 @@ TXT
     )));
 
     $this->setOptions(new nbOptionSet(array(
-      new nbOption('xml', 'x', nbOption::PARAMETER_NONE, 'Outputs in xml format'),
       new nbOption('filename', 'f', nbOption::PARAMETER_REQUIRED, 'Outputs to filename'),
+      new nbOption('showall', '', nbOption::PARAMETER_NONE, 'Show all tests one by one'),
+      new nbOption('xml', 'x', nbOption::PARAMETER_NONE, 'Outputs in xml format'),
     )));
   }
   
@@ -30,27 +31,34 @@ TXT
   {
     $h = new lime_harness();
 
+    $files = array();
     if(count($arguments['name'])) {
-      $files = array();
-
       foreach($arguments['name'] as $name) {
         $finder = nbFileFinder::create('file')->followLink()->add(basename($name) . 'Test.php');
         $files = array_merge($files, $finder->in(nbConfig::get('nb_test_dir').dirname($name)));
       }
-
-      if(count($files) > 0) {
-        foreach ($files as $file)
-          $h->register($file); 
-          //include($file);
-      }
-      else
-        $this->log('no tests found', nbLogger::ERROR);
     }
     else {
       // filter and register unit tests
       $finder = nbFileFinder::create('file')->add('*Test.php');
-      $h->register($finder->in(nbConfig::get('nb_test_dir', 'test/unit')));
+      $files = $finder->in(nbConfig::get('nb_test_dir', 'test/unit'));
     }
+
+    if(count($files) == 0) {
+      $this->log('no tests found', nbLogger::ERROR);
+      return true;
+    }
+    
+    if(count($arguments['name']) || isset($options['showall'])) {
+      foreach($files as $file)
+        include($file);
+        
+      return true;
+    }
+
+    $h = new lime_harness();
+    $h->register($files); 
+    
     $ret = $h->run();
 
     // print output to file
@@ -59,6 +67,7 @@ TXT
       $fh = fopen($fileName, 'w');
       if ($fh === false)
         return $ret;
+
       fwrite($fh, isset($options['xml']) ? $h->to_xml() : '');
       fclose($fh);
     }

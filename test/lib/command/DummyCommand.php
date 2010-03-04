@@ -4,7 +4,7 @@ class DummyCommand extends nbCommand
 {
   private $executed = false;
   
-  public function __construct($name = null, nbArgumentSet $arguments = null, nbOptionSet $options = null)
+  public function __construct($name = 'dummy', nbArgumentSet $arguments = null, nbOptionSet $options = null)
   {
     parent::__construct();
     if(!$arguments)
