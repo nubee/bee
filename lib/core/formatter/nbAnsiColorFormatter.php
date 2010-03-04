@@ -15,7 +15,7 @@ class nbAnsiColorFormatter extends nbFormatter
 
   protected function replaceStartStyle($match)
   {
-    if (!isset(static::$styles[strtolower($match[1])]))
+    if (!isset(self::$styles[strtolower($match[1])]))
       throw new InvalidArgumentException(sprintf('[nbAnsiColorFormatter::replaceStartStyle] Unknown style "%s".', $match[1]));
 
     $parameters = static::$styles[strtolower($match[1])];
