@@ -24,11 +24,9 @@ TXT
   {
     $this->log('Initializing git repository', nbLogger::COMMENT);
     $this->log("\n");
-    $shell = new nbShell();
-    $output = array();
-    $shell->execute('git init', $output);
+    $shell = new nbShell(true);
+    $shell->execute('git init');
     
-    $this->log($this->formatLine(implode('\n', $output), nbLogger::COMMENT));
-    
+    $this->log($this->formatLine(' ' . implode("\n ", $shell->getOutput()), nbLogger::COMMENT));
   }
 }
