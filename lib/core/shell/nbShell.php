@@ -4,11 +4,12 @@ class nbShell
 {
   function execute($command, array &$output = null)
   {
+    $result = 0;
     if(null !== $output)
-      exec($command . ' 2>&1', $output, $return_var);
+      exec($command . ' 2>&1', $output, $result);
     else
-      system($command . ' 2>&1', $return_var);
+      system($command . ' 2>&1', $result);
     
-    return $return_var == 0 ? true : false;
+    return ($result == 0) ? true : false;
   }
 }

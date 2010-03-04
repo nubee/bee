@@ -22,5 +22,13 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
+    $this->log('Initializing git repository', nbLogger::COMMENT);
+    $this->log("\n");
+    $shell = new nbShell();
+    $output = array();
+    $shell->execute('git init', $output);
+    
+    $this->log($this->formatLine(implode('\n', $output), nbLogger::COMMENT));
+    
   }
 }
