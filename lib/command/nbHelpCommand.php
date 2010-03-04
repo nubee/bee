@@ -38,11 +38,12 @@ TXT
       if($max < $length) $max = $length;
     }
     foreach($command->getOptionsArray() as $option) {
-      $length = strlen($option->getName()) + 2;
+      $length = strlen($option->getName()) + 5;
       if($max < $length) $max = $length;
     }
     
-    $res = $this->getApplication()->formatHelpString($command->getFullName(),
+    $res = $this->getApplication()->formatHelpString(
+            $command->getFullName(),
             $command->getArguments(),
             $command->getOptions(),
             $command->getDescription());

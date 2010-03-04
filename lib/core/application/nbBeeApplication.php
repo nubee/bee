@@ -54,7 +54,7 @@ class nbBeeApplication extends nbApplication
     $res = "\n";
     $res .= $this->format("Options:", nbLogger::COMMENT) . "\n";
     foreach($options as $option) {
-      $res .= $this->format(sprintf(" %-{$max}s %s", $option->getName(), $option->getShortcut()), nbLogger::INFO);
+      $res .= $this->format(sprintf(" --%-{$max}s  -%s", $option->getName(), $option->getShortcut()), nbLogger::INFO);
       $res .= ' ' . $option->getDescription();
       if($option->hasOptionalParameter() && !$option->isArray())
         $res .= $this->format(' (default: ' . $option->getValue() . ')', nbLogger::COMMENT);

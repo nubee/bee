@@ -79,7 +79,7 @@ abstract class nbApplication
       if($max < $length) $max = $length;
     }
     foreach($optionSet->getOptions() as $option) {
-      $length = strlen($option->getName()) + 2;
+      $length = strlen($option->getName()) + 6;
       if($max < $length) $max = $length;
     }
 
@@ -90,7 +90,7 @@ abstract class nbApplication
 
     $res = $this->formatSynopsys($synopsys);
     $res .= $this->formatArguments($argumentSet, $max);
-    $res .= $this->formatOptions($optionSet, $max);
+    $res .= $this->formatOptions($optionSet, $max - 6);
     $res .= $this->formatDescription($description);
 
     return $res;

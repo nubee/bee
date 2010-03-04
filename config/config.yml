@@ -1,1 +1,4 @@
+nb_bee_dir: d:/developertools/bee
+nb_lib_dir: d:/developertools/bee/lib
+nb_test_dir: test/unit
 project_configuration_file: project.yml

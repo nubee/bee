@@ -1,5 +1,5 @@
 <?php
-class nbYamlConfigurationParser
+class nbYamlConfigParser
 {
   private $yamlParser = null;
 
@@ -10,13 +10,14 @@ class nbYamlConfigurationParser
 
   public function parse($yamlString)
   {
-    nbConfiguration::add($this->yamlParser->parse($yamlString));
+    nbConfig::add($this->yamlParser->parse($yamlString));
   }
 
   public function parseFile($filePath)
   {
     if(! file_exists($filePath))
       throw new InvalidArgumentException(sprintf('[nbYamlConfigurationParser::parseFile] file \'%s\' does not exist',$filePath ));
+    
     $this->parse(file_get_contents($filePath));
   }
 }

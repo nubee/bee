@@ -1,22 +1,22 @@
 <?php
+
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
 $dataDir = dirname(__FILE__).'/../../../data/configuration';
 
 $t = new lime_test(3);
 
-$parser = new nbYamlConfigurationParser();
+$parser = new nbYamlConfigParser();
 
-$t->comment('nbYamlConfigurationParserTest - ');
+$t->comment('nbYamlConfigParserTest - Test get');
 
-$t->comment('->get()');
 $yaml = <<<EOF
 key: value
 EOF;
 
 nbConfiguration::reset();
 
-$t->comment('->parse()');
+$t->comment('nbYamlConfigParserTest - Test parse');
 $parser->parse($yaml);
 $t->is(nbConfiguration::get('key'),'value','->parse() parse a yaml string and set configuration keys');
 
@@ -33,5 +33,5 @@ try {
   $t->fail("->parseFile() throws if file doesn\'t exist");
 }
 catch(InvalidArgumentException $e) {
-    $t->pass("->parseFile() throws if file doesn\'t exist");
+  $t->pass("->parseFile() throws if file doesn\'t exist");
 }

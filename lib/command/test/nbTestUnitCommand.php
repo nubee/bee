@@ -21,7 +21,8 @@ TXT
     )));
 
     $this->setOptions(new nbOptionSet(array(
-      new nbOption('xml', 'x', nbOption::PARAMETER_OPTIONAL, 'Outputs in xml format', 'output.xml'),
+      new nbOption('xml', 'x', nbOption::PARAMETER_NONE, 'Outputs in xml format'),
+      new nbOption('filename', 'f', nbOption::PARAMETER_REQUIRED, 'Outputs to filename'),
     )));
   }
   
@@ -32,8 +33,7 @@ TXT
 
       foreach($arguments['name'] as $name) {
         $finder = nbFileFinder::create('file')->followLink()->add(basename($name) . 'Test.php');
-        //$files = array_merge($files, $finder->in(sfConfig::get('sf_test_dir').'/unit/'.dirname($name)));
-        $files = array_merge($files, $finder->in(nbConfiguration::get('nb_test_dir','test/unit').dirname($name)));
+        $files = array_merge($files, $finder->in(nbConfig::get('nb_test_dir').dirname($name)));
       }
 
       if(count($files) > 0) {
@@ -41,16 +41,14 @@ TXT
           include($file);
       }
       else
-        $this->log('no tests found', 'error');
+        $this->log('no tests found', nbLogger::ERROR);
     }
-    else
-    {
-
+    else {
       $h = new lime_harness();
 
       // filter and register unit tests
       $finder = nbFileFinder::create('file')->add('*Test.php');
-      $h->register($finder->in(nbConfiguration::get('nb_test_dir','test/unit')));
+      $h->register($finder->in(nbConfig::get('nb_test_dir', 'test/unit')));
 
       $ret = $h->run() ? 0 : 1;
 

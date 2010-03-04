@@ -156,7 +156,7 @@ $t->comment('nbOptionTest - Test to string');
 $option = new nbOption('foo', '', nbOption::PARAMETER_NONE);
 $t->is((string)$option, '[--foo]', '->__toString() returns "[--foo]"');
 
-$option = new nbOption('foo', '', nbOption::PARAMETER_OPTIONAL);
+$option = new nbOption('foo', '', nbOption::PARAMETER_OPTIONAL, '', 'FOO');
 $t->is((string)$option, '[--foo=[FOO]]', '->__toString() returns "[--foo=[FOO]]"');
 
 $option = new nbOption('foo', '', nbOption::PARAMETER_REQUIRED);

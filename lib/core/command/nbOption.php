@@ -206,7 +206,7 @@ class nbOption {
     $result = $this->hasShortcut() ? '-' . $this->getShortcut() . '|' : '';
     $result .= '--' . $this->getName();
     if($this->hasOptionalParameter())
-      $result .= sprintf('=[%s]', strtoupper($this->getName()));
+      $result .= sprintf('=[%s]', $this->getValue());
 
     if($this->hasRequiredParameter())
       $result .= sprintf('=%s', strtoupper($this->getName()));
