@@ -12,7 +12,7 @@ $command3 = new DummyCommand("ns2:bas", null, new nbOptionSet(array($barOption))
 
 $t->comment('nbCommandTest - Test constructor');
 try {
-  new DummyCommand();
+  new DummyCommand('');
   $t->fail('command name can\'t be empty');
 }
 catch(InvalidArgumentException $e) {
