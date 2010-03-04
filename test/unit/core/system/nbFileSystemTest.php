@@ -11,23 +11,23 @@ $t->is(nbFileSystem::getFileName($dataDir . '/Class1.php'), 'Class1.php', '->get
 
 $t->comment('nbFileSystemTest - Test mkdir');
 
-nbFileSystem::mkdir($sandboxDir.'/dir');
-$t->ok(is_dir($sandboxDir.'/dir'), 'mkdir() creates dir if it not exists');
+nbFileSystem::mkdir($sandboxDir . '/dir', true);
+$t->ok(is_dir($sandboxDir . '/dir'), 'mkdir() creates dir if it not exists');
 
 try {
   nbFileSystem::mkdir($sandboxDir.'/dir');
   $t->fail(('nbFileSystem::mkdir() trows if directory already exists'));
 }
 catch( Exception $e) {
-  $t->pass('nbFileSystem::mkdir() trows if directory already exists');
+  $t->pass('nbFileSystem::mkdir() throws if directory already exists');
 }
 
 try {
   nbFileSystem::mkdir($sandboxDir.'/dir/sub1/sub2');
-  $t->fail('nbFileSystem::mkdir() trows if parent directory doesn\'t exist');
+  $t->fail('nbFileSystem::mkdir() throws if parent directory doesn\'t exist');
 }
 catch( Exception $e) {
-  $t->pass('nbFileSystem::mkdir() trows if parent directory doesn\'t exist');
+  $t->pass('nbFileSystem::mkdir() throws if parent directory doesn\'t exist');
 }
 
 nbFileSystem::mkdir($sandboxDir.'/dir/sub1/sub2', true);
@@ -76,10 +76,10 @@ $t->ok(file_exists($sandboxDir.'/file1'),'nbFileSystem::touch create empty file'
 
 try {
   nbFileSystem::touch($sandboxDir.'/fake-folder/file1');
-  $t->fail('nbFileSystem::touch trows if parent folder doesn\'t exist');
+  $t->fail('nbFileSystem::touch throws if parent folder doesn\'t exist');
 }
 catch(Exception $e) {
-  $t->pass('nbFileSystem::touch trows if parent folder doesn\'t exist');
+  $t->pass('nbFileSystem::touch throws if parent folder doesn\'t exist');
 }
 
 $t->comment('nbFileSystemTest - Test Delete');

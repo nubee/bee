@@ -40,7 +40,8 @@ TXT
 
       if(count($files) > 0) {
         foreach ($files as $file)
-          $h->register($file); //include($file);
+          $h->register($file); 
+          //include($file);
       }
       else
         $this->log('no tests found', nbLogger::ERROR);
