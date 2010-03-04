@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(11);
+$t = new lime_test(26);
 
 $dataDir = dirname(__FILE__) . '/../../../data/system';
 $sandboxDir = dirname(__FILE__).'/../../../sandbox';
@@ -32,9 +32,6 @@ catch( Exception $e) {
 
 nbFileSystem::mkdir($sandboxDir.'/dir/sub1/sub2', true);
 $t->ok(file_exists($sandboxDir.'/dir/sub1/sub2'), 'nbFileSystem::mkdir() can create parent folders');
-
-
-//nbFileSystem::mkdir($sandboxDir.'/dir', true); // ->crea dir in 'c:/tmp/dir' se tmp non esiste crea anche lei
 
 $t->comment('nbFileSystemTest - Test rmdir');
 
@@ -100,8 +97,90 @@ catch(Exception $e) {
 
 $t->comment('nbFileSystemTest - Test Copy');
 
-//nbFileSystem::touch($sandboxDir.'file1');
-//nbFileSystem::mkdir($sandboxDir.'/dir3');
-//nbFileSystem::copy($sandboxDir.'file1', $sandboxDir.'dir'.'file1');
-//$t->ok(file_exists($sandboxDir.'dir3'.'file1'),'nbFileSystem::copy copies file');
-//$t->ok(file_exists($sandboxDir.'file1'),'nbFileSystem::delite doesn\'t remove file copied');
+try {
+  nbFileSystem::copy($sandboxDir.'/fake-file', $sandboxDir.'/file1');
+  $t->fail('nbFileSystem::copy throws if source file doesn\'t exist');
+}
+catch(Exception $e) {
+  $t->pass('nbFileSystem::copy throws if source file doesn\'t exist');
+}
+
+nbFileSystem::touch($sandboxDir. '/file1');
+nbFileSystem::touch($sandboxDir. '/file2');
+
+try {
+  nbFileSystem::copy($sandboxDir.'/file1', $sandboxDir.'/file2');
+  $t->fail('nbFileSystem::copy throws if destination file already exists');
+}
+catch(Exception $e) {
+  $t->pass('nbFileSystem::copy throws if destination file already exists');
+}
+
+try {
+  nbFileSystem::copy($sandboxDir.'/file1', $sandboxDir.'/file2',true);
+  $t->pass('nbFileSystem::copy can overwrite destination file');
+}
+catch(Exception $e) {
+  $t->fail('nbFileSystem::copy can overwrite destination file');
+}
+
+nbFileSystem::delete($sandboxDir.'/file2');
+nbFileSystem::copy($sandboxDir.'/file1', $sandboxDir.'/file2');
+$t->ok(file_exists($sandboxDir.'/file1'), 'nbFileSystem::copy() doesn\'t remove source file');
+$t->ok(file_exists($sandboxDir.'/file2'), 'nbFileSystem::copy() copies source file to destination file');
+
+nbFileSystem::delete($sandboxDir.'/file2');
+nbFileSystem::mkdir($sandboxDir.'/dir4');
+
+nbFileSystem::copy($sandboxDir.'/file1', $sandboxDir.'/dir4');
+$t->ok(file_exists($sandboxDir.'/dir4/file1'), 'nbFileSystem::copy() copies source file in another folder maintaining the filename');
+
+$t->comment('nbFileSystemTest - Test RecursiveDeleteDir');
+
+nbFileSystem::recursiveDeleteDir($sandboxDir.'/dir4');
+$t->ok(!file_exists($sandboxDir.'dir4'.'/file1'), 'nbFileSystem::recursiveDeleteDir removes all folder contents');
+$t->ok(!file_exists($sandboxDir.'dir4'), 'nbFileSystem::recursiveDeleteDir removes folder');
+
+nbFileSystem::mkdir($sandboxDir.'/dir2'. '/dir3');
+nbFileSystem::touch($sandboxDir.'/dir2'. '/file2');
+nbFileSystem::touch($sandboxDir.'/dir2'. '/dir3'. '/file3');
+nbFileSystem::touch($sandboxDir.'/dir2'. '/dir3'. '/file4');
+nbFileSystem::recursiveDeleteDir($sandboxDir.'/dir2');;
+$t->ok(!file_exists($sandboxDir.'/dir2'. '/file2'), 'nbFileSystem::recursiveDeleteDir removes all folder contents');
+$t->ok(!file_exists($sandboxDir.'/dir2'. '/dir3'. '/file3'), 'nbFileSystem::recursiveDeleteDir removes all folder contents');
+$t->ok(!file_exists($sandboxDir.'/dir2'. '/dir3'. '/file4'), 'nbFileSystem::recursiveDeleteDir removes all folder contents');
+$t->ok(!file_exists($sandboxDir.'/dir2'), 'nbFileSystem::recursiveDeleteDir removes folder');
+
+$t->comment('nbFileSystemTest - Test MoveDir');
+
+nbFileSystem::mkdir($sandboxDir.'/dir'. '/dir1');
+nbFileSystem::mkdir($sandboxDir.'/dir5');
+nbFileSystem::moveDir($sandboxDir.'/dir'. '/dir1', $sandboxDir.'/dir5');
+$t->ok(file_exists($sandboxDir.'/dir5'. '/dir1'), 'nbFileSystem::moveDir move folder to destination folder');
+$t->ok(!file_exists($sandboxDir.'/dir'. '/dir1'), 'nbFileSystem::moveDir remove from old source the dir moved');
+$t->ok(file_exists($sandboxDir.'/dir'), 'nbFileSystem::moveDir doesn\'t remove parent folders');
+
+//try {
+//  nbFileSystem::moveDir($sandboxDir.'/dir10', $sandboxDir.'/dir5');
+//  $t->pass('nbFileSystem::moveDir throws if the source dir doesn\'t exist');
+//}
+//catch(Exception $e) {
+//  $t->fail('nbFileSystem::moveDir throws if the source dir doesn\'t exist');
+//}
+
+//nbFileSystem::touch($sandboxDir.'/dir5'. '/file2');
+//try {
+//  nbFileSystem::moveDir($sandboxDir.'/dir5'. '/file2', $sandboxDir.'/dir');
+//  $t->pass('nbFileSystem::moveDir throws if the source is a file');
+//}
+//catch(Exception $e) {
+//  $t->fail('nbFileSystem::moveDir throws if the source if the source is a file');
+//}
+
+//try {
+//  nbFileSystem::moveDir($sandboxDir.'/dir5'. '/dir1', $sandboxDir.'/dir10');
+//  $t->pass('nbFileSystem::moveDir throws if the destination dir doesn\'t exist');
+//}
+//catch(Exception $e) {
+//  $t->fail('nbFileSystem::moveDir throws if the destination dir doesn\'t exist');
+//}
