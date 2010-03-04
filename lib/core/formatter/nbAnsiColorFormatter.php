@@ -18,16 +18,16 @@ class nbAnsiColorFormatter extends nbFormatter
     if (!isset(self::$styles[strtolower($match[1])]))
       throw new InvalidArgumentException(sprintf('[nbAnsiColorFormatter::replaceStartStyle] Unknown style "%s".', $match[1]));
 
-    $parameters = static::$styles[strtolower($match[1])];
+    $parameters = self::$styles[strtolower($match[1])];
     $codes = array();
 
     if (isset($parameters['fg']))
-      $codes[] = static::$foreground[$parameters['fg']];
+      $codes[] = self::$foreground[$parameters['fg']];
 
     if (isset($parameters['bg']))
-      $codes[] = static::$background[$parameters['bg']];
+      $codes[] = self::$background[$parameters['bg']];
 
-    foreach (static::$options as $option => $value) {
+    foreach (self::$options as $option => $value) {
       if (isset($parameters[$option]) && $parameters[$option])
         $codes[] = $value;
     }
