@@ -15,7 +15,8 @@ class nbTestUnitCommand extends nbCommand
       ->setDescription(<<<TXT
 The <info>test:unit</info> command
 TXT
-        );
+    );
+    
     $this->setArguments(new nbArgumentSet(array(
       new nbArgument('name', nbArgument::OPTIONAL | nbArgument::IS_ARRAY, 'The test name'),
     )));
@@ -63,6 +64,7 @@ TXT
 
     // print output to file
     if (isset($options['filename'])) {
+    echo $options['filename'];
       $fileName = $options['filename'];
       $fh = fopen($fileName, 'w');
       if ($fh === false)
