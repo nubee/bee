@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(18);
+$t = new lime_test(27);
 
 $dataDir = dirname(__FILE__) . '/../../../data/system';
 $sandboxDir = dirname(__FILE__).'/../../../sandbox';
@@ -140,17 +140,53 @@ nbFileSystem::copy($sandboxDir.'/file1', $sandboxDir.'/dir4');
 $t->ok(file_exists($sandboxDir.'/dir4/file1'), 'nbFileSystem::copy() copies source file in another folder maintaining the filename');
 
 
-//$t->comment('nbFileSystemTest - Test MoveDir');
-//
-//cleanDir($sandboxDir);
-//
-//nbFileSystem::mkdir($sandboxDir.'/dir'. '/dir1');
-//nbFileSystem::mkdir($sandboxDir.'/dir5');
-//nbFileSystem::moveDir($sandboxDir.'/dir'. '/dir1', $sandboxDir.'/dir5');
-//$t->ok(file_exists($sandboxDir.'/dir5'. '/dir1'), 'nbFileSystem::moveDir move folder to destination folder');
-//$t->ok(!file_exists($sandboxDir.'/dir'. '/dir1'), 'nbFileSystem::moveDir remove from old source the dir moved');
-//$t->ok(file_exists($sandboxDir.'/dir'), 'nbFileSystem::moveDir doesn\'t remove parent folders');
+$t->comment('nbFileSystemTest - Test Move');
 
+cleanDir($sandboxDir);
+
+nbFileSystem::mkdir($sandboxDir.'/dir/dir1', true);
+nbFileSystem::touch($sandboxDir.'/dir/dir1/file1');
+nbFileSystem::mkdir($sandboxDir.'/dir2');
+
+nbFileSystem::move($sandboxDir.'/dir/dir1', $sandboxDir.'/dir2/dir1');
+
+$t->ok(is_dir($sandboxDir.'/dir2/dir1'), 'nbFileSystem::move() move folder to destination folder');
+$t->ok(file_exists($sandboxDir.'/dir2/dir1/file1'), 'nbFileSystem::move() move folder contents');
+$t->ok(!file_exists($sandboxDir.'/dir/dir1'), 'nbFileSystem::move() remove from old source the dir moved');
+$t->ok(file_exists($sandboxDir.'/dir'), 'nbFileSystem::move() doesn\'t remove parent folders');
+
+cleanDir($sandboxDir);
+
+nbFileSystem::mkdir($sandboxDir.'/dir1', true);
+nbFileSystem::mkdir($sandboxDir.'/dir', true);
+nbFileSystem::touch($sandboxDir.'/dir1/file1');
+nbFileSystem::move($sandboxDir.'/dir1/file1', $sandboxDir.'/dir/file1');
+
+$t->ok(!file_exists($sandboxDir.'/dir1/file1'), 'nbFileSystem::move() moves file');
+$t->ok(file_exists($sandboxDir.'/dir/file1'), 'nbFileSystem::move() moves file');
+
+nbFileSystem::rmdir($sandboxDir.'/dir1', true);
+try {
+  nbFileSystem::move($sandboxDir.'/dir1', $sandboxDir.'/dir');
+  $t->fail('nbFileSystem::move() throws if the source doesn\'t exist');
+}
+catch(Exception $e) {
+  $t->pass('nbFileSystem::move() throws if the source doesn\'t exist');
+}
+
+nbFileSystem::mkdir($sandboxDir.'/dir1', true);
+nbFileSystem::rmdir($sandboxDir.'/dir2', true);
+try {
+  nbFileSystem::move($sandboxDir.'/dir1', $sandboxDir.'/dir2/dir');
+  $t->fail('nbFileSystem::move() throws if the destination doesn\'t exist');
+}
+catch(Exception $e) {
+  $t->pass('nbFileSystem::move() throws if the destination doesn\'t exist');
+}
+
+nbFileSystem::mkdir($sandboxDir.'/dir2');
+nbFileSystem::move($sandboxDir.'/dir1', $sandboxDir.'/dir2/dir');
+$t->ok(is_dir($sandboxDir.'/dir2'. '/dir'), 'nbFileSystem::move() renames folder in "destination" if basename("destination") doesn\'t exist');
 
 function cleanDir($dir)
 {
@@ -158,7 +194,7 @@ function cleanDir($dir)
   $files = $finder->add('*')->remove('.')->remove('..')->in($dir);
   foreach($files as $file)
     if(is_dir($file))
-      nbFileSystem::rmdir($file,$recursive);
+      nbFileSystem::rmdir($file,true);
     else
       nbFileSystem::delete($file);
 }

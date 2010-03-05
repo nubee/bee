@@ -81,25 +81,13 @@ class nbFileSystem
     if(file_exists($dest) && !$overwrite)
       throw new InvalidArgumentException('[nbFileSystem::copy] destination file exists');
     if(!copy($source, $dest))
-      throw new InvalidArgumentException('[nbFileSystem::copy] destination file exists');
+      throw new Exception('[nbFileSystem::copy] copy command failed');
   }
 
-  public static function moveDir($source, $destination)
+  public static function move($source, $destination)
   {
-    if(!file_exists($source))
-      throw new InvalidArgumentException('[nbFileSystem::moveDir] source dir doesn\'t exist');
-
-    if(!file_exists($destination))
-      throw new InvalidArgumentException('[nbFileSystem::moveDir] destination dir doesn\'t exist');
-
-    if(!is_dir($source))
-      throw new InvalidArgumentException('[nbFileSystem::moveDir] doesn\'t remove file');
-    
-    else
-      {
-        self::mkdir($destination . "/" . basename($source));
-        self::rmdir($source);
-      }
+      if(!rename($source, $destination))
+        throw new Exception('[nbFileSystem::moveDir] rename command failed');
   }
   
 }
