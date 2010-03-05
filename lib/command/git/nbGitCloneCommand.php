@@ -30,6 +30,6 @@ TXT
     $shell = new nbShell(true);
     $shell->execute('git clone ' . $arguments['repository']);
 
-    $this->log($this->formatLine(' ' . implode("\n ", $shell->getOutput()), nbLogger::COMMENT));
+    //$this->log($this->formatLine(' ' . implode("\n ", $shell->getOutput()), nbLogger::COMMENT));
   }
 }

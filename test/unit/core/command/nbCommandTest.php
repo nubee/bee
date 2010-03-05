@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(37);
+$t = new lime_test(39);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
@@ -47,10 +47,18 @@ $t->is($command1->getArguments()->count(), 0, '->getArguments() returns 0 argume
 $t->is($command2->getArguments()->count(), 1, '->getArguments() returns 1 argument');
 $t->is($command3->getArguments()->count(), 0, '->getArguments() returns 0 arguments');
 
+$command = new DummyCommand();
+$command->addArgument(new nbArgument('foo'));
+$t->is($command->getArguments()->count(), 1, '->addArgument() added 1 argument');
+
 $t->comment('nbCommandTest - Test options');
 $t->is($command1->getOptions()->count(), 0, '->getOptions() returns 0 options');
 $t->is($command2->getOptions()->count(), 0, '->getOptions() returns 0 options');
 $t->is($command3->getOptions()->count(), 1, '->getOptions() returns 1 option');
+
+$command = new DummyCommand();
+$command->addOption(new nbOption('foo'));
+$t->is($command->getOptions()->count(), 1, '->addOption() added 1 option');
 
 //$t->comment('nbCommandTest - Test synopsys');
 //$t->is($command1->getSynopsys(), 'bee foo', '->getSynopsys() is "bee foo"');

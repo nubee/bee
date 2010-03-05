@@ -2,26 +2,40 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(6);
+$t = new lime_test(9);
 
 $t->comment('nbShellTest - Test execute');
-$shell = new nbShell();
-$ret = $shell->execute('dir');
-$t->ok($ret, '->execute() has succeeded');
+$shell = new nbShell(true);
+$t->ok($shell->execute('dir'), '->execute() has succeeded');
+$t->isnt($shell->getOutput(), '', '->getOutput() returns a not empty string');
+$t->is($shell->getError(), '', '->getError() returns an empty string');
 
 $t->comment('nbShellTest - Test execute retriving output');
 $shell = new nbShell(true);
-$ret = $shell->execute('dir');
-$t->ok($ret, '->execute() has succeeded');
-$t->ok(count($shell->getOutput()), '->getOutput() returns an array of messages');
+$t->ok($shell->execute('dir'), '->execute() has succeeded');
 
 $t->comment('nbShellTest - Test execute result');
-$t->ok(!$shell->execute('unknown_command'), '->execute() returns false if executed with unknown command');
-$t->ok(!$shell->execute('dir /e'), '->execute() returns false if command execution fails');
+$shell = new nbShell(true);
+try {
+  $shell->execute('unknown_command');
+  $t->fail('->execute() throws a LogicException if executed with unknown command');
+}
+catch(LogicException $e) {
+  $t->pass('->execute() throws a LogicException if executed with unknown command');
+}
+$t->is($shell->getReturnCode(), 1, '->execute() return code is 1');
+$t->isnt($shell->getError(), '', '->getError() returns an array with 3 items');
 
 $t->comment('nbShellTest - Test redirect stderr to stdout');
 $shell = new nbShell(true);
-$shell->execute('dir /e');
-$t->is(count($shell->getOutput()), 1, '->getOutput() returns an array');
+
+try {
+  $shell->execute('dir /e');
+  $t->fail('->execute() throws if a command returns an error code');
+}
+catch(Exception $e) {
+  $t->pass('->execute() throws if a command returns an error code');
+}
+$t->is($shell->getReturnCode(), 1, '->execute() return code is 1');
 
 

@@ -2,9 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(2);
-$t->pass();
-$t->pass();
+$t = new lime_test(0);
 /*
 $cmd = new nbGenerateCommandCommand();
 
