@@ -82,6 +82,12 @@ abstract class nbCommand
     return $this;
   }
 
+  public function addArgument(nbArgument $argument)
+  {
+    $this->argumentSet->addArgument($argument);
+    return $this;
+  }
+
   public function getArguments()
   {
     return $this->argumentSet;
@@ -95,6 +101,12 @@ abstract class nbCommand
   public function setOptions(nbOptionSet $options)
   {
     $this->optionSet = $options;
+    return $this;
+  }
+
+  public function addOption(nbOption $option)
+  {
+    $this->optionSet->addOption($option);
     return $this;
   }
 

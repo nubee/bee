@@ -9,7 +9,7 @@ class nbShell
 
   public function __construct($redirectOutput = false)
   {
-    echo sprintf("output redirected: %s\n", ($redirectOutput ? 'true' : 'false'));
+    //echo sprintf("output redirected: %s\n", ($redirectOutput ? 'true' : 'false'));
     $this->redirectOutput = $redirectOutput;
   }
 
@@ -37,7 +37,7 @@ class nbShell
     if(!is_resource($process))
       throw new LogicException('Process cannot be spawned');
 
-    while(($stdout = !feof($pipes[1])) || ($stderr = !feof($pipes[2]))) {
+    while(($stdout = !feof($pipes[1])) && ($stderr = !feof($pipes[2]))) {
       if(true === $this->redirectOutput) {
         if($stdout)
           $this->output .= fgets($pipes[1]);
