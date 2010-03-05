@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * nfFilesystem provides basic utility to manipulate the file system.
+ *
+ * @package    bee
+ * @subpackage system
+ */
 class nbFileSystem
 {
   public static function getFileName($filename)
@@ -10,6 +16,15 @@ class nbFileSystem
     return basename($filename);
   }
 
+  /**
+   * Creates a directory.
+   *
+   * @param  string $path  The directory path
+   * @param  bool $withParents
+   *
+   * @return bool true if the directory has been created, false otherwise
+   * if withParent is true, this method creates parent folders
+   */
   public static function mkdir($path, $withParents = false)
   {
     if(file_exists($path))
