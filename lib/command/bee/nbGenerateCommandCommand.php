@@ -1,16 +1,14 @@
 <?php
 class nbGenerateCommandCommand extends nbCommand
 {
-  private $application = null;
-
   protected function configure()
   {
-    $this->setName('GenerateCommand')
+    $this->setName('generate:command')
       ->setBriefDescription('')
       ->setDescription(<<<TXT
-The <info>GenerateCommand</info> command displays help for a given task:
+The <info>generate:command</info> command:
 
-   <info>./bee GenerateCommand</info>
+   <info>./bee generate:command</info>
 TXT
         );          
 
@@ -27,7 +25,7 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $command = $this;
+    //$command = $this;
   }
 }
 
