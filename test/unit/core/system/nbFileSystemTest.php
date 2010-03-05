@@ -7,6 +7,8 @@ $t = new lime_test(27);
 $dataDir = dirname(__FILE__) . '/../../../data/system';
 $sandboxDir = dirname(__FILE__).'/../../../sandbox';
 
+$t->comment('nbFileSystemTest - Test getFileName');
+
 $t->is(nbFileSystem::getFileName($dataDir . '/Class1.php'), 'Class1.php', '->getFileName() returns "Class1.php"');
 
 $t->comment('nbFileSystemTest - Test mkdir');

@@ -8,6 +8,12 @@
  */
 class nbFileSystem
 {
+  /**
+   * This method returns the filename.
+   *
+   * @param  string $filename  The filename
+   * @return string Returns filename component of "filename".
+   */
   public static function getFileName($filename)
   {
     if(!is_file($filename))
@@ -17,13 +23,12 @@ class nbFileSystem
   }
 
   /**
-   * Creates a directory.
+   * This method creates a directory.
    *
    * @param  string $path  The directory path
    * @param  bool $withParents
    *
-   * @return bool true if the directory has been created, false otherwise
-   * if withParent is true, this method creates parent folders
+   * To create parent folders, set "withParents" to true
    */
   public static function mkdir($path, $withParents = false)
   {
@@ -36,6 +41,14 @@ class nbFileSystem
     }
   }
 
+  /**
+   * This method removes a directory.
+   *
+   * @param  string $path  The directory path
+   * @param  bool $recursive
+   *
+   * To remove folder contents, set "recursive" to true
+   */
   public static function rmdir($path, $recursive = false)
   {
     if(!file_exists($path))
@@ -56,6 +69,11 @@ class nbFileSystem
     }
   }
 
+  /**
+   * This method creates empty file.
+   *
+   * @param string $path  The filename, including path
+   */
   public static function touch($path)
   {
     if(!touch($path))
@@ -64,6 +82,11 @@ class nbFileSystem
     }
   }
 
+  /**
+   * This method removes file.
+   *
+   * @param mixed $file  The filename, including path
+   */
   public static function delete($file)
   {
     if(!file_exists($file))
@@ -73,6 +96,15 @@ class nbFileSystem
     unlink($file);
   }
 
+  /**
+   * This method copies a file.
+   *
+   * To overwrite existing files, set "overwrite" to true.
+   *
+   * @param string $source  The original filename
+   * @param string $dest  The target filename
+   * @param bool  $overwrite
+   */
   public static function copy($source, $dest = null, $overwrite = false)
   {
     if(file_exists($dest) && is_dir($dest))
@@ -84,6 +116,12 @@ class nbFileSystem
       throw new Exception('[nbFileSystem::copy] copy command failed');
   }
 
+  /**
+   * This method move a file or a directory content.
+   *
+   * @param string $source  The filename or directoryname
+   * @param string $dest  The target filename or directoryname
+   */
   public static function move($source, $destination)
   {
       if(!rename($source, $destination))
