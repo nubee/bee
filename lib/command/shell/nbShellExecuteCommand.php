@@ -14,6 +14,9 @@ class nbShellExecuteCommand extends nbCommand
       ->setArguments(new nbArgumentSet(array(
         new nbArgument('command_name', nbArgument::REQUIRED, 'The command to execute')
       )))
+      ->setOptions(new nbOptionSet(array(
+        new nbOption('redirect', '', nbOption::PARAMETER_REQUIRED, 'Redirects output to file')
+      )))
       ->setBriefDescription('Executes a shell command')
       ->setDescription(<<<TXT
 The <info>shell:execute</info> executes a shell command:
@@ -28,7 +31,7 @@ TXT
     $this->log('Executing: ' . $arguments['command_name'], nbLogger::COMMENT);
     $this->log("\n\n");
 
-    $shell = new nbShell();
+    $shell = new nbShell(isset($options['redirect']));
     $shell->execute($arguments['command_name']);
   }
 }

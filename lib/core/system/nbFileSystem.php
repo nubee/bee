@@ -36,13 +36,22 @@ class nbFileSystem
     }
   }
 
-  public static function rmdir($path)
+  public static function rmdir($path, $recursive = false)
   {
     if(!file_exists($path))
       return;
 
-    if(!rmdir($path))
-    {
+    if($recursive) {
+      $finder = nbFileFinder::create('any');
+      $files = $finder->add('*')->remove('.')->remove('..')->in($path);
+      foreach($files as $file)
+        if(is_dir($file))
+          self::rmdir($file,$recursive);
+        else
+          self::delete($file);
+    }
+
+    if(!rmdir($path)) {
       throw new Exception('[nbFileSystem::rmdir] error deleting folder '.$path);
     }
   }
@@ -67,30 +76,12 @@ class nbFileSystem
   public static function copy($source, $dest = null, $overwrite = false)
   {
     if(file_exists($dest) && is_dir($dest))
-      $dest .= '/'.basename($source);
+      $dest .= '/'.self::getFileName($source);
 
     if(file_exists($dest) && !$overwrite)
       throw new InvalidArgumentException('[nbFileSystem::copy] destination file exists');
     if(!copy($source, $dest))
       throw new InvalidArgumentException('[nbFileSystem::copy] destination file exists');
-  }
-
-  public static function recursiveDeleteDir($path)
-  {
-    if(!file_exists($path))
-      return;
-
-    if(!is_dir($path))
-      self::delete($path);
-    
-    else
-      {
-        $str = glob(rtrim($path,'/').'/*');
-        foreach($str as $index => $p)
-          self::recursiveDeleteDir($p);
-      }
-
-    return self::rmdir($path);
   }
 
   public static function moveDir($source, $destination)
