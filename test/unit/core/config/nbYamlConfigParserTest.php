@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
 $dataDir = dirname(__FILE__).'/../../../data/configuration';
 
-$t = new lime_test(3);
+$t = new lime_test(4);
 
 $parser = new nbYamlConfigParser();
 
@@ -35,3 +35,10 @@ try {
 catch(InvalidArgumentException $e) {
   $t->pass("->parseFile() throws if file doesn\'t exist");
 }
+
+
+nbConfig::reset();
+
+$t->comment('nbYamlConfigParserTest - Test parse');
+$parser->parse($yaml, 'myprefix');
+$t->is(nbConfig::get('myprefix_key'),'value','->parseFile() can accept a prefix for config keys');

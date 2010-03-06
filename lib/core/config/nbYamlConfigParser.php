@@ -8,16 +8,16 @@ class nbYamlConfigParser
     $this->yamlParser = new sfYamlParser();
   }
 
-  public function parse($yamlString)
+  public function parse($yamlString, $prefix = '')
   {
-    nbConfig::add($this->yamlParser->parse($yamlString));
+    nbConfig::add($this->yamlParser->parse($yamlString), $prefix);
   }
 
-  public function parseFile($filePath)
+  public function parseFile($filePath, $prefix = '')
   {
     if(! file_exists($filePath))
       throw new InvalidArgumentException(sprintf('[nbYamlConfigurationParser::parseFile] file \'%s\' does not exist',$filePath ));
     
-    $this->parse(file_get_contents($filePath));
+    $this->parse(file_get_contents($filePath), $prefix);
   }
 }

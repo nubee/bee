@@ -67,10 +67,14 @@ class nbConfig
     }
   }
   
-  public static function add($array = array())
+  public static function add($array = array(), $prefix = '')
   {
+	//TODO: replace with preg_replace
+	$prefix = trim($prefix,' _.,?');
+	if(strlen($prefix)>0)
+		$prefix .= '_';
     foreach(self::getAssociative($array) as $path=>$value)
-      self::set($path,$value);
+      self::set($prefix.$path,$value);
   }
 
   public static function getAssociative($array, $path = '')

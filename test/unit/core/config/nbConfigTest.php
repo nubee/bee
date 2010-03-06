@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(28);
+$t = new lime_test(30);
 
 $t->comment('nbConfigTest - Test get all');
 nbConfig::reset();
@@ -129,3 +129,11 @@ $key2 = array('foo2' => 'fooVal2', 'bar' => 'barVal', 'bar2' => 'barValue2');
 nbConfig::add($key2);
 $t->is(nbConfig::getAll(), array('foo' => 'fooVal', 'foo2' => 'fooVal2', 'bar' => 'barVal', 'bar2' => 'barValue2') , 'nbConfig::add() old and new values');
 
+nbConfig::reset();
+$key1 = array('foo' => 'fooValue');
+$key2 = array('bar' => 'barValue');
+$result =array('myprefix'=>array('foo' => 'fooValue','bar' => 'barValue'));
+nbConfig::add($key1,'myprefix');
+nbConfig::add($key2,'myprefix');
+$t->is(nbConfig::get('myprefix_foo'), 'fooValue', 'nbConfig::add() can set a prefix for 1st level keys');
+$t->is(nbConfig::getAll(), $result , 'nbConfig::add() can set a prefix for 1st level keys');
