@@ -29,7 +29,14 @@ TXT
   {
     $message = $this->formatLine('Project configuration', nbLogger::COMMENT);
     $message .= "\n";
-    $params = nbConfig::getAll(true);
+    if(isset($options['filter'])) {
+      $params = nbConfig::get($options['filter']);
+      $params = nbArrayUtils::getAssociative($params);
+      $message .= $this->formatLine('Filter is: <info>'.$options['filter'].'</info> ', nbLogger::COMMENT);
+      $message .= "\n";
+    }
+    else
+      $params = nbConfig::getAll(true);
     ksort($params);
 
     $max = 0;

@@ -5,6 +5,8 @@ class nbArrayUtils
   public static function getAssociative($array, $path = '')
   {
     $result = array();
+    if(! is_array($array))
+      return $result;
     foreach($array as $key => $value) {
       if(strlen($path))
         $key = $path.'_'.$key;
