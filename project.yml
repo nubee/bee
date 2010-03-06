@@ -1,0 +1,5 @@
+proj:
+  shell:
+    aliases:
+      alias1: echo "you called alias1"
+      

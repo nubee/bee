@@ -19,7 +19,7 @@ class nbShellExecuteCommand extends nbCommand
       )))
       ->setBriefDescription('Executes a shell command')
       ->setDescription(<<<TXT
-The <info>shell:execute</info> executes a shell command:
+The <info>shell:execute</info> executes a shell command or an alias defined in project.yml:
 
    <info>./bee shell:execute command</info>
 TXT
@@ -28,10 +28,25 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Executing: ' . $arguments['command_name'], nbLogger::COMMENT);
-    $this->log("\n\n");
+    if(! $arg = $this->getAlias($arguments['command_name']))
+      $arg = $arguments['command_name'];
 
+    $this->log('Executing: ' . $arg, nbLogger::COMMENT);
+    $this->log("\n\n");
     $shell = new nbShell(isset($options['redirect']));
-    $shell->execute($arguments['command_name']);
+    $shell->execute($arg);
   }
+  
+  protected function getAlias($command)
+  {
+    $aliases = nbConfig::get('proj_shell_aliases');
+    if(null !== $aliases && is_array($aliases) && array_key_exists($command, $aliases)) {
+      $this->log('Alias found for ' . $command, nbLogger::COMMENT);
+      $this->log("\n\n");
+      return $aliases[$command];
+    }
+    else
+      return null;
+  }
+  
 }
