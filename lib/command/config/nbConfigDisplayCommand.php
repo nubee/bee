@@ -22,7 +22,6 @@ TXT
     $this->setOptions(new nbOptionSet(array(
       new nbOption('filter', 'f', nbOption::PARAMETER_REQUIRED, 'Print only a subset of keys'),
     )));
-
   }
 
   protected function execute(array $arguments = array(), array $options = array())
