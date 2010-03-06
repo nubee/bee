@@ -7,13 +7,14 @@ $autoload->register();
 $autoload->addDirectory(dirname(__FILE__).'/lib/', '*.php', true);
 $autoload->addDirectory(dirname(__FILE__).'/vendor/', '*.php', true);
 
+nbConfig::set('nb_bee_dir',dirname(__FILE__));
+
 $yaml = new nbYamlConfigParser();
-$yaml->parseFile(dirname(__FILE__).'/config/config.yml');
-if(file_exists(nbConfig::get('project_configuration_file')))
-  $yaml->parseFile(nbConfig::get('project_configuration_file'));
+$yaml->parseFile(nbConfig::get('nb_bee_dir').'/config/config.yml');
+if(file_exists(nbConfig::get('nb_project_config')))
+  $yaml->parseFile(nbConfig::get('nb_project_config'));
 
-$autoload->addDirectory(nbConfig::get('bee_command_dir'), 'Command.php', true);
-
+$autoload->addDirectory(nbConfig::get('nb_command_dir'), 'Command.php', true);
 $output = new nbConsoleOutput();
 $output->setFormatter(new nbAnsiColorFormatter());
 $logger = nbLogger::getInstance();
