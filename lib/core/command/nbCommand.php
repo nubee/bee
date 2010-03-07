@@ -34,6 +34,12 @@ abstract class nbCommand
     $parser->addOptions($this->getOptions());
 
     $parser->parse($commandLine);
+    if(!$parser->isValid())
+      throw new InvalidArgumentException(sprintf(
+        "[nbCommand::run] Command \"%s\" execution failed: \n  - %s",
+        $this->getFullName(),
+        implode("  \n- ", $parser->getErrors())
+      ));
     
     $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
   }
@@ -214,5 +220,10 @@ abstract class nbCommand
   public function formatLine($text, $level)
   {
     return $this->logger->formatLine($text, $level);
+  }
+
+  public function getSynopsys()
+  {
+    return $this->getName() . $this->getArguments() . $this->getOptions();
   }
 }

@@ -22,16 +22,9 @@ class nbCommandLineParser
    * @param nbArgumentSet $arguments A nbArgumentSet object
    * @param nbOptionSet   $options   A setOptions object
    */
-  public function __construct(nbArgumentSet $arguments = null, nbOptionSet $options = null)
+  public function __construct(array $arguments = array(), array $options = array())
   {
-    if (null === $arguments)
-      $arguments = new nbArgumentSet();
-
     $this->setArguments($arguments);
-
-    if (null === $options)
-      $options = new nbOptionSet();
-
     $this->setOptions($options);
   }
 
@@ -40,9 +33,9 @@ class nbCommandLineParser
    *
    * @param nbArgumentSet $arguments A nbArgumentSet object
    */
-  public function setArguments(nbArgumentSet $arguments)
+  public function setArguments(array $arguments)
   {
-    $this->arguments = $arguments;
+    $this->arguments = new nbArgumentSet($arguments);
   }
 
   /**
@@ -70,9 +63,9 @@ class nbCommandLineParser
    *
    * @param nbOptionSet $options A nbOptionSet object
    */
-  public function setOptions(nbOptionSet $options)
+  public function setOptions(array $options)
   {
-    $this->options = $options;
+    $this->options = new nbOptionSet($options);
   }
 
   /**
@@ -82,6 +75,7 @@ class nbCommandLineParser
    */
   public function addOptions(nbOptionSet $options)
   {
+    //print_r($this->options->getOptions());
     $this->options->mergeOptions($options);
   }
 

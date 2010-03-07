@@ -29,25 +29,29 @@ TXT
     $command = $this;
     if(isset($arguments['command_name'])) {
       $commandName = $arguments['command_name'];
-      $command = $this->getApplication()->getCommands()->getCommand($commandName);
+      $command = $this->getApplication()->getCommand($commandName);
     }
 
+    $this->log($this->formatHelp($command));
+  }
+
+  public function formatHelp(nbCommand $command)
+  {
     $max = 0;
     foreach($command->getArgumentsArray() as $argument) {
       $length = strlen($argument->getName()) + 2;
       if($max < $length) $max = $length;
     }
     foreach($command->getOptionsArray() as $option) {
-      $length = strlen($option->getName()) + 5;
+      $length = strlen($option->getName()) + 6;
       if($max < $length) $max = $length;
     }
-    
-    $res = $this->getApplication()->formatHelpString(
-            $command->getFullName(),
-            $command->getArguments(),
-            $command->getOptions(),
-            $command->getDescription());
-    
-    $this->log($res);
+
+    $res = nbHelpFormatter::formatSynopsys($command->getSynopsys());
+    $res .= nbHelpFormatter::formatArguments($command->getArguments(), $max);
+    $res .= nbHelpFormatter::formatOptions($command->getOptions(), $max - 6);
+    $res .= nbHelpFormatter::formatDescription($command->getDescription());
+
+    return $res;
   }
 }

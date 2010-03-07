@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../../../vendor/lime/lime.php';
+require_once dirname(__FILE__) . '/../../../../lib/vendor/lime/lime.php';
 require_once dirname(__FILE__) . '/../../../../lib/core/autoload/nbAutoload.php';
 
 $t = new lime_test(4);

@@ -26,26 +26,9 @@ class DummyApplication extends nbApplication
 
   protected function configure()
   {
-    
   }
+
   protected function handleOptions(array $options)
   {
-
-  }
-  protected function formatSynopsys($synopsys)
-  {
-    return $synopsys;
-  }
-  protected function formatArguments(nbArgumentSet $argumentSet, $max)
-  {
-    return (string)$argumentSet;
-  }
-  protected function formatOptions(nbOptionSet $optionSet, $max)
-  {
-    return (string)$argumentSet;
-  }
-  protected function formatDescription($description)
-  {
-    return $description;
   }
 }

@@ -8,7 +8,10 @@
  */
 class nbOptionSet {
 
-  private $options = array(),$shortcuts = array(), $requiredCount = 0;
+  private
+    $options = array(),
+    $shortcuts = array(),
+    $requiredCount = 0;
 
   /**
    * Constructor.
@@ -102,7 +105,7 @@ class nbOptionSet {
   public function addOptions($options = array())
   {
     if(! is_array($options))
-      throw new InvalidArgumentException("first argument must be an array");
+      throw new InvalidArgumentException("[nbOptionSet::addOptions] First argument must be an array");
     foreach ($options as $option)
       $this->addOption($option);
   }
@@ -126,9 +129,10 @@ class nbOptionSet {
   public function addOption(nbOption $option)
   {
     if($this->hasOption($option->getName()))
-      throw new InvalidArgumentException(sprintf("option %s already exists",$option->getName()));
+      throw new InvalidArgumentException(sprintf('[nbOptionSet::addOption] Option "%s" already exists', $option->getName()));
     if($this->hasOption($option->getShortcut()))
-      throw new InvalidArgumentException(sprintf("shortcut %s already registered",$option->getShortcut()));
+      throw new InvalidArgumentException(sprintf('[nbOptionSet::addOption] Shortcut "%s" already registered', $option->getShortcut()));
+    
     $this->options[$option->getName()] = $option;
     if($option->hasShortcut())
       $this->shortcuts[$option->getShortcut()] = $option;
@@ -146,11 +150,11 @@ class nbOptionSet {
   public function getOption($optionName)
   {
     if(!$this->hasOption($optionName))
-      throw new RangeException(sprintf('option %s doesn\'t exist',$optionName));
-    if(strlen($optionName) > 1)
-      return $this->options[$optionName];
-    else
-      return $this->shortcuts[$optionName];
+      throw new RangeException(sprintf('[nbOptionSet::getOption] Option "%s" doesn\'t exist', $optionName));
+
+    return (strlen($optionName) > 1) 
+      ? $this->options[$optionName]
+      : $this->shortcuts[$optionName];
   }
 
   /**

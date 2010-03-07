@@ -24,7 +24,7 @@ $t->is($application->hasOptions(), true, '__construct() returns an application w
 $t->is($application->getOptions()->count(), 5, '__construct() returns an application with 5 options');
 
 $t->comment('ApplicationTest - Test run');
-$foo = new DummyCommand('foo');
+$foo = new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))));
 $bar = new DummyCommand('bar', new nbArgumentSet(array(new nbArgument('first', nbArgument::REQUIRED))));
 $bas = new DummyCommand('bas', null, new nbOptionSet(array(new nbOption('first', 'f'))));
 $fas = new DummyCommand('fas');

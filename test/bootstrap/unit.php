@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../vendor/lime/lime.php';
+require_once dirname(__FILE__) . '/../../lib/vendor/lime/lime.php';
 require_once dirname(__FILE__) . '/../../lib/core/autoload/nbAutoload.php';
 
 $basedir = dirname(__FILE__);
@@ -13,7 +13,7 @@ $autoload->addDirectory('lib/', '*.php', true);
 $autoload->addDirectory('test/lib/', '*.php', true);
 
 $output = new nbConsoleOutput();
-$output->setFormatter(new nbAnsiColorFormatter());
+//$output->setFormatter(new nbAnsiColorFormatter());
 $logger = nbLogger::getInstance();
 $logger->setOutput($output);
 

@@ -44,7 +44,7 @@ abstract class nbApplication
 
   public function run($commandLine = null)
   {
-    $this->parser = new nbCommandLineParser($this->arguments, $this->options);
+    $this->parser = new nbCommandLineParser($this->arguments->getArguments(), $this->options->getOptions());
     $this->parser->parse($commandLine);
 
     if($this->handleOptions($this->parser->getOptionValues()))
@@ -71,36 +71,6 @@ abstract class nbApplication
     return $this->version;
   }
 
-  public function formatHelpString($name, $argumentSet, $optionSet, $description)
-  {
-    $max = 0;
-    foreach($argumentSet->getArguments() as $argument) {
-      $length = strlen($argument->getName()) + 2;
-      if($max < $length) $max = $length;
-    }
-    foreach($optionSet->getOptions() as $option) {
-      $length = strlen($option->getName()) + 6;
-      if($max < $length) $max = $length;
-    }
-
-    $synopsys = $this->getName();
-    if ($name != '')
-      $synopsys .= ' '. $name;
-    $synopsys .= $argumentSet . $optionSet;
-
-    $res = $this->formatSynopsys($synopsys);
-    $res .= $this->formatArguments($argumentSet, $max);
-    $res .= $this->formatOptions($optionSet, $max - 6);
-    $res .= $this->formatDescription($description);
-
-    return $res;
-  }
-
-  protected abstract function formatSynopsys($synopsys);
-  protected abstract function formatArguments(nbArgumentSet $argumentSet, $max);
-  protected abstract function formatOptions(nbOptionSet $optionSet, $max);
-  protected abstract function formatDescription($description);
-
   protected abstract function configure();
 
   protected function handleOptions(array $options)
@@ -120,11 +90,34 @@ abstract class nbApplication
     }
 
     if(isset($options['help'])) {
-      $logger->log($this->formatHelpString('', $this->arguments, $this->options, ''));
+      $logger->log($this->formatHelp($this->arguments, $this->options));
       return true;
     }
 
     return false;
+  }
+
+
+  public function formatHelp()
+  {
+    $max = 0;
+    foreach($this->arguments->getArguments() as $argument) {
+      $length = strlen($argument->getName()) + 2;
+      if($max < $length) $max = $length;
+    }
+    foreach($this->options->getOptions() as $option) {
+      $length = strlen($option->getName()) + 6;
+      if($max < $length) $max = $length;
+    }
+
+    $synopsys = $this->getName();
+    $synopsys .= $this->arguments . $this->options;
+
+    $res = nbHelpFormatter::formatSynopsys($synopsys);
+    $res .= nbHelpFormatter::formatArguments($this->arguments, $max);
+    $res .= nbHelpFormatter::formatOptions($this->options, $max - 6);
+
+    return $res;
   }
 
   protected function log($text, $level = null)
@@ -180,6 +173,11 @@ abstract class nbApplication
   public function getCommands()
   {
     return $this->commands;
+  }
+
+  public function getCommand($name)
+  {
+    return $this->commands->getCommand($name);
   }
 
     /**
@@ -286,7 +284,7 @@ abstract class nbApplication
     $messages[] = str_repeat(' ', $len);
 
     $output = new nbFileOutput(STDERR);
-    $output->setFormatter(new nbAnsiColorFormatter());
+//    $output->setFormatter(new nbAnsiColorFormatter());
     $logger = nbLogger::getInstance();
     $logger->setOutput($output);
     $logger->log("\n");
