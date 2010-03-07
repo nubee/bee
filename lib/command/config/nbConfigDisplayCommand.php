@@ -18,13 +18,24 @@ The <info>config:display</info> displays the project configuration:
    <info>./bee config:display</info>
 TXT
         );
+
+    $this->setOptions(new nbOptionSet(array(
+      new nbOption('filter', 'f', nbOption::PARAMETER_REQUIRED, 'Print only a subset of keys'),
+    )));
   }
 
   protected function execute(array $arguments = array(), array $options = array())
   {
     $message = $this->formatLine('Project configuration', nbLogger::COMMENT);
     $message .= "\n";
-    $params = nbConfig::getAll(true);
+    if(isset($options['filter'])) {
+      $params = nbConfig::get($options['filter']);
+      $params = nbArrayUtils::getAssociative($params);
+      $message .= $this->formatLine('Filter is: <info>'.$options['filter'].'</info> ', nbLogger::COMMENT);
+      $message .= "\n";
+    }
+    else
+      $params = nbConfig::getAll(true);
     ksort($params);
 
     $max = 0;

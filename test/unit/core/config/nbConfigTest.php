@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(30);
+$t = new lime_test(22);
 
 $t->comment('nbConfigTest - Test get all');
 nbConfig::reset();
@@ -49,66 +49,6 @@ $t->is(nbConfig::get('bar_sub'), 'subValue', 'nbConfig::set() sets a new value f
 nbConfig::set('bar_sub2', 'subValue2');
 $t->is(nbConfig::get('bar'), array('sub'=>'subValue', 'sub2'=>'subValue2') , 'nbConfig::set() sets a new value for key');
 nbConfig::reset();
-
-$t->comment('nbConfigTest - Test getAssociative');
-
-$key1 = array('foo' => 'fooValue');
-$t->is(nbConfig::getAssociative($key1), $key1, 'nbConfig::getAssociative() returns an associative array of all config keys');
-
-$key1 = array('foo' => array('bar', 'baz'));
-$t->is(nbConfig::getAssociative($key1), $key1, 'nbConfig::getAssociative() returns an associative array of all config keys');
-
-$key1 = array('foo' => array('bar' => 'baz'));
-$result = array('foo_bar' => 'baz');
-$t->is(nbConfig::getAssociative($key1), $result, 'nbConfig::getAssociative() returns an associative array of all config keys');
-
-$key1 = array('foo' => array('bar' => array('baz' => 'baq')));
-$result = array('foo_bar_baz' => 'baq');
-$t->is(nbConfig::getAssociative($key1), $result, 'nbConfig::getAssociative() returns an associative array of all config keys');
-
-$key1 = array('foo' => 'fooValue', 'bar' => 'barValue');
-$t->is(nbConfig::getAssociative($key1), $key1, 'nbConfig::getAssociative() returns an associative array of all config keys');
-
-$key1 = array(
-  'foo' => 'fooValue',
-  'bar' => array('barValue1', 'barValue2')
-);
-$t->is(nbConfig::getAssociative($key1), $key1, 'nbConfig::getAssociative() returns an associative array of all config keys');
-
-$key1 = array(
-  'foo' => 'fooValue',
-  'bar' => array(
-    'bar1' => 'barValue1',
-    'bar2' => 'barValue2'
-  )
-);
-
-$result = array(
-  'foo' => 'fooValue',
-  'bar_bar1' => 'barValue1',
-  'bar_bar2' => 'barValue2'
-);
-$t->is(nbConfig::getAssociative($key1), $result, 'nbConfig::getAssociative() returns an associative array of all config keys');
-
-$key1 = array(
-  'foo' => 'fooValue',
-  'bar' => array(
-    'bar1' => 'barValue1',
-    'bar2' => 'barValue2'
-  ),
-  'baz' => array(
-    'baz1' => array('subbaz' => array('a', 'b', 'c'))
-  )
-);
-
-$result = array(
-  'foo' => 'fooValue',
-  'bar_bar1' => 'barValue1',
-  'bar_bar2' => 'barValue2',
-  'baz_baz1_subbaz' => array('a', 'b', 'c')
-);
-$t->is(nbConfig::getAssociative($key1), $result, 'nbConfig::getAssociative() returns an associative array of all config keys');
-
 $t->comment('nbConfigTest - Test add');
 
 $key1 = array('foo' => 'fooValue');

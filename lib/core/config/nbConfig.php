@@ -45,7 +45,7 @@ class nbConfig
 
   public static function getAll($associative = false)
   {
-    return $associative ? self::getAssociative(self::$config) : self::$config;
+    return $associative ? nbArrayUtils::getAssociative(self::$config) : self::$config;
   }
 
   public static function remove($key)
@@ -73,26 +73,8 @@ class nbConfig
 	$prefix = trim($prefix,' _.,?');
 	if(strlen($prefix)>0)
 		$prefix .= '_';
-    foreach(self::getAssociative($array) as $path=>$value)
+    foreach(nbArrayUtils::getAssociative($array) as $path=>$value)
       self::set($prefix.$path,$value);
   }
 
-  public static function getAssociative($array, $path = '')
-  {
-    $result = array();
-    foreach($array as $key => $value) {
-      if(strlen($path))
-        $key = $path.'_'.$key;
-      if(self::isAssociative($value))
-        $result = array_merge(self::getAssociative($value,$key),$result);
-      else
-        $result[$key] = $value;
-    }
-    return $result;
-  }
-
-  private function isAssociative($array)
-  {
-    return (is_array($array) && 0 !== count(array_diff_key($array, array_keys(array_keys($array)))));
-  }
 }
