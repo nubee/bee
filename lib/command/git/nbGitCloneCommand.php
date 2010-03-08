@@ -27,7 +27,7 @@ TXT
   {
     $this->log('Cloning git repository: ' . $arguments['repository'], nbLogger::COMMENT);
     $this->log("\n");
-    $shell = new nbShell(true);
+    $shell = new nbShell();
     $shell->execute('git clone ' . $arguments['repository']);
 
     //$this->log($this->formatLine(' ' . implode("\n ", $shell->getOutput()), nbLogger::COMMENT));
