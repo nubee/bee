@@ -15,7 +15,7 @@ class nbShellExecuteCommand extends nbCommand
         new nbArgument('command_name', nbArgument::REQUIRED, 'The command to execute')
       )))
       ->setOptions(new nbOptionSet(array(
-        new nbOption('redirect', '', nbOption::PARAMETER_REQUIRED, 'Redirects output to file')
+        new nbOption('redirect', 'r', nbOption::PARAMETER_NONE, 'Redirects output to file')
       )))
       ->setBriefDescription('Executes a shell command')
       ->setDescription(<<<TXT

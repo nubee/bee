@@ -4,78 +4,75 @@ class nbShell
 {
   private
     $redirectOutput,
+    $returnCode,
     $output,
     $error;
 
   public function __construct($redirectOutput = false)
   {
-    //echo sprintf("output redirected: %s\n", ($redirectOutput ? 'true' : 'false'));
     $this->redirectOutput = $redirectOutput;
+    $this->returnCode = null;
   }
 
   public function execute($command, array &$output = null)
   {
-//    stream_filter_prepend(STDOUT, "string.rot13");
-//    stream_filter_prepend(STDERR, "string.rot13");
+    $descriptors = array(
+      0 => array("pipe", "r"),
+      1 => array("pipe", "w"),
+      2 => array("pipe", "w")
+    );
 
-//    stream_filter_append(STDOUT, "string.toupper");
-
-//    echo "test";
-    $descriptors = array();
-//    if($this->redirectOutput) {
-      $descriptors[] = array("pipe", "r");  // stdin is a pipe that the child will read from
-      $descriptors[] = array("pipe", "w");  // stdout is a pipe that the child will write to
-      $descriptors[] = array("pipe", "w");   // stderr is a pipe that the child will write to
-/*    }
-    else {
-      $descriptors[] = STDIN;
-      $descriptors[] = STDOUT;
-      $descriptors[] = STDERR;
-    }
-*/
     $process = proc_open($command, $descriptors, $pipes);
+
     if(!is_resource($process))
       throw new LogicException('Process cannot be spawned');
 
-    while(($stdout = !feof($pipes[1])) && ($stderr = !feof($pipes[2]))) {
-      if(true === $this->redirectOutput) {
-        if($stdout)
-          $this->output .= fgets($pipes[1]);
-        if($stderr)
-          $this->error .= fgets($pipes[2]);
-      } else {
-        if($stdout) {
-          $outputLine = fgets($pipes[1]);
-          $this->output .= $outputLine;
-          echo $outputLine;
+    $stdoutDone = null;
+    $stderrDone = null;
+    while (true) {
+      $rx = array(); // The program's stdout/stderr
+
+      if (!$stdoutDone) $rx[] = $pipes[1];
+      if (!$stderrDone) $rx[] = $pipes[2];
+
+      //echo "stream_select: " . stream_select($x = array(), $tx = array(), $rx, 0) . "\n";
+      stream_select($rx, $tx = array(), $ex = array(), 10);
+      
+      foreach ($rx as $r) {
+        if ($r == $pipes[1]) {
+          $res = fgets($pipes[1]);
+          $this->output .= $res;
+          if(!$this->redirectOutput)
+            echo $res;
+          if (!$stdoutDone && feof($pipes[1])) {
+            fclose($pipes[1]); $stdoutDone = true;
+          }
         }
-        if($stderr) {
-          $errorLine = fgets($pipes[2]);
-          $this->error .= $errorLine;
-          echo $errorLine;
+        if ($r == $pipes[2]) {
+          $res = fgets($pipes[2]);
+          $this->error .= $res;
+          if(!$this->redirectOutput)
+            echo $res;
+          if (!$stderrDone && feof($pipes[2])) {
+            fclose($pipes[2]); $stderrDone = true;
+          }
         }
       }
+
+      if($stdoutDone && $stderrDone)
+        break;
     }
 
-/*    if($this->redirectOutput) {
-      fclose($pipes[0]);
-      
-      $this->output = stream_get_contents($pipes[1]);
-      fclose($pipes[1]);
-
-      $this->error = stream_get_contents($pipes[2]);
-      fclose($pipes[2]);
-    }
-*/
     $this->returnCode = proc_close($process);
-    if(0 !== $this->returnCode) {
-      throw new LogicException(sprintf(
-        '[nbShell::execute] Command "%s" exited with error code %s',
-        $command, $this->returnCode
-      ));
-    }
+    
+//    if(0 !== $this->returnCode) {
+//      throw new LogicException(sprintf(
+//        '[nbShell::execute] Command "%s" exited with error code %s',
+//        $command, $this->returnCode
+//      ));
+//    }
 
-    return ($this->returnCode == 0);
+    return ($this->returnCode === 0);
   }
 
   public function getOutput()
