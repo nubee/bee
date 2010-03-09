@@ -45,8 +45,8 @@ class nbCommandSet {
 
   public function addCommand(nbCommand $command)
   {
-    if($this->hasCommand($command->getName()))
-      throw new InvalidArgumentException(sprintf("[nbCommandSet::addCommand] Command %s already exists", $command->getName()));
+    if($this->hasCommand($command->getFullName()))
+      throw new InvalidArgumentException(sprintf("[nbCommandSet::addCommand] Command %s already exists", $command->getFullName()));
 
     $this->commands[$command->getFullName()] = $command;
   }
@@ -75,7 +75,7 @@ class nbCommandSet {
   {
     $res = array();
     foreach ($this->commands as $command)
-      $res[$command->getName()] = $command->getValue();
+      $res[$command->getFullName()] = $command->getValue();
 
     return $res;
   }
