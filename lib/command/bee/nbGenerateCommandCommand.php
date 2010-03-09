@@ -19,7 +19,7 @@ TXT
     )));
 
     $this->setOptions(new nbOptionSet(array(
-      new nbOption('file', 'f', nbOption::PARAMETER_OPTIONAL, 'This option overwrites the existing file')
+      new nbOption('force', 'f', nbOption::PARAMETER_NONE, 'This option overwrites the existing file')
     )));
   }
 
@@ -28,34 +28,39 @@ TXT
     $namespace = $arguments['namespace'];
     $commandName = $arguments['command_name'];
     $className = $arguments['class_name'];
-    $b = false;
+    $f = false;
 
-    try
-    {
     $this->log('Creating folder '. nbConfig::get('nb_command_dir') . '/'. $namespace, nbLogger::COMMENT);
     $this->log("\n");
+    try
+    {
       nbFileSystem::mkdir(nbConfig::get('nb_command_dir') . '/'. $namespace);
     }
     catch (Exception $e)
     {
-      $this->log('mkdir failed: ' . $e->getMessage(), nbLogger::ERROR);
+      $this->log('mkdir: the folder already exists ... skipping' , nbLogger::INFO);
+      $this->log("\n");
     }
-    $this->log("\n");
     $this->log('Coping '. nbConfig::get('nb_template_dir'). '/beeCommand.tpl'. ' in ' .
-             nbConfig::get('nb_command_dir') . '/'. $namespace . '/' . $className . '.php', nbLogger::INFO);
+             nbConfig::get('nb_command_dir') . '/'. $namespace . '/' . $className . '.php', nbLogger::COMMENT);
     $this->log("\n");
 
-    if(isset($options['file']))
-      $b = true;
-    try
-    {
+    if(isset($options['force']))
+        $f = true;
+
+    $file = nbConfig::get('nb_command_dir') . '/'. $namespace . '/' .$className . '.php';
+    try {
       nbFileSystem::copy(nbConfig::get('nb_template_dir'). '/beeCommand.tpl'
-            , nbConfig::get('nb_command_dir') . '/'. $namespace . '/' .$className . '.php', $b);
+            , $file , $f);
     }
-    catch(Exception $e)
-    {
-      $this->log('copy failed: ' . $e->getMessage(), nbLogger::ERROR);
+    catch(Exception $e) {
+      $this->log($e->getMessage(),nbLogger::ERROR);
     }
 
+    $search_string  = array('%%CLASSNAME%%','%%NAMESPACE%%', '%%NAME%%');
+    $replace_string = array($className, $namespace, $commandName);
+
+    $fsr = new File_SearchReplace($search_string, $replace_string, $file, '', false);
+    $fsr->doSearch();
   }
 }
