@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(34);
+$t = new lime_test(35);
 
 $foo = new DummyCommand("foo");
 $bar = new DummyCommand("ns:bar");
@@ -119,3 +119,14 @@ $t->ok($set->hasCommand('b'), '->hasCommand() returns true for alias "b"');
 $t->ok($set->hasCommand('bar'), '->hasCommand() returns true for alias "bar"');
 $t->isa_ok($set->getCommand('b'), 'DummyCommand', '->getCommand() returns a command for alias "b"');
 $t->isa_ok($set->getCommand('bar'), 'DummyCommand', '->getCommand() returns a command for alias "bar"');
+
+$t->comment('nbCommandSetTest - Test command with same name an different namespace');
+$command1 = new DummyCommand("foo:cmd");
+$command2 = new DummyCommand("bar:cmd");
+try {
+  new nbCommandSet(array($command1, $command2));
+  $t->pass('->new doesn\'t throws exception');
+}
+catch(Exception $e) {
+  $t->fail('->new doesn\'t throws exception');
+}
