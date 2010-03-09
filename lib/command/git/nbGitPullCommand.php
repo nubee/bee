@@ -15,9 +15,9 @@ class nbGitPullCommand extends nbCommand
       ->addArgument(new nbArgument('branch', nbArgument::OPTIONAL, 'The branch to pull to', 'master'))
       ->setBriefDescription('Pulls from a git repository')
       ->setDescription(<<<TXT
-The <info>git:pull</info> command pulls from a git repository:
+The <info>{$this->getFullName()}</info> command pulls from a git repository:
 
-   <info>./bee git:pull origin master</info>
+   <info>./bee {$this->getFullName()} origin master</info>
 TXT
       );
   }
@@ -28,7 +28,13 @@ TXT
     $this->log('  --> to: ' . $arguments['branch'], nbLogger::COMMENT);
     $this->log("\n");
     $shell = new nbShell();
-    $shell->execute(sprintf('git pull %s %s', $arguments['repository'], $arguments['branch']));
+
+    if(!$shell->execute(sprintf('git pull %s %s', $arguments['repository'], $arguments['branch']))) {
+      throw new LogicException(sprintf(
+        "[nbGitPullCommand::execute] Error executing command:\n  repository arg -> %s\n  branch arg -> %s",
+        $arguments['repository'], $arguments['branch']
+      ));
+    }
 
     //$this->log($this->formatLine(' ' . implode("\n ", $shell->getOutput()), nbLogger::COMMENT));
   }

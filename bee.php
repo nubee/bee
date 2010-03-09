@@ -17,7 +17,7 @@ if(file_exists(nbConfig::get('nb_project_config')))
 
 $autoload->addDirectory(nbConfig::get('nb_command_dir'), 'Command.php', true);
 $output = new nbConsoleOutput();
-//$output->setFormatter(new nbAnsiColorFormatter());
+$output->setFormatter(new nbAnsiColorFormatter());
 $logger = nbLogger::getInstance();
 $logger->setOutput($output);
 

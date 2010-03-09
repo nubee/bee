@@ -16,9 +16,9 @@ class nbGitCloneCommand extends nbCommand
       )))
       ->setBriefDescription('Clones a git repository')
       ->setDescription(<<<TXT
-The <info>git:clone</info> command clones a git repository:
+The <info>{$this->getFullName()}</info> command clones a git repository:
 
-   <info>./bee git:clone repository</info>
+   <info>./bee {$this->getFullName()} repository</info>
 TXT
       );
   }
@@ -28,7 +28,13 @@ TXT
     $this->log('Cloning git repository: ' . $arguments['repository'], nbLogger::COMMENT);
     $this->log("\n");
     $shell = new nbShell();
-    $shell->execute('git clone ' . $arguments['repository']);
+
+    if(!$shell->execute('git clone ' . $arguments['repository'])) {
+      throw new LogicException(sprintf(
+        "[nbGitCloneCommand::execute] Error executing command:\n  repository arg -> %s",
+        $arguments['repository']
+      ));
+    }
 
     //$this->log($this->formatLine(' ' . implode("\n ", $shell->getOutput()), nbLogger::COMMENT));
   }

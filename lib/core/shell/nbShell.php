@@ -35,7 +35,7 @@ class nbShell
       if (!$stdoutDone) $rx[] = $pipes[1];
       if (!$stderrDone) $rx[] = $pipes[2];
 
-      //echo "stream_select: " . stream_select($x = array(), $tx = array(), $rx, 0) . "\n";
+//      echo "stream_select: " . stream_select($rx, $tx = array(), $ex = array($rx[0]), 0) . "\n";
       stream_select($rx, $tx = array(), $ex = array(), 10);
       
       foreach ($rx as $r) {

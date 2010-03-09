@@ -13,9 +13,9 @@ class nbGitInitCommand extends nbCommand
     $this->setName('git:init')
       ->setBriefDescription('Initializes a git repository')
       ->setDescription(<<<TXT
-The <info>git:init</info> command initializes a git repository:
+The <info>{$this->getFullName()}</info> command initializes a git repository:
 
-   <info>./bee git:init</info>
+   <info>./bee {$this->getFullName()}</info>
 TXT
         );
   }
@@ -25,7 +25,10 @@ TXT
     $this->log('Initializing git repository', nbLogger::COMMENT);
     $this->log("\n");
     $shell = new nbShell();
-    $shell->execute('git init');
+
+    if(!$shell->execute('git init')) {
+      throw new LogicException("[nbGitInitCommand::execute] Error executing command");
+    }
     
     //$this->log($this->formatLine(' ' . implode("\n ", $shell->getOutput()), nbLogger::COMMENT));
   }
