@@ -25,7 +25,10 @@ TXT
     $this->log('Initializing git repository', nbLogger::COMMENT);
     $this->log("\n");
     $shell = new nbShell();
-    $shell->execute('git init');
+
+    if(!$shell->execute('git init')) {
+      throw new LogicException("[nbGitInitCommand::execute] Error executing command");
+    }
     
     //$this->log($this->formatLine(' ' . implode("\n ", $shell->getOutput()), nbLogger::COMMENT));
   }
