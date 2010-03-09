@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(39);
+$t = new lime_test(40);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
@@ -108,3 +108,12 @@ try {
 catch(InvalidArgumentException $e) {
   $t->pass('->setAlias() throws an InvalidArgumentException if command alias already defined');
 }
+
+$t->comment('nbCommandTest - Test command without arguments');
+try {
+  $command = new DummyNoArgsCommand();
+  $t->pass('->new doesn\'t throws exception');
+} catch (Exception $e) {
+  $t->fail('->new doesn\'t throws exception');
+}
+
