@@ -19,9 +19,9 @@ class nbShellExecuteCommand extends nbCommand
       )))
       ->setBriefDescription('Executes a shell command')
       ->setDescription(<<<TXT
-The <info>shell:execute</info> executes a shell command or an alias defined in project.yml:
+The <info>{$this->getFullName()}</info> executes a shell command or an alias defined in project.yml:
 
-   <info>./bee shell:execute command</info>
+   <info>./bee {$this->getFullName()} command</info>
 TXT
         );
   }

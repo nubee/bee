@@ -13,9 +13,9 @@ class nbConfigDisplayCommand extends nbCommand
     $this->setName('config:display')
       ->setBriefDescription('Displays project configuration')
       ->setDescription(<<<TXT
-The <info>config:display</info> displays the project configuration:
+The <info>{$this->getFullName()}</info> displays the project configuration:
 
-   <info>./bee config:display</info>
+   <info>./bee {$this->getFullName()}</info>
 TXT
         );
 

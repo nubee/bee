@@ -13,9 +13,9 @@ class nbHelpCommand extends nbApplicationCommand
     $this->setName('help')
       ->setBriefDescription('Displays help for a command')
       ->setDescription(<<<TXT
-The <info>help</info> command displays help for a given task:
+The <info>{$this->getFullName()}</info> command displays help for a given task:
 
-   <info>./bee help command</info>
+   <info>./bee {$this->getFullName()} command</info>
 TXT
         );
     

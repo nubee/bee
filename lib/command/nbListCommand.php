@@ -13,9 +13,9 @@ class nbListCommand extends nbApplicationCommand
     $this->setName('list')
       ->setBriefDescription('List commands')
       ->setDescription(<<<TXT
-The <info>list</info> command displays all available commands:
+The <info>{$this->getFullName()}</info> command displays all available commands:
 
-   <info>./bee list</info>
+   <info>./bee {$this->getFullName()}</info>
 TXT
         );
     $this->setArguments(new nbArgumentSet(array(

@@ -6,9 +6,9 @@ class nbGenerateCommandCommand extends nbCommand
     $this->setName('generate:command')
       ->setBriefDescription('')
       ->setDescription(<<<TXT
-The <info>generate:command</info> command:
+The <info>{$this->getFullName()}</info> command:
 
-   <info>./bee generate:command</info>
+   <info>./bee {$this->getFullName()}</info>
 TXT
         );          
 
