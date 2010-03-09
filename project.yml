@@ -5,3 +5,5 @@ proj:
   shell:
     aliases:
       alias1: echo "you called alias1"
+      dir-lin: dir --help
+      dir-win: dir /?

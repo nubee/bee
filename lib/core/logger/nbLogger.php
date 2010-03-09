@@ -36,6 +36,13 @@ class nbLogger
     $this->output->write($text);
   }
 
+  public function logLine($text, $level = null)
+  {
+    if($level)
+      $text = $this->format($text, $level);
+    $this->output->write($text . "\n");
+  }
+
   public function format($text, $level)
   {
     $level = self::formatLevel($level);
