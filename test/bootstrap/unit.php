@@ -11,6 +11,10 @@ $autoload->addDirectory('vendor/', '*.php', true);
 $autoload->addDirectory('lib/', '*.php', true);
 $autoload->addDirectory('test/lib/', '*.php', true);
 
+$configParser = new nbYamlConfigParser();
+$configParser->parseFile(dirname(__FILE__) . '/../../config/config.yml');
+$configParser->parseFile(dirname(__FILE__) . '/../config/config.test.yml');
+
 $output = new nbConsoleOutput();
 //$output->setFormatter(new nbAnsiColorFormatter());
 $logger = nbLogger::getInstance();
