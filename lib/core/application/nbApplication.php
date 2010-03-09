@@ -53,6 +53,8 @@ abstract class nbApplication
     $commandName = 'list';
     if($this->parser->hasArgumentValue('command'))
       $commandName = $this->parser->getArgumentValue('command');
+    else
+      $commandLine = $commandName . ' ' . $commandLine;
 
     $command = $this->commands->getCommand($commandName);
     $r = new ReflectionClass($command);
