@@ -28,7 +28,13 @@ TXT
     $this->log('  --> to: ' . $arguments['branch'], nbLogger::COMMENT);
     $this->log("\n");
     $shell = new nbShell();
-    $shell->execute(sprintf('git pull %s %s', $arguments['repository'], $arguments['branch']));
+
+    if(!$shell->execute(sprintf('git pull %s %s', $arguments['repository'], $arguments['branch']))) {
+      throw new LogicException(sprintf(
+        "[nbGitPullCommand::execute] Error executing command:\n  repository arg -> %s\n  branch arg -> %s",
+        $arguments['repository'], $arguments['branch']
+      ));
+    }
 
     //$this->log($this->formatLine(' ' . implode("\n ", $shell->getOutput()), nbLogger::COMMENT));
   }
