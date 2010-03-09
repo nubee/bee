@@ -16,9 +16,9 @@ class nbGitCloneCommand extends nbCommand
       )))
       ->setBriefDescription('Clones a git repository')
       ->setDescription(<<<TXT
-The <info>git:clone</info> command clones a git repository:
+The <info>{$this->getFullName()}</info> command clones a git repository:
 
-   <info>./bee git:clone repository</info>
+   <info>./bee {$this->getFullName()} repository</info>
 TXT
       );
   }

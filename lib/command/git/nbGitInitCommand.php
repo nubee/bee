@@ -13,9 +13,9 @@ class nbGitInitCommand extends nbCommand
     $this->setName('git:init')
       ->setBriefDescription('Initializes a git repository')
       ->setDescription(<<<TXT
-The <info>git:init</info> command initializes a git repository:
+The <info>{$this->getFullName()}</info> command initializes a git repository:
 
-   <info>./bee git:init</info>
+   <info>./bee {$this->getFullName()}</info>
 TXT
         );
   }

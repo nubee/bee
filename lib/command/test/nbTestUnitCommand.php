@@ -13,7 +13,7 @@ class nbTestUnitCommand extends nbCommand
     $this->setName('test:unit')
       ->setBriefDescription('Run unit tests')
       ->setDescription(<<<TXT
-The <info>test:unit</info> command
+The <info>{$this->getFullName()}</info> command
 TXT
     );
     
