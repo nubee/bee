@@ -24,14 +24,21 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Pushing ' . $arguments['branch'] . ' into repository: ' . $arguments['repository'], nbLogger::COMMENT);
+    $this->log('Pushing ', nbLogger::COMMENT);
+    $this->log($arguments['branch']);
+    $this->log(' into repository ', nbLogger::COMMENT);
+    $this->log($arguments['repository']);
     $this->log("\n");
     $shell = new nbShell();
 
-    if(!$shell->execute(sprintf('git push %s %s', $arguments['repository'], $arguments['branch']))) {
-      throw new LogicException(sprintf(
-        "[nbGitPushCommand::execute] Error executing command:\n  repository arg -> %s\n  branch arg -> %s",
-        $arguments['repository'], $arguments['branch']
+    $command = 'git push "' . $arguments['repository'] . '" "' . $arguments['branch'] . '"';
+    if(!$shell->execute($command)) {
+      throw new LogicException(sprintf("
+[nbGitPushCommand::execute] Error executing command:
+  %s
+  repository -> %s
+  branch     -> %s",
+        $command, $arguments['repository'], $arguments['branch']
       ));
     }
 

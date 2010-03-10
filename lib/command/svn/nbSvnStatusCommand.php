@@ -14,6 +14,10 @@ class nbSvnStatusCommand extends nbCommand
       ->setArguments(new nbArgumentSet(array(
         new nbArgument('local', nbArgument::OPTIONAL, 'Working copy path', '.')
       )))
+      ->setOptions(new nbOptionSet(array(
+        new nbOption('username', 'u', nbOption::PARAMETER_REQUIRED, 'Specify an username'),
+        new nbOption('password', 'p', nbOption::PARAMETER_REQUIRED, 'Specify a password')
+      )))
       ->setBriefDescription('Shows working copy status')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command shows working copy stauts:
@@ -25,13 +29,27 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Status of ' . $arguments['local'], nbLogger::COMMENT);
+    $this->log('Status of ', nbLogger::COMMENT);
+    $this->log($arguments['local']);
     $this->log("\n");
     $shell = new nbShell();
-    if(!$shell->execute('svn status ' . $arguments['local'])) {
-      throw new LogicException(sprintf(
-        "[nbSvnStatusCommand::execute] Error executing command:\n  local arg -> %s",
-        $arguments['local']
+    $client = new nbSvnClient();
+
+    $command = $client->getStatusCmdLine(
+      $arguments['local'],
+      isset($options['username']) ? $options['username'] : '',
+      isset($options['password']) ? $options['password'] : ''
+    );
+
+    if(!$shell->execute($command)) {
+      throw new LogicException(sprintf("
+[nbSvnStatusCommand::execute] Error executing command:
+  %s
+  local    -> %s
+  username -> %s
+  password -> %s
+",
+        $command, $arguments['local'], $options['username'], $options['password']
       ));
     }
   }

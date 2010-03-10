@@ -15,6 +15,10 @@ class nbSvnCommitCommand extends nbCommand
         new nbArgument('message', nbArgument::REQUIRED, 'Commit message'),
         new nbArgument('local', nbArgument::OPTIONAL, 'Working copy path', '.')
       )))
+      ->setOptions(new nbOptionSet(array(
+        new nbOption('username', 'u', nbOption::PARAMETER_REQUIRED, 'Specify an username'),
+        new nbOption('password', 'p', nbOption::PARAMETER_REQUIRED, 'Specify a password')
+      )))
       ->setBriefDescription('Send changes from your working copy to the repository.')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command send changes from your working copy to the repository:
@@ -26,13 +30,29 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Committing changes of ' . $arguments['local'], nbLogger::COMMENT);
+    $this->log('Committing changes of ', nbLogger::COMMENT);
+    $this->log($arguments['local']);
     $this->log("\n");
     $shell = new nbShell();
-    if(!$shell->execute('svn commit ' . $arguments['local'] . ' -m "' . $arguments['message'] . '"')) {
-      throw new LogicException(sprintf(
-        "[nbSvnCommitCommand::execute] Error executing command:\n  message arg -> %s\n  local arg -> %s",
-        $arguments['message'], $arguments['local']
+    $client = new nbSvnClient();
+    
+    $command = $client->getCommitCmdLine(
+      $arguments['local'],
+      $arguments['message'],
+      isset($options['username']) ? $options['username'] : '',
+      isset($options['password']) ? $options['password'] : ''
+    );
+
+    if(!$shell->execute($command)) {
+      throw new LogicException(sprintf("
+[nbSvnCommitCommand::execute] Error executing command:
+  %s
+  local    -> %s
+  message  -> %s
+  username -> %s
+  password -> %s
+",
+        $command, $arguments['local'], $arguments['message'], $options['username'], $options['password']
       ));
     }
   }

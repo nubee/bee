@@ -35,7 +35,8 @@ class nbFileSystem
     if(file_exists($path))
       throw new Exception('[nbFileSystem::mkdir] The path "'.$path.'" already exists');
     else
-    if(!mkdir($path, null, $withParents))
+    // mode is ignored in windows... but not in linux & co.
+    if(!mkdir($path, 0777, $withParents))
     {
       throw new Exception('[nbFileSystem::mkdir] error creating folder '.$path);
     }

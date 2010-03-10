@@ -25,8 +25,8 @@ TXT
     $this->log('Status of branch', nbLogger::COMMENT);
     $this->log("\n");
     $shell = new nbShell();
-    if(!$shell->execute('git status')) {
+
+    if(!$shell->execute('git status'))
       throw new LogicException("[nbGitStatusCommand::execute] Error executing command");
-    }
   }
 }

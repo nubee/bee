@@ -24,15 +24,21 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Pulling from repository: ' . $arguments['repository'], nbLogger::COMMENT);
-    $this->log('  --> to: ' . $arguments['branch'], nbLogger::COMMENT);
+    $this->log('Pulling from repository ', nbLogger::COMMENT);
+    $this->log($arguments['repository']);
+    $this->log(' to ', nbLogger::COMMENT);
+    $this->log($arguments['branch']);
     $this->log("\n");
     $shell = new nbShell();
 
-    if(!$shell->execute(sprintf('git pull %s %s', $arguments['repository'], $arguments['branch']))) {
-      throw new LogicException(sprintf(
-        "[nbGitPullCommand::execute] Error executing command:\n  repository arg -> %s\n  branch arg -> %s",
-        $arguments['repository'], $arguments['branch']
+    $command = 'git pull "' . $arguments['repository'] . '" "' . $arguments['branch'] . '"';
+    if(!$shell->execute($command)) {
+      throw new LogicException(sprintf("
+[nbGitPullCommand::execute] Error executing command:
+  %s
+  repository -> %s
+  branch     -> %s",
+        $command, $arguments['repository'], $arguments['branch']
       ));
     }
 
