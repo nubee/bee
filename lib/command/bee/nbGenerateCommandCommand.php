@@ -39,12 +39,10 @@ TXT
 
     $this->log('Creating folder '. nbConfig::get('nb_command_dir') . '/'. $namespace, nbLogger::COMMENT);
     $this->log("\n");
-    try
-    {
+    try {
       nbFileSystem::mkdir(nbConfig::get('nb_command_dir') . '/'. $namespace);
     }
-    catch (Exception $e)
-    {
+    catch (Exception $e) {
       $this->log('mkdir: the folder already exists ... skipping' , nbLogger::INFO);
       $this->log("\n");
     }
