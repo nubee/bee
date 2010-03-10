@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * Generates a new command.
+ *
+ * @package    bee
+ * @subpackage command
+ */
 class nbGenerateCommandCommand extends nbCommand
 {
   protected function configure()
@@ -60,7 +67,6 @@ TXT
     $search_string  = array('%%CLASSNAME%%','%%NAMESPACE%%', '%%NAME%%');
     $replace_string = array($className, $namespace, $commandName);
 
-    $fsr = new File_SearchReplace($search_string, $replace_string, $file, '', false);
-    $fsr->doSearch();
+    nbFileSystem::replaceTokens($search_string, $replace_string, $file);
   }
 }

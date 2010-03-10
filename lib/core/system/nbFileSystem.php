@@ -127,5 +127,18 @@ class nbFileSystem
       if(!rename($source, $destination))
         throw new Exception('[nbFileSystem::moveDir] rename command failed');
   }
+
+  /**
+   * This method find-replace a string or more strings.
+   *
+   * @param string $search_string  The string or array of strings to search.
+   * @param string $replace_string  The string or array of strings to replace.
+   * @param $file
+   */
+  public static function replaceTokens($search_string, $replace_string, $file)
+  {
+    $fsr = new File_SearchReplace($search_string, $replace_string, $file, '', false);
+    $fsr->doSearch();
+  }
   
 }
