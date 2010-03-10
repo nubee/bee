@@ -14,7 +14,7 @@ class nbShell
     $this->returnCode = null;
   }
 
-  public function execute($command, array &$output = null)
+  public function execute($command)
   {
     $descriptors = array(
       0 => array("pipe", "r"),

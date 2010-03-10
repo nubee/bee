@@ -16,6 +16,10 @@ class nbSvnImportCommand extends nbCommand
         new nbArgument('repository', nbArgument::REQUIRED, 'Repository path'),
         new nbArgument('local', nbArgument::OPTIONAL, 'Working copy path', '.')
       )))
+      ->setOptions(new nbOptionSet(array(
+        new nbOption('username', 'u', nbOption::PARAMETER_REQUIRED, 'Specify an username'),
+        new nbOption('password', 'p', nbOption::PARAMETER_REQUIRED, 'Specify a password')
+      )))
       ->setBriefDescription('Commit unversioned files or folders into the svn repository')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command commit unversioned files or folders into the svn repository:
@@ -30,10 +34,26 @@ TXT
     $this->log('Importing ' . $arguments['local'] . ' in ' . $arguments['repository'], nbLogger::COMMENT);
     $this->log("\n");
     $shell = new nbShell();
-    if(!$shell->execute('svn import ' . $arguments['local'] . ' ' . $arguments['repository'] . ' -m "' . $arguments['message'] . '"')) {
-      throw new LogicException(sprintf(
-        "[nbSvnImportCommand::execute] Error executing command:\n  message arg -> %s\n  repository arg -> %s\n  local arg -> %s",
-        $arguments['message'], $arguments['repository'], $arguments['local']
+    $client = new nbSvnClient();
+
+    $command = $client->getImportCmdLine(
+      $arguments['local'],
+      $arguments['repository'],
+      $arguments['message'],
+      isset($options['username']) ? $options['username'] : '',
+      isset($options['password']) ? $options['password'] : ''
+    );
+
+    if(!$shell->execute($command)) {
+      throw new LogicException(sprintf("
+[nbSvnImportCommand::execute] Error executing command:
+  local      -> %s
+  repository -> %s
+  message    -> %s
+  username   -> %s
+  password   -> %s
+",
+        $arguments['local'], $arguments['repository'], $arguments['message'], $options['username'], $options['password']
       ));
     }
   }

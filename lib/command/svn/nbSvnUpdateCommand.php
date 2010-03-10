@@ -14,6 +14,10 @@ class nbSvnUpdateCommand extends nbCommand
       ->setArguments(new nbArgumentSet(array(
         new nbArgument('local', nbArgument::OPTIONAL, 'Working copy path', '.')
       )))
+      ->setOptions(new nbOptionSet(array(
+        new nbOption('username', 'u', nbOption::PARAMETER_REQUIRED, 'Specify an username'),
+        new nbOption('password', 'p', nbOption::PARAMETER_REQUIRED, 'Specify a password')
+      )))
       ->setBriefDescription('Update a working copy')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command update a working copy:
@@ -28,10 +32,22 @@ TXT
     $this->log('Updating ' . $arguments['local'], nbLogger::COMMENT);
     $this->log("\n");
     $shell = new nbShell();
-    if(!$shell->execute('svn update ' . $arguments['local'])) {
-      throw new LogicException(sprintf(
-        "[nbSvnUpdateCommand::execute] Error executing command:\n  local arg -> %s",
-        $arguments['local']
+    $client = new nbSvnClient();
+
+    $command = $client->getUpdateCmdLine(
+      $arguments['local'],
+      isset($options['username']) ? $options['username'] : '',
+      isset($options['password']) ? $options['password'] : ''
+    );
+
+    if(!$shell->execute($command)) {
+      throw new LogicException(sprintf("
+[nbSvnUpdateCommand::execute] Error executing command:
+  local      -> %s
+  username   -> %s
+  password   -> %s
+",
+        $arguments['local'], $options['username'], $options['password']
       ));
     }
   }
