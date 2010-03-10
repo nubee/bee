@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(7);
+$t = new lime_test(9);
 
 $t->comment('nbLoggerTest - Test log');
 $output = new nbStreamOutput();
@@ -24,3 +24,10 @@ $t->is($logger->format('text', nbLogger::INFO), '<info>text</info>', '->format()
 
 $logger->logLine("test");
 $t->is($output->getStream(), "test\n", '->logLine() has written "test" with line feed');
+
+$t->comment('nbLoggerTest - Test log array');
+$logger->log(array('item1', 'item2'));
+$t->is($output->getStream(), "0 => item1\n1 => item2\n", '->log() has printed an array');
+
+$logger->log(array('1' => 'item1', 'two' => 'item2'));
+$t->is($output->getStream(), "1 => item1\ntwo => item2\n", '->log() has printed an array');

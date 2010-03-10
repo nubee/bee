@@ -11,6 +11,8 @@ class nbLogger
   const COMMENT = 3;
   const QUESTION = 4;
 
+  const endl = "\n";
+
   protected function __construct()
   {
     $this->output = new nbConsoleOutput();
@@ -31,7 +33,9 @@ class nbLogger
 
   public function log($text, $level = null)
   {
-    if($level)
+    if(is_array($text))
+      $text = $this->formatArray($text, $level);
+    elseif($level)
       $text = $this->format($text, $level);
     $this->output->write($text);
   }
@@ -40,7 +44,7 @@ class nbLogger
   {
     if($level)
       $text = $this->format($text, $level);
-    $this->output->write($text . "\n");
+    $this->output->write($text . self::endl);
   }
 
   public function format($text, $level)
@@ -51,7 +55,7 @@ class nbLogger
 
   public function formatLine($text, $level)
   {
-    return $this->format($text, $level) . "\n";
+    return $this->format($text, $level) . self::endl;
   }
 
   public static function formatLevel($level)
@@ -64,5 +68,17 @@ class nbLogger
     }
 
     throw new RangeException("[nbLogger::formatLevel] Undefined level: " . $level);
+  }
+
+  private function formatArray(array $array, $level = null)
+  {
+    $text = '';
+    foreach ($array as $key => $value)
+    {
+      $text .= ($level)
+        ? $this->format($key, $level) . ' => ' . $this->format($value, $level) . self::endl
+        : $key . ' => ' . $value . self::endl;
+    }
+    return $text;
   }
 }

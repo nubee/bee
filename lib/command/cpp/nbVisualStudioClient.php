@@ -145,6 +145,7 @@ class nbVisualStudioClient
       if ($this->projectLibs != '')
         $cmdLine .= $this->projectLibs;
     }
+    $cmdLine .= " /OUT:$this->outputName";
 
     // From <http://msdn.microsoft.com/en-us/library/hx5b050y%28VS.80%29.aspx>
     // To pass a file to the linker, specify the filename on the command line after the LINK command.

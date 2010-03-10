@@ -10,7 +10,7 @@ $t->is($client->getCompilerCmdLine(),
         'cl /c /nologo /EHsc /Gd /TP /Od /RTC1 /MDd /DUNICODE /D_UNICODE /DWIN32 /D_DEBUG',
         '->getCompilerCmdLine() has all default flags for LIB + DEBUG configuration');
 $t->is($client->getLinkerCmdLine(),
-        'lib /nologo obj/Debug/*.obj',
+        'lib /nologo /OUT:outputFile obj/Debug/*.obj',
         '->getLinkerCmdLine() has all default flags for LIB + DEBUG configuration');
 
 $t->comment('nbVisualStudioClientTest - Test default compiler line for LIB RELEASE project');
@@ -19,7 +19,7 @@ $t->is($client->getCompilerCmdLine(),
         'cl /c /nologo /EHsc /Gd /TP /O2 /Oi /GL /MD /Gy /DUNICODE /D_UNICODE /DWIN32 /DNDEBUG',
         '->getCompilerCmdLine() has all default flags for LIB + RELEASE configuration');
 $t->is($client->getLinkerCmdLine(),
-        'lib /nologo obj/Release/*.obj',
+        'lib /nologo /OUT:outputFile obj/Release/*.obj',
         '->getLinkerCmdLine() has all default flags for LIB + RELEASE configuration');
 
 $t->comment('nbVisualStudioClientTest - Test default compiler line for APP DEBUG project');
@@ -28,7 +28,7 @@ $t->is($client->getCompilerCmdLine(),
         'cl /c /nologo /EHsc /Gd /TP /Od /RTC1 /MDd /DUNICODE /D_UNICODE /DWIN32 /D_DEBUG',
         '->getCompilerCmdLine() has all default flags for APP + DEBUG configuration');
 $t->is($client->getLinkerCmdLine(),
-        'link /nologo obj/Debug/*.obj',
+        'link /nologo /OUT:outputFile obj/Debug/*.obj',
         '->getLinkerCmdLine() has all default flags for APP + DEBUG configuration');
 
 $t->comment('nbVisualStudioClientTest - Test default compiler line for APP RELEASE project');
@@ -37,7 +37,7 @@ $t->is($client->getCompilerCmdLine(),
         'cl /c /nologo /EHsc /Gd /TP /O2 /Oi /GL /MD /Gy /DUNICODE /D_UNICODE /DWIN32 /DNDEBUG',
         '->getCompilerCmdLine() has all default flags for APP + RELEASE configuration');
 $t->is($client->getLinkerCmdLine(),
-        'link /nologo obj/Release/*.obj',
+        'link /nologo /OUT:outputFile obj/Release/*.obj',
         '->getLinkerCmdLine() has all default flags for APP + RELEASE configuration');
 
 
@@ -67,13 +67,13 @@ $t->comment('nbVisualStudioClientTest - Test set additional libs to linker');
 $client = new nbVisualStudioClient('outputFile', nbVisualStudioClient::APP);
 $client->setProjectLibraries(array('lib1'));
 $t->is($client->getLinkerCmdLine(),
-        'link /nologo /Llib1 obj/Debug/*.obj',
+        'link /nologo /Llib1 /OUT:outputFile obj/Debug/*.obj',
         '->setProjectLibraries() sets one additional lib to linker command line');
 
 $client->setProjectLibraries(array('lib1', 'lib2'));
 //$client = new nbVisualStudioClient('outputFile', nbVisualStudioClient::APP);
 $t->is($client->getLinkerCmdLine(),
-        'link /nologo /Llib1 /Llib2 obj/Debug/*.obj',
+        'link /nologo /Llib1 /Llib2 /OUT:outputFile obj/Debug/*.obj',
         '->setProjectLibraries() sets all additional libs to linker command line');
 
 
@@ -84,7 +84,7 @@ $t->is($client->getCompilerCmdLine(),
         'cl /c /nologo /EHsc /Gd /TP /Od /RTC1 /MDd /Gm /DUNICODE /D_UNICODE /DWIN32 /D_DEBUG',
         '->getCompilerCmdLine() has /Gm option for incremental compiling');
 $t->is($client->getLinkerCmdLine(),
-        'link /nologo /INCREMENTAL obj/Debug/*.obj',
+        'link /nologo /INCREMENTAL /OUT:outputFile obj/Debug/*.obj',
         '->getLinkerCmdLine() has /INCREMENTAL option for incremental linking');
 
 $t->comment('nbVisualStudioClientTest - Test set multiprocess option');
