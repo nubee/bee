@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
 $dataDir = dirname(__FILE__) . '/../../../data/system';
 
-$t = new lime_test(26);
+$t = new lime_test(30);
 
 $t->comment('nbFileFinder - Test create');
 
@@ -73,8 +73,12 @@ $finder = nbFileFinder::create('file');
 $names = array('Class1.php', 'Class2.php', 'Class3.php');
 $files = $finder->discard('Class.java')->in($dataDir);
 $t->is(count($files), 3, '->discard() found 3 files');
+for($i = 0; $i != count($files); ++$i)
+  $files[$i] = nbFileSystem::getFileName($files[$i]);
 for($i = 0; $i != count($files); ++$i) {
-  $t->is(nbFileSystem::getFileName($files[$i]), $names[$i], '->discard() found ' . $names[$i]);
+  $t->ok(in_array($files[$i], $names), '->discard() found ' . $files[$i]);
+  $names = array_diff($names, array($files[$i]));
+  //$t->is(nbFileSystem::getFileName($files[$i]), $names[$i], '->discard() found ' . $names[$i]);
 }
 
 $t->comment('nbFileFinder - Test add and sort');
@@ -86,4 +90,15 @@ $files = $finder->add('*.php')->in($dataDir);
 $t->is(count($files), 3, '->add() found 3 files');
 for($i = 0; $i != count($files); ++$i) {
   $t->is(nbFileSystem::getFileName($files[$i]), $names[$i], '->add() found ' . $names[$i]);
+}
+
+$t->comment('nbFileFinder - Test discard and sort');
+
+$finder = nbFileFinder::create('file');
+$names = array('Class1.php', 'Class2.php', 'Class3.php');
+$finder->sortByName();
+$files = $finder->discard('Class.java')->in($dataDir);
+$t->is(count($files), 3, '->discard() found 3 files');
+for($i = 0; $i != count($files); ++$i) {
+  $t->is(nbFileSystem::getFileName($files[$i]), $names[$i], '->discard() found ' . $names[$i]);
 }
