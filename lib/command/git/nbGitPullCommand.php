@@ -29,10 +29,14 @@ TXT
     $this->log("\n");
     $shell = new nbShell();
 
-    if(!$shell->execute(sprintf('git pull %s %s', $arguments['repository'], $arguments['branch']))) {
-      throw new LogicException(sprintf(
-        "[nbGitPullCommand::execute] Error executing command:\n  repository arg -> %s\n  branch arg -> %s",
-        $arguments['repository'], $arguments['branch']
+    $command = 'git pull "' . $arguments['repository'] . '" "' . $arguments['branch'] . '"';
+    if(!$shell->execute($command)) {
+      throw new LogicException(sprintf("
+[nbGitPullCommand::execute] Error executing command:
+  %s
+  repository -> %s
+  branch     -> %s",
+        $command, $arguments['repository'], $arguments['branch']
       ));
     }
 

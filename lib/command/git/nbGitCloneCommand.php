@@ -12,27 +12,34 @@ class nbGitCloneCommand extends nbCommand
   {
     $this->setName('git:clone')
       ->setArguments(new nbArgumentSet(array(
-        new nbArgument('repository', nbArgument::REQUIRED, 'The repository to clone')
+        new nbArgument('repository', nbArgument::REQUIRED, 'The repository to clone'),
+        new nbArgument('local', nbArgument::OPTIONAL, 'The path into clone repository', '.')
       )))
       ->setBriefDescription('Clones a git repository')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command clones a git repository:
 
-   <info>./bee {$this->getFullName()} repository</info>
+   <info>./bee {$this->getFullName()} repository local</info>
 TXT
       );
   }
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Cloning git repository: ' . $arguments['repository'], nbLogger::COMMENT);
+    $this->log('Cloning git repository: ' . $arguments['repository'] . ' in ' . $arguments['local'], nbLogger::COMMENT);
     $this->log("\n");
     $shell = new nbShell();
+    $command = 'git clone "' . $arguments['repository'] . '" "' . $arguments['local'] . '"';
 
-    if(!$shell->execute('git clone ' . $arguments['repository'])) {
-      throw new LogicException(sprintf(
-        "[nbGitCloneCommand::execute] Error executing command:\n  repository arg -> %s",
-        $arguments['repository']
+    //TODO: $shell->execute($command) returns true on git error (!)
+    if(!$shell->execute($command)) {
+      throw new LogicException(sprintf("
+[nbGitCloneCommand::execute] Error executing command:
+  %s
+  repository -> %s
+  local      -> %s
+",
+        $command, $arguments['repository'], $arguments['local']
       ));
     }
 
