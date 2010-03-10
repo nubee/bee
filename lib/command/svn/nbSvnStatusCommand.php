@@ -29,7 +29,8 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Status of ' . $arguments['local'], nbLogger::COMMENT);
+    $this->log('Status of ', nbLogger::COMMENT);
+    $this->log($arguments['local']);
     $this->log("\n");
     $shell = new nbShell();
     $client = new nbSvnClient();
@@ -43,11 +44,12 @@ TXT
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("
 [nbSvnStatusCommand::execute] Error executing command:
-  local      -> %s
-  username   -> %s
-  password   -> %s
+  %s
+  local    -> %s
+  username -> %s
+  password -> %s
 ",
-        $arguments['local'], $options['username'], $options['password']
+        $command, $arguments['local'], $options['username'], $options['password']
       ));
     }
   }

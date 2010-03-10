@@ -24,8 +24,10 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Pulling from repository: ' . $arguments['repository'], nbLogger::COMMENT);
-    $this->log('  --> to: ' . $arguments['branch'], nbLogger::COMMENT);
+    $this->log('Pulling from repository ', nbLogger::COMMENT);
+    $this->log($arguments['repository']);
+    $this->log(' to ', nbLogger::COMMENT);
+    $this->log($arguments['branch']);
     $this->log("\n");
     $shell = new nbShell();
 

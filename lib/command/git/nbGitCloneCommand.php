@@ -26,7 +26,10 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Cloning git repository: ' . $arguments['repository'] . ' in ' . $arguments['local'], nbLogger::COMMENT);
+    $this->log('Cloning repository ', nbLogger::COMMENT);
+    $this->log($arguments['repository']);
+    $this->log(' in ', nbLogger::COMMENT);
+    $this->log($arguments['repository']);
     $this->log("\n");
     $shell = new nbShell();
     $command = 'git clone "' . $arguments['repository'] . '" "' . $arguments['local'] . '"';

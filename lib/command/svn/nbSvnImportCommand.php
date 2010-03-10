@@ -31,7 +31,10 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Importing ' . $arguments['local'] . ' in ' . $arguments['repository'], nbLogger::COMMENT);
+    $this->log('Importing ', nbLogger::COMMENT);
+    $this->log($arguments['local']);
+    $this->log(' in ', nbLogger::COMMENT);
+    $this->log($arguments['repository']);
     $this->log("\n");
     $shell = new nbShell();
     $client = new nbSvnClient();
@@ -47,13 +50,14 @@ TXT
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("
 [nbSvnImportCommand::execute] Error executing command:
+  %s
   local      -> %s
   repository -> %s
   message    -> %s
   username   -> %s
   password   -> %s
 ",
-        $arguments['local'], $arguments['repository'], $arguments['message'], $options['username'], $options['password']
+        $command, $arguments['local'], $arguments['repository'], $arguments['message'], $options['username'], $options['password']
       ));
     }
   }

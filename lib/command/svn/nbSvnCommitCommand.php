@@ -30,7 +30,8 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Committing changes of ' . $arguments['local'], nbLogger::COMMENT);
+    $this->log('Committing changes of ', nbLogger::COMMENT);
+    $this->log($arguments['local']);
     $this->log("\n");
     $shell = new nbShell();
     $client = new nbSvnClient();
@@ -45,12 +46,13 @@ TXT
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("
 [nbSvnCommitCommand::execute] Error executing command:
+  %s
   local    -> %s
   message  -> %s
   username -> %s
   password -> %s
 ",
-        $arguments['local'], $arguments['message'], $options['username'], $options['password']
+        $command, $arguments['local'], $arguments['message'], $options['username'], $options['password']
       ));
     }
   }
