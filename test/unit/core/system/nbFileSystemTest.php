@@ -191,6 +191,30 @@ $t->ok(is_dir($sandboxDir.'/dir2'. '/dir'), 'nbFileSystem::move() renames folder
 
 cleanDir($sandboxDir);
 
+
+// Works only on linux
+//$t->comment('nbFileSystemTest - Test Chmod');
+//
+//cleanDir($sandboxDir);
+//
+//$filename = $sandboxDir . '/file1';
+//nbFileSystem::touch($filename);
+//$perms = fileperms($filename);
+//echo nbFileSystem::formatPermissions($filename);
+//$t->ok($perms & 0x0080);  // user write
+//
+//nbFileSystem::chmod($filename, 0440);
+//$perms = fileperms($filename);
+//echo nbFileSystem::formatPermissions($filename);
+//$t->ok(!($perms & 0x0080));  // user write
+//
+//nbFileSystem::chmod($filename, 0744);
+//$perms = fileperms($filename);
+//echo nbFileSystem::formatPermissions($filename);
+//$t->ok($perms & 0x0080);  // user write
+//
+//cleanDir($sandboxDir);
+
 function cleanDir($dir)
 {
   $finder = nbFileFinder::create('any');
