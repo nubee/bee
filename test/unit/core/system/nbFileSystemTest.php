@@ -190,6 +190,8 @@ nbFileSystem::mkdir($sandboxDir.'/dir2');
 nbFileSystem::move($sandboxDir.'/dir1', $sandboxDir.'/dir2/dir');
 $t->ok(is_dir($sandboxDir.'/dir2'. '/dir'), 'nbFileSystem::move() renames folder in "destination" if basename("destination") doesn\'t exist');
 
+cleanDir($sandboxDir);
+
 function cleanDir($dir)
 {
   $finder = nbFileFinder::create('any');
@@ -200,4 +202,3 @@ function cleanDir($dir)
     else
       nbFileSystem::delete($file);
 }
-
