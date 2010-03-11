@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__).'/../../../bootstrap/unit.php');
 
-$t = new lime_test(48);
+$t = new lime_test(60);
 
 // __construct()
 $t->comment('nbCommandLineParserTest - Test constructor');
@@ -65,7 +65,7 @@ $optionSet = array(
   new nbOption('foo13', 'x', nbOption::PARAMETER_REQUIRED),
 );
 $parser = new nbCommandLineParser($argumentSet, $optionSet);
-$parser->parse('--foo1 -f --foo3 --foo4="foo4" --foo5=foo5 -r"foo6 foo6" -t foo7 --foo8="foo" --foo8=bar -s -u foo10 -vfoo11 -wx foo13 foo1 foo2 foo3 foo4 "foo5 foo5"');
+$parser->parse('--foo1 -f --foo3 --foo4="foo4" --foo5=foo5 -r "foo6 foo6" -t foo7 --foo8="foo" --foo8=bar -s -u foo10 -v foo11 -w -x foo13 foo1 foo2 foo3 foo4 "foo5 foo5"');
 $arguments = array(
   'foo1' => 'foo1',
   'foo2' => array('foo2', 'foo3', 'foo4', 'foo5 foo5')
@@ -160,6 +160,33 @@ $parser = new nbCommandLineParser(array(), $options);
 $parser->parse('--foo');
 $t->ok(!$parser->isValid(), '->isValid() returns false if the options are not valid');
 $t->is(count($parser->getErrors()), 1, '->getErrors() returns an array of errors');
+
+$options = array(new nbOption('foo', 'f', nbOption::PARAMETER_REQUIRED));
+$parser = new nbCommandLineParser(array(), $options);
+$parser->parse('-f=bar');
+$t->ok(!$parser->isValid(), '->isValid() returns false if the options are not valid');
+$t->ok(count($parser->getErrors()) > 1, '->getErrors() returns an array of errors');
+
+$options = array(
+  new nbOption('foo', 'f', nbOption::PARAMETER_REQUIRED),
+  new nbOption('bar', 'b', nbOption::PARAMETER_OPTIONAL, '', ''),
+  new nbOption('cos', 'c', nbOption::PARAMETER_NONE)
+  );
+$parser = new nbCommandLineParser(array(), $options);
+$parser->parse('-fb argfoo argbar');
+$t->ok($parser->isValid(), '->isValid() returns true if the options are valid');
+$t->is($parser->getOptionValue('foo'), 'argfoo', '->getOptionValue() returns "argfoo" if param is "foo"');
+$t->is($parser->getOptionValue('bar'), 'argbar', '->getOptionValue() returns "argbar" if param is "bar"');
+$parser->parse('-fb argfoo');
+$t->ok($parser->isValid(), '->isValid() returns true if the options are valid');
+$t->is($parser->getOptionValue('foo'), 'argfoo', '->getOptionValue() returns "argfoo" if param is "foo"');
+$t->is($parser->getOptionValue('bar'), '', '->getOptionValue() returns "" if param is "bar"');
+$parser->parse('-cfb argfoo');
+$t->ok($parser->isValid(), '->isValid() returns true if the options are valid');
+$t->is($parser->getOptionValue('foo'), 'argfoo', '->getOptionValue() returns "argfoo" if param is "foo"');
+$t->is($parser->getOptionValue('bar'), '', '->getOptionValue() returns "" if param is "bar"');
+$parser->parse('-bf argbar');
+$t->ok(!$parser->isValid(), '->isValid() returns false if the options are not valid');
 
 $options = array(new nbOption('foo', 'f', nbOption::PARAMETER_REQUIRED));
 $parser = new nbCommandLineParser(array(), $options);
