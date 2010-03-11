@@ -53,7 +53,6 @@ catch(Exception $e) {
   $t->pass('nbFileSystem::rmdir() removes only empty folders');
 }
 
-
 nbFileSystem::rmdir($sandboxDir.'/dir2',true);
 $t->ok(! file_exists($sandboxDir.'/dir2'),'nbFileSystem::rmdir() can remove folder recursively');
 

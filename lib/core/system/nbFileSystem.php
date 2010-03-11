@@ -139,7 +139,15 @@ class nbFileSystem
   public static function replaceTokens($search_string, $replace_string, $file)
   {
     $fsr = new File_SearchReplace($search_string, $replace_string, $file, '', false);
+    if(!fsr)
+      throw new Exception('[nbFileSystem::replaceTokens] replaceTokens command failed');
     $fsr->doSearch();
+  }
+
+  public static function chmod($file, $mode)
+  {
+    if(!chmod($filename, $mode))
+      throw new Exception('[nbFileSystem::chmod] chmod command failed');
   }
   
 }
