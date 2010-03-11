@@ -36,7 +36,7 @@ TXT
     if(count($arguments['name'])) {
       foreach($arguments['name'] as $name) {
         $finder = nbFileFinder::create('file')->followLink()->add(basename($name) . 'Test.php');
-        $files = array_merge($files, $finder->in(nbConfig::get('nb_test_dir').dirname($name)));
+        $files = array_merge($files, $finder->in(nbConfig::get('nb_test_dir') . '/' . dirname($name)));
       }
     }
     else {
