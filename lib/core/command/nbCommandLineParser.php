@@ -254,64 +254,11 @@ class nbCommandLineParser
    */
   protected function parseShortOption($argument)
   {
+    // short option must be followed by space
     // short option can be aggregated like in -vd (== -v -d)
-//    for ($i = 0, $count = strlen($argument); $i < $count; ++$i) {
-//      $shortcut = $argument[$i];
-//      $value    = true;
-//
-//      if (!$this->options->hasShortcut($shortcut)) {
-//        $this->errors[] = sprintf('The option "-%s" does not exist.', $shortcut);
-//        continue;
-//      }
-//
-//      $option = $this->options->getByShortcut($shortcut);
-//
-//      // required argument?
-//      if ($option->hasRequiredParameter()) {
-//        if ($i + 1 < strlen($argument)) {
-//          $value = substr($argument, $i + 1);
-//          $this->setOption($option, $value);
-//          break;
-//        }
-//        else {
-//          // take next element as argument (if it doesn't start with a -)
-//          if (count($this->commandLineArguments) && $this->commandLineArguments[0][0] != '-') {
-//            $value = array_shift($this->commandLineArguments);
-//            $this->setOption($option, $value);
-//            break;
-//          }
-//          else {
-//            $this->errors[] = sprintf('Option "-%s" requires an argument', $shortcut);
-//            $value = null;
-//          }
-//        }
-//      }
-//      else if ($option->hasOptionalParameter()) {
-//        if (substr($argument, $i + 1) != '')
-//          $value = substr($argument, $i + 1);
-//        else {
-//          // take next element as argument (if it doesn't start with a -)
-//          if (count($this->commandLineArguments) && $this->commandLineArguments[0][0] != '-')
-//            $value = array_shift($this->commandLineArguments);
-//          else
-//            $value = $option->getValue();
-//        }
-//
-//        $this->setOption($option, $value);
-//        break;
-//      }
-//
-//      $this->setOption($option, $value);
-//    }
-
     for ($i = 0, $count = strlen($argument); $i < $count; ++$i) {
       $shortcut = $argument[$i];
       $value    = true;
-
-//      if(1 < strlen($argument)) {
-//        $this->errors[] = 'Short option is too long!!!';
-//        return;
-//      }
 
       if (!$this->options->hasShortcut($shortcut)) {
         $this->errors[] = sprintf('The option "-%s" does not exist.', $shortcut);
