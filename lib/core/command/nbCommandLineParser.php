@@ -254,6 +254,7 @@ class nbCommandLineParser
    */
   protected function parseShortOption($argument)
   {
+    // short option must be followed by space
     // short option can be aggregated like in -vd (== -v -d)
     for ($i = 0, $count = strlen($argument); $i < $count; ++$i) {
       $shortcut = $argument[$i];
@@ -268,40 +269,27 @@ class nbCommandLineParser
 
       // required argument?
       if ($option->hasRequiredParameter()) {
-        if ($i + 1 < strlen($argument)) {
-          $value = substr($argument, $i + 1);
+        // take next element as argument (if it doesn't start with a -)
+        if (count($this->commandLineArguments) && $this->commandLineArguments[0][0] != '-') {
+          $value = array_shift($this->commandLineArguments);
           $this->setOption($option, $value);
-          break;
         }
-        else {
-          // take next element as argument (if it doesn't start with a -)
-          if (count($this->commandLineArguments) && $this->commandLineArguments[0][0] != '-') {
-            $value = array_shift($this->commandLineArguments);
-            $this->setOption($option, $value);
-            break;
-          }
-          else {
-            $this->errors[] = sprintf('Option "-%s" requires an argument', $shortcut);
-            $value = null;
-          }
-        }
+        else
+          $this->errors[] = sprintf('Option "-%s" requires an argument', $shortcut);
+
+        continue;
       }
       else if ($option->hasOptionalParameter()) {
-        if (substr($argument, $i + 1) != '')
-          $value = substr($argument, $i + 1);
-        else {
-          // take next element as argument (if it doesn't start with a -)
-          if (count($this->commandLineArguments) && $this->commandLineArguments[0][0] != '-')
-            $value = array_shift($this->commandLineArguments);
-          else
-            $value = $option->getValue();
+        // take next element as argument (if it doesn't start with a -)
+        if (count($this->commandLineArguments) && $this->commandLineArguments[0][0] != '-') {
+          $value = array_shift($this->commandLineArguments);
+          $this->setOption($option, $value);
         }
 
-        $this->setOption($option, $value);
-        break;
+        continue;
       }
 
-      $this->setOption($option, $value);
+      $this->setOption($option, true);
     }
   }
 
