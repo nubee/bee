@@ -146,7 +146,7 @@ class nbFileSystem
 
   public static function chmod($file, $mode)
   {
-    if(!chmod($filename, $mode))
+    if(!chmod($file, $mode))
       throw new Exception('[nbFileSystem::chmod] chmod command failed');
   }
   
