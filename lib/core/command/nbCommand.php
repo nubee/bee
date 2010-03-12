@@ -41,7 +41,7 @@ abstract class nbCommand
         implode("  \n- ", $parser->getErrors())
       ));
     
-    $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
+    return $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
   }
 
   protected abstract function configure();
