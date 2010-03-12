@@ -20,7 +20,7 @@ class nbAutoload
    * Retrieves the singleton instance of this class.
    *
    *
-   * @return Autoload   A sfSimpleAutoload implementation instance.
+   * @return Autoload   A nbAutoload implementation instance.
    */
   static public function getInstance()
   {
@@ -31,7 +31,7 @@ class nbAutoload
   }
 
   /**
-   * Register sfSimpleAutoload in spl autoloader.
+   * Register nbAutoload in spl autoloader.
    *
    * @return void
    */
@@ -42,13 +42,13 @@ class nbAutoload
 
     ini_set('unserialize_callback_func', 'spl_autoload_call');
     if (false === spl_autoload_register(array(self::getInstance(), 'autoload')))
-      throw new sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
+      throw new Exception(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
 
     self::$registered = true;
   }
 
   /**
-   * Unregister sfSimpleAutoload from spl autoloader.
+   * Unregister nbAutoload from spl autoloader.
    *
    * @return void
    */
