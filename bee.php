@@ -15,7 +15,7 @@ $yaml->parseFile(nbConfig::get('nb_bee_dir') . '/config/config.yml');
 if(file_exists(nbConfig::get('nb_project_config')))
   $yaml->parseFile(nbConfig::get('nb_project_config'));
 
-nbPluginLoader::getInstance()->addPlugin('nbDummy');
+nbPluginLoader::getInstance()->loadPlugins(array('nbDummy'));
 
 
 $autoload->addDirectory(nbConfig::get('nb_command_dir'), 'Command.php', true);

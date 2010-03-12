@@ -28,9 +28,21 @@ class nbPluginLoader {
 
   /**
    * Register a new plugin for autoloading.
+   *
+   */
+  public function loadPlugins($plugins = array())
+  {
+    foreach($plugins as $plugin)
+    {
+      $this->addPlugin($plugin);
+    }
+  }
+
+  /**
+   * Register a new plugin for autoloading.
    * 
    */
-  public function addPlugin($pluginName)
+  private function addPlugin($pluginName)
   {
     if(in_array($pluginName, $this->plugins))
       return;
