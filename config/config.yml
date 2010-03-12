@@ -1,5 +1,7 @@
-nb_lib_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>lib"
-nb_command_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>lib/command"
-nb_test_dir: test/unit
-nb_project_config: project.yml
-nb_template_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>data/template"
+nb:
+  lib_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>lib"
+  command_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>lib/command"
+  test_dir: test/unit
+  project_config: project.yml
+  template_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>data/template"
+  plugin_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>plugin"
