@@ -48,16 +48,16 @@ TXT
       return false;
     }
 
-    if(count($arguments['name']) || isset($options['showall'])) {
-      foreach($files as $file)
-        include($file);
-    }
+//    if(count(isset($options['showall'])) {
+//      foreach($files as $file)
+//        include($file);
+//    }
 
     $h = new lime_harness();
     $h->register($files); 
-    
-    $ret = $h->run();
-    
+
+    $ret = $h->run(isset($options['showall']));
+
     // print output to file
     if (isset($options['filename'])) {
       $fileName = $options['filename'];

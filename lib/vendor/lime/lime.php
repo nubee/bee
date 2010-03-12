@@ -746,7 +746,7 @@ class lime_harness extends lime_registration
     return lime_test::to_xml($this->to_array());
   }
 
-  public function run()
+  public function run($printTestOutput = false)
   {
     if (!count($this->files))
     {
@@ -779,10 +779,12 @@ file_put_contents('$result_file', serialize(lime_test::to_array()));
 EOF
       );
 
-      ob_start();
+      if (!$printTestOutput)
+        ob_start();
       // see http://trac.symfony-project.org/ticket/5437 for the explanation on the weird "cd" thing
       passthru(sprintf('cd & %s %s 2>&1', escapeshellarg($this->php_cli), escapeshellarg($test_file)), $return);
-      ob_end_clean();
+      if (!$printTestOutput)
+        ob_end_clean();
       unlink($test_file);
 
       $output = file_get_contents($result_file);
