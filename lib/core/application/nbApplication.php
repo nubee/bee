@@ -221,7 +221,10 @@ abstract class nbApplication
   {
     // Symfony core tasks
     //$dirs = array(sfConfig::get('sf_symfony_lib_dir').'/commmand');
-    $dirs = array(dirname(__FILE__) . '/../../command');
+    $dirs = array(nbConfig::get('nb_command_dir'));
+    foreach( nbPluginLoader::getInstance()->getPlugins() as $pluginName)
+            $dirs[] = nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/command';
+
     //$dirs[] = sfConfig::get('sf_lib_dir').'/command';
 
     $finder = nbFileFinder::create('file')->add('*Command.php');

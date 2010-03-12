@@ -47,6 +47,9 @@ class nbPluginLoader {
     $yamlParser->parseFile(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/config/config.yml',$pluginName);
   }
 
-
+  public function getPlugins()
+  {
+    return $this->plugins;
+  }
 
 }

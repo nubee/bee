@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
 $pluginName = 'tst';
 
-$t = new lime_test(4);
+$t = new lime_test(5);
 
 $t->comment('nbPluginLoader - Testing addPlugin()');
 
@@ -15,3 +15,5 @@ $t->ok(class_exists('TstPluginCommand'),'->addPlugin() adds plugin/command to au
 $t->ok(class_exists('TstPluginVendorClass'),'->addPlugin() adds plugin/vendor to autoload');
 
 $t->is(nbConfig::get($pluginName.'_foo'),'bar','->addPlugin() loads plugin configuration keys with key prefix "$pluginName" ');
+
+$t->is(nbPluginLoader::getInstance()->getPlugins(), array('tst'), '->getPlugins() returns an array loaded plugin names');

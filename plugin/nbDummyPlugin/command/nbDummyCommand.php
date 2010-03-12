@@ -17,6 +17,8 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Hello '.nbConfig::get('nbDummy_hello').' World!!!!',nbLogger::COMMENT);
+    $this->log(nbDummyLib::toUpper('Hello '.nbConfig::get('nbDummy_happy')." World!!!!\n"),nbLogger::COMMENT);
+    $this->log(nbDummyLib::toLower('Hello '.nbConfig::get('nbDummy_angry')." World!!!!\n"),nbLogger::COMMENT);
+    $this->log('Hello '.nbConfig::get('nbDummy_fool')." World!!!!\n",nbLogger::COMMENT);
   }
 }
