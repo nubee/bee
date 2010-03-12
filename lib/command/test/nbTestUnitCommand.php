@@ -30,8 +30,6 @@ TXT
   
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $h = new lime_harness();
-
     $files = array();
     if(count($arguments['name'])) {
       foreach($arguments['name'] as $name) {
@@ -44,23 +42,21 @@ TXT
       $finder = nbFileFinder::create('file')->add('*Test.php');
       $files = $finder->in(nbConfig::get('nb_test_dir', 'test/unit'));
     }
-
+    
     if(count($files) == 0) {
       $this->log('no tests found', nbLogger::ERROR);
-      return true;
+      return false;
     }
-    
-    if(count($arguments['name']) || isset($options['showall'])) {
-      foreach($files as $file)
-        include($file);
-        
-      return true;
-    }
+
+//    if(count(isset($options['showall'])) {
+//      foreach($files as $file)
+//        include($file);
+//    }
 
     $h = new lime_harness();
     $h->register($files); 
-    
-    $ret = $h->run();
+
+    $ret = $h->run(isset($options['showall']));
 
     // print output to file
     if (isset($options['filename'])) {

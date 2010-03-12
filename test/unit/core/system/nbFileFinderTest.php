@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
 $dataDir = dirname(__FILE__) . '/../../../data/system';
 
-$t = new lime_test(30);
+$t = new lime_test(32);
 
 $t->comment('nbFileFinder - Test create');
 
@@ -102,3 +102,32 @@ $t->is(count($files), 3, '->discard() found 3 files');
 for($i = 0; $i != count($files); ++$i) {
   $t->is(nbFileSystem::getFileName($files[$i]), $names[$i], '->discard() found ' . $names[$i]);
 }
+
+$t->comment('nbFileFinder - Test execute function or method');
+
+$GLOBALS['callbackFunctionCount'] = 0;
+function callbackFunction()
+{
+  ++$GLOBALS['callbackFunctionCount'];
+}
+
+class CallbackClass
+{
+  public $callbackMethodCount = 0;
+  
+  public function callbackMethod()
+  {
+    ++$this->callbackMethodCount;
+  }
+}
+
+$finder = nbFileFinder::create('file');
+$finder->execute('callbackFunction');
+$finder->add('*.php')->in($dataDir);
+$t->is($GLOBALS['callbackFunctionCount'], 3, '->execute() calls "callbackFunction" 3 times');
+
+$object = new CallbackClass();
+$finder = nbFileFinder::create('file');
+$finder->execute(array($object, 'callbackMethod'));
+$finder->add('*.php')->in($dataDir);
+$t->is($object->callbackMethodCount, 3, '->execute() calls "callbackMethod" 3 times');
