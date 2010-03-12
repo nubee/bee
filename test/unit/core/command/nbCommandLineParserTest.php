@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__).'/../../../bootstrap/unit.php');
 
-$t = new lime_test(60);
+$t = new lime_test(65);
 
 // __construct()
 $t->comment('nbCommandLineParserTest - Test constructor');
@@ -233,3 +233,24 @@ $optionSet = array(
 $parser = new nbCommandLineParser($argumentSet, $optionSet);
 $parser->parse(array('foo1Value'));
 $t->is($parser->isValid(), true, '->parse() with command line set as array');
+
+$t->comment('nbCommandLineParserTest - Test parse commandline with quote and double quote');
+$argumentSet = array(
+  new nbArgument('foo1', nbArgument::REQUIRED),
+  new nbArgument('foo2', nbArgument::OPTIONAL),
+);
+$optionSet = array(
+  new nbOption('foo1', '', nbOption::PARAMETER_NONE),
+  new nbOption('foo2', 'f', nbOption::PARAMETER_NONE)
+);
+$parser = new nbCommandLineParser($argumentSet, $optionSet);
+$parser->parse(array('"foo1\'arg"'));
+$t->is($parser->isValid(), true, '->parse() parse with success the commandline "foo1\'arg" ');
+$t->is($parser->getArgumentValue('foo1'), '"foo1\'arg"', '->getArgumentValue() return "foo1\'arg" ');
+
+$parser->parse(array('\'foo1"arg\''));
+$t->is($parser->isValid(), true, '->parse() parse with success the commandline \'foo1"arg\' ');
+$t->is($parser->getArgumentValue('foo1'), '\'foo1"arg\'', '->parse() return \'foo1"arg\'');
+
+$parser->parse(array('\'foo1"arg'));
+$t->todo('how is work?');
