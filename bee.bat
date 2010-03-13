@@ -22,7 +22,7 @@ if "%PHP_COMMAND%" == "" goto no_phpcommand
 if "%SCRIPT_DIR%" == "" (
   %PHP_COMMAND% "bee.php" %*
 ) else (
-  %PHP_COMMAND% "%SCRIPT_DIR%\bee.php" %*
+echo %PHP_COMMAND% "%SCRIPT_DIR%\bee.php" %*
 )
 goto cleanup
 

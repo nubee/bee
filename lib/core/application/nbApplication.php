@@ -219,8 +219,6 @@ abstract class nbApplication
 
   public function loadCommands()
   {
-    // Symfony core tasks
-    //$dirs = array(sfConfig::get('sf_symfony_lib_dir').'/commmand');
     $dirs = array(nbConfig::get('nb_command_dir'));
     foreach( nbPluginLoader::getInstance()->getPlugins() as $pluginName)
             $dirs[] = nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/command';

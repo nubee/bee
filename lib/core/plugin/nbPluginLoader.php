@@ -27,7 +27,7 @@ class nbPluginLoader {
   }
 
   /**
-   * Register a new plugin for autoloading.
+   * Register plugins for autoloading.
    *
    */
   public function loadPlugins($plugins = array())
@@ -49,14 +49,14 @@ class nbPluginLoader {
     $this->plugins[] = $pluginName;
 
     nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/lib');
-    nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/command');
+    nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/command','*Command.php',true);
     nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/vendor');
 
     if(! file_exists(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/config/config.yml'))
       return;
 
     $yamlParser = new nbYamlConfigParser();
-    $yamlParser->parseFile(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/config/config.yml',$pluginName);
+    $yamlParser->parseFile(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/config/config.yml');
   }
 
   public function getPlugins()
