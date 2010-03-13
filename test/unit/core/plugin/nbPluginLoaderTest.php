@@ -14,7 +14,7 @@ $t->ok(class_exists('ClassInsideTstPluginLib'),'->loadPlugin() adds plugin/lib t
 $t->ok(class_exists('TstPluginCommand'),'->loadPlugin() adds plugin/command to autoload');
 $t->ok(class_exists('TstPluginVendorClass'),'->loadPlugin() adds plugin/vendor to autoload');
 
-$t->is(nbPluginLoader::getInstance()->getPlugins(), array('tst'), '->getPlugins() returns an array loaded plugin names');
+$t->ok(in_array('tst', nbPluginLoader::getInstance()->getPlugins()), '->getPlugins() returns an array loaded plugin names');
 
 nbPluginLoader::getInstance()->loadPlugins(array($pluginName,'second'));
 

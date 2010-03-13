@@ -2,6 +2,8 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
+nbPluginLoader::getInstance()->loadPlugins(array('nbSubversion'));
+
 $t = new lime_test(16);
 
 $client = new nbSvnClient();

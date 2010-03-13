@@ -13,6 +13,10 @@ $autoload->addDirectory('test/lib/', '*.php', true);
 
 $configParser = new nbYamlConfigParser();
 $configParser->parseFile(dirname(__FILE__) . '/../../config/config.yml');
+
+//load plugins
+nbPluginLoader::getInstance()->loadAllPlugins();
+
 $configParser->parseFile(dirname(__FILE__) . '/../config/config.test.yml');
 
 $output = new nbConsoleOutput();
