@@ -27,6 +27,23 @@ class nbPluginLoader {
   }
 
   /**
+   * Register All plugins in pluginDir.
+   *
+   */
+  public function loadAllPlugins()
+  {
+
+    $plugins = nbFileFinder::create('dir')
+      ->add('*Plugin')->in($this->pluginDir);
+    foreach($plugins as $plugin)
+    {
+      //remove "Plugin" from the end of $plugin
+      $plugin = substr_replace($plugin, '', -6);
+      $this->addPlugin(basename($plugin));
+    }
+  }
+
+  /**
    * Register plugins for autoloading.
    *
    */
@@ -48,7 +65,7 @@ class nbPluginLoader {
       return;
     $this->plugins[] = $pluginName;
 
-    nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/lib');
+    nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/lib','*.php',true);
     nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/command','*Command.php',true);
     nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/vendor');
 

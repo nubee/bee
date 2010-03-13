@@ -10,7 +10,7 @@ class nbConfig
 
     $config = self::$config;
     while($k = array_shift($keys)) {
-      if(!isset($config[$k]))
+      if(!key_exists($k, $config))
         return false;
       $config = $config[$k];
     }
@@ -31,7 +31,7 @@ class nbConfig
     $keys = explode('_', $path);
     $conf = self::$config;
     while($k = array_shift($keys)) {
-      if(!isset($conf[$k]))
+      if(!key_exists($k, $conf))
         throw new InvalidArgumentException('[nbConfiguration::getElementByPath] Invalid key: ' . $path);
       $conf = $conf[$k];
     }
