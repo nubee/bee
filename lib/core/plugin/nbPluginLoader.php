@@ -61,7 +61,7 @@ class nbPluginLoader {
    */
   private function addPlugin($pluginName)
   {
-    nbLogger::getInstance()->logLine('Loading Plugin <info>'.$pluginName.'</info>',nbLogger::COMMENT);
+    //nbLogger::getInstance()->logLine('Loading Plugin '.$pluginName.'',nbLogger::COMMENT);
     if(in_array($pluginName, $this->plugins))
       return;
     $this->plugins[] = $pluginName;

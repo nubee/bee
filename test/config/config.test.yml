@@ -1,3 +1,4 @@
 nb:
+  data_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>test/data"
   sandbox_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>test/sandbox"
   plugin_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>test/data/plugin"

@@ -21,11 +21,20 @@ TXT
     $this->setArguments(new nbArgumentSet(array(
       new nbArgument('namespace', nbArgument::OPTIONAL, 'The namespace name')
     )));
+    $this->setOptions(new nbOptionSet(array(
+      new nbOption('plugins', 'p', nbOption::PARAMETER_NONE, 'Load all plugins before list commands')
+    )));
   }
 
   protected function execute(array $arguments = array(), array $options = array())
   {
     $list = array();
+
+    if(key_exists('plugins',$options)) {
+      nbPluginLoader::getInstance()->loadAllPlugins();
+      $this->getApplication()->loadCommands();
+    }
+
     $commandSet = $this->getApplication()->getCommands();
 
     $namespace = $arguments['namespace'];
