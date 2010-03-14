@@ -9,12 +9,22 @@ $autoload->addDirectory(dirname(__FILE__) . '/vendor/', '*.php', true);
 
 nbConfig::set('nb_bee_dir',dirname(__FILE__));
 
+if('WIN' === strtoupper(substr(PHP_OS, 0, 3))) {
+  nbConfig::set('nb_user_dir',getenv('APPDATA').'/.bee');
+} else {
+  nbConfig::set('nb_user_dir',getenv('HOME').'/.bee/');
+}
+nbConfig::set('nb_user_config',nbConfig::get('nb_user_dir').'/config.yml');
+
+
 $yaml = new nbYamlConfigParser();
 $yaml->parseFile(nbConfig::get('nb_bee_dir') . '/config/config.yml');
-//$yaml->parseFile(nbConfig::get($_ENV['home']) . '/.bee/config.yml');
+
+if(file_exists(nbConfig::get('nb_user_config')))
+  $yaml->parseFile(nbConfig::get('nb_user_config'));
+
 if(file_exists(nbConfig::get('nb_project_config')))
   $yaml->parseFile(nbConfig::get('nb_project_config'));
-
 
 if(! $default_plugins = nbConfig::get('nb_default_plugins'))
   $default_plugins = array();
