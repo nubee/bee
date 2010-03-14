@@ -16,7 +16,6 @@ if('WIN' === strtoupper(substr(PHP_OS, 0, 3))) {
 }
 nbConfig::set('nb_user_config',nbConfig::get('nb_user_dir').'/config.yml');
 
-
 $yaml = new nbYamlConfigParser();
 $yaml->parseFile(nbConfig::get('nb_bee_dir') . '/config/config.yml');
 

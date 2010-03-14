@@ -66,6 +66,8 @@ class nbPluginLoader {
       return;
     $this->plugins[] = $pluginName;
 
+    $this->pluginDirs[$pluginName] = nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin';
+
     nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/lib','*.php',true);
     nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/command','*Command.php',true);
     nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/vendor');
@@ -80,6 +82,11 @@ class nbPluginLoader {
   public function getPlugins()
   {
     return $this->plugins;
+  }
+
+  public function getPluginDirs()
+  {
+    return $this->pluginDirs;
   }
 
 }

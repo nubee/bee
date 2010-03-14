@@ -3,7 +3,7 @@ proj:
   description: bee is a project automation tool written in PHP
   type: php/app
   bee:  # bee extra configuration keys
-    plugins: []
+    plugins: ~ 
   repository:
     type: git
   shell:
