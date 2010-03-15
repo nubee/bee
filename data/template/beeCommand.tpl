@@ -1,6 +1,6 @@
 <?php
 
-class %%CLASSNAME%%
+class %%CLASSNAME%%  extends nbCommand
 {
   protected function configure()
   {
