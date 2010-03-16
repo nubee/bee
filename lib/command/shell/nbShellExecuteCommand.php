@@ -17,6 +17,9 @@ class nbShellExecuteCommand extends nbCommand
       ->setOptions(new nbOptionSet(array(
         new nbOption('redirect', 'r', nbOption::PARAMETER_NONE, 'Redirects output to file')
       )))
+      ->setOptions(new nbOptionSet(array(
+        new nbOption('args', 'a', nbOption::PARAMETER_OPTIONAL, 'Set arguments for command', '')
+      )))
       ->setBriefDescription('Executes a shell command')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> executes a shell command or an alias defined in project.yml:
@@ -30,11 +33,12 @@ TXT
   {
     if(! $arg = $this->getAlias($arguments['command_name']))
       $arg = $arguments['command_name'];
+    $arg .= ' ' . $options['args'];
 
     $this->log('Executing: ' . $arg, nbLogger::COMMENT);
     $this->log("\n\n");
     $shell = new nbShell(isset($options['redirect']));
-    $shell->execute($arg);
+    return $shell->execute($arg);
   }
   
   protected function getAlias($command)
