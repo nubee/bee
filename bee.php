@@ -45,8 +45,11 @@ $output->setFormatter(new nbAnsiColorFormatter());
 $logger = nbLogger::getInstance();
 $logger->setOutput($output);
 
+$commandLoader = new nbCommandLoader();
+$commandSet = $commandLoader->getCommands();
+
 try {
-  $application = new nbBeeApplication();
+  $application = new nbBeeApplication($commandSet);
 
   $application->run();
 }

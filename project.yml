@@ -2,6 +2,14 @@ proj:
   name: bee
   description: bee is a project automation tool written in PHP
   type: php/app
+  commands:
+    test:
+      unit: "lime:test"
+      plugins: "bee:test-plugin"
+      functional: "lime:test"
+      all: ["test:unit", "bee:test-plugin"]
+    cpp:
+      build: "shell:execute"
   bee:  # bee extra configuration keys
     plugins: ~
   repository:

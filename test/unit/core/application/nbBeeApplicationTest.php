@@ -10,7 +10,7 @@ $logger->setOutput($output);
 
 
 $t->comment('nbBeeApplicationTest - Test constructor');
-$application = new nbBeeApplication();
+$application = new nbBeeApplication(new nbCommandSet());
 $application->run('-V');
 
 $t->is($application->getName(), 'bee', '->getName() is "bee"');

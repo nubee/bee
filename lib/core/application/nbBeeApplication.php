@@ -12,7 +12,5 @@ class nbBeeApplication extends nbApplication
   {
     $this->name = 'bee';
     $this->version = '0.1.0';
-
-    $this->loadCommands();
   }
 }
