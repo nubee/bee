@@ -3,6 +3,7 @@
 class DummyCommand extends nbCommand
 {
   private $executed = false;
+  private $successOnExecute = true;
   
   public function __construct($name = 'dummy', nbArgumentSet $arguments = null, nbOptionSet $options = null)
   {
@@ -27,6 +28,12 @@ class DummyCommand extends nbCommand
     $this->arguments = $arguments;
     $this->options = $options;
     $this->executed = true;
+    return $this->successOnExecute;
+  }
+
+  public function failOnExecute()
+  {
+    $this->successOnExecute = false;
   }
 
   public function hasExecuted()
