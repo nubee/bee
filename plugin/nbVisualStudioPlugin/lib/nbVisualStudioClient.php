@@ -20,6 +20,7 @@ class nbVisualStudioClient
   private $configuration;
   private $projectDefines = '';
   private $projectIncludes = '';
+  private $projectSources = '';
   private $projectLibs = '';
 
   private $compilerFlags = '';
@@ -99,21 +100,28 @@ class nbVisualStudioClient
   {
     $this->projectDefines = '';
     foreach ($defines as $define)
-      $this->projectDefines .= " /D$define";
+      $this->projectDefines .= ' /D' . $define;
   }
 
   public function setProjectIncludes(array $includes)
   {
     $this->projectIncludes = '';
     foreach ($includes as $include)
-      $this->projectIncludes .= " /I$include";
+      $this->projectIncludes .= ' /I"' . $include . '"';
+  }
+
+  public function setProjectSources(array $sources)
+  {
+    $this->projectSources = '';
+    foreach ($sources as $source)
+      $this->projectSources .= ' "' . $source . '"';
   }
 
   public function setProjectLibraries(array $libs)
   {
     $this->projectLibs = '';
     foreach ($libs as $lib)
-      $this->projectLibs .= " /L$lib";
+      $this->projectLibs .= ' /L"' . $lib . '"';
   }
 
   public function getCompilerCmdLine()
@@ -127,6 +135,8 @@ class nbVisualStudioClient
       $cmdLine .= $this->projectDefines;
     if ($this->projectIncludes != '')
       $cmdLine .= $this->projectIncludes;
+    if ($this->projectSources != '')
+      $cmdLine .= $this->projectSources;
 
     return $cmdLine;
   }
