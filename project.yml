@@ -8,6 +8,7 @@ proj:
       plugins: "bee:test-plugin"
       functional: "lime:test"
       all: ["test:unit", "bee:test-plugin"]
+      prova: "shell:execute"
     cpp:
       build: "shell:execute"
   bee:  # bee extra configuration keys
