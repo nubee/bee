@@ -43,7 +43,6 @@ class nbChainCommand extends nbCommand
     foreach ($this->commands as $command)
       $briefDescription .= ' -> ' . $command->getFullName();
     $this->setBriefDescription($briefDescription);
-    echo $this->getBriefDescription();
   }
 
   protected function execute(array $arguments = array(), array $options = array())
