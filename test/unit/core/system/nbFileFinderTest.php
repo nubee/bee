@@ -63,8 +63,12 @@ $finder = nbFileFinder::create('file');
 $names = array('Class.java', 'Class1.php', 'Class2.php');
 $files = $finder->prune('pruned')->in($dataDir);
 $t->is(count($files), 3, '->prune() found 3 files');
+for($i = 0; $i != count($files); ++$i)
+  $files[$i] = nbFileSystem::getFileName($files[$i]);
 for($i = 0; $i != count($files); ++$i) {
-  $t->is(nbFileSystem::getFileName($files[$i]), $names[$i], '->prune() found ' . $names[$i]);
+  $t->ok(in_array($files[$i], $names), '->prune() found ' . $files[$i]);
+  $names = array_diff($names, array($files[$i]));
+  //$t->is(nbFileSystem::getFileName($files[$i]), $names[$i], '->prune() found ' . $names[$i]);
 }
 
 $t->comment('nbFileFinder - Test discard');

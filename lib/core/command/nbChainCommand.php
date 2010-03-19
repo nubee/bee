@@ -50,7 +50,7 @@ class nbChainCommand extends nbCommand
     $ret = true;
     foreach ($this->commands as $command)
     {
-      echo "[nbChainCommand::execute] " . $command->getFullName() . "\n";
+//      echo "[nbChainCommand::execute] " . $command->getFullName() . "\n";
       $ret = $command->execute($arguments, $options) && $ret;
     }
     return $ret;
