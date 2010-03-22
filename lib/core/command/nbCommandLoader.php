@@ -7,8 +7,6 @@ class nbCommandLoader
   public function  __construct()
   {
     $this->commands = new nbCommandSet();
-    $this->loadCommands();
-    $this->loadCommandAliases();
   }
 
   /**
@@ -37,11 +35,13 @@ class nbCommandLoader
 
   public function loadCommands()
   {
+//    echo "Loading commands from " . nbConfig::get('nb_command_dir') . "\n";
     $dirs = array(nbConfig::get('nb_command_dir'));
     foreach( nbPluginLoader::getInstance()->getPlugins() as $pluginName)
       $dirs[] = nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/command';
 
     $finder = nbFileFinder::create('file')->add('*Command.php');
+    $this->commandFiles = array();
     foreach ($finder->in($dirs) as $file)
       $this->commandFiles[basename($file, '.php')] = $file;
 
@@ -52,7 +52,6 @@ class nbCommandLoader
     $commands = array();
     foreach ($this->commandFiles as $command => $file) {
       // forces autoloading of each task class
-//      class_exists($command, true);
       $this->commands->addCommand(new $command());
     }
 
@@ -69,13 +68,11 @@ class nbCommandLoader
    */
   public function autoloadCommand($class)
   {
-    echo "[nbApplication::autoloadCommand] $class\n";
+//    echo "[nbApplication::autoloadCommand] $class\n";
     if (isset($this->commandFiles[$class])) {
       require_once $this->commandFiles[$class];
-
       return true;
     }
-
     return false;
   }
 
@@ -84,6 +81,8 @@ class nbCommandLoader
     $namespaces = nbConfig::get('proj_commands');
     foreach ($namespaces as $namespace => $commands)
     {
+      if ($namespace === 'default')
+        $namespace = '';
       foreach ($commands as $alias => $commandName)
       {
         if (is_array($commandName))

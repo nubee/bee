@@ -6,6 +6,8 @@ proj:
     test:
       unit: "lime:test"
       all: ["test:unit", "bee:test-plugin"]
+    default:
+      integrate: ["git:pull", "lime:test", "bee:test-plugin"]
   bee:  # bee extra configuration keys
     plugins: ~
   repository:

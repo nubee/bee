@@ -48,6 +48,7 @@ class nbChainCommand extends nbCommand
       $commandArgs = array();
       foreach ($command->getArgumentsArray() as $argument)
         $commandArgs[$argument->getName()] = $argument->getValue();
+      $this->log($this->formatLine('Executing command ' . $command->getFullName(), nbLogger::INFO));
       $ret = $command->execute($commandArgs, $options) && $ret;
     }
     return $ret;

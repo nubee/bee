@@ -46,6 +46,8 @@ $logger = nbLogger::getInstance();
 $logger->setOutput($output);
 
 $commandLoader = new nbCommandLoader();
+$commandLoader->loadCommands();
+$commandLoader->loadCommandAliases();
 $commandSet = $commandLoader->getCommands();
 
 try {
