@@ -21,6 +21,7 @@ class nbVisualStudioClient
   private $projectDefines = '';
   private $projectIncludes = '';
   private $projectSources = '';
+  private $projectLibpaths = '';
   private $projectLibs = '';
 
   private $compilerFlags = '';
@@ -117,11 +118,18 @@ class nbVisualStudioClient
       $this->projectSources .= ' "' . $source . '"';
   }
 
-  public function setProjectLibraries(array $libs)
+  public function setProjectLibPaths(array $libpaths)
+  {
+    $this->projectLibpaths = '';
+    foreach ($libpaths as $libpath)
+      $this->projectLibpaths .= ' /LIBPATH:"' . $libpath . '"';
+  }
+
+  public function setProjectLibs(array $libs)
   {
     $this->projectLibs = '';
     foreach ($libs as $lib)
-      $this->projectLibs .= ' /L"' . $lib . '"';
+      $this->projectLibs .= ' "' . $lib . '"';
   }
 
   public function getCompilerCmdLine()
@@ -152,6 +160,8 @@ class nbVisualStudioClient
       $cmdLine = "link /nologo";
       if ($this->linkerFlags != '')
         $cmdLine .= $this->linkerFlags;
+      if ($this->projectLibpaths != '')
+        $cmdLine .= $this->projectLibpaths;
       if ($this->projectLibs != '')
         $cmdLine .= $this->projectLibs;
     }

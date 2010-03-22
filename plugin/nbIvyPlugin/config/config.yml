@@ -1,0 +1,5 @@
+nb:
+  ivy:
+    properties: "/lib/vendor/ivy/settings/ivysettings-file.properties"
+    executable: "/lib/vendor/ivy/ivy-2.1.0.jar"
+    settings: "/lib/vendor/ivy/settings/ivysettings.xml"

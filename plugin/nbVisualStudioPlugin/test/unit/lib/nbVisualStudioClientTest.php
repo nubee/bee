@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../../../test/bootstrap/unit.php';
 
-$t = new lime_test(21);
+$t = new lime_test(23);
 
 $t->comment('nbVisualStudioClientTest - Test default compiler line for LIB DEBUG project');
 $client = new nbVisualStudioClient('outputFile');
@@ -74,18 +74,30 @@ $t->is($client->getCompilerCmdLine(),
         'cl /c /nologo /EHsc /Gd /TP /Od /RTC1 /MDd /DUNICODE /D_UNICODE /DWIN32 /D_DEBUG "src1" "src2"',
         '->setProjectSources() sets al additional includes to compiler command line');
 
+$t->comment('nbVisualStudioClientTest - Test set additional lib paths to linker');
+$client = new nbVisualStudioClient('outputFile', nbVisualStudioClient::APP);
+$client->setProjectLibPaths(array('lib/path/1'));
+$t->is($client->getLinkerCmdLine(),
+        'link /nologo /LIBPATH:"lib/path/1" /OUT:outputFile obj/Debug/*.obj',
+        '->setProjectLibPaths() sets one additional lib path to linker command line');
+
+$client->setProjectLibPaths(array('lib/path/1', 'lib/path/2'));
+$t->is($client->getLinkerCmdLine(),
+        'link /nologo /LIBPATH:"lib/path/1" /LIBPATH:"lib/path/2" /OUT:outputFile obj/Debug/*.obj',
+        '->setProjectLibPaths() sets all additional lib paths to linker command line');
+
 $t->comment('nbVisualStudioClientTest - Test set additional libs to linker');
 $client = new nbVisualStudioClient('outputFile', nbVisualStudioClient::APP);
-$client->setProjectLibraries(array('lib1'));
+$client->setProjectLibs(array('lib1'));
 $t->is($client->getLinkerCmdLine(),
-        'link /nologo /L"lib1" /OUT:outputFile obj/Debug/*.obj',
-        '->setProjectLibraries() sets one additional lib to linker command line');
+        'link /nologo "lib1" /OUT:outputFile obj/Debug/*.obj',
+        '->setProjectLibs() sets one additional lib to linker command line');
 
-$client->setProjectLibraries(array('lib1', 'lib2'));
+$client->setProjectLibs(array('lib1', 'lib2'));
 //$client = new nbVisualStudioClient('outputFile', nbVisualStudioClient::APP);
 $t->is($client->getLinkerCmdLine(),
-        'link /nologo /L"lib1" /L"lib2" /OUT:outputFile obj/Debug/*.obj',
-        '->setProjectLibraries() sets all additional libs to linker command line');
+        'link /nologo "lib1" "lib2" /OUT:outputFile obj/Debug/*.obj',
+        '->setProjectLibs() sets all additional libs to linker command line');
 
 
 $t->comment('nbVisualStudioClientTest - Test set incremental option');
