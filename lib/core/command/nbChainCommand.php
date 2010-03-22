@@ -9,18 +9,13 @@
 class nbChainCommand extends nbCommand
 {
   private $alias;
-  private $commands = array();
+  protected $commands = array();
 
   public function  __construct($alias, array $commands = array())
   {
     $this->alias = $alias;
     $this->commands = $commands;
     parent::__construct();
-  }
-
-  protected function setCommandChain(array $commands)
-  {
-    $this->commands = $commands;
   }
 
   public function addCommand(nbCommand $command)
@@ -50,8 +45,10 @@ class nbChainCommand extends nbCommand
     $ret = true;
     foreach ($this->commands as $command)
     {
-//      echo "[nbChainCommand::execute] " . $command->getFullName() . "\n";
-      $ret = $command->execute($arguments, $options) && $ret;
+      $commandArgs = array();
+      foreach ($command->getArgumentsArray() as $argument)
+        $commandArgs[$argument->getName()] = $argument->getValue();
+      $ret = $command->execute($commandArgs, $options) && $ret;
     }
     return $ret;
   }

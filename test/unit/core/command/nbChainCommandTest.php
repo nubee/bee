@@ -19,7 +19,7 @@ class TestChainCommand extends nbChainCommand
       ->setDescription('');
   }
   public function setCommandChain(array $commands) {
-    parent::setCommandChain($commands);
+    $this->commands = $commands;
   }
 }
 
