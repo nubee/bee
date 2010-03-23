@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 require_once dirname(__FILE__) . '/lib/core/autoload/nbAutoload.php';
@@ -41,7 +42,7 @@ if(nbConfig::has('proj_bee_plugins')) {
 
 $autoload->addDirectory(nbConfig::get('nb_command_dir'), 'Command.php', true);
 $output = new nbConsoleOutput();
-$output->setFormatter(new nbAnsiColorFormatter());
+$output->setFormatter(nbConfig::get('nb_output_color', 'false') == 'true' ? new nbAnsiColorFormatter() : new nbFormatter());
 $logger = nbLogger::getInstance();
 $logger->setOutput($output);
 

@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
-require_once dirname(__FILE__) . '/../../../data/core/command/EmptyCommand.php';
+//require_once dirname(__FILE__) . '/../../../data/core/command/EmptyCommand.php';
 
 $t = new lime_test();
 
