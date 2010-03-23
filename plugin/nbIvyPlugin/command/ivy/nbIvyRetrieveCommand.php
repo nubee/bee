@@ -6,7 +6,7 @@ class nbIvyRetrieveCommand extends nbCommand
   {
     $this->setName('ivy:retrieve')
       ->setArguments(new nbArgumentSet(array(
-        new nbArgument('ivyfile', nbArgument::OPTIONAL, 'Ivy file')
+        new nbArgument('ivyfile', nbArgument::OPTIONAL, 'Ivy file', 'ivy.xml')
       )))
       ->setBriefDescription('Retrieves dependencies from the given ivy file')
       ->setDescription(<<<TXT
@@ -26,7 +26,7 @@ TXT
     $this->log("\n");
     $command = $client->getRetrieveCmdLine();
 
-    echo $command . "\n"; die;
+//    echo $command . "\n"; die;
 
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("

@@ -16,7 +16,7 @@ class nbIvyClient
   {
     $props = parse_ini_file(nbConfig::get('nb_ivy_properties'));
 
-    $command = 'java -jar "' . nbConfig::get('ivy_executable') . '" ';
+    $command = 'java -jar "' . nbConfig::get('nb_ivy_executable') . '" ';
     $command .= '-settings "' . $this->settings . '" ';
     $command .= '-retrieve ' . $props['ivy.retrieve.pattern'] . ' -ivy "' . $this->ivyFile . '"';
 
