@@ -7,15 +7,65 @@ class nbVcProjParser
   
   private
     $document,
-    $configuration;
+    $projectName,
+    $debugConfig = array(),
+    $releaseConfig = array();
 
-  public function __construct($vsprojFile, $configuration = nbVcProjParser::DEBUG)
+  public function __construct($vsprojFile)
   {
-    $this->configuration = $configuration;
     $this->document = new DOMDocument();
     $this->document->validateOnParse = true;
     $this->document->load($vsprojFile);
-    //$this->xml = simplexml_load_file($vsprojFile);
+
+    $this->projectName = $this->document
+      ->getElementsByTagName('VisualStudioProject')
+      ->item(0)
+      ->getAttribute('Name');
+
+    foreach($this->document->getElementsByTagName('Configuration') as $conf) {
+      if(preg_match('/debug/i', $conf->getAttribute('Name'))) {
+//        $this->debugConfig['Compiler'] = array();
+//        $this->debugConfig['Linker'] = array();
+        $this->debugConfig['Compiler']['OutputDirectory'] = $conf->getAttribute('OutputDirectory');
+        $this->debugConfig['Compiler']['IntermediateDirectory'] = $conf->getAttribute('IntermediateDirectory');
+        $this->debugConfig['Compiler']['ConfigurationType'] = $conf->getAttribute('ConfigurationType');
+        $this->debugConfig['Compiler']['CharacterSet'] = $conf->getAttribute('CharacterSet');
+        $this->debugConfig['Compiler']['ManagedExtensions'] = $conf->getAttribute('ManagedExtensions');
+        $this->debugConfig['Compiler']['Optimization'] = $conf->getAttribute('Optimization');
+        $this->debugConfig['Compiler']['AdditionalIncludeDirectories'] = $conf->getAttribute('AdditionalIncludeDirectories');
+        $this->debugConfig['Compiler']['PreprocessorDefinitions'] = $conf->getAttribute('PreprocessorDefinitions');
+        $this->debugConfig['Compiler']['RuntimeLibrary'] = $conf->getAttribute('RuntimeLibrary');
+        $this->debugConfig['Compiler']['UsePrecompiledHeader'] = $conf->getAttribute('UsePrecompiledHeader');
+        $this->debugConfig['Compiler']['WarningLevel'] = $conf->getAttribute('WarningLevel');
+        $this->debugConfig['Compiler']['DebugInformationFormat'] = $conf->getAttribute('DebugInformationFormat');
+        $this->debugConfig['Linker']['AdditionalDependencies'] = $conf->getAttribute('AdditionalDependencies');
+        $this->debugConfig['Linker']['LinkIncremental'] = $conf->getAttribute('LinkIncremental');
+        $this->debugConfig['Linker']['AdditionalLibraryDirectories'] = $conf->getAttribute('AdditionalLibraryDirectories');
+        $this->debugConfig['Linker']['GenerateDebugInformation'] = $conf->getAttribute('GenerateDebugInformation');
+        $this->debugConfig['Linker']['AssemblyDebug'] = $conf->getAttribute('AssemblyDebug');
+        $this->debugConfig['Linker']['TargetMachine'] = $conf->getAttribute('TargetMachine');
+      }
+      if(preg_match('/release/i', $conf->getAttribute('Name'))) {
+        $this->releaseConfig['Compiler']['OutputDirectory'] = $conf->getAttribute('OutputDirectory');
+        $this->releaseConfig['Compiler']['IntermediateDirectory'] = $conf->getAttribute('IntermediateDirectory');
+        $this->releaseConfig['Compiler']['ConfigurationType'] = $conf->getAttribute('ConfigurationType');
+        $this->releaseConfig['Compiler']['CharacterSet'] = $conf->getAttribute('CharacterSet');
+        $this->releaseConfig['Compiler']['ManagedExtensions'] = $conf->getAttribute('ManagedExtensions');
+        $this->releaseConfig['Compiler']['Optimization'] = $conf->getAttribute('Optimization');
+        $this->releaseConfig['Compiler']['AdditionalIncludeDirectories'] = $conf->getAttribute('AdditionalIncludeDirectories');
+        $this->releaseConfig['Compiler']['PreprocessorDefinitions'] = $conf->getAttribute('PreprocessorDefinitions');
+        $this->releaseConfig['Compiler']['RuntimeLibrary'] = $conf->getAttribute('RuntimeLibrary');
+        $this->releaseConfig['Compiler']['UsePrecompiledHeader'] = $conf->getAttribute('UsePrecompiledHeader');
+        $this->releaseConfig['Compiler']['WarningLevel'] = $conf->getAttribute('WarningLevel');
+        $this->releaseConfig['Compiler']['DebugInformationFormat'] = $conf->getAttribute('DebugInformationFormat');
+        $this->releaseConfig['Linker']['AdditionalDependencies'] = $conf->getAttribute('AdditionalDependencies');
+        $this->releaseConfig['Linker']['LinkIncremental'] = $conf->getAttribute('LinkIncremental');
+        $this->releaseConfig['Linker']['AdditionalLibraryDirectories'] = $conf->getAttribute('AdditionalLibraryDirectories');
+        $this->releaseConfig['Linker']['GenerateDebugInformation'] = $conf->getAttribute('GenerateDebugInformation');
+        $this->releaseConfig['Linker']['AssemblyDebug'] = $conf->getAttribute('AssemblyDebug');
+        $this->releaseConfig['Linker']['TargetMachine'] = $conf->getAttribute('TargetMachine');
+      }
+    }
   }
 
   public function setConfiguration($configuration)
@@ -29,6 +79,44 @@ class nbVcProjParser
       ->getElementsByTagName('VisualStudioProject')
       ->item(0)
       ->getAttribute('Name');
+  }
+
+  public function getType()
+  {
+    foreach($this->document->getElementsByTagName('Configuration') as $conf) {
+      $confName = $conf->getAttribute('Name');
+      if(!preg_match('/' . $this->configuration . '/i', $confName))
+        continue;
+      switch($conf->getAttribute('ConfigurationType')) {
+        case '1':
+          return 'app';
+        case '2':
+          return 'dll';
+        case '3':
+          return 'lib';
+        default:
+          return 'app';
+      }
+    }
+  }
+
+  public function getCharacterSet()
+  {
+    foreach($this->document->getElementsByTagName('Configuration') as $conf) {
+      $confName = $conf->getAttribute('Name');
+      if(!preg_match('/' . $this->configuration . '/i', $confName))
+        continue;
+      switch($conf->getAttribute('CharacterSet')) {
+        case '0':
+          return 'notset';
+        case '1':
+          return 'unicode';
+        case '2':
+          return 'multibyte';
+        default:
+          return 'notset';
+      }
+    }
   }
 
   public function getBinDir()

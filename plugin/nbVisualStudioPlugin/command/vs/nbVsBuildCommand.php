@@ -6,66 +6,45 @@ class nbVsBuildCommand  extends nbCommand
   {
     $this->setName('vs:build')
       ->setArguments(new nbArgumentSet(array(
-        new nbArgument('vsproject', nbArgument::REQUIRED, 'VS project file')
+        new nbArgument('project', nbArgument::REQUIRED, 'Visual Studio project file'),
+        new nbArgument('configuration', nbArgument::REQUIRED, 'Target configuration to build')
+      )))
+      ->setOptions(new nbOptionSet(array(
+        new nbOption('incremental', 'i', nbOption::PARAMETER_NONE, 'Make an incremental build')
       )))
       ->setBriefDescription('Builds a Visual C++ project')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command builds a Visual C++ project:
 
-    <info>./bee {$this->getFullName()} vsproject</info>
+    <info>./bee {$this->getFullName()} project</info>
 TXT
       );
   }
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    echo "\nUnder construction...\nSee the code in nbVsBuildCommand\n"; die;
+    $this->log('Building project ', nbLogger::COMMENT);
+    $this->log($arguments['project']);
+    $this->log("\n");
+    $this->log('Target configuration ', nbLogger::COMMENT);
+    $this->log($arguments['configuration']);
+    $this->log("\n");
 
-    $vsproj = new nbVcProjParser($arguments['vsproject'], nbVcProjParser::DEBUG);
+    $command = 'vcbuild /nondefmsbuild /nologo ';
+    if(!isset($options['incremental']))
+      $command .= '/rebuild ';
+    $command .= '"' . $arguments['project'] . '" "' . $arguments['configuration'] . '"';
+
     $shell = new nbShell();
-    $client = new nbVisualStudioClient(
-      $vsproj->getName(),
-      nbVisualStudioClient::APP, //TODO: get from nbConfig|nbVcProjParser
-      nbVisualStudioClient::DEBUG //TODO: get from command line
-    );
-    //TODO: unify nbVisualStudioClient constants with nbVcProjParser constants
-    $vsproj->getBinDir();
-    $vsproj->getObjDir();
-    $client->setProjectDefines($vsproj->getDefines());
-    $client->setProjectIncludes($vsproj->getIncludes());
-    $client->setProjectSources($vsproj->getSources());
-    $client->setProjectLibPaths($vsproj->getLibPaths());
-    $client->setProjectLibs($vsproj->getLibs());
-
-    $this->log('Compiling ', nbLogger::COMMENT);
-    $this->log(nbConfig::get('proj_name'));
-    $this->log("\n");
-    $command = $client->getCompilerCmdLine();
-
-    echo $command . "\n";
-
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("
-[nbBuildCommand::execute] Error executing command:
+[nbVsBuildCommand::execute] Error executing command:
   %s
+  project       -> %s
+  configuration -> %s
+  incremental   -> %s
 ",
-        $command
-      ));
-    }
-
-    $this->log('Linking ', nbLogger::COMMENT);
-    $this->log(nbConfig::get('proj_name'));
-    $this->log("\n");
-    $command = $client->getLinkerCmdLine();
-
-    echo $command . "\n";
-    
-    if(!$shell->execute($command)) {
-      throw new LogicException(sprintf("
-[nbBuildCommand::execute] Error executing command:
-  %s
-",
-        $command
+        $command, $arguments['project'], $arguments['configuration'], $options['incremental']
       ));
     }
   }
