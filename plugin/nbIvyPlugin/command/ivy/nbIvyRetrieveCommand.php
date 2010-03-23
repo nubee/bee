@@ -19,14 +19,14 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
+    nbFileSystem::rmdir(nbConfig::get('nb_ivy_dependencies-dir'), true);
+
     $shell = new nbShell();
     $client = new nbIvyClient();
 
     $this->log('Retrieving dependencies...', nbLogger::COMMENT);
     $this->log("\n");
     $command = $client->getRetrieveCmdLine();
-
-//    echo $command . "\n"; die;
 
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("
@@ -36,16 +36,23 @@ TXT
         $command
       ));
     }
-//    $zip = new ZipArchive();
-//    foreach ($files as $value) {
-//      if ($zip->open($value, ZIPARCHIVE::CHECKCONS) !== true) {
-//        echo '[RetrieveTask::execute] : Error opening file ' . $value;
-//        return false;
-//      }
-//
-//      $zip->extractTo(dirname($value));
-//      $zip->close();
-//      echo $value . "\n";
-//    }
+
+    $finder = nbFileFinder::create('file');
+    $files = $finder->add('*-api.zip')->in(nbConfig::get('nb_ivy_dependencies-dir'));
+    $zip = new ZipArchive();
+    foreach ($files as $file) {
+      if ($zip->open($file, ZIPARCHIVE::CHECKCONS) !== true)
+        echo '[nbIvyRetrieveCommand::execute] Error opening file ' . $file;
+
+      $zip->extractTo(dirname($file));
+      $zip->close();
+      $this->log('Unzipping ', nbLogger::COMMENT);
+      $this->log($file);
+      $this->log("\n");
+    }
+
+    $files = $finder->add('*.zip')->in(nbConfig::get('nb_ivy_dependencies-dir'));
+    foreach ($files as $file)
+      nbFileSystem::delete($file);
   }
 }

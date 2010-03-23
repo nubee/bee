@@ -3,3 +3,5 @@ nb:
     properties: "D:/DeveloperTools/ivy/ivysettings-file.properties"
     executable: "D:/DeveloperTools/ivy/ivy-2.1.0.jar"
     settings: "D:/DeveloperTools/ivy/ivysettings.xml"
+    #TODO: move to project.yml (?)
+    dependencies-dir: "libs"
