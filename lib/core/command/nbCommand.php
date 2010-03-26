@@ -40,8 +40,22 @@ abstract class nbCommand
         $this->getFullName(),
         implode("  \n- ", $parser->getErrors())
       ));
-    
-    return $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
+
+    $cmdlineOptionValues = $parser->getOptionValues();
+    $path = 'nb_commands_' . $this->getNamespace() . '_' . $this->getName();
+    if(nbConfig::has($path)) {
+      $configOptionValues = nbConfig::get($path);
+      foreach($configOptionValues as $name => $value) {
+        if(!$this->getOptions()->hasOption($name)
+          || ('' == $value)
+          || isset($cmdlineOptionValues[$name]))
+          continue;
+
+        $cmdlineOptionValues[$name] = $value;
+      }
+    }
+//    return $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
+    return $this->execute($parser->getArgumentValues(), $cmdlineOptionValues);
   }
 
   protected abstract function configure();

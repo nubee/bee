@@ -19,7 +19,7 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    nbFileSystem::rmdir(nbConfig::get('nb_ivy_dependencies-dir'), true);
+    nbFileSystem::rmdir(nbConfig::get('proj_dependencies'), true);
 
     $shell = new nbShell();
     $client = new nbIvyClient();
@@ -38,7 +38,7 @@ TXT
     }
 
     $finder = nbFileFinder::create('file');
-    $files = $finder->add('*-api.zip')->in(nbConfig::get('nb_ivy_dependencies-dir'));
+    $files = $finder->add('*-api.zip')->in(nbConfig::get('proj_dependencies'));
     $zip = new ZipArchive();
     foreach ($files as $file) {
       if ($zip->open($file, ZIPARCHIVE::CHECKCONS) !== true)
@@ -51,7 +51,7 @@ TXT
       $this->log("\n");
     }
 
-    $files = $finder->add('*.zip')->in(nbConfig::get('nb_ivy_dependencies-dir'));
+    $files = $finder->add('*.zip')->in(nbConfig::get('proj_dependencies'));
     foreach ($files as $file)
       nbFileSystem::delete($file);
   }

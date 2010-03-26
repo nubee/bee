@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(40);
+$t = new lime_test(42);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
@@ -117,3 +117,14 @@ try {
   $t->fail('->new doesn\'t throws exception');
 }
 
+$t->comment('nbCommandTest - Test options defined in nbConfig');
+$option1 = new nbOption('foo', '', nbOption::PARAMETER_OPTIONAL, '', 'defaultvalue');
+$option2 = new nbOption('bar', '', nbOption::PARAMETER_REQUIRED, '');
+nbConfig::set('nb_commands_ns_name_foo', 'foovalue');
+nbConfig::set('nb_commands_ns_name_bar', 'barvalue');
+nbConfig::set('nb_commands_ns_name_cos', array('cosvalue1', 'cosvalue2'));
+$command = new DummyCommand("ns:name", null, new nbOptionSet(array($option1, $option2)));
+$command->run(new nbCommandLineParser(), '');
+$t->is($command->getOption('foo'), 'foovalue');
+$t->is($command->getOption('bar'), 'barvalue');
+//$t->is($command->getOption('cos'), array('cosvalue1', 'cosvalue2'));

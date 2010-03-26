@@ -138,6 +138,23 @@ class nbOption {
   }
 
   /**
+   * Sets the value.
+   *
+   * @param mixed $value The value.
+   */
+  public function setValue($value)
+  {
+    if(!$this->hasParameter())
+      throw new LogicException('[nbOption::setValue] Option has no parameter');
+
+    if($this->isArray() && !(is_array($value) || is_null($value)))
+      throw new InvalidArgumentException('[nbOptionValue::setValue] Value must be an array or null');
+
+    $this->valueSet = true;
+    $this->value = $value;
+  }
+
+  /**
    * Returns the value.
    *
    * @return mixed the value.
@@ -154,35 +171,18 @@ class nbOption {
   }
 
   /**
-   * Sets the value.
-   *
-   * @param mixed $value The value.
-   */
-  public function setValue($value)
-  {
-    if(!$this->hasParameter())
-      throw new LogicException('[nbOption::setValue] Option has no parameter');
-    
-    if($this->isArray() && !(is_array($value) || is_null($value)))
-      throw new InvalidArgumentException('[nbOptionValue::setValue] Value must be an array or null');
-
-    $this->valueSet = true;
-    $this->value = $value;
-  }
-
-  /**
    * Sets the default value.
    *
    * @param mixed $default The default value
    */
-  private function setDefault($value)
+  private function setDefault($default)
   {
-    if(!$this->hasParameter() && null !== $value)
+    if(!$this->hasParameter() && null !== $default)
       throw new InvalidArgumentException('Couldn\'t set default value for option with PARAMETER_NONE');
 //    if($this->hasRequiredParameter() && null !== $value)
 //      throw new InvalidArgumentException('Couldn\'t set default value for option with PARAMETER_REQUIRED');
     if($this->hasParameter())
-      $this->setValue($value);
+      $this->setValue($default);
   }
 
   /**

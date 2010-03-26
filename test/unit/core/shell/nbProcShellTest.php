@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 $t = new lime_test(20);
 
 $t->comment('nbShellTest - Test execute (success) without output redirecting');
-$shell = new nbShell();
+$shell = new nbProcShell();
 ob_start();
 $ret = $shell->execute('dir');
 $contents = ob_get_contents();
@@ -17,7 +17,7 @@ $t->is(strlen($shell->getError()), 0, '->getError() returns an empty message');
 $t->is($shell->getReturnCode(), 0, '->execute() return code is "0"');
 
 $t->comment('nbShellTest - Test execute (success) with output redirecting');
-$shell = new nbShell(true);
+$shell = new nbProcShell(true);
 ob_start();
 $ret = $shell->execute('dir');
 $contents = ob_get_contents();
@@ -29,7 +29,7 @@ $t->is(strlen($shell->getError()), 0, '->getError() returns an empty message');
 $t->is($shell->getReturnCode(), 0, '->execute() return code is "0"');
 
 $t->comment('nbShellTest - Test execute (error) without output redirecting');
-$shell = new nbShell();
+$shell = new nbProcShell();
 ob_start();
 $ret = $shell->execute('dir /e');
 $contents = ob_get_contents();
@@ -41,7 +41,7 @@ $t->ok(strlen($shell->getError()) > 0, '->getError() returns a message');
 $t->isnt($shell->getReturnCode(), 0, '->execute() return code isn\'t "0"');
 
 $t->comment('nbShellTest - Test execute (error) with output redirecting');
-$shell = new nbShell(true);
+$shell = new nbProcShell(true);
 ob_start();
 $ret = $shell->execute('dir /e');
 $contents = ob_get_contents();

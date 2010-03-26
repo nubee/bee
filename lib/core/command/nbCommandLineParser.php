@@ -112,7 +112,7 @@ class nbCommandLineParser
     else
       $this->commandLineArguments = $commandLine;
 
-    $this->optionValues         = $this->options->getDefaultValues();
+//    $this->optionValues         = $this->options->getDefaultValues();
     $this->argumentValues       = $this->arguments->getDefaultValues();
     $this->parsedArgumentValues = array();
     $this->errors               = array();
@@ -285,6 +285,8 @@ class nbCommandLineParser
           $value = array_shift($this->commandLineArguments);
           $this->setOption($option, $value);
         }
+        else
+          $this->setOption($option, $option->getValue());
 
         continue;
       }

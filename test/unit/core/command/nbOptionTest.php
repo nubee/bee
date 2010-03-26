@@ -108,9 +108,9 @@ catch(InvalidArgumentException $e) {
 }
 
 $option = new nbOption('foo', 'f', nbOption::PARAMETER_OPTIONAL, 'foo description', 'defaultValue');
-$t->is($option->getValue(), 'defaultValue', '"ctor" sets default value');
+$t->is($option->getValue(), 'defaultValue', '->getValue() returns default value');
 $option->setValue('a value');
-$t->is($option->getValue(), 'a value', '->setValue() overwrites default value');
+$t->is($option->getValue(), 'a value', '->getValue() returns new value');
 
 $t->comment('nbOptionTest - Test "default" value');
 try {

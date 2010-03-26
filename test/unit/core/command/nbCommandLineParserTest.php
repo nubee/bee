@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__).'/../../../bootstrap/unit.php');
 
-$t = new lime_test(65);
+$t = new lime_test(68);
 
 // __construct()
 $t->comment('nbCommandLineParserTest - Test constructor');
@@ -91,7 +91,7 @@ $t->is($parser->getArgumentValues(), $arguments, '->parse() parsees CLI options'
 
 // ->parse
 $parser = new nbCommandLineParser($argumentSet, $optionSet);
-$parser->parse('foo1');
+$parser->parse('foo1 --foo3 --foo4 --foo5');
 $arguments = array(
   'foo1' => 'foo1',
   'foo2' => array()
@@ -100,9 +100,9 @@ $options = array(
   'foo3' => 'default3',
   'foo4' => 'default4',
   'foo5' => 'default5',
-  'foo9' => 'default9',
-  'foo10' => 'default10',
-  'foo11' => 'default11',
+//  'foo9' => 'default9', not included in command line
+//  'foo10' => 'default10', not included in command line
+//  'foo11' => 'default11', not included in command line
 );
 $t->ok($parser->isValid(), '->parse() parsees CLI options');
 $t->is($parser->getOptionValues(), $options, '->parse() parsees CLI options');
@@ -177,14 +177,17 @@ $parser->parse('-fb argfoo argbar');
 $t->ok($parser->isValid(), '->isValid() returns true if the options are valid');
 $t->is($parser->getOptionValue('foo'), 'argfoo', '->getOptionValue() returns "argfoo" if param is "foo"');
 $t->is($parser->getOptionValue('bar'), 'argbar', '->getOptionValue() returns "argbar" if param is "bar"');
+$parser = new nbCommandLineParser(array(), $options);
 $parser->parse('-fb argfoo');
 $t->ok($parser->isValid(), '->isValid() returns true if the options are valid');
 $t->is($parser->getOptionValue('foo'), 'argfoo', '->getOptionValue() returns "argfoo" if param is "foo"');
 $t->is($parser->getOptionValue('bar'), '', '->getOptionValue() returns "" if param is "bar"');
+$parser = new nbCommandLineParser(array(), $options);
 $parser->parse('-cfb argfoo');
 $t->ok($parser->isValid(), '->isValid() returns true if the options are valid');
 $t->is($parser->getOptionValue('foo'), 'argfoo', '->getOptionValue() returns "argfoo" if param is "foo"');
 $t->is($parser->getOptionValue('bar'), '', '->getOptionValue() returns "" if param is "bar"');
+$parser = new nbCommandLineParser(array(), $options);
 $parser->parse('-bf argbar');
 $t->ok(!$parser->isValid(), '->isValid() returns false if the options are not valid');
 
@@ -254,3 +257,25 @@ $t->is($parser->getArgumentValue('foo1'), '\'foo1"arg\'', '->parse() return \'fo
 
 $parser->parse(array('\'foo1"arg'));
 $t->todo('how is work?');
+
+$t->comment('nbCommandLineParserTest - Test parse an empty commandline');
+$argumentSet = array(
+  new nbArgument('arg2', nbArgument::OPTIONAL)
+);
+$optionSet = array(
+  new nbOption('opt1', '', nbOption::PARAMETER_OPTIONAL, '', 'defaultvalue')
+);
+$parser = new nbCommandLineParser($argumentSet, $optionSet);
+$parser->parse('');
+$t->is($parser->isValid(), true, '->parse() parse with success the empty commandline ');
+$t->is($parser->hasOptionValue('opt1'), false, '->hasOptionValue() returns "false" ');
+
+$parser = new nbCommandLineParser($argumentSet, $optionSet);
+$parser->parse('--opt1');
+$t->is($parser->hasOptionValue('opt1'), true, '->hasOptionValue() returns "true" ');
+$t->is($parser->getOptionValue('opt1'), 'defaultvalue', '->getOptionValue() returns "defaultvalue" ');
+
+$parser = new nbCommandLineParser($argumentSet, $optionSet);
+$parser->parse('--opt1=avalue');
+$t->is($parser->hasOptionValue('opt1'), true, '->hasOptionValue() returns "true" ');
+$t->is($parser->getOptionValue('opt1'), 'avalue', '->getOptionValue() returns "avalue" ');

@@ -5,46 +5,55 @@ class nbVsBuildCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('vs:build')
-      ->setArguments(new nbArgumentSet(array(
-        new nbArgument('project', nbArgument::REQUIRED, 'Visual Studio project file'),
-        new nbArgument('configuration', nbArgument::REQUIRED, 'Target configuration to build')
-      )))
+//      ->setArguments(new nbArgumentSet(array(
+//        new nbArgument('file', nbArgument::OPTIONAL, 'Build file', 'bee.yml')
+//      )))
       ->setOptions(new nbOptionSet(array(
+        new nbOption('test', '', nbOption::PARAMETER_NONE, 'Builds project tests'),
+        new nbOption('configuration', 'c', nbOption::PARAMETER_REQUIRED, 'Target configuration to build'),
         new nbOption('incremental', 'i', nbOption::PARAMETER_NONE, 'Make an incremental build')
       )))
       ->setBriefDescription('Builds a Visual C++ project')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command builds a Visual C++ project:
 
-    <info>./bee {$this->getFullName()} project</info>
+    <info>./bee {$this->getFullName()}</info>
 TXT
       );
   }
 
   protected function execute(array $arguments = array(), array $options = array())
   {
+    $project = isset($options['test']) ? nbConfig::get('proj_test') : nbConfig::get('proj_core');
+//    $configuration = isset($options['configuration']) ? $options['configuration'] : nbConfig::get('nb_commands_vs_build_configuration');
+    $configuration = $options['configuration'];
+
     $this->log('Building project ', nbLogger::COMMENT);
-    $this->log($arguments['project']);
+    $this->log($project);
     $this->log("\n");
     $this->log('Target configuration ', nbLogger::COMMENT);
-    $this->log($arguments['configuration']);
+    $this->log($configuration);
     $this->log("\n");
 
-    $command = 'vcbuild /nondefmsbuild /nologo ';
+    $info = "\033[32m[info]: \033[0m";
+    $warning = "\033[33m[warning]: \033[0m";
+    $error = "\033[31m[error]: \033[0m";
+
+    $command = "vcbuild /nondefmsbuild /nologo /info:\"" . $info . "\" /warning:\"" . $warning . "\" /error:\"" . $error . "\" ";
     if(!isset($options['incremental']))
       $command .= '/rebuild ';
-    $command .= '"' . $arguments['project'] . '" "' . $arguments['configuration'] . '"';
+    $command .= '"' . $project . '" "' . $configuration . '"';
 
     $shell = new nbShell();
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("
 [nbVsBuildCommand::execute] Error executing command:
   %s
-  project       -> %s
+  test          -> %s
   configuration -> %s
   incremental   -> %s
 ",
-        $command, $arguments['project'], $arguments['configuration'], $options['incremental']
+        $command, @$options['test'], @$options['configuration'], @$options['incremental']
       ));
     }
   }
