@@ -5,12 +5,12 @@ class nbVsBuildCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('vs:build')
-//      ->setArguments(new nbArgumentSet(array(
-//        new nbArgument('file', nbArgument::OPTIONAL, 'Build file', 'bee.yml')
-//      )))
+      ->setArguments(new nbArgumentSet(array(
+        new nbArgument('configuration', nbArgument::OPTIONAL, 'Target configuration to build', 'Debug')
+      )))
       ->setOptions(new nbOptionSet(array(
         new nbOption('test', '', nbOption::PARAMETER_NONE, 'Builds project tests'),
-        new nbOption('configuration', 'c', nbOption::PARAMETER_REQUIRED, 'Target configuration to build'),
+//        new nbOption('configuration', 'c', nbOption::PARAMETER_REQUIRED, 'Target configuration to build'),
         new nbOption('incremental', 'i', nbOption::PARAMETER_NONE, 'Make an incremental build')
       )))
       ->setBriefDescription('Builds a Visual C++ project')
@@ -26,7 +26,7 @@ TXT
   {
     $project = isset($options['test']) ? nbConfig::get('proj_test') : nbConfig::get('proj_core');
 //    $configuration = isset($options['configuration']) ? $options['configuration'] : nbConfig::get('nb_commands_vs_build_configuration');
-    $configuration = $options['configuration'];
+    $configuration = $arguments['configuration'];
 
     $this->log('Building project ', nbLogger::COMMENT);
     $this->log($project);
@@ -49,11 +49,11 @@ TXT
       throw new LogicException(sprintf("
 [nbVsBuildCommand::execute] Error executing command:
   %s
-  test          -> %s
   configuration -> %s
+  test          -> %s
   incremental   -> %s
 ",
-        $command, @$options['test'], @$options['configuration'], @$options['incremental']
+        $command, @$arguments['configuration'], @$options['test'], @$options['incremental']
       ));
     }
   }
