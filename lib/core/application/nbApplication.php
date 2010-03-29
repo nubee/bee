@@ -35,7 +35,8 @@ abstract class nbApplication
       new nbOption('version', 'V', nbOption::PARAMETER_NONE, 'Shows the version'),
       new nbOption('verbose', 'v', nbOption::PARAMETER_NONE, 'Set verbosity'),
       new nbOption('trace', 't', nbOption::PARAMETER_NONE, 'Shows exception trace'),
-      new nbOption('help', '?', nbOption::PARAMETER_NONE, 'Shows application help')
+      new nbOption('config', 'c', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY, 'Changes the configuration properties'),
+      new nbOption('help', '?', nbOption::PARAMETER_NONE, 'Shows application help'),
     ));
 
 //    $this->registerCommands($commands);
@@ -56,6 +57,9 @@ abstract class nbApplication
     else
       $commandLine = $commandName . ' ' . $commandLine;
 
+    if(!$this->commands->hasCommand($commandName))
+      return;
+    
     $command = $this->commands->getCommand($commandName);
     $r = new ReflectionClass($command);
     if($r->isSubclassOf('nbApplicationCommand'))
@@ -94,6 +98,14 @@ abstract class nbApplication
     if(isset($options['help'])) {
       $logger->log($this->formatHelp($this->arguments, $this->options));
       return true;
+    }
+
+    if(isset($options['config'])) {
+      foreach ($options['config'] as $option) {
+        $property = preg_split('/[\s]*=[\s]*/', $option, 2);
+        nbConfig::set($property[0], $property[1]);
+      }
+//      print_r($property);
     }
 
     return false;

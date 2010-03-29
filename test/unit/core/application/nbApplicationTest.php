@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(15);
+$t = new lime_test(28);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
@@ -21,9 +21,9 @@ $t->is($application->getArguments()->count(), 2, '__construct() returns an appli
 
 $application = new DummyApplication(array(), array($barOption));
 $t->is($application->hasOptions(), true, '__construct() returns an application with an option');
-$t->is($application->getOptions()->count(), 5, '__construct() returns an application with 5 options');
+$t->is($application->getOptions()->count(), 6, '__construct() returns an application with 5 options');
 
-$t->comment('ApplicationTest - Test run');
+$t->comment('nbApplicationTest - Test run');
 $foo = new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))));
 $bar = new DummyCommand('bar', new nbArgumentSet(array(new nbArgument('first', nbArgument::REQUIRED))));
 $bas = new DummyCommand('bas', null, new nbOptionSet(array(new nbOption('first', 'f'))));
@@ -43,3 +43,54 @@ $t->is($bas->getOption('first'), true, '->run() executes command "bas -f"');
 $application->run('fou');
 $t->ok($fas->hasExecuted(), '->run() executes command "fas" with alias "fou"');
 
+$t->comment('nbApplicationTest - Test --config option');
+nbConfig::set('nb_pathtest', 'valuetest');
+
+$application = new DummyApplication();
+$application->setCommands(new nbCommandSet(array(
+  new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))))
+)));
+$application->run('--config=nb_pathtest=cmdvaluetest foo');
+$t->is(nbConfig::get('nb_pathtest'), 'cmdvaluetest', 'option "--config" overrides nbConfig property');
+$t->ok($foo->hasExecuted(), 'command "foo" has executed');
+
+$application = new DummyApplication();
+$application->setCommands(new nbCommandSet(array(
+  new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))))
+)));
+$application->run('--config="nb_pathtest = cmdvaluetest" foo');
+$t->is(nbConfig::get('nb_pathtest'), 'cmdvaluetest', 'option "--config" overrides nbConfig property');
+$t->ok($foo->hasExecuted(), 'command "foo" has executed');
+
+$application = new DummyApplication();
+$application->setCommands(new nbCommandSet(array(
+  new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))))
+)));
+$application->run('--config="nb_pathtest = cmd value test" foo');
+$t->is(nbConfig::get('nb_pathtest'), 'cmd value test', 'option "--config" overrides nbConfig property');
+$t->ok($foo->hasExecuted(), 'command "foo" has executed');
+
+$application = new DummyApplication();
+$application->setCommands(new nbCommandSet(array(
+  new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))))
+)));
+$application->run('--config="nb_pathtest = cmd value = test" foo');
+$t->is(nbConfig::get('nb_pathtest'), 'cmd value = test', 'option "--config" overrides nbConfig property');
+$t->ok($foo->hasExecuted(), 'command "foo" has executed');
+
+$application = new DummyApplication();
+$application->setCommands(new nbCommandSet(array(
+  new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))))
+)));
+$application->run('--config=nb_pathtest2=cmdvaluetest2 foo');
+$t->is(nbConfig::get('nb_pathtest2'), 'cmdvaluetest2', 'option "--config" creates nbConfig property');
+$t->ok($foo->hasExecuted(), 'command "foo" has executed');
+
+$application = new DummyApplication();
+$application->setCommands(new nbCommandSet(array(
+  new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))))
+)));
+$application->run('--config=nb_path1=cmdvalue1 --config=nb_path2=cmdvalue2 foo');
+$t->is(nbConfig::get('nb_path1'), 'cmdvalue1', 'option "--config" creates multiple nbConfig properties');
+$t->is(nbConfig::get('nb_path2'), 'cmdvalue2', 'option "--config" creates multiple nbConfig properties');
+$t->ok($foo->hasExecuted(), 'command "foo" has executed');

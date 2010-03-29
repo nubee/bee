@@ -28,7 +28,7 @@ class DummyApplication extends nbApplication
   {
   }
 
-  protected function handleOptions(array $options)
-  {
-  }
+//  protected function handleOptions(array $options)
+//  {
+//  }
 }
