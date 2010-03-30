@@ -35,7 +35,8 @@ abstract class nbApplication
       new nbOption('version', 'V', nbOption::PARAMETER_NONE, 'Shows the version'),
       new nbOption('verbose', 'v', nbOption::PARAMETER_NONE, 'Set verbosity'),
       new nbOption('trace', 't', nbOption::PARAMETER_NONE, 'Shows exception trace'),
-      new nbOption('help', '?', nbOption::PARAMETER_NONE, 'Shows application help')
+      new nbOption('config', 'c', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY, 'Changes the configuration properties'),
+      new nbOption('help', '?', nbOption::PARAMETER_NONE, 'Shows application help'),
     ));
 
 //    $this->registerCommands($commands);
@@ -57,11 +58,15 @@ abstract class nbApplication
       $commandName = $this->parser->getArgumentValue('command');
     else
       $commandLine = $commandName . ' ' . $commandLine;
-    
+
+    if(!$this->commands->hasCommand($commandName))
+      return;
+
     $command = $this->commands->getCommand($commandName);
     $r = new ReflectionClass($command);
     if($r->isSubclassOf('nbApplicationCommand'))
       $command->setApplication($this);
+
     $command->run($this->parser, $commandLine);
   }
 
@@ -96,6 +101,13 @@ abstract class nbApplication
     if(isset($options['help'])) {
       $logger->log($this->formatHelp($this->arguments, $this->options));
       return true;
+    }
+
+    if(isset($options['config'])) {
+      foreach ($options['config'] as $option) {
+        $property = preg_split('/[\s]*=[\s]*/', $option, 2);
+        nbConfig::set($property[0], $property[1]);
+      }
     }
 
     return false;
@@ -183,8 +195,6 @@ abstract class nbApplication
     return $this->commands->getCommand($name);
   }
 
-
-
   /**
    * Renders an exception.
    *
@@ -253,23 +263,13 @@ abstract class nbApplication
   {
     if(!$this->parser->hasArgumentValue('command'))
       return;
+    
     $argument = $this->parser->getArgumentValue('command');
-    echo $argument . "\n";
-
-//    $commands = $this->getCommands()->getCommands();
     $currentCommand = $this->getCommands()->getCommand($argument);
 
-//    print_r("BeeOption:". $this->options . "\n");
-
-//    foreach($commands as $command) {
-//      foreach($command->getOptionsArray() as $cmdOption) {
-//        print_r("Option: " .$cmdOption->getName(). "\n");
-//        if($this->options->hasOption($cmdOption->getName()))
-//          throw new Exception(sprintf('[nbApplication::VerifyOption] The "%s" option name already exists in beeApplication.', $cmdOption->getName()));
-//      }
-//    }
     if(null == $currentCommand)
       return;
+    
     foreach($currentCommand->getOptionsArray() as $cmdOption) {
       if($this->options->hasOption($cmdOption->getName()))
         throw new Exception(sprintf('[nbApplication::VerifyOption] The "%s" option name already exists in beeApplication.', $cmdOption->getName()));

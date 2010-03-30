@@ -28,10 +28,6 @@ class DummyApplication extends nbApplication
   {
   }
 
-  protected function handleOptions(array $options)
-  {
-  }
-
   public function getOption($optionName)
   {
     return $this->options->getOption($optionName);

@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(42);
+$t = new lime_test(48);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
@@ -118,13 +118,22 @@ try {
 }
 
 $t->comment('nbCommandTest - Test options defined in nbConfig');
-$option1 = new nbOption('foo', '', nbOption::PARAMETER_OPTIONAL, '', 'defaultvalue');
-$option2 = new nbOption('bar', '', nbOption::PARAMETER_REQUIRED, '');
+$optionOptional = new nbOption('foo', '', nbOption::PARAMETER_OPTIONAL, '', 'defaultvalue');
+$optionRequired = new nbOption('bar', '', nbOption::PARAMETER_REQUIRED, '');
+$optionOptionalArray = new nbOption('cos', '', nbOption::PARAMETER_OPTIONAL | nbOption::IS_ARRAY, array('defaultvalue1', 'defaultvalue2'));
+$optionRequiredArray = new nbOption('fas', '', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY);
 nbConfig::set('nb_commands_ns_name_foo', 'foovalue');
 nbConfig::set('nb_commands_ns_name_bar', 'barvalue');
 nbConfig::set('nb_commands_ns_name_cos', array('cosvalue1', 'cosvalue2'));
-$command = new DummyCommand("ns:name", null, new nbOptionSet(array($option1, $option2)));
+nbConfig::set('nb_commands_ns_name_fas', array('fasvalue1', 'fasvalue2'));
+$command = new DummyCommand("ns:name", null, new nbOptionSet(array($optionOptional, $optionRequired, $optionOptionalArray, $optionRequiredArray)));
 $command->run(new nbCommandLineParser(), '');
-$t->is($command->getOption('foo'), 'foovalue');
-$t->is($command->getOption('bar'), 'barvalue');
-//$t->is($command->getOption('cos'), array('cosvalue1', 'cosvalue2'));
+$t->is($command->getOption('foo'), 'foovalue', '->getOption() returns "foovalue" ');
+$t->is($command->getOption('bar'), 'barvalue', '->getOption() returns "barvalue" ');
+$t->is($command->getOption('cos'), array('cosvalue1', 'cosvalue2'), '->getOption() returns "[cosvalue1, cosvalue2]" ');
+$t->is($command->getOption('fas'), array('fasvalue1', 'fasvalue2'), '->getOption() returns "[fasvalue1, fasvalue2]" ');
+$command->run(new nbCommandLineParser(), '--foo=cmdfoovalue --bar=cmdbarvalue --cos=cmdcosvalue1 --cos=cmdcosvalue2 --fas=cmdfasvalue1 --fas=cmdfasvalue2');
+$t->is($command->getOption('foo'), 'cmdfoovalue', '->getOption() returns "cmdfoovalue" ');
+$t->is($command->getOption('bar'), 'cmdbarvalue', '->getOption() returns "cmdbarvalue" ');
+$t->is($command->getOption('cos'), array('cmdcosvalue1', 'cmdcosvalue2'), '->getOption() returns "[cmdcosvalue1, cmdcosvalue2]" ');
+$t->is($command->getOption('fas'), array('cmdfasvalue1', 'cmdfasvalue2'), '->getOption() returns "[cmdfasvalue1, cmdfasvalue2]" ');
