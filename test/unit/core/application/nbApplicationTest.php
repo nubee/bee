@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(15);
+$t = new lime_test(18);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
@@ -43,3 +43,38 @@ $t->is($bas->getOption('first'), true, '->run() executes command "bas -f"');
 $application->run('fou');
 $t->ok($fas->hasExecuted(), '->run() executes command "fas" with alias "fou"');
 
+$t->comment('ApplicationTest - Test VerifyOption');
+$application = new DummyApplication(array(), array(new nbOption('option1')));
+
+$foo = new DummyCommand('foo');
+$foo->addOption(new nbOption('option1'));
+$bar = new DummyCommand('bar');
+$bar->addOption(new nbOption('option2'));
+$list = new DummyCommand('list');
+
+
+$application->setCommands(new nbCommandSet(array($foo, $bar, $list)));
+
+try {
+  $application->run('foo');
+  $t->fail('nbApplication::verifyOption() throws if there are some options in beeApplication and in new command');
+}
+catch(Exception $e) {
+  $t->pass('nbApplication::verifyOption() throws if there are some options in beeApplication and in new command');
+}
+
+try {
+  $application->run('bar');
+  $t->pass('nbApplication::verifyOption() doesn\'t throw if there are different options in beeApplication and in new command');
+}
+catch(Exception $e) {
+  $t->fail('nbApplication::verifyOption() doesn\'t throw if there are different options in beeApplication and in new command');
+}
+
+try {
+  $application->run();
+  $t->pass('nbApplication::verifyOption() doesn\'t throw if there are different options in beeApplication and in new command');
+}
+catch(Exception $e) {
+  $t->fail('nbApplication::verifyOption() doesn\'t throw if there are different options in beeApplication and in new command');
+}

@@ -50,12 +50,14 @@ abstract class nbApplication
     if($this->handleOptions($this->parser->getOptionValues()))
       return;
 
+    $this->verifyOptionCommand();
+
     $commandName = 'list';
     if($this->parser->hasArgumentValue('command'))
       $commandName = $this->parser->getArgumentValue('command');
     else
       $commandLine = $commandName . ' ' . $commandLine;
-
+    
     $command = $this->commands->getCommand($commandName);
     $r = new ReflectionClass($command);
     if($r->isSubclassOf('nbApplicationCommand'))
@@ -244,6 +246,33 @@ abstract class nbApplication
         $message = sprintf(" %s%s%s at %s:%s\n", $class, $type, $function, $file, $line);
         $logger->log($message, nbLogger::INFO);
       }
+    }
+  }
+
+  public function verifyOptionCommand()
+  {
+    if(!$this->parser->hasArgumentValue('command'))
+      return;
+    $argument = $this->parser->getArgumentValue('command');
+    echo $argument . "\n";
+
+//    $commands = $this->getCommands()->getCommands();
+    $currentCommand = $this->getCommands()->getCommand($argument);
+
+//    print_r("BeeOption:". $this->options . "\n");
+
+//    foreach($commands as $command) {
+//      foreach($command->getOptionsArray() as $cmdOption) {
+//        print_r("Option: " .$cmdOption->getName(). "\n");
+//        if($this->options->hasOption($cmdOption->getName()))
+//          throw new Exception(sprintf('[nbApplication::VerifyOption] The "%s" option name already exists in beeApplication.', $cmdOption->getName()));
+//      }
+//    }
+    if(null == $currentCommand)
+      return;
+    foreach($currentCommand->getOptionsArray() as $cmdOption) {
+      if($this->options->hasOption($cmdOption->getName()))
+        throw new Exception(sprintf('[nbApplication::VerifyOption] The "%s" option name already exists in beeApplication.', $cmdOption->getName()));
     }
   }
 }
