@@ -78,6 +78,9 @@ class nbCommandLoader
 
   public function loadCommandAliases()
   {
+    if (!nbConfig::has('proj_commands'))
+      return;
+
     $namespaces = nbConfig::get('proj_commands');
     foreach ($namespaces as $namespace => $commands)
     {
