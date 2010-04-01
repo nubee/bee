@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(27);
+$t = new lime_test(28);
 
 $dataDir = dirname(__FILE__) . '/../../../data/system';
 $sandboxDir = dirname(__FILE__).'/../../../sandbox';
@@ -18,10 +18,18 @@ $t->ok(is_dir($sandboxDir . '/dir'), 'mkdir() creates dir if it not exists');
 
 try {
   nbFileSystem::mkdir($sandboxDir.'/dir');
-  $t->fail(('nbFileSystem::mkdir() trows if directory already exists'));
+  $t->pass(('nbFileSystem::mkdir() does not trow if directory already exists'));
 }
 catch( Exception $e) {
-  $t->pass('nbFileSystem::mkdir() throws if directory already exists');
+  $t->fail('nbFileSystem::mkdir() does not throw if directory already exists');
+}
+
+try {
+  nbFileSystem::mkdir($dataDir . '/Class1.php');
+  $t->fail('nbFileSystem::mkdir() throws if directory name already exists as file');
+}
+catch( Exception $e) {
+  $t->pass('nbFileSystem::mkdir() throws if directory name already exists as file');
 }
 
 try {

@@ -32,9 +32,9 @@ class nbFileSystem
    */
   public static function mkdir($path, $withParents = false)
   {
-    if(file_exists($path))
-      throw new Exception('[nbFileSystem::mkdir] The path "'.$path.'" already exists');
-    else
+    if(file_exists($path) && is_dir($path))
+      return;
+//      throw new Exception('[nbFileSystem::mkdir] The path "'.$path.'" already exists');
     // mode is ignored in windows... but not in linux & co.
     if(!mkdir($path, 0777, $withParents))
     {
