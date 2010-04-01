@@ -109,13 +109,14 @@ class nbFileSystem
    */
   public static function copy($source, $dest = null, $overwrite = false)
   {
-    if(file_exists($dest) && is_dir($dest))
-      $dest .= '/'.self::getFileName($source);
+    if(file_exists($dest) && is_dir($dest)) {
+      $dest .= '/' . self::getFileName($source);
+    }
 
     if(file_exists($dest) && !$overwrite)
-      throw new InvalidArgumentException('[nbFileSystem::copy] destination file exists');
+      throw new InvalidArgumentException('[nbFileSystem::copy] error copying ' . $source . ': destination file exists: ' . $dest);
     if(!copy($source, $dest))
-      throw new Exception('[nbFileSystem::copy] copy command failed');
+      throw new Exception('[nbFileSystem::copy] error copying ' . $source . ' to ' . $dest);
   }
 
   /**
