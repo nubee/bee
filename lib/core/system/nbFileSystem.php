@@ -32,9 +32,9 @@ class nbFileSystem
    */
   public static function mkdir($path, $withParents = false)
   {
-    if(file_exists($path))
-      throw new Exception('[nbFileSystem::mkdir] The path "'.$path.'" already exists');
-    else
+    if(file_exists($path) && is_dir($path))
+      return;
+//      throw new Exception('[nbFileSystem::mkdir] The path "'.$path.'" already exists');
     // mode is ignored in windows... but not in linux & co.
     if(!mkdir($path, 0777, $withParents))
     {
@@ -109,13 +109,14 @@ class nbFileSystem
    */
   public static function copy($source, $dest = null, $overwrite = false)
   {
-    if(file_exists($dest) && is_dir($dest))
-      $dest .= '/'.self::getFileName($source);
+    if(file_exists($dest) && is_dir($dest)) {
+      $dest .= '/' . self::getFileName($source);
+    }
 
     if(file_exists($dest) && !$overwrite)
-      throw new InvalidArgumentException('[nbFileSystem::copy] destination file exists');
+      throw new InvalidArgumentException('[nbFileSystem::copy] error copying ' . $source . ': destination file exists: ' . $dest);
     if(!copy($source, $dest))
-      throw new Exception('[nbFileSystem::copy] copy command failed');
+      throw new Exception('[nbFileSystem::copy] error copying ' . $source . ' to ' . $dest);
   }
 
   /**
