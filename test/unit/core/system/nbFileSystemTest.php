@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(28);
+$t = new lime_test(29);
 
 $dataDir = dirname(__FILE__) . '/../../../data/system';
 $sandboxDir = dirname(__FILE__).'/../../../sandbox';
@@ -148,6 +148,8 @@ nbFileSystem::mkdir($sandboxDir.'/dir4');
 nbFileSystem::copy($sandboxDir.'/file1', $sandboxDir.'/dir4');
 $t->ok(file_exists($sandboxDir.'/dir4/file1'), 'nbFileSystem::copy() copies source file in another folder maintaining the filename');
 
+nbFileSystem::copy($sandboxDir.'/file1', $sandboxDir.'/dir_not_created/file1');
+$t->ok(file_exists($sandboxDir.'/dir_not_created/file1'), 'nbFileSystem::copy() copies source file in another file creating all the needed folders');
 
 $t->comment('nbFileSystemTest - Test Move');
 
