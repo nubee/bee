@@ -37,6 +37,7 @@ abstract class nbApplication
       new nbOption('trace', 't', nbOption::PARAMETER_NONE, 'Shows exception trace'),
       new nbOption('config', 'c', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY, 'Changes the configuration properties'),
       new nbOption('help', '?', nbOption::PARAMETER_NONE, 'Shows application help'),
+      new nbOption('file', '', nbOption::PARAMETER_REQUIRED, 'Read configuration from FILE'),
     ));
 
 //    $this->registerCommands($commands);
@@ -101,6 +102,13 @@ abstract class nbApplication
     if(isset($options['help'])) {
       $logger->log($this->formatHelp($this->arguments, $this->options));
       return true;
+    }
+
+    if(isset($options['file'])) {
+      if(file_exists($options['file'])) {
+        $yaml = new nbYamlConfigParser();
+        $yaml->parseFile($options['file']);
+      }
     }
 
     if(isset($options['config'])) {
