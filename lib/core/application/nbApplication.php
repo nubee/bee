@@ -121,6 +121,10 @@ abstract class nbApplication
       $this->serviceContainer->pluginLoader->loadPlugins($options['enable-plugin']);
     }
 
+    if(isset($options['enable-all-plugins'])) {
+      $this->serviceContainer->pluginLoader->loadAllPlugins();
+    }
+
     return false;
   }
 
