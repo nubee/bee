@@ -113,6 +113,10 @@ class nbFileSystem
       $dest .= '/' . self::getFileName($source);
     }
 
+    if (!file_exists(dirname($dest))) {
+      self::mkdir(dirname($dest), true);
+    }
+
     if(file_exists($dest) && !$overwrite)
       throw new InvalidArgumentException('[nbFileSystem::copy] error copying ' . $source . ': destination file exists: ' . $dest);
     if(!copy($source, $dest))
