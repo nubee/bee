@@ -19,7 +19,8 @@ class nbBackupCommand extends nbCommand
         new nbOption('workspace', 'w', nbOption::PARAMETER_NONE, 'Specify that workspace must be included'),
         new nbOption('fingerprints', 'f', nbOption::PARAMETER_NONE, 'Specify that fingerprints must be included'),
         new nbOption('builds', 'b', nbOption::PARAMETER_NONE, 'Specify that build history must be included'),
-        new nbOption('usercontent', 'u', nbOption::PARAMETER_NONE, 'Specify that user content must be included')
+        new nbOption('usercontent', 'u', nbOption::PARAMETER_NONE, 'Specify that user content must be included'),
+        new nbOption('autofolder', 'a', nbOption::PARAMETER_NONE, 'Backup into a subfolder with current date and time')
       )))
       ->setBriefDescription('Backups a hudson instance')
       ->setDescription(<<<TXT
@@ -32,9 +33,13 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
+    $time = strftime('%Y%m%d-%H%M%S', time());
+
     $hudsonHome = $arguments['hudsonHome'];
     $backupHome = $arguments['backupHome'];
-    $this->log(time() . " - Starting backup procedure...\n", nbLogger::COMMENT);
+    if (isset($options['autofolder']))
+      $backupHome .= '/' . $time;
+    $this->log("$time - Starting backup procedure...\n", nbLogger::COMMENT);
     $this->log('From ' . $hudsonHome . ' to ' . $backupHome . "\n", nbLogger::COMMENT);
     if (!is_dir($hudsonHome))
       throw new Exception('Cannot find hudson home directory: ' . $hudsonHome);
@@ -42,6 +47,7 @@ TXT
     nbFileSystem::mkdir($backupHome, true);
 
     $finder = nbFileFinder::create();
+    $finder->prune(array('war', 'plugins', 'log', 'userContent'));
 
     if (!isset($options['workspace'])) {
       $this->log("excluding workspace\n", nbLogger::COMMENT);
@@ -60,10 +66,13 @@ TXT
 
     $files = $finder->setType('file')->relative()->add('*.xml')->in($hudsonHome);
 
-    $userContentFinder = new nbFileFinder();
-    $userContent = $userContentFinder->relative()->add('*')->in($hudsonHome . '/userContent');
-    foreach ($userContent as $file) {
-      $files[] = 'userContent/' . $file;
+    if (isset($options['usercontent'])) {
+      $this->log("Including userContent\n", nbLogger::COMMENT);
+      $userContentFinder = new nbFileFinder();
+      $userContent = $userContentFinder->relative()->add('*')->in($hudsonHome . '/userContent');
+      foreach ($userContent as $file) {
+        $files[] = 'userContent/' . $file;
+      }
     }
     
 //    if (isset($options['fingerprints'])) {
@@ -89,6 +98,8 @@ TXT
 //      $zip->addFile($file);
 //      $zip->close();
 //    }
+    $time = strftime('%Y%m%d-%H%M%S', time());
+    $this->log("$time - Backup succesful.", nbLogger::COMMENT);
 
     return true;
   }
