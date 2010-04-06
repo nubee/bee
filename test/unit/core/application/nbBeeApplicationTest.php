@@ -10,7 +10,7 @@ $logger->setOutput($output);
 
 
 $t->comment('nbBeeApplicationTest - Test constructor');
-$application = new nbBeeApplication(new nbCommandSet());
+$application = new nbBeeApplication($serviceContainer);
 $application->run('-V');
 
 $t->is($application->getName(), 'bee', '->getName() is "bee"');
@@ -19,3 +19,5 @@ $t->is($output->getStream(), '0.1.0', '->run() outputs application version');
 
 $application->run('-vV');
 $t->is($output->getStream(), 'bee version 0.1.0', '->run() outputs long application version');
+
+

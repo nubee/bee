@@ -13,11 +13,19 @@ $autoload->addDirectory('test/lib/', '*.php', true);
 
 $configParser = new nbYamlConfigParser();
 $configParser->parseFile(dirname(__FILE__) . '/../../config/config.yml');
-
-//load plugins
-nbPluginLoader::getInstance()->loadAllPlugins();
-
 $configParser->parseFile(dirname(__FILE__) . '/../config/config.test.yml');
+
+
+
+$serviceContainer = new sfServiceContainerBuilder();
+$serviceContainer->register('pluginLoader', 'nbPluginLoader')->
+  addArgument(nbConfig::get('nb_plugin_dir'))->
+  addArgument(new sfServiceReference('commandLoader')
+  )->
+  setShared(true);
+
+$serviceContainer->register('commandLoader', 'nbCommandLoaderWithReset')->
+  setShared(true);
 
 $output = new nbConsoleOutput();
 //$output->setFormatter(new nbAnsiColorFormatter());

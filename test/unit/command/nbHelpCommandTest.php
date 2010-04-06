@@ -7,10 +7,12 @@ $t = new lime_test(3);
 $output = new nbStreamOutput();
 nbLogger::getInstance()->setOutput($output);
 
-$application = new DummyApplication();
+$application = new DummyApplication($serviceContainer);
 $command = new nbHelpCommand();
 $command->setApplication($application);
-$application->setCommands(new nbCommandSet(array(new DummyCommand('dummy1'), $command)));
+
+$serviceContainer->commandLoader->getCommands()->addCommand(new DummyCommand('dummy1'));
+$serviceContainer->commandLoader->getCommands()->addCommand($command);
 
 $t->comment('nbHelpCommandTest - Test get name');
 $t->is($command->getName(), 'help', '->getName() is "help"');

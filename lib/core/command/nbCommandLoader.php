@@ -2,31 +2,49 @@
 
 class nbCommandLoader
 {
-  private $commands;
+  protected $commands,
+          $dirs = array();
 
   public function  __construct()
   {
     $this->commands = new nbCommandSet();
+    $this->dirs[nbConfig::get('nb_command_dir')] = false;
   }
 
-  /**
-   * Autodiscovers command classes.
-   *
-   * @return array An array of command instances
-   */
-//  public function autodiscoverCommands()
-//  {
-//    $commands = array();
-//    foreach (get_declared_classes() as $class) {
-//      $r = new ReflectionClass($class);
-//
-//      if($r->isSubclassOf('nbCommand') && !$r->isAbstract()) {
-//        $commands[] = new $class();
-//      }
-//    }
-//
-//    return $commands;
-//  }
+  public function addDir($dir)
+  {
+    if(!is_dir($dir))
+      throw new InvalidArgumentException('[nbCommandLoader::addDir] invalid directory:'.$dir);
+    if(key_exists($dir, $this->dirs))
+      return;
+    
+    $this->dirs[$dir] = false;
+  }
+
+  public function addCommandsFromDir($dir)
+  {
+    if(!is_dir($dir))
+      return;
+    if(key_exists($dir, $this->dirs) && $this->dirs[$dir])
+      return;
+
+    $finder = nbFileFinder::create('file')->add('*Command.php');
+    $this->commandFiles = array();
+    foreach ($finder->in($dir) as $file)
+      $this->commandFiles[basename($file, '.php')] = $file;
+    // register local autoloader for tasks
+    spl_autoload_register(array($this, 'autoloadCommand'));
+
+    foreach ($this->commandFiles as $command => $file) {
+      // forces autoloading of each command class
+      $this->commands->addCommand(new $command());
+    }
+    // unregister local autoloader
+    spl_autoload_unregister(array($this, 'autoloadCommand'));
+    
+    $this->dirs[$dir]=true;
+
+  }
 
   public function getCommands()
   {
@@ -35,28 +53,25 @@ class nbCommandLoader
 
   public function loadCommands()
   {
-//    echo "Loading commands from " . nbConfig::get('nb_command_dir') . "\n";
-    $dirs = array(nbConfig::get('nb_command_dir'));
-    foreach( nbPluginLoader::getInstance()->getPlugins() as $pluginName)
-      $dirs[] = nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/command';
-
-    $finder = nbFileFinder::create('file')->add('*Command.php');
-    $this->commandFiles = array();
-    foreach ($finder->in($dirs) as $file)
-      $this->commandFiles[basename($file, '.php')] = $file;
-
-    // register local autoloader for tasks
-    spl_autoload_register(array($this, 'autoloadCommand'));
-
-    // require tasks
-    $commands = array();
-    foreach ($this->commandFiles as $command => $file) {
-      // forces autoloading of each task class
-      $this->commands->addCommand(new $command());
-    }
-
-    // unregister local autoloader
-    spl_autoload_unregister(array($this, 'autoloadCommand'));
+    foreach($this->dirs as $dir=>$loaded)
+            $this->addCommandsFromDir($dir);
+//    $finder = nbFileFinder::create('file')->add('*Command.php');
+//    $this->commandFiles = array();
+//    foreach ($finder->in($this->dirs) as $file)
+//      $this->commandFiles[basename($file, '.php')] = $file;
+//
+//    // register local autoloader for tasks
+//    spl_autoload_register(array($this, 'autoloadCommand'));
+//
+//    // require tasks
+//    $commands = array();
+//    foreach ($this->commandFiles as $command => $file) {
+//      // forces autoloading of each command class
+//      $this->commands->addCommand(new $command());
+//    }
+//
+//    // unregister local autoloader
+//    spl_autoload_unregister(array($this, 'autoloadCommand'));
   }
 
   /**

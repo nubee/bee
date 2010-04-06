@@ -5,8 +5,8 @@ require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
 $t = new lime_test();
 
-nbConfig::set('nb_command_dir', 'test/data/core/command/empty');
-nbConfig::set('nb_plugin_dir', 'test/data/core/command/empty');
+nbConfig::set('nb_command_dir', nbconfig::get('nb_sandbox_dir'));
+nbConfig::set('nb_plugin_dir', nbconfig::get('nb_sandbox_dir'));
 nbConfig::set('proj_commands', array());
 
 $t->comment('nbCommandLoaderTest - test ctor');
@@ -16,7 +16,8 @@ $t->is($commandLoader->getCommands()->count(), 0, '->getCommands() after ctor is
 $t->comment('nbCommandLoaderTest - load commands');
 $commandLoader->loadCommands();
 $t->is($commandLoader->getCommands()->count(), 0, '->loadCommands() has loaded 0 commands');
-nbConfig::set('nb_command_dir', 'test/data/core/command');
+
+$commandLoader->addDir('test/data/core/command');
 $commandLoader->loadCommands();
 $t->is($commandLoader->getCommands()->count(), 1, '->loadCommands() has loaded 1 commands');
 $t->ok($commandLoader->getCommands()->hasCommand(EmptyCommand::Name()), '->loadCommands() has loaded 1 commands');

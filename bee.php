@@ -25,19 +25,37 @@ if(file_exists(nbConfig::get('nb_user_config')))
 if(file_exists(nbConfig::get('nb_project_config')))
   $yaml->parseFile(nbConfig::get('nb_project_config'));
 
+/************************/
+sfServiceContainerAutoloader::register();
+
+$serviceContainer = new sfServiceContainerBuilder();
+
+$serviceContainer->
+  register('pluginLoader', 'nbPluginLoader')->
+  addArgument(nbConfig::get('nb_plugin_dir'))->
+  addArgument(new sfServiceReference('commandLoader')
+  )->
+  setShared(true)
+;
+
+$serviceContainer->
+  register('commandLoader', 'nbCommandLoader')->
+  setShared(true)
+;
+/************************/
+
 if(! $default_plugins = nbConfig::get('nb_default_plugins'))
   $default_plugins = array();
 else
-  nbPluginLoader::getInstance()->loadPlugins($default_plugins);
+  $serviceContainer->pluginLoader->loadPlugins($default_plugins);
 
 if(nbConfig::has('proj_bee_plugins')) {
   $plugins = nbConfig::get('proj_bee_plugins');
 
   (null === $plugins)?
-    nbPluginLoader::getInstance()->loadAllPlugins() :
-    nbPluginLoader::getInstance()->loadPlugins($plugins);
+    $serviceContainer->pluginLoader->loadAllPlugins() :
+    $serviceContainer->pluginLoader->loadPlugins($plugins);
 }
-
 
 $autoload->addDirectory(nbConfig::get('nb_command_dir'), 'Command.php', true);
 $output = new nbConsoleOutput();
@@ -45,14 +63,12 @@ $output->setFormatter(nbConfig::get('nb_output_color', 'false') == 'true' ? new 
 $logger = nbLogger::getInstance();
 $logger->setOutput($output);
 
-$commandLoader = new nbCommandLoader();
-$commandLoader->loadCommands();
-$commandLoader->loadCommandAliases();
-$commandSet = $commandLoader->getCommands();
+$serviceContainer->commandLoader->loadCommands();
+$serviceContainer->commandLoader->loadCommandAliases();
+//$commandSet = $commandLoader->getCommands();
 
-try {
-  $application = new nbBeeApplication($commandSet);
-
+try{
+  $application = new nbBeeApplication($serviceContainer);
   $application->run();
 }
 catch(Exception $e) {

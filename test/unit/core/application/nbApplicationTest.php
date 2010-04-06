@@ -2,26 +2,26 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(31);
+$t = new lime_test(32);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
 
 $t->comment('nbApplicationTest - Test constructor');
-$application = new DummyApplication();
+$application = new DummyApplication($serviceContainer);
 $t->is($application->getName(), 'UNDEFINED', '->getName() is "UNDEFINED"');
 $t->is($application->getVersion(), 'UNDEFINED', '->getVersion() is "UNDEFINED"');
 $t->is($application->hasArguments(), true, '__construct() returns an application with arguments');
 $t->is($application->hasOptions(), true, '__construct() returns an application with options');
 $t->is($application->hasCommands(), false, '__construct() returns an application without commands');
 
-$application = new DummyApplication(array($fooArgument));
+$application = new DummyApplication($serviceContainer, array($fooArgument));
 $t->is($application->hasArguments(), true, '__construct() returns an application with an argument');
 $t->is($application->getArguments()->count(), 2, '__construct() returns an application with 2 arguments');
 
-$application = new DummyApplication(array(), array($barOption));
+$application = new DummyApplication($serviceContainer, array(), array($barOption));
 $t->is($application->hasOptions(), true, '__construct() returns an application with an option');
-$t->is($application->getOptions()->count(), 6, '__construct() returns an application with 5 options');
+$t->is($application->getOptions()->count(), 5, '__construct() returns an application with 5 options');
 
 $t->comment('nbApplicationTest - Test run');
 $foo = new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))));
@@ -30,8 +30,9 @@ $bas = new DummyCommand('bas', null, new nbOptionSet(array(new nbOption('first',
 $fas = new DummyCommand('fas');
 $fas->setAlias('fou');
 
-$application = new DummyApplication();
-$application->setCommands(new nbCommandSet(array($foo, $bar, $bas, $fas)));
+$application = new DummyApplication($serviceContainer);
+//$application->setCommands(new nbCommandSet(array($foo, $bar, $bas, $fas)));
+$serviceContainer->commandLoader->addCommands(array($foo, $bar, $bas, $fas));
 $application->run('foo');
 $t->ok($foo->hasExecuted(), '->run() executes command "foo"');
 $application->run('bar test');
@@ -44,7 +45,7 @@ $application->run('fou');
 $t->ok($fas->hasExecuted(), '->run() executes command "fas" with alias "fou"');
 
 $t->comment('ApplicationTest - Test VerifyOption');
-$application = new DummyApplication(array(), array(new nbOption('option1')));
+$application = new DummyApplication($serviceContainer, array(), array(new nbOption('option1')));
 
 $foo = new DummyCommand('foo');
 $foo->addOption(new nbOption('option1'));
@@ -53,7 +54,8 @@ $bar->addOption(new nbOption('option2'));
 $list = new DummyCommand('list');
 
 
-$application->setCommands(new nbCommandSet(array($foo, $bar, $list)));
+$serviceContainer->commandLoader->reset();
+$serviceContainer->commandLoader->addCommands(array($foo, $bar, $list));
 
 try {
   $application->run('foo');
@@ -82,45 +84,72 @@ catch(Exception $e) {
 $t->comment('nbApplicationTest - Test --config option');
 nbConfig::set('nb_pathtest', 'valuetest');
 
-$application = new DummyApplication();
+$application = new DummyBeeApplication($serviceContainer);
 $foo = new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))));
-$application->setCommands(new nbCommandSet(array($foo)));
+
+$serviceContainer->commandLoader->reset();
+$serviceContainer->commandLoader->addCommands(array($foo));
+
 $application->run('--config=nb_pathtest=cmdvaluetest foo');
 $t->is(nbConfig::get('nb_pathtest'), 'cmdvaluetest', 'option "--config" overrides nbConfig property');
 $t->ok($foo->hasExecuted(), 'command "foo" has executed');
 
-$application = new DummyApplication();
+$application = new DummyBeeApplication($serviceContainer);
 $foo = new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))));
-$application->setCommands(new nbCommandSet(array($foo)));
+
+$serviceContainer->commandLoader->reset();
+$serviceContainer->commandLoader->addCommands(array($foo));
+
 $application->run('--config="nb_pathtest = cmdvaluetest" foo');
 $t->is(nbConfig::get('nb_pathtest'), 'cmdvaluetest', 'option "--config" overrides nbConfig property');
 $t->ok($foo->hasExecuted(), 'command "foo" has executed');
 
-$application = new DummyApplication();
+$application = new DummyBeeApplication($serviceContainer);
 $foo = new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))));
-$application->setCommands(new nbCommandSet(array($foo)));
+
+$serviceContainer->commandLoader->reset();
+$serviceContainer->commandLoader->addCommands(array($foo));
+
 $application->run('--config="nb_pathtest = cmd value test" foo');
 $t->is(nbConfig::get('nb_pathtest'), 'cmd value test', 'option "--config" overrides nbConfig property');
 $t->ok($foo->hasExecuted(), 'command "foo" has executed');
 
-$application = new DummyApplication();
+$application = new DummyBeeApplication($serviceContainer);
 $foo = new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))));
-$application->setCommands(new nbCommandSet(array($foo)));
+
+$serviceContainer->commandLoader->reset();
+$serviceContainer->commandLoader->addCommands(array($foo));
+
 $application->run('--config="nb_pathtest = cmd value = test" foo');
 $t->is(nbConfig::get('nb_pathtest'), 'cmd value = test', 'option "--config" overrides nbConfig property');
 $t->ok($foo->hasExecuted(), 'command "foo" has executed');
 
-$application = new DummyApplication();
+$application = new DummyBeeApplication($serviceContainer);
 $foo = new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))));
-$application->setCommands(new nbCommandSet(array($foo)));
+
+$serviceContainer->commandLoader->reset();
+$serviceContainer->commandLoader->addCommands(array($foo));
+
 $application->run('--config=nb_pathtest2=cmdvaluetest2 foo');
 $t->is(nbConfig::get('nb_pathtest2'), 'cmdvaluetest2', 'option "--config" creates nbConfig property');
 $t->ok($foo->hasExecuted(), 'command "foo" has executed');
 
-$application = new DummyApplication();
+$application = new DummyBeeApplication($serviceContainer);
 $foo = new DummyCommand('foo', null, new nbOptionSet(array(new nbOption('first', 'f'))));
-$application->setCommands(new nbCommandSet(array($foo)));
+
+$serviceContainer->commandLoader->reset();
+$serviceContainer->commandLoader->addCommands(array($foo));
+
 $application->run('--config=nb_path1=cmdvalue1 --config=nb_path2=cmdvalue2 foo');
 $t->is(nbConfig::get('nb_path1'), 'cmdvalue1', 'option "--config" creates multiple nbConfig properties');
 $t->is(nbConfig::get('nb_path2'), 'cmdvalue2', 'option "--config" creates multiple nbConfig properties');
 $t->ok($foo->hasExecuted(), 'command "foo" has executed');
+
+
+$t->comment('nbApplicationTest - Test --enable-plugin option');
+$serviceContainer->pluginLoader->addDir(nbConfig::get('nb_test_plugin_dir'));
+$application = new DummyBeeApplication($serviceContainer);
+
+$application->run('--enable-plugin=tstPlugin TstPluginCommand');
+$t->ok(class_exists('TstPluginCommand'), 'option --enable-plugin enables a single plugin');
+
