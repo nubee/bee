@@ -20,6 +20,7 @@ class nbBackupCommand extends nbCommand
         new nbOption('fingerprints', 'f', nbOption::PARAMETER_NONE, 'Specify that fingerprints must be included'),
         new nbOption('builds', 'b', nbOption::PARAMETER_NONE, 'Specify that build history must be included'),
         new nbOption('usercontent', 'u', nbOption::PARAMETER_NONE, 'Specify that user content must be included'),
+        new nbOption('hudson', 'h', nbOption::PARAMETER_NONE, 'Specify that also hudson server must be included'),
         new nbOption('autofolder', 'a', nbOption::PARAMETER_NONE, 'Backup into a subfolder with current date and time')
       )))
       ->setBriefDescription('Backups a hudson instance')
@@ -34,56 +35,53 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $time = strftime('%Y%m%d-%H%M%S', time());
+    $this->log("$time - Starting backup procedure...\n", nbLogger::COMMENT);
 
     $hudsonHome = $arguments['hudsonHome'];
-    $backupHome = $arguments['backupHome'];
-    if (isset($options['autofolder']))
-      $backupHome .= '/' . $time;
-    $this->log("$time - Starting backup procedure...\n", nbLogger::COMMENT);
-    $this->log('From ' . $hudsonHome . ' to ' . $backupHome . "\n", nbLogger::COMMENT);
     if (!is_dir($hudsonHome))
       throw new Exception('Cannot find hudson home directory: ' . $hudsonHome);
 
-    nbFileSystem::mkdir($backupHome, true);
+    $backupHome = $arguments['backupHome'];
+    if (isset($options['autofolder']))
+      $backupHome .= '/' . $time;
+    $this->log('From ' . $hudsonHome . ' to ' . $backupHome . "\n", nbLogger::COMMENT);
 
     $finder = nbFileFinder::create();
-    $finder->prune(array('war', 'plugins', 'log', 'userContent'));
+    // hudson config
+    $files = $finder->setType('file')->relative()->maxdepth(0)->add('*.xml')->in($hudsonHome);
+    $files = array_merge($files, $this->findInSubFolder($hudsonHome, 'users', '*'));
 
-    if (!isset($options['workspace'])) {
-      $this->log("excluding workspace\n", nbLogger::COMMENT);
-      $finder->prune('workspace');
+    $excludeDirs = array();
+    if (isset($options['builds']))
+      $this->log("  + including job builds\n", nbLogger::COMMENT);
+    else
+      $excludeDirs[] = 'builds';
+    if (isset($options['workspace']))
+      $this->log("  + including job workspace\n", nbLogger::COMMENT);
+    else
+      $excludeDirs[] = 'workspace';
+    $files = array_merge($files, $this->findInSubFolder($hudsonHome, 'jobs', '*', $excludeDirs));
+
+    if (isset($options['fingerprints'])) {
+      $this->log("  + including fingerprints\n", nbLogger::COMMENT);
+      $files = array_merge($files, $this->findInSubFolder($hudsonHome, 'fingerprints', '*'));
     }
-
-    if (!isset($options['builds'])) {
-      $this->log("excluding builds\n", nbLogger::COMMENT);
-      $finder->prune('builds');
-    }
-
-    if (!isset($options['fingerprints'])) {
-      $this->log("excluding fingerprints\n", nbLogger::COMMENT);
-      $finder->prune('fingerprints');
-    }
-
-    $files = $finder->setType('file')->relative()->add('*.xml')->in($hudsonHome);
 
     if (isset($options['usercontent'])) {
-      $this->log("Including userContent\n", nbLogger::COMMENT);
-      $userContentFinder = new nbFileFinder();
-      $userContent = $userContentFinder->relative()->add('*')->in($hudsonHome . '/userContent');
-      foreach ($userContent as $file) {
-        $files[] = 'userContent/' . $file;
-      }
+      $this->log("  + including userContent\n", nbLogger::COMMENT);
+      $files = array_merge($files, $this->findInSubFolder($hudsonHome, 'userContent', '*'));
     }
-    
-//    if (isset($options['fingerprints'])) {
-//      $fingerprintsFinder = new nbFileFinder();
-//      $fingerptints = $fingerprintsFinder->relative()->add('*')->in($hudsonHome . '/fingerprints');
-//      foreach ($fingerptints as $file) {
-//        $files[] = 'fingerprints/' . $file;
-//      }
-//    }
 
-//    print_r($files);
+    if (isset($options['hudson'])) {
+      $this->log("  + including hudson server\n", nbLogger::COMMENT);
+      $files = array_merge($files, $this->findInSubFolder($hudsonHome, 'war', '*'));
+      $files = array_merge($files, $this->findInSubFolder($hudsonHome, 'plugins', '*'));
+    }
+
+    // perform file copy
+    nbFileSystem::mkdir($backupHome, true);
+    $numFiles = count($files);
+    $this->log("Copying $numFiles files...\n", nbLogger::COMMENT);
     foreach ($files as $file) {
       nbFileSystem::copy($hudsonHome . '/' . $file, $backupHome . '/' . $file);
     }
@@ -99,8 +97,18 @@ TXT
 //      $zip->close();
 //    }
     $time = strftime('%Y%m%d-%H%M%S', time());
-    $this->log("$time - Backup succesful.", nbLogger::COMMENT);
+    $this->log("$time - Backup succesful.\n", nbLogger::COMMENT);
 
     return true;
+  }
+
+  private function findInSubFolder($hudsonHome, $dir, $pattern, $excludeDirs = array())
+  {
+    $finder = nbFileFinder::create();
+    $files = $finder->relative()->prune($excludeDirs)->add($pattern)->in($hudsonHome . '/' . $dir);
+    foreach ($files as $key => $file) {
+      $files[$key] = $dir . '/' . $file;
+    }
+    return $files;
   }
 }
