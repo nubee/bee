@@ -22,7 +22,8 @@ TXT
     )));
 
     $this->setOptions(new nbOptionSet(array(
-      new nbOption('filename', 'f', nbOption::PARAMETER_REQUIRED, 'Outputs to filename'),
+      new nbOption('dir', 'd', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY, 'Load tests from dir'),
+      new nbOption('output', 'o', nbOption::PARAMETER_REQUIRED, 'Outputs to filename'),
       new nbOption('showall', '', nbOption::PARAMETER_NONE, 'Show all tests one by one'),
       new nbOption('xml', 'x', nbOption::PARAMETER_NONE, 'Outputs in xml format'),
     )));
@@ -31,16 +32,20 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $files = array();
+    $dirs = isset($options['dir'])?$options['dir']:array();
+    $dirs[] = nbConfig::get('nb_test_dir', 'test/unit');
+
     if(count($arguments['name'])) {
-      foreach($arguments['name'] as $name) {
-        $finder = nbFileFinder::create('file')->followLink()->add(basename($name) . 'Test.php');
-        $files = array_merge($files, $finder->in(nbConfig::get('nb_test_dir') . '/' . dirname($name)));
-      }
+      foreach($dirs as $dir)
+        foreach($arguments['name'] as $name) {
+          $finder = nbFileFinder::create('file')->followLink()->add(basename($name) . 'Test.php');
+          $files = array_merge($files, $finder->in($dir . '/' . dirname($name)));
+        }
     }
     else {
       // filter and register unit tests
       $finder = nbFileFinder::create('file')->add('*Test.php');
-      $files = $finder->in(nbConfig::get('nb_test_dir', 'test/unit'));
+      $files = $finder->in($dirs);
     }
     
     if(count($files) == 0) {
@@ -71,4 +76,5 @@ TXT
 
     return $ret;
   }
+ 
 }

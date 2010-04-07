@@ -60,8 +60,13 @@ class nbPluginLoader {
 
     $this->commandLoader->addCommandsFromDir($this->plugins[$pluginName].'/command');
 
+    if(is_dir($this->plugins[$pluginName].'/test/unit')) {
+//      $testDirs = nbConfig::get('nb_test_dir');
+//      $testDirs[] = $this->plugins[$pluginName].'/test/unit';
+//      nbConfig::set('nb_test_dir',array_unique($testDirs));
+    }
 
-    if(! file_exists(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'/config/config.yml'))
+    if(! file_exists($this->plugins[$pluginName].'/config/config.yml'))
       return;
 
     $yamlParser = new nbYamlConfigParser();

@@ -25,6 +25,7 @@ if(file_exists(nbConfig::get('nb_user_config')))
 if(file_exists(nbConfig::get('nb_project_config')))
   $yaml->parseFile(nbConfig::get('nb_project_config'));
 
+
 /************************/
 sfServiceContainerAutoloader::register();
 
