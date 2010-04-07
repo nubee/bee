@@ -55,11 +55,6 @@ TXT
       return false;
     }
 
-//    if(count(isset($options['showall'])) {
-//      foreach($files as $file)
-//        include($file);
-//    }
-
     $h = new lime_harness();
     $h->register($files); 
 
@@ -78,5 +73,5 @@ TXT
 
     return $ret;
   }
- 
+
 }
