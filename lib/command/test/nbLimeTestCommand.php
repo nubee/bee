@@ -61,8 +61,8 @@ TXT
     $ret = $h->run(isset($options['showall']));
 
     // print output to file
-    if (isset($options['filename'])) {
-      $fileName = $options['filename'];
+    if (isset($options['output'])) {
+      $fileName = $options['output'];
       $fh = fopen($fileName, 'w');
       if ($fh === false)
         return $ret;
