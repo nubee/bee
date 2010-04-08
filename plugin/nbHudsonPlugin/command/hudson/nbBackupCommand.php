@@ -6,6 +6,7 @@
  * @package    hudson
  * @subpackage command
  */
+
 class nbBackupCommand extends nbCommand
 {
   protected function configure()
@@ -81,10 +82,14 @@ TXT
     // perform file copy
     nbFileSystem::mkdir($backupHome, true);
     $numFiles = count($files);
+    $progress = new nbProgress($numFiles, 8);
     $this->log("Copying $numFiles files...\n", nbLogger::COMMENT);
-    foreach ($files as $file) {
+    foreach ($files as $key => $file) {
+      if (($p = $progress->getProgress($key)) !== null)
+        $this->log("$p% - ");
       nbFileSystem::copy($hudsonHome . '/' . $file, $backupHome . '/' . $file);
     }
+    $this->log("100%\n");
 
 //    $zip = new ZipArchive();
 //    $filename = 'hudson-backup-' . time() . '.zip';
