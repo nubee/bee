@@ -22,7 +22,9 @@ class nbBackupCommand extends nbCommand
         new nbOption('builds', 'b', nbOption::PARAMETER_NONE, 'Specify that build history must be included'),
         new nbOption('usercontent', 'u', nbOption::PARAMETER_NONE, 'Specify that user content must be included'),
         new nbOption('hudson', 'h', nbOption::PARAMETER_NONE, 'Specify that also hudson server must be included'),
-        new nbOption('autofolder', 'a', nbOption::PARAMETER_NONE, 'Backup into a subfolder with current date and time')
+        new nbOption('autofolder', 'a', nbOption::PARAMETER_NONE, 'Backup into a subfolder with current date and time'),
+        new nbOption('zip', 'z', nbOption::PARAMETER_NONE, 'Create a zip file'),
+        new nbOption('outputfile', 'o', nbOption::PARAMETER_REQUIRED, 'Backup filename')
       )))
       ->setBriefDescription('Backups a hudson instance')
       ->setDescription(<<<TXT
@@ -36,7 +38,7 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $time = strftime('%Y%m%d-%H%M%S', time());
-    $this->log("$time - Starting backup procedure...\n", nbLogger::COMMENT);
+    $this->log("[$time] - Starting backup procedure...\n", nbLogger::COMMENT);
 
     $hudsonHome = $arguments['hudsonHome'];
     if (!is_dir($hudsonHome))
@@ -45,7 +47,6 @@ TXT
     $backupHome = $arguments['backupHome'];
     if (isset($options['autofolder']))
       $backupHome .= '/' . $time;
-    $this->log('From ' . $hudsonHome . ' to ' . $backupHome . "\n", nbLogger::COMMENT);
 
     $finder = nbFileFinder::create();
     // hudson config
@@ -83,7 +84,7 @@ TXT
     nbFileSystem::mkdir($backupHome, true);
     $numFiles = count($files);
     $progress = new nbProgress($numFiles, 8);
-    $this->log("Copying $numFiles files...\n", nbLogger::COMMENT);
+    $this->log("Copying $numFiles files from $hudsonHome to $backupHome... ", nbLogger::COMMENT);
     foreach ($files as $key => $file) {
       if (($p = $progress->getProgress($key)) !== null)
         $this->log("$p% - ");
@@ -91,18 +92,30 @@ TXT
     }
     $this->log("100%\n");
 
-//    $zip = new ZipArchive();
-//    $filename = 'hudson-backup-' . time() . '.zip';
-//    if ($zip->open($filename, ZIPARCHIVE::CREATE) !== true)
-//      throw new Exception('[nbBackupCommand:execute] cannot create zip file: ' . '');
-//
-//    $files = $finder->setType('file')->add('*')->in($backupHome);
-//    foreach ($files as $file) {
-//      $zip->addFile($file);
-//      $zip->close();
-//    }
+    // create zip file
+    if (isset($options['zip'])) {
+      if (class_exists('ZipArchive')) {
+        $filename = $backupHome . '/' . (isset($options['outputfile']) ? $options['outputfile'] : 'hudson-backup') . '-' . $time . '.zip';
+        $this->log("Creating ZIP file $filename ... ", nbLogger::COMMENT);
+        $zip = new ZipArchive();
+        if ($zip->open($filename, ZIPARCHIVE::CREATE) !== true)
+          throw new Exception('[nbBackupCommand:execute] cannot create zip file: ' . $filename);
+
+        $progress = new nbProgress($numFiles, 8);
+        foreach ($files as $key => $file) {
+          if (($p = $progress->getProgress($key)) !== null)
+            $this->log("$p% - ");
+          $zip->addFile($hudsonHome . '/' . $file, $file);
+        }
+        $zip->close();
+        $this->log("100%\n");
+      }
+      else
+        $this->log("Zip support not found\n");
+    }
+
     $time = strftime('%Y%m%d-%H%M%S', time());
-    $this->log("$time - Backup succesful.\n", nbLogger::COMMENT);
+    $this->log("[$time] - Backup succesful.\n", nbLogger::COMMENT);
 
     return true;
   }
