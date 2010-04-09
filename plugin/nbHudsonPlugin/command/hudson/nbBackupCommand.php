@@ -13,8 +13,7 @@ class nbBackupCommand extends nbCommand
   {
     $this->setName('hudson:backup')
       ->setArguments(new nbArgumentSet(array(
-        new nbArgument('hudsonHome', nbArgument::REQUIRED, 'The hudson HOME directory'),
-        new nbArgument('backupHome', nbArgument::REQUIRED, 'The backup target directory')
+        new nbArgument('hudsonHome', nbArgument::REQUIRED, 'The hudson HOME directory')
       )))
       ->setOptions(new nbOptionSet(array(
         new nbOption('workspace', 'w', nbOption::PARAMETER_NONE, 'Specify that workspace must be included'),
@@ -22,9 +21,9 @@ class nbBackupCommand extends nbCommand
         new nbOption('builds', 'b', nbOption::PARAMETER_NONE, 'Specify that build history must be included'),
         new nbOption('usercontent', 'u', nbOption::PARAMETER_NONE, 'Specify that user content must be included'),
         new nbOption('hudson', 'h', nbOption::PARAMETER_NONE, 'Specify that also hudson server must be included'),
-        new nbOption('autofolder', 'a', nbOption::PARAMETER_NONE, 'Backup into a subfolder with current date and time'),
-        new nbOption('zip', 'z', nbOption::PARAMETER_NONE, 'Create a zip file'),
-        new nbOption('outputfile', 'o', nbOption::PARAMETER_REQUIRED, 'Backup filename')
+        new nbOption('copy', 'c', nbOption::PARAMETER_OPTIONAL, 'Create an uncompressed copy to a forder (folder name can be specified as value)', 'hudson-backup'),
+        new nbOption('zip', 'z', nbOption::PARAMETER_OPTIONAL, 'Create a zip file (file name can be specified as value)', 'hudson-backup'),
+        new nbOption('autoname', 'a', nbOption::PARAMETER_NONE, 'Generate automatically subfolders and files name')
       )))
       ->setBriefDescription('Backups a hudson instance')
       ->setDescription(<<<TXT
@@ -43,10 +42,6 @@ TXT
     $hudsonHome = $arguments['hudsonHome'];
     if (!is_dir($hudsonHome))
       throw new Exception('Cannot find hudson home directory: ' . $hudsonHome);
-
-    $backupHome = $arguments['backupHome'];
-    if (isset($options['autofolder']))
-      $backupHome .= '/' . $time;
 
     $finder = nbFileFinder::create();
     // hudson config
@@ -80,22 +75,30 @@ TXT
       $files = array_merge($files, $this->findInSubFolder($hudsonHome, 'plugins', '*'));
     }
 
-    // perform file copy
-    nbFileSystem::mkdir($backupHome, true);
     $numFiles = count($files);
-    $progress = new nbProgress($numFiles, 8);
-    $this->log("Copying $numFiles files from $hudsonHome to $backupHome... ", nbLogger::COMMENT);
-    foreach ($files as $key => $file) {
-      if (($p = $progress->getProgress($key)) !== null)
-        $this->log("$p% - ");
-      nbFileSystem::copy($hudsonHome . '/' . $file, $backupHome . '/' . $file);
+    // perform file copy
+    if (isset($options['copy'])) {
+      $backupHome = $options['copy'];
+      if (isset($options['autoname']))
+        $backupHome .= '-' . $time;
+      nbFileSystem::mkdir($backupHome, true);
+      $progress = new nbProgress($numFiles, 8);
+      $this->log("Copying from $hudsonHome to $backupHome $numFiles files... ", nbLogger::COMMENT);
+      foreach ($files as $key => $file) {
+        if (($p = $progress->getProgress($key)) !== null)
+          $this->log("$p% - ");
+        nbFileSystem::copy($hudsonHome . '/' . $file, $backupHome . '/' . $file);
+      }
+      $this->log("100%\n");
     }
-    $this->log("100%\n");
 
     // create zip file
     if (isset($options['zip'])) {
       if (class_exists('ZipArchive')) {
-        $filename = $backupHome . '/' . (isset($options['outputfile']) ? $options['outputfile'] : 'hudson-backup') . '-' . $time . '.zip';
+        $filename = $options['zip'];
+        if (isset($options['autoname']))
+          $filename .= '-' . $time;
+        $filename .= '.zip';
         $this->log("Creating ZIP file $filename ... ", nbLogger::COMMENT);
         $zip = new ZipArchive();
         if ($zip->open($filename, ZIPARCHIVE::CREATE) !== true)
