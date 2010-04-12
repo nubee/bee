@@ -4,6 +4,8 @@ require_once dirname(__FILE__) . '/../../../../../test/bootstrap/unit.php';
 
 $t = new lime_test(17);
 
+$serviceContainer->pluginLoader->loadPlugins(array('nbVisualStudioPlugin'));
+
 putenv('TEST_ENV=C:/test/env');
 putenv('TEST_ENV_2=C:/test/env2');
 

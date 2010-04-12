@@ -1,30 +1,19 @@
 <?php
 class nbPluginLoader {
 
-  static protected $instance;
   private $plugins = array(),
-          $pluginDir;
+          $pluginDirs = array();
+  static private        $commandLoader;
 
-  private function __construct($pluginDir)
+
+  public function __construct($pluginDir, nbCommandLoader $commandLoader)
   {
     if(! is_dir($pluginDir))
       throw new InvalidArgumentException('[nbPluginLoader::__construct] '.$pluginDir.' isn\'t a directory.');
-    $this->pluginDir = $pluginDir;
+    $this->pluginDirs[] = $pluginDir;
+    $this->commandLoader = $commandLoader;
   }
 
-  /**
-   * Retrieves the singleton instance of this class.
-   *
-   *
-   * @return PluginLoader   A nbPluginLoader implementation instance.
-   */
-  static public function getInstance()
-  {
-    if (!isset(self::$instance))
-      self::$instance = new nbPluginLoader(nbConfig::get('nb_plugin_dir','plugin'));
-
-    return self::$instance;
-  }
 
   /**
    * Register All plugins in pluginDir.
@@ -32,15 +21,11 @@ class nbPluginLoader {
    */
   public function loadAllPlugins()
   {
-
     $plugins = nbFileFinder::create('dir')
-      ->add('*Plugin')->in($this->pluginDir);
+      ->add('*Plugin')->in($this->pluginDirs);
+
     foreach($plugins as $plugin)
-    {
-      //remove "Plugin" from the end of $plugin
-      $plugin = substr_replace($plugin, '', -6);
       $this->addPlugin(basename($plugin));
-    }
   }
 
   /**
@@ -61,27 +46,43 @@ class nbPluginLoader {
    */
   private function addPlugin($pluginName)
   {
-    //nbLogger::getInstance()->logLine('Loading Plugin '.$pluginName.'',nbLogger::COMMENT);
-    if(in_array($pluginName, $this->plugins))
+    nbLogger::getInstance()->logLine('Loading Plugin '.$pluginName.'',nbLogger::COMMENT);
+    if(key_exists($pluginName, $this->plugins))
       return;
-    $this->plugins[] = $pluginName;
 
-    $this->pluginDirs[$pluginName] = nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin';
+    foreach($this->pluginDirs as $dir)
+      if(is_dir($dir.'/'.$pluginName))
+        $this->plugins[$pluginName] = $dir.'/'.$pluginName;
 
-    nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/lib','*.php',true);
-    nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/command','*Command.php',true);
-    nbAutoload::getInstance()->addDirectory(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/vendor');
+    nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName].'/lib','*.php',true);
+    nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName].'/command','*Command.php',true);
+    nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName].'/vendor');
 
-    if(! file_exists(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/config/config.yml'))
+    $this->commandLoader->addCommandsFromDir($this->plugins[$pluginName].'/command');
+
+    if(is_dir($this->plugins[$pluginName].'/test/unit')) {
+      $testDirs = nbConfig::get('nb_pugin_test_dirs',array());
+      $testDirs[] = $this->plugins[$pluginName].'/test/unit';
+      nbConfig::set('nb_pugin_test_dirs',array_unique($testDirs));
+    }
+
+    if(! file_exists($this->plugins[$pluginName].'/config/config.yml'))
       return;
 
     $yamlParser = new nbYamlConfigParser();
-    $yamlParser->parseFile(nbConfig::get('nb_plugin_dir').'/'.$pluginName.'Plugin/config/config.yml');
+    $yamlParser->parseFile($this->plugins[$pluginName].'/config/config.yml');
+    
   }
 
   public function getPlugins()
   {
     return $this->plugins;
+  }
+
+  public function addDir($dir)
+  {
+    if(is_dir($dir))
+      $this->pluginDirs[] = $dir;
   }
 
   public function getPluginDirs()

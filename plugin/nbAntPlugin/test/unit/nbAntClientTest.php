@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
 
-nbPluginLoader::getInstance()->loadPlugins(array('nbAnt'));
+$serviceContainer->pluginLoader->loadPlugins(array('nbAntPlugin'));
 
 $t = new lime_test();
 

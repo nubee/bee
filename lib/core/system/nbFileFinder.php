@@ -52,7 +52,7 @@ class nbFileFinder
    * @param  int $level
    * @return object current nbFileFinder object
    */
-  public function setMinDepth($level)
+  public function mindepth($level)
   {
     $this->mindepth = $level;
 

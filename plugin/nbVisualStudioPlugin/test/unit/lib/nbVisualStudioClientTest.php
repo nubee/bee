@@ -4,6 +4,8 @@ require_once dirname(__FILE__) . '/../../../../../test/bootstrap/unit.php';
 
 $t = new lime_test(23);
 
+$serviceContainer->pluginLoader->loadPlugins(array('nbVisualStudioPlugin'));
+
 $t->comment('nbVisualStudioClientTest - Test default compiler line for LIB DEBUG project');
 $client = new nbVisualStudioClient('outputFile');
 $t->is($client->getCompilerCmdLine(),

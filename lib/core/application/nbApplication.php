@@ -13,29 +13,29 @@ abstract class nbApplication
     $version = 'UNDEFINED',
     $arguments = null,
     $options = null,
-    $commands = null,
     $verbose = false,
     $trace = false,
+    $serviceContainer,
     $logger = null;
+
 
   private $commandFiles = array();
 
 //  public function __construct(array $commands = null)
-  public function __construct(nbCommandSet $commands)
+  public function __construct(sfServiceContainerBuilder $serviceContainer)
   {
     $this->logger = nbLogger::getInstance();
     $this->arguments = new nbArgumentSet();
     $this->options = new nbOptionSet();
-    $this->commands = $commands;
-    
+    $this->serviceContainer = $serviceContainer;
     $this->arguments->addArgument(
       new nbArgument('command', nbArgument::REQUIRED, 'The command to execute')
     );
+
     $this->options->addOptions(array(
       new nbOption('version', 'V', nbOption::PARAMETER_NONE, 'Shows the version'),
       new nbOption('verbose', 'v', nbOption::PARAMETER_NONE, 'Set verbosity'),
       new nbOption('trace', 't', nbOption::PARAMETER_NONE, 'Shows exception trace'),
-      new nbOption('config', 'c', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY, 'Changes the configuration properties'),
       new nbOption('help', '?', nbOption::PARAMETER_NONE, 'Shows application help'),
     ));
 
@@ -59,10 +59,10 @@ abstract class nbApplication
     else
       $commandLine = $commandName . ' ' . $commandLine;
 
-    if(!$this->commands->hasCommand($commandName))
+    if(!$this->getCommands()->hasCommand($commandName))
       return;
 
-    $command = $this->commands->getCommand($commandName);
+    $command = $this->getCommands()->getCommand($commandName);
     $r = new ReflectionClass($command);
     if($r->isSubclassOf('nbApplicationCommand'))
       $command->setApplication($this);
@@ -103,11 +103,26 @@ abstract class nbApplication
       return true;
     }
 
+    if(isset($options['file'])) {
+      if(file_exists($options['file'])) {
+        $yaml = new nbYamlConfigParser();
+        $yaml->parseFile($options['file']);
+      }
+    }
+
     if(isset($options['config'])) {
       foreach ($options['config'] as $option) {
         $property = preg_split('/[\s]*=[\s]*/', $option, 2);
         nbConfig::set($property[0], $property[1]);
       }
+    }
+
+    if(isset($options['enable-plugin'])) {
+      $this->serviceContainer->pluginLoader->loadPlugins($options['enable-plugin']);
+    }
+
+    if(isset($options['enable-all-plugins'])) {
+      $this->serviceContainer->pluginLoader->loadAllPlugins();
     }
 
     return false;
@@ -175,24 +190,24 @@ abstract class nbApplication
     return $this->options;
   }
 
-  public function setCommands(nbCommandSet $commands)
-  {
-    $this->commands = $commands;
-  }
+//  public function setCommands(nbCommandSet $commands)
+//  {
+//    $this->serviceContainer->commandLoader->setCommands($commands);
+//  }
 
   public function hasCommands()
   {
-    return $this->commands->count() > 0;
+    return $this->getCommands()->count() > 0;
   }
 
   public function getCommands()
   {
-    return $this->commands;
+    return $this->serviceContainer->commandLoader->getCommands();
   }
 
   public function getCommand($name)
   {
-    return $this->commands->getCommand($name);
+    return $this->getCommands()->getCommand($name);
   }
 
   /**
@@ -265,6 +280,7 @@ abstract class nbApplication
       return;
     
     $argument = $this->parser->getArgumentValue('command');
+
     $currentCommand = $this->getCommands()->getCommand($argument);
 
     if(null == $currentCommand)

@@ -2,6 +2,9 @@
 
 require_once dirname(__FILE__) . '/../../../../../test/bootstrap/unit.php';
 
+$serviceContainer->pluginLoader->loadPlugins(array('nbIvyPlugin'));
+
+
 $t = new lime_test(2);
 
 $t->comment('nbIvyClientTest - Test ');

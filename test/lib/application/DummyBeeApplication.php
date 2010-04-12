@@ -1,6 +1,6 @@
 <?php
 
-class DummyApplication extends nbApplication
+class DummyBeeApplication extends nbBeeApplication
 {
   public $executedFormatHelpString = false;
 
@@ -22,10 +22,6 @@ class DummyApplication extends nbApplication
   {
     $this->executedFormatHelpString = true;
     return 'formatHelpString';
-  }
-
-  protected function configure()
-  {
   }
 
   public function getOption($optionName)
