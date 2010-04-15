@@ -35,9 +35,7 @@ class nbPluginLoader {
   public function loadPlugins($plugins = array())
   {
     foreach($plugins as $plugin)
-    {
       $this->addPlugin($plugin);
-    }
   }
 
   /**
@@ -46,7 +44,8 @@ class nbPluginLoader {
    */
   private function addPlugin($pluginName)
   {
-    nbLogger::getInstance()->logLine('Loading Plugin '.$pluginName.'',nbLogger::COMMENT);
+    //nbLogger::getInstance()->logLine('Loading Plugin <comment>'.$pluginName.'</comment>');
+
     if(key_exists($pluginName, $this->plugins))
       return;
 
@@ -89,5 +88,4 @@ class nbPluginLoader {
   {
     return $this->pluginDirs;
   }
-
 }
