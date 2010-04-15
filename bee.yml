@@ -9,7 +9,7 @@ proj:
     default:
       integrate: ["git:pull", "lime:test", "bee:test-plugin"]
   bee:  # bee extra configuration keys
-    plugins: [nbGitPlugin, nbAntPlugin]
+    plugins: [nbGitPlugin, nbAntPlugin, nbTodoPlugin]
   repository:
     type: git
   shell:

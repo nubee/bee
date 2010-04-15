@@ -33,8 +33,9 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $files = array();
-    $dirs = isset($options['dir'])?$options['dir']:array();
-    if(! isset($options['exclude-project-folder']))
+    $dirs = isset($options['dir']) ? $options['dir'] : array();
+    
+    if(!isset($options['exclude-project-folder']))
       $dirs[] = nbConfig::get('nb_test_dir','test/unit');
 
     if(count($arguments['name'])) {

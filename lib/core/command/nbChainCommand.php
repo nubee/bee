@@ -6,7 +6,7 @@
  * @package    bee
  * @subpackage command
  */
-class nbChainCommand extends nbCommand
+class nbChainCommand extends nbApplicationCommand
 {
   private $alias;
   protected $commands = array();
@@ -23,12 +23,6 @@ class nbChainCommand extends nbCommand
     $this->commands[] = $command;
     $briefDescription = $this->getBriefDescription() . ' -> ' . $command->getFullName();
     $this->setBriefDescription($briefDescription);
-
-//    foreach ($command->getArgumentsArray() as $argument)
-//      $this->addArgument($argument);
-//
-//    foreach ($command->getOptionsArray() as $option)
-//      $this->addOption($option);
   }
 
   protected function configure()
@@ -43,12 +37,16 @@ class nbChainCommand extends nbCommand
   protected function execute(array $arguments = array(), array $options = array())
   {
     $ret = true;
-    foreach ($this->commands as $command)
-    {
+    foreach ($this->commands as $command) {
       $commandArgs = array();
       foreach ($command->getArgumentsArray() as $argument)
         $commandArgs[$argument->getName()] = $argument->getValue();
       $this->log($this->formatLine('Executing command ' . $command->getFullName(), nbLogger::INFO));
+
+      $r = new ReflectionClass($command);
+      if($r->isSubclassOf('nbApplicationCommand'))
+        $command->setApplication($this->getApplication());
+      
       $ret = $command->execute($commandArgs, $options) && $ret;
     }
     return $ret;
