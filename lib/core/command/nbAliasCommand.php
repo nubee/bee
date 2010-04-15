@@ -6,7 +6,7 @@
  * @package    bee
  * @subpackage command
  */
-class nbAliasCommand extends nbCommand
+class nbAliasCommand extends nbApplicationCommand
 {
   private $alias;
   private $command;
@@ -30,6 +30,10 @@ class nbAliasCommand extends nbCommand
 
   protected function execute(array $arguments = array(), array $options = array())
   {
+    $r = new ReflectionClass($this->command);
+    if($r->isSubclassOf('nbApplicationCommand'))
+      $this->command->setApplication($this->getApplication());
+
     return $this->command->execute($arguments, $options);
   }
 }

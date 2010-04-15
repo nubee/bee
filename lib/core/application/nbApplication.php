@@ -18,10 +18,6 @@ abstract class nbApplication
     $serviceContainer,
     $logger = null;
 
-
-  private $commandFiles = array();
-
-//  public function __construct(array $commands = null)
   public function __construct(sfServiceContainerBuilder $serviceContainer)
   {
     $this->logger = nbLogger::getInstance();
@@ -39,7 +35,6 @@ abstract class nbApplication
       new nbOption('help', '?', nbOption::PARAMETER_NONE, 'Shows application help'),
     ));
 
-//    $this->registerCommands($commands);
     $this->configure();
   }
 
@@ -190,11 +185,6 @@ abstract class nbApplication
     return $this->options;
   }
 
-//  public function setCommands(nbCommandSet $commands)
-//  {
-//    $this->serviceContainer->commandLoader->setCommands($commands);
-//  }
-
   public function hasCommands()
   {
     return $this->getCommands()->count() > 0;
@@ -236,7 +226,6 @@ abstract class nbApplication
     $messages[] = str_repeat(' ', $len);
 
     $output = new nbFileOutput(STDERR);
-//    $output->setFormatter(new nbAnsiColorFormatter());
     $logger = nbLogger::getInstance();
     $logger->setOutput($output);
     $logger->log("\n");
@@ -244,11 +233,6 @@ abstract class nbApplication
       $logger->log($message, nbLogger::ERROR);
       $logger->log("\n");
     }
-
-/*    if (null !== $this->currentTask && $e instanceof sfCommandArgumentsException) {
-      fwrite(STDERR, $this->formatter->format(sprintf($this->currentTask->getSynopsis(), $this->getName()), 'INFO', STDERR)."\n");
-      fwrite(STDERR, "\n");
-    }*/
 
     if ($this->trace) {
       $logger->log("\n");
