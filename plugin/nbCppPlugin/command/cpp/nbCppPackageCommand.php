@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Generates code documentation.
+ * Generates package.
  *
  * @package    bee
  * @subpackage command
  */
-class nbDoxygenGenerateCommand extends nbCommand
+class nbCppPackageCommand extends nbCommand
 {
   protected function configure()
   {
-    $this->setName('doxygen:generate')
-      ->setBriefDescription('Generates code documentation')
+    $this->setName('cpp:package')
+      ->setBriefDescription('Generates package')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command generates code documentation:
 
@@ -23,12 +23,12 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $antClient = new nbAntClient();
-    $command = "ant docs";
+    $command = "ant archive";
     $antClient->getCommandLine($command);
     $shell = new nbShell();
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("
-[nbDoxigenGenerateCommand::execute] Error executing command:
+[nbCppPackageCommand::execute] Error executing command:
   %s", $command));
     }
   }
