@@ -50,8 +50,10 @@ class nbAnsiColorFormatter extends nbFormatter
 
   protected function replaceEndStyle($match)
   {
+    $last=null;
     array_pop($this->code_stack);
-    $last = $this->code_stack[count($this->code_stack)-1] ;
+    if(count($this->code_stack))
+      $last = $this->code_stack[count($this->code_stack)-1] ;
     return ($last == null)?"\033[0m":$last;
   }
 }

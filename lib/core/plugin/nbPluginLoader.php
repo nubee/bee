@@ -44,7 +44,7 @@ class nbPluginLoader {
    */
   private function addPlugin($pluginName)
   {
-    //nbLogger::getInstance()->logLine('Loading Plugin <comment>'.$pluginName.'</comment>');
+    nbLogger::getInstance()->logLine('Loading Plugin <comment>'.$pluginName.'</comment>...');
 
     if(key_exists($pluginName, $this->plugins))
       return;
@@ -52,6 +52,8 @@ class nbPluginLoader {
     foreach($this->pluginDirs as $dir)
       if(is_dir($dir.'/'.$pluginName))
         $this->plugins[$pluginName] = $dir.'/'.$pluginName;
+    if(! key_exists($pluginName, $this->plugins))
+        return;
 
     nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName].'/lib','*.php',true);
     nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName].'/command','*Command.php',true);
@@ -70,7 +72,6 @@ class nbPluginLoader {
 
     $yamlParser = new nbYamlConfigParser();
     $yamlParser->parseFile($this->plugins[$pluginName].'/config/config.yml');
-    
   }
 
   public function getPlugins()

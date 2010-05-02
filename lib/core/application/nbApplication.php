@@ -265,7 +265,7 @@ abstract class nbApplication
     
     $argument = $this->parser->getArgumentValue('command');
 
-    $currentCommand = $this->getCommands()->getCommand($argument);
+    $currentCommand = $this->getCommand($argument);
 
     if(null == $currentCommand)
       return;

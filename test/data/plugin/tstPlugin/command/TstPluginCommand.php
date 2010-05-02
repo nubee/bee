@@ -1,4 +1,5 @@
 <?php
+
 class TstPluginCommand extends nbCommand
 {
   public function configure(){
