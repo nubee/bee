@@ -52,8 +52,10 @@ class nbPluginLoader {
     foreach($this->pluginDirs as $dir)
       if(is_dir($dir.'/'.$pluginName))
         $this->plugins[$pluginName] = $dir.'/'.$pluginName;
-    if(! key_exists($pluginName, $this->plugins))
+    if(! key_exists($pluginName, $this->plugins)) {
+        nbLogger::getInstance()->logLine('Plugin not found <comment>'.$pluginName.'</comment>',nbLogger::INFO);
         return;
+    }
 
     nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName].'/lib','*.php',true);
     nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName].'/command','*Command.php',true);
