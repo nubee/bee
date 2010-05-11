@@ -8,7 +8,7 @@ NameVirtualHost *:80
 <?php endif; ?>
 
   DocumentRoot "<?php echo $projectPath ?>"
-  DirectoryIndex %INDEX%
+  DirectoryIndex <?php echo $index ?>
 
   <Directory "<?php echo $projectPath ?>">
     AllowOverride All

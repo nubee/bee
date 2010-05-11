@@ -7,10 +7,10 @@ NameVirtualHost *:80
   ServerAlias <?php echo implode(' ', $alias);?>
 <?php endif; ?>
 
-  DocumentRoot "<?php echo $projectPath ?>"
-  DirectoryIndex %INDEX%
+  DocumentRoot "<?php echo $projectPath ?>/web"
+  DirectoryIndex <?php echo $index ?>
 
-  <Directory "<?php echo $projectPath ?>">
+  <Directory "<?php echo $projectPath ?>/web">
     AllowOverride All
     Allow from All
   </Directory>

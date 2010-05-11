@@ -33,6 +33,8 @@ TXT
 
     $type = isset ($options['type'])? $options['type'] : 'standard' ;
 
+    $index = 'index.php';
+
     $template = dirname(__FILE__).'/../../data/template/vhost-'.$type.'.tpl';
     if(! file_exists($template))
       throw new InvalidArgumentException('[nbGenerateVirtualHostCommand:execute] template file '.$template.' not found');

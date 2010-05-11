@@ -22,8 +22,8 @@ $yaml->parseFile(nbConfig::get('nb_bee_dir') . '/config/config.yml');
 if(file_exists(nbConfig::get('nb_user_config')))
   $yaml->parseFile(nbConfig::get('nb_user_config'));
 
-if(file_exists(nbConfig::get('nb_bee_dir') . '/'.nbConfig::get('nb_project_config')))
-  $yaml->parseFile(nbConfig::get('nb_bee_dir') . '/'.nbConfig::get('nb_project_config','bee.yml'));
+if(file_exists('./'.nbConfig::get('nb_project_config')))
+  $yaml->parseFile('./'.nbConfig::get('nb_project_config','bee.yml'));
 
 
 /************************/
@@ -44,14 +44,18 @@ $serviceContainer->
   setShared(true)
 ;
 /************************/
+if(nbConfig::has('proj_bee_plugins_dir'))
+    $serviceContainer->pluginLoader->addDir(nbConfig::get('proj_bee_plugins_dir'));
 
+//loads default plugins from path/to/bee/config/config.yml
 if(! $default_plugins = nbConfig::get('nb_default_plugins'))
   $default_plugins = array();
 else
   $serviceContainer->pluginLoader->loadPlugins($default_plugins);
 
-if(nbConfig::has('proj_bee_plugins')) {
-  $plugins = nbConfig::get('proj_bee_plugins');
+//loads project plugins from project/path/bee.yml
+if(nbConfig::has('proj_bee_plugins_enabled')) {
+  $plugins = nbConfig::get('proj_bee_plugins_enabled');
 
   (null === $plugins)?
     $serviceContainer->pluginLoader->loadAllPlugins() :

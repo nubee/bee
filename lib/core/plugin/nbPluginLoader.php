@@ -83,8 +83,11 @@ class nbPluginLoader {
 
   public function addDir($dir)
   {
-    if(is_dir($dir))
-      $this->pluginDirs[] = $dir;
+    if(!is_array($dir))
+        $dir = array($dir);
+    foreach($dir as $d)
+        if(is_dir($d))
+          $this->pluginDirs[] = $d;
   }
 
   public function getPluginDirs()
