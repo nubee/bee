@@ -1,0 +1,4 @@
+.netbeans
+.svn
+symfony/log
+symfony/cache

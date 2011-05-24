@@ -1,0 +1,40 @@
+Deal:
+  first_deal:
+    Id:       1
+    Company:  first_company
+    DealType: generic_offer
+    name:     First deal
+    price:    100
+    discount: 0
+    start_at: <?php echo date('y-m-d H:i:s')."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('+1 hour'))."\n" ?>
+
+  second_deal:
+    Id:       2
+    Company:  first_company
+    DealType: last_minute
+    name:     Second deal
+    price:    100
+    discount: 50
+    start_at: <?php echo date('y-m-d H:i:s')."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('+1 hour'))."\n" ?>
+
+  third_deal:
+    Id:       3
+    Company:  first_company
+    DealType: last_minute
+    name:     Third deal
+    price:    100
+    discount: 60
+    start_at: <?php echo date('y-m-d H:i:s')."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('+1 hour'))."\n" ?>
+
+  fourth_deal:
+    Id:       4
+    Company:  first_company
+    DealType: last_minute
+    name:     Fourth deal
+    price:    100
+    discount: 70
+    start_at: <?php echo date('y-m-d H:i:s', strtotime('-2 hour'))."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('-1 hour'))."\n" ?>

@@ -1,0 +1,8 @@
+nb:
+  file_system_plugin:
+    rsync:
+      local_folder: plugin/nbFileSystemPlugin/test/data/dirToSync
+      remote_server: mars.di-side
+      remote_user:  voyager
+      remote_folder: /home/voyager/test-ssh
+      exclude_file: plugin/nbFileSystemPlugin/test/data/excludeList

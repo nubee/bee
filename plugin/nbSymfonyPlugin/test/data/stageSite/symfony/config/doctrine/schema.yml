@@ -1,0 +1,118 @@
+Company:
+  actAs:
+    Timestampable: ~
+    Sluggable:
+      fields: [ name ]
+    Geographical: ~
+  columns:
+    user_id:       { type: integer, notnull: true }
+    name:          { type: string(255), notnull: true }
+    description:   { type: string }
+    partita_iva:   { type: string(255), notnull: true }
+    city:          { type: string(255, notnull: true  }
+    address:       { type: string(255), notnull: true  }
+    state:         { type: string(255, notnull: true  }
+    zipcode:       { type: string(255), notnull: true  }
+    phone_number:  { type: string(255) }
+    mobile_number: { type: string(255) }
+    fax_number:    { type: string(255) }
+    email:         { type: string(255), notnull: true }
+    logo:          { type: string(255) }
+    website:       { type: string(255) }
+  relations:
+    User:
+      class: sfGuardUser
+      local: user_id
+      foreignAlias: Companies
+    Categories:
+      class: Category
+      local: company_id
+      foreign: category_id
+      refClass: CompanyCategory
+      foreignAlias: Companies
+
+Category:
+  actAs: [ Timestampable ]
+  columns:
+    name:        { type: string(255), notnull: true }
+    description: { type: string }
+
+CompanyCategory:
+  options:
+    symfony:
+      form:   false
+      filter: false
+  actAs: [ Timestampable ]
+  columns:
+    category_id:        { type: integer, notnull: true }
+    company_id:         { type: integer, notnull: true }
+  relations:
+    Company:
+      class: Company
+      local: company_id
+      onDelete: CASCADE
+    Category:
+      class: Category
+      local: category_id
+      onDelete: CASCADE
+
+DealType:
+  actAs: [ Timestampable ]
+  columns:
+    name:        { type: string(255), notnull: true }
+    description:  { type: string }
+
+Deal:
+  actAs: [ Timestampable ]
+  columns:
+    company_id:   { type: integer, notnull: true }
+    deal_type_id: { type: integer, notnull: true }
+    name:         { type: string(255), notnull: true }
+    description:  { type: string }
+    image:        { type: string(255) }
+    price:        { type: float, notnull: true }
+    discount:     { type: float, notnull: true }
+    published_at: { type: timestamp }
+    start_at:     { type: timestamp, notnull: true }
+    end_at:       { type: timestamp, notnull: true }
+  relations:
+    Company:      {  class: Company,  local: company_id, foreignAlias: Deals }
+    DealType:     {  class: DealType,  local: deal_type_id, foreignAlias: Deals }
+
+Coupon:
+  actAs: [ Timestampable ]
+  columns:
+    deal_id:         { type: integer, notnull: true }
+    user_id:         { type: integer, notnull: true }
+    issued_at:       { type: timestamp, notnull: true }
+    espires_at:      { type: timestamp, notnull: true }
+    offer_code:      { type: string(255) }
+    validation_code: { type: string(255) }
+    validate_at:     { type: timestamp, notnull: true }
+  relations:
+    Deal:  {  class: Deal,  local: deal_id, foreignAlias: Coupons}
+    User:  {  class: sfGuardUser,  local: user_id, foreignAlias: Coupons}
+
+
+FavoriteCompany:
+  actAs: [ Timestampable ]
+  columns:
+    company_id: { type: integer, notnull: true }
+    deal_id:    { type: integer, notnull: true }
+    vote:       { type: integer }
+  relations:
+    Company:      {  class: Company,  local: company_id, foreignAlias: FavoriteCompanies }
+    Deal:         {  class: Deal,  local: deal_id, foreignAlias: FavoriteCompanies}
+
+Feedback:
+  actAs: [ Timestampable ]
+  columns:
+    user_id:      { type: integer, notnull: true }
+    coupon_id:    { type: integer, notnull: true }
+    type:         { type: string(32), notnull: true }
+    description:  { type: string }
+    vote:       { type: integer }
+  relations:
+    User:      { class: sfGuardUser,  local: user_id, foreignAlias: Feedbacks}
+    Coupon:    { class: Coupon,  local: coupon_id, foreignAlias: Feedbacks}
+

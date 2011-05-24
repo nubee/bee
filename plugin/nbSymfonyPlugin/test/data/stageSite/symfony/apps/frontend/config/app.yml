@@ -1,0 +1,16 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/11-App
+
+# default values
+#all:
+all:
+  default_deal_duration: 1 #hours
+  default_deal_start_after: 60 #minutes
+  activation_url: http://findeal.localhost/register/activation/
+  forgot_password_url: http://findeal.localhost/guard/forgot_password/
+  sf_guard_plugin_default_from_email: noreply@findeal.com
+
+dev:
+  google_maps:
+    api_keys:
+      default: ABQIAAAAQYDslWTsYRYtguEbiG2qhRTj2c7Cz-XjuZWbud_iMUA9t6zUnRTUL_MeeabCfKULw96Hp0Npmodbkg

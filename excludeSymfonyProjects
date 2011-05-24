@@ -1,0 +1,6 @@
+.netbeans
+.svn
+symfony/log
+symfony/cache
+symfony/config/databases.yml
+*.lck

@@ -1,0 +1,27 @@
+.markdown p {
+	margin-bottom: 1em;
+}
+
+.markdown h1 {
+}
+
+.markdown h2 {
+}
+
+.markdown h3 {
+}
+
+.markdown h4 {
+}
+
+.markdown em {
+	font-style: italic;
+}
+
+.markdown strong {
+  font-weight: bold;
+}
+
+.markdown li {
+  list-style: disc inside;
+}

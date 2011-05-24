@@ -1,0 +1,28 @@
+nbDeploy:
+  tar:
+    target_path: plugin/nbSymfonyPlugin/test/data
+    target_dir: prodSite
+    archive_path: plugin/nbSymfonyPlugin/test/data
+  site:
+    symfony_path: plugin/nbSymfonyPlugin/test/data/prodSite/symfony/
+#    symfony_path: ../../websites/findeal/trunk/symfony/
+    dir_path: plugin/nbSymfonyPlugin/test/data/prodSite/
+    source_path: plugin/nbSymfonyPlugin/test/data/stageSite/
+    user: stefano.orru
+    group: Administrators
+    applications:
+      app1:
+        name: frontend
+        env: prod
+      app2:
+        name: admin
+        env: prod
+  sync:
+    exclude_file: plugin/nbSymfonyPlugin/test/data/excludeSymfonyProjects
+  mysql:
+    db:
+      name: dbtest
+      user_id: dbtestadmin
+      user_password: dbtestpwd
+    dump_path: plugin/nbMysqlPlugin/test/data
+    dump_file: plugin/nbMysqlPlugin/test/data/dbtest-201105201556.sql

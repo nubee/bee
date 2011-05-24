@@ -1,0 +1,40 @@
+deal_type:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                DealType
+    module:               dealType
+    prefix_path:          /dealType
+    column:               id
+    with_wildcard_routes: true
+
+category:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Category
+    module:               category
+    prefix_path:          /category
+    column:               id
+    with_wildcard_routes: true
+
+company:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Company
+    module:               company
+    prefix_path:          /company
+    column:               id
+    with_wildcard_routes: true
+
+deal:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Deal
+    module:               deal
+    prefix_path:          /deal
+    column:               id
+    with_wildcard_routes: true
+
+homepage:
+  url:   /
+  param: { module: category, action: index }
+

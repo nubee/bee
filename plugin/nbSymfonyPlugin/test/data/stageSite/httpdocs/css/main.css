@@ -1,0 +1,51 @@
+body {
+  font-size: 62.5%;
+  font-size: .8em;
+  font-family: 'Ubuntu', Verdana, Arial, sans-serif;
+  background: #fff;
+}
+html {
+  background: #DD6717;
+}
+
+h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  padding-bottom: 3px;
+  margin: 7px 0;
+  color: #00558F;
+}
+
+h2 {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #0064AF;
+}
+
+h3 {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin: 7px 0;
+  color: #006EBE;
+}
+
+a:link, a:visited {
+  text-decoration: none;
+  color: #0060CF;
+}
+
+a:hover, a:active {
+  text-decoration: underline;
+  color: #0099ff;
+}
+
+#page {
+}
+
+#center {
+  background: url(../images/bg_center.png) top left repeat;
+}
+
+#main-content {
+  clear: both;
+}

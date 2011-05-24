@@ -1,0 +1,91 @@
+sfGuardUser:
+  admin:
+    id:         1
+    username:   admin
+    password:   admin
+    first_name: Super
+    last_name:  Admin
+    email_address: admin@findeal.com
+    is_super_admin: 1
+  forgot:
+    id:         2
+    username:   forgot@findeal.com
+    password:   forgot
+    first_name: For
+    last_name:  got
+    email_address: forgot@findeal.com
+    is_super_admin: 0
+
+  customer1:
+    id:         3
+    username:   customer1@example.com
+    password:   customer1pwd
+    first_name: John
+    last_name:  Doe
+    email_address: customer1@example.com
+    is_super_admin: 0
+
+  dealer1:
+    id:         4
+    username:   dealer1@example.com
+    password:   dealer1pwd
+    first_name: Alice
+    last_name:  Doe
+    email_address: dealer1@example.com
+    is_super_admin: 0
+
+  dealer2:
+    id:         5
+    username:   dealer5@example.com
+    password:   dealer5pwd
+    first_name: Alice
+    last_name:  Doe
+    email_address: dealer5@example.com
+    is_super_admin: 0
+
+  customer_to_manager:
+    id:         6
+    username:   customertomanager@example.com
+    password:   ctmpwd
+    first_name: Henry
+    last_name:  Doe
+    email_address: customertomanager@example.com
+    is_super_admin: 0
+
+  customer_not_validated:
+    id:         7
+    username:   customernotvalidated@example.com
+    password:   ctmnvpwd
+    first_name: Alex
+    last_name:  Doe
+    email_address: customernotvalidated@example.com
+    is_super_admin: 0
+
+sfGuardUserGroup:
+  admin_adminsgroup:
+    User: admin
+    Group: super_admins
+
+  forgot_customersgroup:
+    User: forgot
+    Group: customers
+
+  customer1_customersgroup:
+    User: customer1
+    Group: customers
+
+  dealer1_managersgroup:
+    User: dealer1
+    Group: managers
+
+  dealer2_managersgroup:
+    User: dealer2
+    Group: managers
+
+  customertomanager_customersgroup:
+    User: customer_to_manager
+    Group: customers
+
+  customernotvalidate_limitedcustomersgroup:
+    User: customer_not_validated
+    Group: limitedCustomers

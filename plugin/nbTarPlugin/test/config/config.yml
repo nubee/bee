@@ -1,0 +1,7 @@
+
+nb:
+  tar_plugin:
+    test:
+      target_path: plugin/nbTarPlugin/test/data/target_dir
+      archive_path: plugin/nbTarPlugin/test/data
+      target_dir: testFolder

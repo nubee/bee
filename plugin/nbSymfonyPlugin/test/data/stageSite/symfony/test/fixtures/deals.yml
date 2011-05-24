@@ -1,0 +1,88 @@
+Deal:
+  first_deal:
+    Id:       1
+    Company:  first_company
+    DealType: generic_offer
+    name:     First deal
+    price:    100
+    discount: 20
+    published_at: <?php echo date('y-m-d H:i:s', strtotime('+5 min'))."\n" ?>
+    start_at: <?php echo date('y-m-d H:i:s', strtotime('+10 min'))."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('+1 hour'))."\n" ?>
+
+  second_deal:
+    Id:       2
+    Company:  first_company
+    DealType: last_minute
+    name:     Second deal
+    price:    100
+    discount: 10
+    published_at: <?php echo date('y-m-d H:i:s', strtotime('+4 min'))."\n" ?>
+    start_at: <?php echo date('y-m-d H:i:s', strtotime('+9 min'))."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('+2 hour'))."\n" ?>
+
+  third_deal:
+    Id:       3
+    Company:  first_company
+    DealType: last_minute
+    name:     Third deal
+    price:    100
+    discount: 5
+    published_at: <?php echo date('y-m-d H:i:s', strtotime('+3 min'))."\n" ?>
+    start_at: <?php echo date('y-m-d H:i:s', strtotime('+8 min'))."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('+3 hour'))."\n" ?>
+
+  fourth_deal:
+    Id:       4
+    Company:  first_company
+    DealType: last_minute
+    name:     Fourth deal
+    price:    100
+    discount: 70
+    published_at: <?php echo date('y-m-d H:i:s', strtotime('-4 hour'))."\n" ?>
+    start_at: <?php echo date('y-m-d H:i:s', strtotime('-2 hour'))."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('-1 hour'))."\n" ?>
+
+  fifth_deal:
+    Id:       5
+    Company:  second_company
+    DealType: last_minute
+    name:     Fifth deal
+    price:    100
+    discount: 70
+    published_at: <?php echo date('y-m-d H:i:s', strtotime('-4 hour'))."\n" ?>
+    start_at: <?php echo date('y-m-d H:i:s', strtotime('-3 hour'))."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('-2 hour'))."\n" ?>
+
+  sixth_deal:
+    Id:       6
+    Company:  four_company
+    DealType: last_minute
+    name:     Sixth deal
+    price:    100
+    discount: 60
+    published_at: <?php echo date('y-m-d H:i:s', strtotime('+2 hour'))."\n" ?>
+    start_at: <?php echo date('y-m-d H:i:s', strtotime('+3 hour'))."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('+4 hour'))."\n" ?>
+
+  seventh_deal:
+    Id:       7
+    Company:  four_company
+    DealType: last_minute
+    name:     Seventh deal
+    price:    120
+    discount: 50
+    published_at: <?php echo date('y-m-d H:i:s', strtotime('-4 hour'))."\n" ?>
+    start_at: <?php echo date('y-m-d H:i:s', strtotime('-3 hour'))."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('-2 hour'))."\n" ?>
+
+  eighth_deal:
+    Id:       8
+    Company:  four_company
+    DealType: last_minute
+    name:     Eighth deal
+    price:    120
+    discount: 40
+    published_at: <?php echo date('y-m-d H:i:s', strtotime('+10 min'))."\n" ?>
+    start_at: <?php echo date('y-m-d H:i:s', strtotime('+10 min'))."\n" ?>
+    end_at:   <?php echo date('y-m-d H:i:s', strtotime('+1 hour'))."\n" ?>

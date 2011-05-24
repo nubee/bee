@@ -1,0 +1,69 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/10-Routing
+
+# default rules
+deal:
+  class: sfDoctrineRouteCollection
+  options: { model: Deal }
+
+current_deals:
+  url: /deal/current
+  params: { module: deal, action: current }
+
+expiring_deals:
+  url: /deal/expiring
+  params: { module: deal, action: expiring }
+
+expired_deals:
+  url: /deal/expired
+  params: { module: deal, action: expired }
+
+company:
+  class: sfDoctrineRouteCollection
+  options: { model: Company }
+
+profile:
+  url: /profile
+  params: { module: profile, action: index }
+
+profile_edit:
+  url: /profile/edit
+  params: { module: profile, action: edit }
+
+profile_update:
+  url: /profile/update
+  params: { module: profile, action: update }
+
+login:
+  url: /login
+  params: { module: sfGuardAuth, action: signin }
+
+logout:
+  url: /logout
+  params: { module: sfGuardAuth, action: signout }
+
+sf_guard_password:
+  url:   /request_password
+  param: { module: sfGuardAuth, action: password }
+
+sf_guard_register:
+  url: /register
+  params: { module: sfGuardRegister, action: new }
+
+sf_guard_register_create:
+  url: /register/create
+  params: { module: sfGuardRegister, action: create }
+
+sf_guard_register_activation:
+  url: /register/activation/:token
+  params: { module: sfGuardRegister, action: activation }
+  requirements:
+    sf_method: [GET]
+
+sf_guard_register_thank_you:
+  url: /register/thank-you
+  params: { module: sfGuardRegister, action: thankYou }
+
+homepage:
+  url:   /
+  param: { module: main, action: index }

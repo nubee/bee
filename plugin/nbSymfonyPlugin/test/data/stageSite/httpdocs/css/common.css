@@ -1,0 +1,76 @@
+html{color:#000;background:#FFF;}
+a{cursor:pointer;outline: 0 none;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}
+li{list-style:none;}
+caption,th{text-align:left;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+q:before,q:after{content:'';}
+abbr,acronym {border:0;font-variant:normal;}
+sup {vertical-align:text-top;}
+sub {vertical-align:text-bottom;}
+input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;outline-style:none;outline-width:0pt;}
+legend{color:#000;}a:focus{-moz-outline-style: none; border:0px;}
+
+
+
+body {
+  font-size: 62.5%;
+  font-size: 1em;
+  font-family: Arial,Verdana,sans-serif;
+}
+
+p {
+  font-size: 1em;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: 'Cuprum',Arial,Verdana,sans-serif;
+  font-weight: normal;
+	font-size: 1.8em;
+ 	color: #0080A4;
+  padding: .5em 0;
+}
+
+h2 {
+	font-family: 'Cuprum',Arial,Verdana,sans-serif;
+  font-weight: normal;
+	font-size: 1.5em;
+	color: #0080A4;
+  padding: .3em 0;
+}
+
+h3 {
+	font-family: 'Cuprum',Arial,Verdana,sans-serif;
+  font-weight: normal;
+	font-size: 1.2em;
+	color: #0080A4;
+}
+
+a:link, a:visited {
+  text-decoration: none;
+  color: #0060CF;
+}
+
+a:hover, a:active {
+  text-decoration: underline;
+  color: #0099ff;
+}
+
+th {
+  color: #888;
+  padding: 2px;
+}
+
+td {
+  padding: 2px;
+}
+
+label {
+  color: #888;
+}
+

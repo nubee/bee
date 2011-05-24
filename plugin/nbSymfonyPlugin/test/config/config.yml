@@ -1,0 +1,20 @@
+
+nb:
+  symfony_plugin:
+    test:
+      web_site: http://www.di-side.com
+      migrate_version_low: 0
+      migrate_version_high: 2
+      symfony_dir: plugin/nbSymfonyPlugin/test/data/stageSite/symfony
+      wrong_symfony_dir: fakePath
+      application: frontend
+      enviroment: prod
+      owner_userid: user
+      owner_group: group
+      sync_project:
+        source_path: plugin/nbSymfonyPlugin/test/data/tmpSite/
+        target_path: plugin/nbSymfonyPlugin/test/data/testSite/
+        file_to_sync: fileToSync
+        folder_to_exclude: folderToExclude
+        file_to_exclude: fileToExclude
+        exclude_file: plugin/nbSymfonyPlugin/test/data/exclude.txt

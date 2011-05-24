@@ -1,0 +1,8 @@
+nb:
+  mysql:
+    db:
+      name: dbtest
+      user_id: dbtestadmin
+      user_password: dbtestpwd
+    dump_path: plugin/nbMysqlPlugin/test/data
+    dump_file: plugin/nbMysqlPlugin/test/data/dbtest-201105201556.sql

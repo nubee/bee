@@ -1,0 +1,6 @@
+all:
+  is_secure: true
+  credentials: frontend_auth
+
+index:
+  is_secure: false

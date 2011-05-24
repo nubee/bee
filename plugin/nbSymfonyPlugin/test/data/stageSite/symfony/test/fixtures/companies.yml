@@ -1,0 +1,79 @@
+Company:
+  first_company:
+    id:            1
+    User:          dealer1
+    name:          FirstCompany
+    description:   a little restaurant in the center of Cagliari
+    partita_iva:   xyzfirstcompany
+    city:          Cagliari
+    address:       via Alghero, 10
+    state:         Italia
+    zipcode:       09100
+    phone_number:  070123456
+    mobile_number: 3489899898
+    fax_number:    070123457
+    email:         firstcompany@example.com
+    logo:          logo1.jpg
+
+  second_company:
+    id:            2
+    User:          dealer1
+    name:          SecondCompany
+    description:   a little Pub in the center of Cagliari
+    partita_iva:   xyzsecondcompany
+    city:          Cagliari
+    address:       via Dante, 122
+    state:         Italia
+    zipcode:       09100
+    phone_number:  070123456
+    mobile_number: 3489899898
+    fax_number:    070123457
+    email:         secondcompany@example.com
+    logo:          logo2.jpg
+
+  three_company:
+    id:            3
+    User:          dealer1
+    name:          ThreeCompany
+    description:   a little Pub in the center of Cagliari
+    partita_iva:   xyzthreecompany
+    city:          Cagliari
+    address:       via ALghero, 122
+    state:         Italia
+    zipcode:       09100
+    phone_number:  070123446
+    mobile_number: 3489899678
+    fax_number:    070124557
+    email:         threecompany@example.com
+
+  four_company:
+    id:            4
+    User:          dealer2
+    name:          FourCompany
+    description:   a restorant of Cagliari
+    partita_iva:   xyzfourcompany
+    city:          Cagliari
+    address:       via Dante, 122
+    state:         Italia
+    zipcode:       09100
+    phone_number:  070124545
+    mobile_number: 3489854548
+    fax_number:    070124545
+    email:         fourcompany@example.com
+
+CompanyCategory:
+  firstcompany_restaurant:
+    Company:  first_company
+    Category: restaurant
+
+  secondcompany_pub:
+    Company:  second_company
+    Category: pub
+
+  threecompany_pub:
+    Company:  three_company
+    Category: pub
+
+  fourcompany_restorant:
+    Company:  four_company
+    Category: restaurant

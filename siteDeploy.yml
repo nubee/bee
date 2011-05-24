@@ -1,0 +1,24 @@
+nbDeploy:
+  tar:
+    target_path: /var/www
+    target_dir: picknkick
+    archive_path: /home/voyager/svn
+  site:
+    symfony_path: /var/www/picknkick/symfony/
+    dir_path: /var/www/picknkick/
+    source_path: /home/voyager/svn/picknkick/trunk/
+    user: voyager
+    group: voyager
+    applications:
+      app1:
+        name: frontend
+        env: prod
+  sync:
+    exclude_file: excludeSymfonyProjects
+  mysql:
+    db:
+      name: dbtest
+      user_id: dbtestadmin
+      user_password: dbtestpwd
+    dump_path: plugin/nbMysqlPlugin/test/data
+    dump_file: plugin/nbMysqlPlugin/test/data/dbtest-201105201556.sql

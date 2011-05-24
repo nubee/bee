@@ -1,0 +1,27 @@
+#footer-box {
+  padding: 5px;
+  background: #DC6310 url(../images/bg_footer.jpg) top left repeat-x;
+}
+
+#footer li {
+}
+
+#footer h2 {
+  color: #fff;
+}
+
+#footer a:link, #footer a:visited {
+  color: #fff;
+  text-decoration: none;
+}
+
+#footer a:hover, #footer a:active {
+  text-decoration: underline;
+}
+
+#footer .copyright {
+  font-size: .9em;
+  margin-top: 10px;
+  color: #fff;
+  text-align: center;
+}
