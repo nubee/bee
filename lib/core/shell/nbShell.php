@@ -14,7 +14,7 @@ class nbShell
 
   public function execute($command)
   {
-    system($command, $this->returnCode);
+    $this->output = system($command, $this->returnCode);
     return ($this->returnCode === 0);
   }
 

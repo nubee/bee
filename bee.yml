@@ -9,7 +9,7 @@ proj:
     default:
       integrate: ["git:pull", "lime:test", "bee:test-plugin"]
   bee:  # bee extra configuration keys
-    plugins_enabled: [nbGitPlugin]
+    plugins_enabled: [nbGitPlugin, nbDummyPlugin, nbSubversionPlugin, nbSymfonyPlugin, nbTarPlugin, nbMysqlPlugin, nbFileSystemPlugin]
   repository:
     type: git
   shell:

@@ -3,7 +3,7 @@ class nbPluginLoader {
 
   private $plugins = array(),
           $pluginDirs = array();
-  static private        $commandLoader;
+  static private $commandLoader;
 
 
   public function __construct($pluginDir, nbCommandLoader $commandLoader)
@@ -11,7 +11,7 @@ class nbPluginLoader {
     if(! is_dir($pluginDir))
       throw new InvalidArgumentException('[nbPluginLoader::__construct] '.$pluginDir.' isn\'t a directory.');
     $this->pluginDirs[] = $pluginDir;
-    $this->commandLoader = $commandLoader;
+    self::$commandLoader = $commandLoader;
   }
 
 
@@ -61,7 +61,7 @@ class nbPluginLoader {
     nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName].'/command','*Command.php',true);
     nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName].'/vendor');
 
-    $this->commandLoader->addCommandsFromDir($this->plugins[$pluginName].'/command');
+    self::$commandLoader->addCommandsFromDir($this->plugins[$pluginName].'/command');
 
     if(is_dir($this->plugins[$pluginName].'/test/unit')) {
       $testDirs = nbConfig::get('nb_pugin_test_dirs',array());

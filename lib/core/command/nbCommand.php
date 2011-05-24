@@ -226,6 +226,11 @@ abstract class nbCommand
     $this->logger->log($text, $level);
   }
 
+  public function logLine($text, $level = null)
+  {
+    $this->logger->logLine($text, $level);
+  }
+
   public function format($text, $level)
   {
     return $this->logger->format($text, $level);

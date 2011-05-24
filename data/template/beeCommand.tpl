@@ -7,6 +7,9 @@ class %%CLASSNAME%%  extends nbCommand
     $this->setName('%%NAMESPACE%%:%%NAME%%')
       ->setBriefDescription('')
       ->setDescription(<<<TXT
+The <info>{$this->getFullName()}</info> command:
+
+  <info>./bee {$this->getFullName()}</info>
 TXT
         );
 

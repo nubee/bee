@@ -4,7 +4,7 @@ class nbDummyCommand extends nbCommand
 {
   protected function configure()
   {
-    $this->setName('nbDummy:command')
+    $this->setName('dummy:hello-world')
       ->setBriefDescription('Example Plugin Command ')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command is only an example;

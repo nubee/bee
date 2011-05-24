@@ -21,7 +21,6 @@ class nbProcShell
       1 => array("pipe", "w"),
       2 => array("pipe", "w")
     );
-
 //    $command = 'start ' . $command;
     $process = proc_open($command, $descriptors, $pipes);
 
