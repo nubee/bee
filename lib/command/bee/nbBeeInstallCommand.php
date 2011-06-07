@@ -26,7 +26,7 @@ TXT
     $sourceDir =  nbFileSystemUtils::sanitize_dir($arguments['source_dir']);
 
     if (!file_exists($installDir))
-      nbFileSystem::mkdir($installDir);
+      nbFileSystem::mkdir($installDir,true);
 
     $this->logLine('Installing bee on folder ' . $installDir, nbLogger::COMMENT);
     try{
