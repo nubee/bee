@@ -33,6 +33,8 @@ TXT
       $shell = new nbShell();
       if(PHP_OS == "Linux"){
         $shell->execute( 'cp -rf '.$sourceDir.'/* '.$installDir.'/');
+        if(file_exists('/usr/bin/bee'))
+          $shell->execute( 'rm /usr/bin/bee');
         $shell->execute( 'ln -s '.$installDir.'/bee /usr/bin/bee');
       }
       else if(PHP_OS == "WINNT"){

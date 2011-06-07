@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
 nbConfig::set('nb_command_dir', nbConfig::get('nb_sandbox_dir'));
-/*
+
 #nbFileSystem::rmdir(nbConfig::get('nb_test_installation_dir'), true);
 $shell = new nbShell();
 if (PHP_OS == "Linux") {
@@ -31,4 +31,3 @@ else if (PHP_OS == "WINNT") {
   $t->pass( "TODO: check symbolic link");
 }
 
-*/
