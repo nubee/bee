@@ -13,7 +13,7 @@ class nbGitStatusCommand extends nbCommand
     $this->setName('git:status')
       ->setBriefDescription('Shows local repository status')
       ->setDescription(<<<TXT
-The <info>{$this->getFullName()}</info> command shows local repository stauts:
+The <info>{$this->getFullName()}</info> command shows local repository status:
 
     <info>./bee {$this->getFullName()}</info>
 TXT

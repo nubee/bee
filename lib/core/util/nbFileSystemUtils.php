@@ -24,4 +24,9 @@ class nbFileSystemUtils
         }
     }
 
+    public static function sanitize_dir($directory)
+    {
+      return preg_replace('/\/+$/', '', $directory);
+    }
+
 }
