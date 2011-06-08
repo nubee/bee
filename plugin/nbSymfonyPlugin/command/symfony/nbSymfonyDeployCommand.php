@@ -31,32 +31,32 @@ TXT
     }
     //tar site directory
     $cmd = new nbTarInflateDirCommand();
-    $command_line = nbConfig::get('nbDeploy_tar_target_path') . " " . nbConfig::get('nbDeploy_tar_archive_path') . " " . nbConfig::get('nbDeploy_tar_target_dir');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    $commandLine = nbConfig::get('nbDeploy_tar_target_path') . " " . nbConfig::get('nbDeploy_tar_archive_path') . " " . nbConfig::get('nbDeploy_tar_target_dir');
+    $cmd->run(new nbCommandLineParser(), $commandLine);
     //sync project
     $cmd = new nbSymfonySyncProjectCommand();
-    $command_line =  '--doit --exclude-from='.nbConfig::get('nbDeploy_sync_exclude_file').' '.nbConfig::get('nbDeploy_site_source_path').' '.nbConfig::get('nbDeploy_site_dir_path');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    $commandLine =  '--doit --exclude-from='.nbConfig::get('nbDeploy_sync_exclude_file').' '.nbConfig::get('nbDeploy_site_source_path').' '.nbConfig::get('nbDeploy_site_dir_path');
+    $cmd->run(new nbCommandLineParser(), $commandLine);
 
     //check dirs
     $cmd = new nbSymfonyCheckDirsCommand();
-    $command_line =  nbConfig::get('nbDeploy_site_symfony_path');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    $commandLine =  nbConfig::get('nbDeploy_site_symfony_path');
+    $cmd->run(new nbCommandLineParser(), $commandLine);
 
     //check permission
     $cmd = new nbSymfonyCheckPermissionsCommand();
-    $command_line =  nbConfig::get('nbDeploy_site_symfony_path');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    $commandLine =  nbConfig::get('nbDeploy_site_symfony_path');
+    $cmd->run(new nbCommandLineParser(), $commandLine);
 
     //change ownership
     $cmd = new nbSymfonyChangeOwnershipCommand();
-    $command_line =  nbConfig::get('nbDeploy_site_dir_path').' '.nbConfig::get('nbDeploy_site_user').' '.nbConfig::get('nbDeploy_site_group');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    $commandLine =  nbConfig::get('nbDeploy_site_dir_path').' '.nbConfig::get('nbDeploy_site_user').' '.nbConfig::get('nbDeploy_site_group');
+    $cmd->run(new nbCommandLineParser(), $commandLine);
 
     //clear chache
     $cmd = new nbSymfonyClearCacheCommand();
-    $command_line =  nbConfig::get('nbDeploy_site_symfony_path');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    $commandLine =  nbConfig::get('nbDeploy_site_symfony_path');
+    $cmd->run(new nbCommandLineParser(), $commandLine);
 
     //site online
     foreach (nbConfig::get('nbDeploy_site_applications') as $key => $value) {

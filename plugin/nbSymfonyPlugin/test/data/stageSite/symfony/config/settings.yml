@@ -1,3 +1,0 @@
-## YAML Template.
-all:
-  check_lock:             true

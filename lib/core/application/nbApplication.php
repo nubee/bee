@@ -16,7 +16,8 @@ abstract class nbApplication
     $verbose = false,
     $trace = false,
     $serviceContainer,
-    $logger = null;
+    $logger = null,
+    $parser = null;
 
   public function __construct(sfServiceContainerBuilder $serviceContainer)
   {
@@ -30,7 +31,7 @@ abstract class nbApplication
 
     $this->options->addOptions(array(
       new nbOption('version', 'V', nbOption::PARAMETER_NONE, 'Shows the version'),
-      new nbOption('verbose', 'v', nbOption::PARAMETER_NONE, 'Set verbosity'),
+      new nbOption('verbose', 'v', nbOption::PARAMETER_NONE, 'Sets verbosity'),
       new nbOption('trace', 't', nbOption::PARAMETER_NONE, 'Shows exception trace'),
       new nbOption('help', '?', nbOption::PARAMETER_NONE, 'Shows application help'),
     ));
@@ -62,7 +63,16 @@ abstract class nbApplication
     if($r->isSubclassOf('nbApplicationCommand'))
       $command->setApplication($this);
 
-    $command->run($this->parser, $commandLine);
+    try {
+      $command->run($this->parser, $commandLine);
+    }
+    catch(Exception $e) {
+      $this->logger->logLine('');
+      $helpCmd = new nbHelpCommand();
+      $this->logger->log($helpCmd->formatHelp($command));
+      $this->logger->logLine('');
+      $this->logger->logLine($e->getMessage(), nbLogger::ERROR);
+    }
   }
 
   public function getName()

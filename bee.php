@@ -72,7 +72,7 @@ $serviceContainer->commandLoader->loadCommands();
 $serviceContainer->commandLoader->loadCommandAliases();
 //$commandSet = $commandLoader->getCommands();
 
-try{
+try {
   $application = new nbBeeApplication($serviceContainer);
   $application->run();
 }

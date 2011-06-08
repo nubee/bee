@@ -1,9 +1,0 @@
-# You can find more information about this file on the symfony website:
-# http://www.symfony-project.org/reference/1_4/en/11-App
-
-# default values
-all:
-  activation_url: http://findeal.localhost/admin.php/register/activation/
-  forgot_password_url: http://findeal.localhost/admin.php/guard/forgot_password/
-  sf_guard_plugin_default_from_email: noreply@findeal.com
-  admin_url: http://findeal.localhost/admin.php

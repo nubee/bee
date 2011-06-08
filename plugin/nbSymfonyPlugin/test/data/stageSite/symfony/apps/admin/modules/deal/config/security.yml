@@ -1,6 +1,0 @@
-all:
-  is_secure: true
-  credentials: admin_auth
-
-#index:
-#  is_secure: false
