@@ -19,10 +19,7 @@ TXT
             )));
 
     $this->setOptions(new nbOptionSet(array(
-                new nbOption('config-file', 'f', nbOption::PARAMETER_OPTIONAL, 'Archive configuration file', './config/archivePlugin.yml')/* ,
-                      new nbOption('target-path', 'p', nbOption::PARAMETER_REQUIRED, 'Target path'),
-                      new nbOption('target-dir', 'd', nbOption::PARAMETER_REQUIRED, 'Target directory'),
-                      new nbOption('archive-path', 'a', nbOption::PARAMETER_REQUIRED, 'Archive path') */
+                new nbOption('config-file', 'f', nbOption::PARAMETER_OPTIONAL, 'Archive configuration file', './.bee/nbArchivePlugin.yml')
             )));
   }
   protected function execute(array $arguments = array(), array $options = array()) {

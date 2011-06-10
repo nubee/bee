@@ -6,15 +6,15 @@
  * @package    bee
  * @subpackage command
  */
-class nbCommandLineParser
-{
+class nbCommandLineParser {
+
   protected
-    $errors               = array(),
-    $options              = null,
-    $arguments            = array(),
-    $optionValues         = array(),
-    $argumentValues       = array(),
-    $parsedArgumentValues = array();
+  $errors = array(),
+  $options = null,
+  $arguments = array(),
+  $optionValues = array(),
+  $argumentValues = array(),
+  $parsedArgumentValues = array();
 
   /**
    * Constructor.
@@ -22,8 +22,7 @@ class nbCommandLineParser
    * @param nbArgumentSet $arguments A nbArgumentSet object
    * @param nbOptionSet   $options   A setOptions object
    */
-  public function __construct(array $arguments = array(), array $options = array())
-  {
+  public function __construct(array $arguments = array(), array $options = array()) {
     $this->setArguments($arguments);
     $this->setOptions($options);
   }
@@ -33,8 +32,7 @@ class nbCommandLineParser
    *
    * @param nbArgumentSet $arguments A nbArgumentSet object
    */
-  public function setArguments(array $arguments)
-  {
+  public function setArguments(array $arguments) {
     $this->arguments = new nbArgumentSet($arguments);
   }
 
@@ -43,8 +41,7 @@ class nbCommandLineParser
    *
    * @param array $arguments An array of arguments
    */
-  public function addArguments(nbArgumentSet $arguments)
-  {
+  public function addArguments(nbArgumentSet $arguments) {
     $this->arguments->mergeArguments($arguments);
   }
 
@@ -53,8 +50,7 @@ class nbCommandLineParser
    *
    * @return nbArgumentSet A nbArgumentSet object
    */
-  public function getArguments()
-  {
+  public function getArguments() {
     return $this->arguments;
   }
 
@@ -63,8 +59,7 @@ class nbCommandLineParser
    *
    * @param nbOptionSet $options A nbOptionSet object
    */
-  public function setOptions(array $options)
-  {
+  public function setOptions(array $options) {
     $this->options = new nbOptionSet($options);
   }
 
@@ -73,8 +68,7 @@ class nbCommandLineParser
    *
    * @param array $options An array of options
    */
-  public function addOptions(nbOptionSet $options)
-  {
+  public function addOptions(nbOptionSet $options) {
     //print_r($this->options->getOptions());
     $this->options->mergeOptions($options);
   }
@@ -84,8 +78,7 @@ class nbCommandLineParser
    *
    * @return nbOptionSet A nbOptionSet object
    */
-  public function getOptions()
-  {
+  public function getOptions() {
     return $this->options;
   }
 
@@ -94,8 +87,7 @@ class nbCommandLineParser
    *
    * @param mixed $arguments A string or an array of command line parameters
    */
-  public function parse($commandLine = null, $namespace = '', $commandName = '')
-  {
+  public function parse($commandLine = null, $namespace = '', $commandName = '') {
     if (null === $commandLine) {
       $this->commandLineArguments = $_SERVER['argv'];
 
@@ -113,9 +105,9 @@ class nbCommandLineParser
       $this->commandLineArguments = $commandLine;
 
 //    $this->optionValues         = $this->options->getDefaultValues();
-    $this->argumentValues       = $this->arguments->getDefaultValues();
+    $this->argumentValues = $this->arguments->getDefaultValues();
     $this->parsedArgumentValues = array();
-    $this->errors               = array();
+    $this->errors = array();
 
     while (!in_array($argument = array_shift($this->commandLineArguments), array('', null))) {
       if ('--' == $argument) {
@@ -150,14 +142,21 @@ class nbCommandLineParser
       $configParser = new nbYamlConfigParser();
       $configParser->parseFile($this->optionValues['config-file']);
       $path_yml = $namespace . '_' . $commandName;
-      if(nbConfig::has($path_yml)) {
+      if (nbConfig::has($path_yml)) {
         $configurationValues = nbConfig::get($path_yml);
-        foreach($configurationValues as $name => $value) {
-          if(!$this->getArguments()->hasArgument($name)
-            || ('' == $value)
-            || isset($this->argumentValues[$name]))
+        foreach ($configurationValues as $name => $value) {
+          if (!$this->getArguments()->hasArgument($name)
+                  || ('' == $value)
+                  || isset($this->argumentValues[$name]))
             continue;
           $this->argumentValues[$name] = $value;
+        }
+        foreach ($configurationValues as $name => $value) {
+          if (!$this->getOptions()->hasOption($name)
+                  || ('' == $value)
+                  || isset($this->optionValues[$name]))
+            continue;
+          $this->optionValues[$name] = $value;
         }
       }
     }
@@ -168,15 +167,13 @@ class nbCommandLineParser
    *
    * @return true if there are some validation errors, false otherwise
    */
-  public function isValid()
-  {
-   //echo ('Parsed Arguments Values: ' . print_r($this->parsedArgumentValues));
+  public function isValid() {
+    //echo ('Parsed Arguments Values: ' . print_r($this->parsedArgumentValues));
     if (count($this->argumentValues) < $this->arguments->countRequired())
       $this->errors[] = 'Not enough arguments.';
     else if (count($this->parsedArgumentValues) > $this->arguments->count())
       $this->errors[] = sprintf('Too many arguments ("%s" given).', implode(' ', $this->parsedArgumentValues));
-  return count($this->errors) ? false : true;
-
+    return count($this->errors) ? false : true;
   }
 
   /**
@@ -184,8 +181,7 @@ class nbCommandLineParser
    *
    * @return array An array of errors
    */
-  public function getErrors()
-  {
+  public function getErrors() {
     return $this->errors;
   }
 
@@ -194,8 +190,7 @@ class nbCommandLineParser
    *
    * @return array An array of argument values
    */
-  public function getArgumentValues()
-  {
+  public function getArgumentValues() {
     return $this->argumentValues;
   }
 
@@ -206,8 +201,7 @@ class nbCommandLineParser
    *
    * @return mixed The argument value
    */
-  public function getArgumentValue($name)
-  {
+  public function getArgumentValue($name) {
     if (!$this->hasArgumentValue($name))
       throw new RangeException(sprintf('[nbCommandLineParser::getArgumentValue] The "%s" argument does not exist.', $name));
 
@@ -221,8 +215,7 @@ class nbCommandLineParser
    *
    * @return Boolean true if the argument exists
    */
-  public function hasArgumentValue($name)
-  {
+  public function hasArgumentValue($name) {
     return isset($this->argumentValues[$name]);
   }
 
@@ -231,8 +224,7 @@ class nbCommandLineParser
    *
    * @return array An array of option values
    */
-  public function getOptionValues()
-  {
+  public function getOptionValues() {
     return $this->optionValues;
   }
 
@@ -243,14 +235,12 @@ class nbCommandLineParser
    *
    * @return mixed The option value
    */
-  public function getOptionValue($name)
-  {
+  public function getOptionValue($name) {
     if (!$this->hasOptionValue($name))
       throw new RangeException(sprintf('The "%s" option does not exist.', $name));
 
     return $this->optionValues[$name];
   }
-
 
   /**
    * Returns true if the option exists.
@@ -259,8 +249,7 @@ class nbCommandLineParser
    *
    * @return Boolean true if the option exists
    */
-  public function hasOptionValue($name)
-  {
+  public function hasOptionValue($name) {
     return isset($this->optionValues[$name]);
   }
 
@@ -269,13 +258,12 @@ class nbCommandLineParser
    *
    * @param string $argument The option argument
    */
-  protected function parseShortOption($argument)
-  {
+  protected function parseShortOption($argument) {
     // short option must be followed by space
     // short option can be aggregated like in -vd (== -v -d)
     for ($i = 0, $count = strlen($argument); $i < $count; ++$i) {
       $shortcut = $argument[$i];
-      $value    = true;
+      $value = true;
 
       if (!$this->options->hasShortcut($shortcut)) {
         $this->errors[] = sprintf('The option "-%s" does not exist.', $shortcut);
@@ -317,8 +305,7 @@ class nbCommandLineParser
    *
    * @param string $argument The option argument
    */
-  protected function parseLongOption($argument)
-  {
+  protected function parseLongOption($argument) {
     if (false !== strpos($argument, '=')) {
       list($name, $value) = explode('=', $argument, 2);
 
@@ -333,8 +320,7 @@ class nbCommandLineParser
         $this->errors[] = sprintf('Option "--%s" does not take an argument.', $name);
         $value = true;
       }
-    }
-    else {
+    } else {
       $name = $argument;
 
       if (!$this->options->hasOption($name)) {
@@ -355,11 +341,11 @@ class nbCommandLineParser
     $this->setOption($option, $value);
   }
 
-  public function setOption(nbOption $option, $value)
-  {
+  public function setOption(nbOption $option, $value) {
     if ($option->isArray())
       $this->optionValues[$option->getName()][] = $value;
     else
       $this->optionValues[$option->getName()] = $value;
   }
+
 }
