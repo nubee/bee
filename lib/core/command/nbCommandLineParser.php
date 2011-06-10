@@ -94,7 +94,7 @@ class nbCommandLineParser
    *
    * @param mixed $arguments A string or an array of command line parameters
    */
-  public function parse($commandLine = null)
+  public function parse($commandLine = null, $namespace = '', $commandName = '')
   {
     if (null === $commandLine) {
       $this->commandLineArguments = $_SERVER['argv'];
@@ -146,10 +146,21 @@ class nbCommandLineParser
       ++$position;
     }
 
-    if (count($this->parsedArgumentValues) < $this->arguments->countRequired())
-      $this->errors[] = 'Not enough arguments.';
-    else if (count($this->parsedArgumentValues) > $this->arguments->count())
-      $this->errors[] = sprintf('Too many arguments ("%s" given).', implode(' ', $this->parsedArgumentValues));
+    if (isset($this->optionValues['config-file'])) {
+      $configParser = new nbYamlConfigParser();
+      $configParser->parseFile($this->optionValues['config-file']);
+      $path_yml = $namespace . '_' . $commandName;
+      if(nbConfig::has($path_yml)) {
+        $configurationValues = nbConfig::get($path_yml);
+        foreach($configurationValues as $name => $value) {
+          if(!$this->getArguments()->hasArgument($name)
+            || ('' == $value)
+            || isset($this->argumentValues[$name]))
+            continue;
+          $this->argumentValues[$name] = $value;
+        }
+      }
+    }
   }
 
   /**
@@ -159,7 +170,13 @@ class nbCommandLineParser
    */
   public function isValid()
   {
-    return count($this->errors) ? false : true;
+   //echo ('Parsed Arguments Values: ' . print_r($this->parsedArgumentValues));
+    if (count($this->argumentValues) < $this->arguments->countRequired())
+      $this->errors[] = 'Not enough arguments.';
+    else if (count($this->parsedArgumentValues) > $this->arguments->count())
+      $this->errors[] = sprintf('Too many arguments ("%s" given).', implode(' ', $this->parsedArgumentValues));
+  return count($this->errors) ? false : true;
+
   }
 
   /**

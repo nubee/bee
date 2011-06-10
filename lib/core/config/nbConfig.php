@@ -69,7 +69,8 @@ class nbConfig
   
   public static function add($array = array(), $prefix = '')
   {
-	//TODO: replace with preg_replace
+
+  //TODO: replace with preg_replace
 	$prefix = trim($prefix,' _.,?');
 	if(strlen($prefix)>0)
 		$prefix .= '_';

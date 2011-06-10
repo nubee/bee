@@ -1,0 +1,5 @@
+archive:
+    inflate-dir:
+      target-path: plugin/nbArchivePlugin/test/data/target_dir
+      target-dir: testFolder
+      archive-path: plugin/nbArchivePlugin/test/data/archive

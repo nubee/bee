@@ -5,7 +5,7 @@ class nbGeneratePluginCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('bee:generate-plugin')
-      ->setBriefDescription('')
+      ->setBriefDescription('Generates directory structure for a new plugin ')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 
@@ -18,8 +18,8 @@ TXT
     )));
 
     $this->setOptions(new nbOptionSet(array(
-      new nbOption('force', 'f', nbOption::PARAMETER_NONE, 'This option overwrites the existing plugin'),
-      new nbOption('directory', 'd', nbOption::PARAMETER_REQUIRED, 'Create plugin directory structure inside directory')
+      new nbOption('force', 'f', nbOption::PARAMETER_NONE, 'Overwrites the existing plugin'),
+      new nbOption('directory', 'd', nbOption::PARAMETER_REQUIRED, 'Creates plugin directory structure inside directory')
     )));
   }
 

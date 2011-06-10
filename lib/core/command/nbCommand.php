@@ -33,14 +33,15 @@ abstract class nbCommand
     $parser->addArguments($this->getArguments());
     $parser->addOptions($this->getOptions());
 
-    $parser->parse($commandLine);
+    $parser->parse($commandLine,$this->getNamespace(),$this->getName());
+
     if(!$parser->isValid())
       throw new InvalidArgumentException(sprintf(
         "[nbCommand::run] Command \"%s\" execution failed: \n  - %s",
         $this->getFullName(),
         implode("  \n- ", $parser->getErrors())
       ));
-
+/*
     $cmdlineOptionValues = $parser->getOptionValues();
     $path = 'nb_commands_' . $this->getNamespace() . '_' . $this->getName();
     if(nbConfig::has($path)) {
@@ -54,11 +55,14 @@ abstract class nbCommand
         $cmdlineOptionValues[$name] = $value;
       }
     }
-//    return $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
-    return $this->execute($parser->getArgumentValues(), $cmdlineOptionValues);
+    //return $this->execute($parser->getArgumentValues(), $cmdlineOptionValues);
+*/
+    return $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
+
   }
 
   protected abstract function configure();
+
   protected abstract function execute(array $arguments = array(), array $options = array());
   
   public function setName($name)
