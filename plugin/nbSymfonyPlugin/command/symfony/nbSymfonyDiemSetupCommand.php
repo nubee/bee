@@ -23,7 +23,9 @@ TXT
   protected function execute(array $arguments = array(), array $options = array()) {
     $this->logLine('Diem setup');
     $shell = new nbShell();
-    $shell->execute('php ' . $arguments['symfony_path'] . '/symfony dm:setup');
+    $cmd = 'php ' . $arguments['symfony_path'] . '/symfony dm:setup';
+    $this->logLine($cmd);
+    $shell->execute($cmd);
     $this->logLine('Done - Diem setup');
     return true;
   }

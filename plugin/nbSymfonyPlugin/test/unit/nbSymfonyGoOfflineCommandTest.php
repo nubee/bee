@@ -5,4 +5,4 @@ $serviceContainer->pluginLoader->loadPlugins(array('nbSymfonyPlugin'));
 $t = new lime_test(0);
 
 $cmd = new nbSymfonyGoOfflineCommand();
-$cmd->run(new nbCommandLineParser(), nbConfig::get('nb_symfony_plugin_test_symfony_dir')." ".nbConfig::get('nb_symfony_plugin_test_application')." ".nbConfig::get('nb_symfony_plugin_test_enviroment'),'Command SymfonyGoOffline called succefully');
+$cmd->run(new nbCommandLineParser(), nbConfig::get('symfony_project-deploy_symfony-exe-path')." ".nbConfig::get('test_go-offline_application')." ".nbConfig::get('test_go-offline_enviroment'),'Command SymfonyGoOffline called succefully');

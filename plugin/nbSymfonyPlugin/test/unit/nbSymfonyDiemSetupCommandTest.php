@@ -5,4 +5,4 @@ $serviceContainer->pluginLoader->loadPlugins(array('nbSymfonyPlugin'));
 $t = new lime_test(0);
 
 $cmd = new nbSymfonyDiemSetupCommand();
-$cmd->run(new nbCommandLineParser(), nbConfig::get('nb_symfony_plugin_test_symfony_dir'),'Command SymfonyDiemSetup called succefully');
+$cmd->run(new nbCommandLineParser(), nbConfig::get('symfony_project-deploy_symfony-exe-path'),'Command SymfonyDiemSetup called succefully');

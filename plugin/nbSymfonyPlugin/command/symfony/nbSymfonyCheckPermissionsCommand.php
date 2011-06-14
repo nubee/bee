@@ -25,7 +25,9 @@ TXT
   {
       $this->logLine('Checking file permissions');
       $shell = new nbShell();
-      $shell->execute('php '.$arguments['symfony_path'].'/symfony project:permissions');
+      $cmd = 'php '.$arguments['symfony_path'].'/symfony project:permissions';
+      $this->logLine($cmd);
+      $shell->execute($cmd);
       $this->logLine('Done checking permissions');
 
       return true;

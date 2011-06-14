@@ -53,22 +53,3 @@ mysql:
       db-user: <?php echo $dbUser; ?><?php echo "\n"; ?>
       db-user-pwd: <?php echo $dbUserPwd; ?><?php echo "\n"; ?>
       dump-file: <?php echo $dumpFile; ?><?php echo "\n"; ?>
-test:
-  doctrine-migrate:
-    version-low: 2
-    version-high: 4
-  check-website: http://www.di-side.com
-  go-offline:
-    application: frontend
-    enviroment: prod
-  go-online:
-    application: frontend
-    enviroment: prod
-#  mysql:
-#    db:
-#      name: dbtest
-#      user_id: dbtestadmin
-#      user_password: dbtestpwd
-#    dump_path: plugin/nbMysqlPlugin/test/data
-#    dump_file: plugin/nbMysqlPlugin/test/data/dbtest-201105201556.sql
-#      web_site: http://www.di-side.com

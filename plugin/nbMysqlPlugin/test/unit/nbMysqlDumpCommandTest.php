@@ -6,9 +6,19 @@ $serviceContainer->pluginLoader->loadPlugins(array('nbMysqlPlugin'));
 #nbFileSystem::delete(nbConfig::get('nb_mysql_dump_path').nbConfig::get('nb_mysql_db_name').'.sql');
 $timestamp = date('YmdHi',  time());
 
-$t = new lime_test(2);
+$t = new lime_test(4);
 $cmd = new nbMysqlDumpCommand();
-echo $command_line =  nbConfig::get('nb_mysql_db_name').' '.nbConfig::get('nb_mysql_dump_path').' '.nbConfig::get('nb_mysql_db_user_id').' '.nbConfig::get('nb_mysql_db_user_password')."\n";
+$command_line =  nbConfig::get('mysql_dump_db-name').' '.nbConfig::get('mysql_dump_dump-path').' '.nbConfig::get('mysql_dump_db-user').' '.nbConfig::get('mysql_dump_db-user-pwd');
 $t->ok($cmd->run(new nbCommandLineParser(),$command_line),'Command MysqlDump called succefully');
-echo nbConfig::get('nb_mysql_dump_path').nbConfig::get('nb_mysql_db_name').'-'.$timestamp.'.sql';
-$t->ok(file_exists(nbConfig::get('nb_mysql_dump_path').'/'.nbConfig::get('nb_mysql_db_name').'-'.$timestamp.'.sql'), 'Dump file exist');
+$dumpFile = nbConfig::get('mysql_dump_dump-path').'/'.nbConfig::get('mysql_dump_db-name').'-'.$timestamp.'.sql';
+$t->ok(file_exists($dumpFile), 'Dump file exist');
+nbFileSystem::delete($dumpFile);
+
+$timestamp = date('YmdHi',  time());
+
+$command_line = '--config-file='.dirname(__FILE__).'/../config/config.yml';
+$t->ok($cmd->run(new nbCommandLineParser(),$command_line),'Command MysqlDump called succefully');
+$dumpFile = nbConfig::get('mysql_dump_dump-path').'/'.nbConfig::get('mysql_dump_db-name').'-'.$timestamp.'.sql';
+$t->ok(file_exists($dumpFile), 'Dump file exist');
+nbFileSystem::delete($dumpFile);
+

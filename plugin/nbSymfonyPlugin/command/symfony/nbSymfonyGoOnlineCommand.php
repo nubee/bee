@@ -27,7 +27,9 @@ TXT
   {
       $this->logLine('Site is going online');
       $shell = new nbShell();
-      $shell->execute('php '.$arguments['symfony_path'].'/symfony project:enable '.$arguments['application'].' '.$arguments['enviroment']);
+      $cmd = 'php '.$arguments['symfony_path'].'/symfony project:enable '.$arguments['application'].' '.$arguments['enviroment'];
+      $this->logLine($cmd);
+      $shell->execute($cmd);
       $this->logLine('Done - SymfonyGoOnlineCommand');
       return true;
   }

@@ -27,8 +27,10 @@ TXT
   {
       $this->logLine('Site is going offline');
       $shell = new nbShell();
-      $shell->execute('php '.$arguments['symfony_path'].'/symfony project:disable '.$arguments['application'].' '.$arguments['enviroment']);
-      $this->logLine('Done - SymfonyGOfflineCommand');
+      $cmd = 'php '.$arguments['symfony_path'].'/symfony project:disable '.$arguments['application'].' '.$arguments['enviroment'];
+      $this->logLine($cmd);
+      $shell->execute($cmd);
+      $this->logLine('Done - SymfonyGoOfflineCommand');
       return true;
   }
 

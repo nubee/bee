@@ -2,3 +2,4 @@
 .svn
 symfony/log
 symfony/cache
+*.lck

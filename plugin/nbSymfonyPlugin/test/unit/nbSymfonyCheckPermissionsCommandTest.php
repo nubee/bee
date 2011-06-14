@@ -5,4 +5,4 @@ $serviceContainer->pluginLoader->loadPlugins(array('nbSymfonyPlugin'));
 
 $t = new lime_test(1);
 $cmd = new nbSymfonyCheckPermissionsCommand();
-$t->ok($cmd->run(new nbCommandLineParser(), nbConfig::get('nb_symfony_plugin_test_symfony_dir')),'Command SymfonyCheckPermissions called succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), nbConfig::get('symfony_project-deploy_symfony-exe-path')),'Command SymfonyCheckPermissions called succefully');

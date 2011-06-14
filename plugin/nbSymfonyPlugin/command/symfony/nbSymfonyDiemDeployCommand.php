@@ -1,6 +1,6 @@
 <?php
 
-class nbSymfonyDiemDeployCommand extends nbCommand {
+class nbSymfonyDiemDeployCommand extends nbApplicationCommand {
 
   protected function configure() {
     $this->setName('symfony:diem-project-deploy')
@@ -13,7 +13,7 @@ TXT
     );
 
     $this->setArguments(new nbArgumentSet(array(
-                new nbArgument('config_file', nbArgument::REQUIRED, 'Deploy configuration file')
+                new nbArgument('config-file', nbArgument::REQUIRED, 'Deploy configuration file')
             )));
 
     $this->setOptions(new nbOptionSet(array(
@@ -21,66 +21,80 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $this->logLine('Symfony Deploy');
+    $this->logLine('Diem Deploy');
     $configParser = new nbYamlConfigParser();
-    $configParser->parseFile($arguments['config_file']);
+    $configParser->parseFile($arguments['config-file']);
     //site offline
-    foreach (nbConfig::get('nbDeploy_site_applications') as $key => $value) {
-      $cmd = new nbSymfonyGoOfflineCommand();
-      $cmd->run(new nbCommandLineParser(), nbConfig::get('nbDeploy_site_symfony_path') . " " . nbConfig::get('nbDeploy_site_applications_' . $key . "_name") . " " . nbConfig::get('nbDeploy_site_applications_' . $key . "_env"));
+    if (nbConfig::has('symfony_project-deploy_site-applications')) {
+      foreach (nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
+        $cmd = new nbSymfonyGoOfflineCommand();
+        $cmd->run(new nbCommandLineParser(), nbConfig::get('symfony_project-deploy_symfony-exe-path') . " " . nbConfig::get('symfony_project-deploy_site-applications_' . $key . "_name") . " " . nbConfig::get('symfony_project-deploy_site-applications_' . $key . "_env"));
+      }
     }
-    //tar site directory
-    $cmd = new nbTarInflateDirCommand();
-    $command_line = nbConfig::get('nbDeploy_tar_target_path') . " " . nbConfig::get('nbDeploy_tar_archive_path') . " " . nbConfig::get('nbDeploy_tar_target_dir');
-    $cmd->run(new nbCommandLineParser(), $command_line);
-    //sync project
-    $cmd = new nbSymfonySyncProjectCommand();
-    $command_line =  '--doit --exclude-from='.nbConfig::get('nbDeploy_sync_exclude_file').' '.nbConfig::get('nbDeploy_site_source_path').' '.nbConfig::get('nbDeploy_site_dir_path');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    //archive site directory
+    if (nbConfig::has('archive_inflate-dir')) {
+      $cmd = new nbInflateDirCommand();
+      $commandLine = '--config-file=' . $arguments['config-file'];
+      $cmd->run(new nbCommandLineParser(), $commandLine);
+    }
 
     //dump database
-    $cmd = new nbMysqlDumpCommand();
-    $command_line =  nbConfig::get('nbDeploy_mysql_db_name').' '.nbConfig::get('nbDeploy_mysql_dump_path').' '.nbConfig::get('nbDeploy_mysql_db_user_id').' '.nbConfig::get('nbDeploy_mysql_db_user_password');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    if (nbConfig::has('mysql_dump')) {
+      $cmd = new nbMysqlDumpCommand();
+      $command_line = '--config-file=' . $arguments['config-file'];
+      $cmd->run(new nbCommandLineParser(), $command_line);
+    }
+    //sync project
+    if (nbConfig::has('filesystem_dir-transfer')) {
+      $cmd = new nbDirTransferCommand();
+      $commandLine = '--doit --delete --config-file=' . $arguments['config-file'];
+      $cmd->run(new nbCommandLineParser(), $commandLine);
+    }
 
     //check dirs
     $cmd = new nbSymfonyCheckDirsCommand();
-    $command_line =  nbConfig::get('nbDeploy_site_symfony_path');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    $commandLine = nbConfig::get('symfony_project-deploy_symfony-exe-path');
+    $cmd->run(new nbCommandLineParser(), $commandLine);
 
     //check permission
     $cmd = new nbSymfonyCheckPermissionsCommand();
-    $command_line =  nbConfig::get('nbDeploy_site_symfony_path');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    $commandLine = nbConfig::get('symfony_project-deploy_symfony-exe-path');
+    $cmd->run(new nbCommandLineParser(), $commandLine);
 
     //change ownership
     $cmd = new nbSymfonyChangeOwnershipCommand();
-    $command_line =  nbConfig::get('nbDeploy_site_dir_path').' '.nbConfig::get('nbDeploy_site_user').' '.nbConfig::get('nbDeploy_site_group');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    $commandLine = nbConfig::get('symfony_project-deploy_site-dir') . ' ' . nbConfig::get('symfony_project-deploy_site-user') . ' ' . nbConfig::get('symfony_project-deploy_site-group');
+    $cmd->run(new nbCommandLineParser(), $commandLine);
+
+
 
     //restore database
-    $cmd = new nbMysqlRestoreCommand();
-    $command_line =  nbConfig::get('nbDeploy_mysql_db_name').' '.nbConfig::get('nbDeploy_mysql_dump_file').' '.nbConfig::get('nbDeploy_mysql_db_user_id').' '.nbConfig::get('nbDeploy_mysql_db_user_password');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    if (nbConfig::has('mysql_restore')) {
+      $cmd = new nbMysqlRestoreCommand();
+      $command_line = '--config-file=' . $arguments['config-file'];
+      $cmd->run(new nbCommandLineParser(), $command_line);
+    }
 
     //diem setup
     $cmd = new nbSymfonyDiemSetupCommand();
-    $command_line =  nbConfig::get('nbDeploy_site_symfony_path');
+    $command_line = nbConfig::get('symfony_project-deploy_symfony-exe-path');
     $cmd->run(new nbCommandLineParser(), $command_line);
 
-    //clear chache
+
+    //clear cache
     $cmd = new nbSymfonyClearCacheCommand();
-    $command_line =  nbConfig::get('nbDeploy_site_symfony_path');
-    $cmd->run(new nbCommandLineParser(), $command_line);
+    $commandLine = nbConfig::get('symfony_project-deploy_symfony-exe-path');
+    $cmd->run(new nbCommandLineParser(), $commandLine);
 
     //site online
-    foreach (nbConfig::get('nbDeploy_site_applications') as $key => $value) {
-      $cmd = new nbSymfonyGoOnlineCommand();
-      $cmd->run(new nbCommandLineParser(), nbConfig::get('nbDeploy_site_symfony_path') . " " . nbConfig::get('nbDeploy_site_applications_' . $key . "_name") . " " . nbConfig::get('nbDeploy_site_applications_' . $key . "_env"));
+    if (nbConfig::has('symfony_project-deploy_site-applications')) {
+      foreach (nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
+        $cmd = new nbSymfonyGoOnlineCommand();
+        $cmd->run(new nbCommandLineParser(), nbConfig::get('symfony_project-deploy_symfony-exe-path') . " " . nbConfig::get('symfony_project-deploy_site-applications_' . $key . "_name") . " " . nbConfig::get('symfony_project-deploy_site-applications_' . $key . "_env"));
+      }
     }
-    $this->logLine('Done - Symfony Deploy');
+    $this->logLine('Done - Diem Deploy');
     return true;
-
   }
 
 }

@@ -1,10 +1,10 @@
 <?php
 
-class nbDirTransferCommand extends nbCommand {
+class nbRemoteDirTransferCommand extends nbCommand {
 
   protected function configure() {
-    $this->setName('filesystem:dir-transfer')
-            ->setBriefDescription('rsync a directory with another local directory')
+    $this->setName('filesystem:remote-dir-transfer')
+            ->setBriefDescription('rsync a directory with a remote server')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 
@@ -13,8 +13,10 @@ TXT
     );
 
     $this->setArguments(new nbArgumentSet(array(
-                new nbArgument('source-path', nbArgument::REQUIRED, 'Source path'),
-                new nbArgument('target-path', nbArgument::REQUIRED, 'Target path')
+                new nbArgument('source-path', nbArgument::REQUIRED, 'Local source path'),
+                new nbArgument('remote-server', nbArgument::REQUIRED, 'Remote server'),
+                new nbArgument('remote-user', nbArgument::REQUIRED, 'Remote user'),
+                new nbArgument('remote-path', nbArgument::REQUIRED, 'Remote destination path')
             )));
 
     $this->setOptions(new nbOptionSet(array(
@@ -27,7 +29,7 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $this->logLine('Start folder syncronization');
+    $this->logLine('Start remote folder syncronization');
     $shell = new nbShell();
     $excludeOption = '';
     $includeOption = '';
@@ -45,11 +47,11 @@ TXT
       $includeOption.' '.
       $excludeOption.' '.
       $deleteOption. ' '.
-      nbFileSystemUtils::sanitize_dir($arguments['source-path']).'/ '.
-      nbFileSystemUtils::sanitize_dir($arguments['target-path']).' ';
-//    $this->logLine($cmd);
+      nbFileSystemUtils::sanitize_dir($arguments['source-path']).'/* '.
+      '-e ssh '.$arguments['remote-user'].'@'.$arguments['remote-server'] .':'.nbFileSystemUtils::sanitize_dir($arguments['remote-path']);
+    $this->logLine($cmd);
     $shell->execute($cmd);
-    $this->logLine('Done folder syncronization');
+    $this->logLine('Done remote folder syncronization');
     return true;
   }
 

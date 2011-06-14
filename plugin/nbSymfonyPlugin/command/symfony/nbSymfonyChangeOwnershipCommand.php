@@ -27,7 +27,9 @@ TXT
   {
       $this->logLine('Changing ownership for project: '.$arguments['target_project_path']);
       $shell = new nbShell();
-      $shell->execute('chown -R '.$arguments['user'].':'.$arguments['group'].' '.$arguments['target_project_path'].'*');
+      $cmd = 'chown -R '.$arguments['user'].':'.$arguments['group'].' '.$arguments['target_project_path'].'*';
+      $this->logLine($cmd);
+      $shell->execute($cmd);
       $this->logLine('Done - Changing ownership');
       return true;
   }

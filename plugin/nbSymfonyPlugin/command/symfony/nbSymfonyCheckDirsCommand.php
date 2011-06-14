@@ -23,7 +23,7 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-      $this->logLine('Checking symfony dirs');
+      $this->logLine('Checking symfony dirs for '.$arguments['target_project_path']);
       if(!file_exists($arguments['target_project_path'].'/log'))
           nbFileSystem::mkdir ($arguments['target_project_path'].'/log');
       if(!file_exists($arguments['target_project_path'].'/cache'))

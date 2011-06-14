@@ -5,5 +5,5 @@ $serviceContainer->pluginLoader->loadPlugins(array('nbSymfonyPlugin'));
 
 $t = new lime_test(1);
 $cmd = new nbSymfonyClearCacheCommand();
-echo $command_line =  nbConfig::get('nb_symfony_plugin_test_symfony_dir');
+echo $command_line =  nbConfig::get('symfony_project-deploy_symfony-exe-path');
 $t->ok($cmd->run(new nbCommandLineParser(),$command_line),'Command SymfonyClearCache called succefully');

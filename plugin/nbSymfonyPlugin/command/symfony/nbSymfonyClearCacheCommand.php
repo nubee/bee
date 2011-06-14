@@ -25,7 +25,9 @@ TXT
   {
       $this->logLine('Clear cache');
       $shell = new nbShell();
-      $shell->execute('php '.$arguments['symfony_path'].'/symfony cc');
+      $cmd = 'php '.$arguments['symfony_path'].'/symfony cc';
+      $this->logLine($cmd);
+      $shell->execute($cmd);
       $this->logLine('Done Clear Cache');
       return true;
   }
