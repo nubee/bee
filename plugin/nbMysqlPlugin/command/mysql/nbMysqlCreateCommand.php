@@ -16,7 +16,7 @@ TXT
     $this->setArguments(new nbArgumentSet(array(
       new nbArgument('db-name', nbArgument::REQUIRED, 'Database name'),
       new nbArgument('mysql-user', nbArgument::REQUIRED, 'Mysql user'),
-      new nbArgument('mysql-user-pwd', nbArgument::REQUIRED, 'Mysql user password')
+      new nbArgument('mysql-user-pwd', nbArgument::OPTIONAL, 'Mysql user password')
     )));
     
 
@@ -29,7 +29,7 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $shell = new nbShell();
-    $cmd = 'mysqladmin -u '.$arguments['mysql-user'].' --password='.$arguments['mysql-user-pwd'].' create '. $arguments['db-name'];
+    $cmd = 'mysqladmin -u '.$arguments['mysql-user']. ' --password='.$arguments['mysql-user-pwd'].' create '. $arguments['db-name'];
     $shell->execute($cmd);
     $this->logLine('Done - mysql create database');
 
