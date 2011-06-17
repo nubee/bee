@@ -168,10 +168,18 @@ class nbCommandLineParser {
    * @return true if there are some validation errors, false otherwise
    */
   public function isValid() {
-    //echo ('Parsed Arguments Values: ' . print_r($this->parsedArgumentValues));
+    
+    foreach ($this->arguments->getArguments() as $argument){
+      if ($argument->isRequired()){
+        if($this->argumentValues[$argument->getName()] == '')
+          $this->errors[] = 'Not enough arguments. '.$argument->getName()." missing";            
+      }
+    }
+    /*
     if (count($this->argumentValues) < $this->arguments->countRequired())
       $this->errors[] = 'Not enough arguments.';
-    else if (count($this->parsedArgumentValues) > $this->arguments->count())
+    else*/ 
+    if (count($this->parsedArgumentValues) > $this->arguments->count()) 
       $this->errors[] = sprintf('Too many arguments ("%s" given).', implode(' ', $this->parsedArgumentValues));
     return count($this->errors) ? false : true;
   }
