@@ -9,3 +9,9 @@ mysql:
       db-user: dbtestadmin
       db-user-pwd: dbtestpwd
       dump-file: plugin/nbMysqlPlugin/test/data/dbtest-xxx.sql
+    create:
+      db-name: dbtest
+      admin-user: dbtestadmin
+      admin-user-pwd: dbtestpwd
+      db-user: dbtestuser
+      db-user-pwd: dbtestpwd
