@@ -16,7 +16,7 @@ TXT
                 new nbArgument('db-name', nbArgument::REQUIRED, 'Database name'),
                 new nbArgument('dump-path', nbArgument::REQUIRED, 'Database dump path'),
                 new nbArgument('db-user', nbArgument::REQUIRED, 'Database user'),
-                new nbArgument('db-user-pwd', nbArgument::REQUIRED, 'Database user password')
+                new nbArgument('db-user-pwd', nbArgument::OPTIONAL, 'Database user password')
             )));
 
     $this->setOptions(new nbOptionSet(array(
