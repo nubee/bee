@@ -61,7 +61,7 @@ test:
   doctrine-migrate:
     version-low: 2
     version-high: 4
-  check-website: http://www.di-side.com
+  check-website: http://di-side.com
   go-offline:
     application: frontend
     enviroment: prod
