@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(31);
+$t = new lime_test(29);
 
 $dataDir = dirname(__FILE__) . '/../../../data/system';
 $sandboxDir = dirname(__FILE__).'/../../../sandbox';
@@ -224,16 +224,6 @@ cleanDir($sandboxDir);
 //$t->ok($perms & 0x0080);  // user write
 //
 //cleanDir($sandboxDir);
-
-$t->comment('Create/Delete file starting with "."');
-nbFileSystem::mkdir($sandboxDir.'/dir', true);
-nbFileSystem::touch($sandboxDir.'/dir/.htaccess');
-$t->ok(file_exists($sandboxDir.'/dir/.htaccess'), 'nbFileSystem::touch() creates ".htaccess" file');
-
-nbFileSystem::delete($sandboxDir.'/dir/.htaccess');
-$t->ok(!file_exists($sandboxDir.'/dir/.htaccess'), 'nbFileSystem::delete() deletes ".htaccess" file');
-
-cleanDir($sandboxDir);
 
 function cleanDir($dir)
 {
