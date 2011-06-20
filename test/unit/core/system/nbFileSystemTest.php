@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(29);
+$t = new lime_test(31);
 
 $dataDir = dirname(__FILE__) . '/../../../data/system';
 $sandboxDir = dirname(__FILE__).'/../../../sandbox';
@@ -225,10 +225,20 @@ cleanDir($sandboxDir);
 //
 //cleanDir($sandboxDir);
 
+$t->comment('Create/Delete file starting with "."');
+nbFileSystem::mkdir($sandboxDir.'/dir', true);
+nbFileSystem::touch($sandboxDir.'/dir/.htaccess');
+$t->ok(file_exists($sandboxDir.'/dir/.htaccess'), 'nbFileSystem::touch() creates ".htaccess" file');
+
+nbFileSystem::delete($sandboxDir.'/dir/.htaccess');
+$t->ok(!file_exists($sandboxDir.'/dir/.htaccess'), 'nbFileSystem::delete() deletes ".htaccess" file');
+
+cleanDir($sandboxDir);
+
 function cleanDir($dir)
 {
   $finder = nbFileFinder::create('any');
-  $files = $finder->add('*')->remove('.')->remove('..')->in($dir);
+  $files = $finder->add('*.*')->remove('.')->remove('..')->in($dir);
   foreach($files as $file)
     if(is_dir($file))
       nbFileSystem::rmdir($file,true);

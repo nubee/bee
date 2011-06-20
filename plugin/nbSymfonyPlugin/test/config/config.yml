@@ -30,6 +30,10 @@ symfony:
 #          env: prod
     doctrine-migrate:
       version: <?php echo $migrateVersion; ?><?php echo "\n"; ?>
+    project-clone:
+      from: <?php echo $basePath; ?>/testapp
+      to: <?php echo $basePath; ?><?php echo "\n"; ?>
+      name: clonedtestapp
 archive:
   inflate-dir:
     target-path: <?php echo $basePath; ?><?php echo "\n"; ?>
