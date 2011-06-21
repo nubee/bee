@@ -30,7 +30,7 @@ TXT
     $shell = new nbShell();
     $versionYaml = './version.yml';
     if (file_exists($versionYaml)) {
-      $cmd = new nbUpdateBuildVesionCommand();
+      $cmd = new nbUpdateBuildVersionCommand();
       $cmd->run(new nbCommandLineParser(), $versionYaml);
 
       $command = 'git add ' . $versionYaml;
