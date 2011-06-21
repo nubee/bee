@@ -5,7 +5,7 @@ class nbSymfonyDoctrineMigrateCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('symfony:doctrine-migrate')
-      ->setBriefDescription('Migrate a symfony database to a given version')
+      ->setBriefDescription('Migrates a symfony database to a given version')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

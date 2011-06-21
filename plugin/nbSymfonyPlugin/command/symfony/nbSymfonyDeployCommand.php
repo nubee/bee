@@ -4,7 +4,7 @@ class nbSymfonyDeployCommand extends nbApplicationCommand {
 
   protected function configure() {
     $this->setName('symfony:project-deploy')
-            ->setBriefDescription('Deploy a symfony project')
+            ->setBriefDescription('Deploys a symfony project')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

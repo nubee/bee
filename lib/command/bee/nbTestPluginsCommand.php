@@ -11,7 +11,7 @@ class nbTestPluginsCommand extends nbApplicationCommand
   protected function configure()
   {
     $this->setName('bee:test-plugin')
-      ->setBriefDescription('Run unit tests for bee plugins ')
+      ->setBriefDescription('Runs unit tests for bee plugins ')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command
 TXT

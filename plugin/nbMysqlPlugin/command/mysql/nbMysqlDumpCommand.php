@@ -4,7 +4,7 @@ class nbMysqlDumpCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('mysql:dump')
-            ->setBriefDescription('dump a mysql database')
+            ->setBriefDescription('Dumps a mysql database')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

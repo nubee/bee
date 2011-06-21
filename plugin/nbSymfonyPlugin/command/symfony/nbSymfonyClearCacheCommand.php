@@ -5,7 +5,7 @@ class nbSymfonyClearCacheCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('symfony:project-clear-cache')
-      ->setBriefDescription('Clear Cache command for a symfony project')
+      ->setBriefDescription('Clears cache for a symfony project')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

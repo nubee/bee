@@ -20,7 +20,7 @@ class nbSvnImportCommand extends nbCommand
         new nbOption('username', 'u', nbOption::PARAMETER_REQUIRED, 'Specify an username'),
         new nbOption('password', 'p', nbOption::PARAMETER_REQUIRED, 'Specify a password')
       )))
-      ->setBriefDescription('Commit unversioned files or folders into the svn repository')
+      ->setBriefDescription('Imports unversioned files or folders into the svn repository')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command commit unversioned files or folders into the svn repository:
 

@@ -11,7 +11,7 @@ class nbLimeTestCommand extends nbCommand
   protected function configure()
   {
     $this->setName('lime:test')
-      ->setBriefDescription('Run lime unit tests')
+      ->setBriefDescription('Runs lime unit tests')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command runs unit tests using lime.
 TXT

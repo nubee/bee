@@ -4,7 +4,7 @@ class nbMysqlRestoreCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('mysql:restore')
-            ->setBriefDescription('restore a mysql database')
+            ->setBriefDescription('Restores a mysql database')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

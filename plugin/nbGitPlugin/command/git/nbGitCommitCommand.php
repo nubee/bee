@@ -14,7 +14,7 @@ class nbGitCommitCommand extends nbCommand
       ->setArguments(new nbArgumentSet(array(
         new nbArgument('message', nbArgument::REQUIRED, 'The commit message')
       )))
-      ->setBriefDescription('Commit changes')
+      ->setBriefDescription('Commits changes into local git working copy')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command commit changes into local repository:
 

@@ -4,7 +4,7 @@ class nbSymfonyCloneProjectCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('symfony:clone-project')
-      ->setBriefDescription('')
+      ->setBriefDescription('Clones a symfony project')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command clones a symfony project.
 

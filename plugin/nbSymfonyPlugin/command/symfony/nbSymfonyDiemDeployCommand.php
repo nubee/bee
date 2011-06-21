@@ -4,7 +4,7 @@ class nbSymfonyDiemDeployCommand extends nbApplicationCommand {
 
   protected function configure() {
     $this->setName('symfony:diem-project-deploy')
-            ->setBriefDescription('Deploy a Diem project')
+            ->setBriefDescription('Deploys a Diem project')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

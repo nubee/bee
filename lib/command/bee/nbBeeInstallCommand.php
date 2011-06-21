@@ -4,7 +4,7 @@ class nbBeeInstallCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('bee:install')
-            ->setBriefDescription('Install bee')
+            ->setBriefDescription('Installs bee')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

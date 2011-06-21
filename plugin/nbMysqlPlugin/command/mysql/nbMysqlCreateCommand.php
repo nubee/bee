@@ -5,7 +5,7 @@ class nbMysqlCreateCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('mysql:create')
-      ->setBriefDescription('')
+      ->setBriefDescription('Creates a database, associates its user and grants privileges to it')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

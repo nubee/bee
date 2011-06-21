@@ -5,7 +5,7 @@ class nbSymfonyCheckPermissionsCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('symfony:check-permission')
-      ->setBriefDescription('Check permission in a symfony project')
+      ->setBriefDescription('Checks permission in a symfony project')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

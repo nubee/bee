@@ -13,7 +13,7 @@ class nbGtestTestCommand extends nbCommand
         new nbOption('output', '', nbOption::PARAMETER_OPTIONAL, 'Puts test results into a xml file', 'test-result.xml'),
 //        new nbOption('nocolor', '', nbOption::PARAMETER_NONE, 'Disables colors')
       )))
-      ->setBriefDescription('Run gtest tests')
+      ->setBriefDescription('Runs gtest tests')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> run gtest tests:
 

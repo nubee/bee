@@ -34,8 +34,7 @@ $serviceContainer = new sfServiceContainerBuilder();
 $serviceContainer->
   register('pluginLoader', 'nbPluginLoader')->
   addArgument(nbConfig::get('nb_plugin_dir'))->
-  addArgument(new sfServiceReference('commandLoader')
-  )->
+  addArgument(new sfServiceReference('commandLoader'))->
   setShared(true)
 ;
 
@@ -43,12 +42,18 @@ $serviceContainer->
   register('commandLoader', 'nbCommandLoader')->
   setShared(true)
 ;
+
+$output = new nbConsoleOutput();
+$output->setFormatter(nbConfig::get('nb_output_color', 'false') == 'true' ? new nbAnsiColorFormatter() : new nbFormatter());
+$logger = nbLogger::getInstance();
+$logger->setOutput($output);
+
 /************************/
 if(nbConfig::has('proj_bee_plugins_dir'))
     $serviceContainer->pluginLoader->addDir(nbConfig::get('proj_bee_plugins_dir'));
 
-//loads default plugins from path/to/bee/config/config.yml
-if(! $default_plugins = nbConfig::get('nb_default_plugins'))
+// Loads default plugins from path/to/bee/config/config.yml
+if(!$default_plugins = nbConfig::get('nb_default_plugins'))
   $default_plugins = array();
 else
   $serviceContainer->pluginLoader->loadPlugins($default_plugins);
@@ -63,10 +68,6 @@ if(nbConfig::has('proj_bee_plugins_enabled')) {
 }
 
 $autoload->addDirectory(nbConfig::get('nb_command_dir'), 'Command.php', true);
-$output = new nbConsoleOutput();
-$output->setFormatter(nbConfig::get('nb_output_color', 'false') == 'true' ? new nbAnsiColorFormatter() : new nbFormatter());
-$logger = nbLogger::getInstance();
-$logger->setOutput($output);
 
 $serviceContainer->commandLoader->loadCommands();
 $serviceContainer->commandLoader->loadCommandAliases();
