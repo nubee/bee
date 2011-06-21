@@ -5,7 +5,7 @@ class nbSymfonyCheckDirsCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('symfony:project-check-dirs')
-      ->setBriefDescription('Check dirs in a symfony project')
+      ->setBriefDescription('Checks dirs in a symfony project')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

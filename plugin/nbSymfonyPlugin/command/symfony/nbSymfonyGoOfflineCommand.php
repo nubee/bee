@@ -5,7 +5,7 @@ class nbSymfonyGoOfflineCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('symfony:go-offline')
-      ->setBriefDescription('Put a symfony application offline in a specified enviroment')
+      ->setBriefDescription('Puts a symfony application offline in a specified enviroment')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

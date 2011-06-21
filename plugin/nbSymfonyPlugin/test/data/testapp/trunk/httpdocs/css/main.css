@@ -1,0 +1,17 @@
+body {
+  background: #DEE8F2;
+}
+
+.box {
+  margin: 100px 300px;
+  width: 300px;
+  background: #ffffff;
+  padding: 2px 10px;
+}
+
+.box h1 {
+  color: #444;
+  background-color: #79B4D4;
+  padding: 2px 10px;
+  font-size: 18px;
+}

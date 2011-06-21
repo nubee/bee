@@ -12,7 +12,7 @@ class nbGitPushCommand extends nbCommand {
     $this->setName('git:push')
             ->addArgument(new nbArgument('repository', nbArgument::OPTIONAL, 'The repository to push to', 'origin'))
             ->addArgument(new nbArgument('branch', nbArgument::OPTIONAL, 'The branch to push from', 'master'))
-            ->setBriefDescription('Push to a git repository')
+            ->setBriefDescription('Pushes to a git repository')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command push to a git repository:
 

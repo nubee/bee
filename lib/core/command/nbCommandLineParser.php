@@ -192,10 +192,6 @@ class nbCommandLineParser {
         $this->setOption($option, $option->getValue());
       }
     }
-    //echo "\n*********option values*********\n";
-    //var_dump($this->optionValues);
-    //echo "*******************************\n";
-    
   }
 
   /**

@@ -18,7 +18,7 @@ class nbSvnUpdateCommand extends nbCommand
         new nbOption('username', 'u', nbOption::PARAMETER_REQUIRED, 'Specify an username'),
         new nbOption('password', 'p', nbOption::PARAMETER_REQUIRED, 'Specify a password')
       )))
-      ->setBriefDescription('Update a working copy')
+      ->setBriefDescription('Updates a working copy')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command update a working copy:
 

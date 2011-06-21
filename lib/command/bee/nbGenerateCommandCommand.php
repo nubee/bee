@@ -10,7 +10,7 @@ class nbGenerateCommandCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('bee:generate-command')
-            ->setBriefDescription('Generate a new bee command')
+            ->setBriefDescription('Generates a new bee command')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

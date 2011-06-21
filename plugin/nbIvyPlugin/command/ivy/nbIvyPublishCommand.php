@@ -8,7 +8,7 @@ class nbIvyPublishCommand extends nbCommand
       ->setOptions(new nbOptionSet(array(
         new nbOption('local', 'l', nbOption::PARAMETER_NONE, 'Publish into local repository')
       )))
-      ->setBriefDescription('Publish into local repository')
+      ->setBriefDescription('Publishes dependencies into local repository')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info>:
 

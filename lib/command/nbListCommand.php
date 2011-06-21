@@ -11,7 +11,7 @@ class nbListCommand extends nbApplicationCommand
   protected function configure()
   {
     $this->setName('list')
-      ->setBriefDescription('List commands')
+      ->setBriefDescription('Lists commands')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command displays all available commands:
 
@@ -22,7 +22,7 @@ TXT
       new nbArgument('namespace', nbArgument::OPTIONAL, 'The namespace name')
     )));
     $this->setOptions(new nbOptionSet(array(
-      new nbOption('plugins', 'p', nbOption::PARAMETER_NONE, 'Load all plugins before list commands')
+      new nbOption('plugins', 'p', nbOption::PARAMETER_NONE, 'Loads all plugins before list commands')
     )));
   }
 

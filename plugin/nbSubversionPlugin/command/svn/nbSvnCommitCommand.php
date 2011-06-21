@@ -10,7 +10,7 @@ class nbSvnCommitCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('svn:commit')
-            ->setBriefDescription('Send changes from your working copy to the repository.')
+            ->setBriefDescription('Commits changes from your working copy to the repository.')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command send changes from your working copy to the repository:
 
@@ -33,7 +33,7 @@ TXT
     $this->log("\n");
 
     if (file_exists($arguments['local'] . '/version.yml')) {
-      $cmd = new nbUpdateBuildVesionCommand();
+      $cmd = new nbUpdateBuildVersionCommand();
       $cmd->run(new nbCommandLineParser(), $arguments['local'] . '/version.yml');
     }
 

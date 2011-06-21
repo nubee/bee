@@ -5,7 +5,7 @@ class nbSymfonyChangeOwnershipCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('symfony:project-chown')
-      ->setBriefDescription('Change file ownership for symfony project')
+      ->setBriefDescription('Changes file ownership for symfony project')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

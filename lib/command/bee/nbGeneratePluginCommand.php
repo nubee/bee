@@ -5,7 +5,7 @@ class nbGeneratePluginCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('bee:generate-plugin')
-      ->setBriefDescription('Generates directory structure for a new plugin ')
+      ->setBriefDescription('Generates the directory structure for a new plugin ')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

@@ -1,10 +1,10 @@
 <?php
 
-class nbUpdateBuildVesionCommand extends nbCommand {
+class nbUpdateBuildVersionCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('version:update-build')
-            ->setBriefDescription('')
+            ->setBriefDescription('Updates build version')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

@@ -4,7 +4,7 @@ class nbSymfonyCheckSiteCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('symfony:check-site')
-            ->setBriefDescription('Check a website with a given http code')
+            ->setBriefDescription('Checks a website with a given http code')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

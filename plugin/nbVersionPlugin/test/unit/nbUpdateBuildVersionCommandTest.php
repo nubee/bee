@@ -7,7 +7,7 @@ $versionFile = nbConfig::get('test_version-file');
 $build =  getBuildVersion($versionFile);
 
 $t = new lime_test(2);
-$cmd = new nbUpdateBuildVesionCommand();
+$cmd = new nbUpdateBuildVersionCommand();
 $command_line = $versionFile;
 $t->ok($cmd->run(new nbCommandLineParser(), $command_line), 'Command UpdateBuildVersion called succefully');
 

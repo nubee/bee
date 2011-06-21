@@ -4,7 +4,7 @@ class nbDirTransferCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('filesystem:dir-transfer')
-            ->setBriefDescription('rsync a directory with another local directory')
+            ->setBriefDescription('Rsyncs a directory with another local directory')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

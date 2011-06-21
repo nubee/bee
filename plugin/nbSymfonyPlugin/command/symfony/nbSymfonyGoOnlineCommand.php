@@ -5,7 +5,7 @@ class nbSymfonyGoOnlineCommand  extends nbCommand
   protected function configure()
   {
     $this->setName('symfony:go-online')
-      ->setBriefDescription('Put a symfony application online in a specified enviroment')
+      ->setBriefDescription('Puts a symfony application online in a specified enviroment')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

@@ -4,7 +4,7 @@ class nbRemoteDirTransferCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('filesystem:remote-dir-transfer')
-            ->setBriefDescription('rsync a directory with a remote server')
+            ->setBriefDescription('Rsyncs a directory with a remote server')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 

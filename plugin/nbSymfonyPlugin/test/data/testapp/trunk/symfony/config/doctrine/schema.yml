@@ -1,0 +1,8 @@
+User:
+  actAs:
+    Timestampable: ~
+  columns:
+    email:
+      type: string(255)
+      unique: true
+      notnull: true 

@@ -45,6 +45,7 @@ class nbAnsiColorFormatter extends nbFormatter
     }
     $code = "\033[".implode(';', $codes)."m";
     $this->code_stack[] = $code;
+    
     return $code;
   }
 

@@ -228,7 +228,7 @@ cleanDir($sandboxDir);
 function cleanDir($dir)
 {
   $finder = nbFileFinder::create('any');
-  $files = $finder->add('*')->remove('.')->remove('..')->in($dir);
+  $files = $finder->add('*.*')->remove('.')->remove('..')->in($dir);
   foreach($files as $file)
     if(is_dir($file))
       nbFileSystem::rmdir($file,true);

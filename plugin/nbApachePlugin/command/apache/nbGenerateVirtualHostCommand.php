@@ -5,7 +5,7 @@ class nbGenerateVirtualHostCommand extends nbCommand
   protected function configure()
   {
     $this->setName('apache:generate-vhost')
-      ->setBriefDescription('Create a virtualhost file')
+      ->setBriefDescription('Creates a virtualhost file')
       ->setDescription(<<<TXT
  Generate a Virtual host file.
 TXT

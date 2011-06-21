@@ -19,7 +19,7 @@ class nbSvnCheckoutCommand extends nbCommand
         new nbOption('username', 'u', nbOption::PARAMETER_REQUIRED, 'Specify an username'),
         new nbOption('password', 'p', nbOption::PARAMETER_REQUIRED, 'Specify a password')
       )))
-      ->setBriefDescription('Check out a working copy from a repository')
+      ->setBriefDescription('Checks out a working copy from a repository')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command check out a working copy from a repository:
 
