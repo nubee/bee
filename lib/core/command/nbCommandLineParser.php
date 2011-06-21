@@ -14,7 +14,9 @@ class nbCommandLineParser {
   $arguments = array(),
   $optionValues = array(),
   $argumentValues = array(),
-  $parsedArgumentValues = array();
+  $parsedArgumentValues = array(),
+  $parsedLongOptionValues = array(),
+  $parsedShortOptionValues = array();
 
   /**
    * Constructor.
@@ -89,31 +91,36 @@ class nbCommandLineParser {
    */
   public function parse($commandLine = null, $namespace = '', $commandName = '') {
     if (null === $commandLine) {
-      $this->commandLineArguments = $_SERVER['argv'];
+      $this->commandLineTokens = $_SERVER['argv'];
 
       // we strip command line program
-      if (isset($this->commandLineArguments[0]) && '-' != $this->commandLineArguments[0][0])
-        array_shift($this->commandLineArguments);
+      if (count($this->commandLineTokens) && '-' != $this->commandLineTokens[0][0])
+        array_shift($this->commandLineTokens);
     }
     else if (!is_array($commandLine)) {
+      $commandLine = trim($commandLine);
       // hack to split arguments with spaces : --test="with some spaces"
       $commandLine = preg_replace('/(\'|")(.+?)\\1/e', "str_replace(' ', '__PLACEHOLDER__', '\\2')", $commandLine);
-      $this->commandLineArguments = preg_split('/\s+/', $commandLine);
-      $this->commandLineArguments = str_replace('__PLACEHOLDER__', ' ', $this->commandLineArguments);
+      $this->commandLineTokens = preg_split('/\s+/', $commandLine);
+      $this->commandLineTokens = str_replace('__PLACEHOLDER__', ' ', $this->commandLineTokens);
     }
     else
-      $this->commandLineArguments = $commandLine;
+      $this->commandLineTokens = $commandLine;
 
-//    $this->optionValues         = $this->options->getDefaultValues();
-    $this->argumentValues = $this->arguments->getDefaultValues();
+    $this->argumentValues = array();
+    $this->optionValues = array();
     $this->parsedArgumentValues = array();
     $this->errors = array();
 
-    while (!in_array($argument = array_shift($this->commandLineArguments), array('', null))) {
+    // get default values for optional arguments
+    $this->argumentValues = $this->arguments->getDefaultValues();
+
+    // parse option and arguments from $commandLineArguments
+    while (!in_array($argument = array_shift($this->commandLineTokens), array('', null))) {
       if ('--' == $argument) {
         // stop options parsing
         //$this->parsedArgumentValues = array_merge($this->parsedArgumentValues, $this->commandLineArguments);
-        $this->commandLineArguments = array();
+        $this->commandLineTokens = array();
         break;
       }
 
@@ -125,6 +132,36 @@ class nbCommandLineParser {
         $this->parsedArgumentValues[] = $argument;
     }
 
+    // if is set option config-file set all arguments and parameters declared in the configuration file
+    if (isset($this->parsedLongOptionValues['config-file'])) {
+      if ($this->parsedLongOptionValues['config-file'][0] === true) {
+        // get default config file
+        $configFile = $this->options->getOption('config-file')->getValue();
+      }
+      else
+        $configFile = $this->parsedLongOptionValues['config-file'][0];
+      $configParser = new nbYamlConfigParser();
+      $configParser->parseFile($configFile);
+      $path_yml = $namespace . '_' . $commandName;
+      if (nbConfig::has($path_yml)) {
+        $configurationValues = nbConfig::get($path_yml);
+        foreach ($configurationValues as $name => $value) {
+          if (!$this->getArguments()->hasArgument($name)
+                  || ('' == $value))
+            continue;
+          $this->argumentValues[$name] = $value;
+        }
+        foreach ($configurationValues as $name => $value) {
+          if (!$this->getOptions()->hasOption($name))
+            continue;
+          $option = $this->getOptions()->getOption($name);
+          if ($value !== false && $value !== null)
+            $this->setOption($option, $value);
+        }
+      }
+    }
+
+    //set argumentValues parsed from command line
     $position = 0;
     foreach ($this->arguments->getArguments() as $argument) {
       if (array_key_exists($position, $this->parsedArgumentValues)) {
@@ -138,28 +175,27 @@ class nbCommandLineParser {
       ++$position;
     }
 
-    if (isset($this->optionValues['config-file'])) {
-      $configParser = new nbYamlConfigParser();
-      $configParser->parseFile($this->optionValues['config-file']);
-      $path_yml = $namespace . '_' . $commandName;
-      if (nbConfig::has($path_yml)) {
-        $configurationValues = nbConfig::get($path_yml);
-        foreach ($configurationValues as $name => $value) {
-          if (!$this->getArguments()->hasArgument($name)
-                  || ('' == $value)
-                  || isset($this->argumentValues[$name]))
-            continue;
-          $this->argumentValues[$name] = $value;
-        }
-        foreach ($configurationValues as $name => $value) {
-          if (!$this->getOptions()->hasOption($name)
-                  || ('' == $value)
-                  || isset($this->optionValues[$name]))
-            continue;
-          $this->optionValues[$name] = $value;
-        }
+    // set long option values parsed from command line
+    foreach ($this->options->getOptions() as $option) {
+      $name = $option->getName();
+      if (isset($this->parsedLongOptionValues[$name]))
+        foreach ($this->parsedLongOptionValues[$name] as $key => $value)
+          $this->setOption($option, $value);
+      else if ($option->hasShortcut() && isset($this->parsedShortOptionValues[$option->getShortcut()]))
+        foreach ($this->parsedShortOptionValues[$option->getShortcut()] as $key => $value)
+          $this->setOption($option, $value);
+    }
+    // get default values for option with optional parameter not set
+    foreach ($this->getOptionValues() as $optionName => $optionValue) {
+      $option = $this->options->getOption($optionName);
+      if ($option->hasOptionalParameter() && ($this->optionValues[$optionName] == '' || $this->optionValues[$optionName] === true)) {
+        $this->setOption($option, $option->getValue());
       }
     }
+    //echo "\n*********option values*********\n";
+    //var_dump($this->optionValues);
+    //echo "*******************************\n";
+    
   }
 
   /**
@@ -168,19 +204,36 @@ class nbCommandLineParser {
    * @return true if there are some validation errors, false otherwise
    */
   public function isValid() {
-    
-    foreach ($this->arguments->getArguments() as $argument){
-      if ($argument->isRequired()){
-        if($this->argumentValues[$argument->getName()] == '')
-          $this->errors[] = 'Not enough arguments. '.$argument->getName()." missing";            
+    foreach ($this->arguments->getArguments() as $argument) {
+      if ($argument->isRequired()) {
+        if (!isset($this->argumentValues[$argument->getName()]) || $this->argumentValues[$argument->getName()] == '')
+          $this->errors[] = 'Not enough arguments. ' . $argument->getName() . " missing";
       }
     }
-    /*
-    if (count($this->argumentValues) < $this->arguments->countRequired())
-      $this->errors[] = 'Not enough arguments.';
-    else*/ 
-    if (count($this->parsedArgumentValues) > $this->arguments->count()) 
+    if (count($this->parsedArgumentValues) > $this->arguments->count())
       $this->errors[] = sprintf('Too many arguments ("%s" given).', implode(' ', $this->parsedArgumentValues));
+
+    foreach ($this->parsedLongOptionValues as $optionName => $optionValues) {
+      if (!$this->getOptions()->hasOption($optionName)) {
+        $this->errors[] = sprintf('The "--%s" option does not exist.', $optionName);
+      }
+    }
+
+    foreach ($this->parsedShortOptionValues as $shortcut => $optionValues) {
+      if (!$this->getOptions()->hasShortcut($shortcut)) {
+        $this->errors[] = sprintf('The "--%s" option does not exist.', $shortcut);
+      }
+    }
+
+    foreach ($this->getOptionValues() as $optionName => $optionValue) {
+      $option = $this->getOptions()->getOption($optionName);
+      if (!$option->hasParameter() && !($this->getOptionValue($optionName) === true || $this->getOptionValue($optionName) == '')) {
+        $this->errors[] = sprintf('Option "--%s" does not take an argument.', $optionName);
+      }
+      if ($option->hasRequiredParameter() && ($this->getOptionValue($optionName) === true || $this->getOptionValue($optionName) == '')) {
+        $this->errors[] = sprintf('Option "--%s" requires an argument.', $optionName);
+      }
+    }
     return count($this->errors) ? false : true;
   }
 
@@ -267,44 +320,19 @@ class nbCommandLineParser {
    * @param string $argument The option argument
    */
   protected function parseShortOption($argument) {
+
     // short option must be followed by space
     // short option can be aggregated like in -vd (== -v -d)
     for ($i = 0, $count = strlen($argument); $i < $count; ++$i) {
       $shortcut = $argument[$i];
       $value = true;
-
-      if (!$this->options->hasShortcut($shortcut)) {
-        $this->errors[] = sprintf('The option "-%s" does not exist.', $shortcut);
-        continue;
-      }
-
-      $option = $this->options->getByShortcut($shortcut);
-
-      // required argument?
-      if ($option->hasRequiredParameter()) {
-        // take next element as argument (if it doesn't start with a -)
-        if (count($this->commandLineArguments) && $this->commandLineArguments[0][0] != '-') {
-          $value = array_shift($this->commandLineArguments);
-          $this->setOption($option, $value);
+      // take next element as argument (if it doesn't start with a -)
+      if ($this->options->hasShortcut($shortcut) && $this->options->getByShortcut($shortcut)->hasParameter()) {
+        if (count($this->commandLineTokens) && '-' != $this->commandLineTokens[0][0]) {
+          $value = array_shift($this->commandLineTokens);
         }
-        else
-          $this->errors[] = sprintf('Option "-%s" requires an argument', $shortcut);
-
-        continue;
       }
-      else if ($option->hasOptionalParameter()) {
-        // take next element as argument (if it doesn't start with a -)
-        if (count($this->commandLineArguments) && $this->commandLineArguments[0][0] != '-') {
-          $value = array_shift($this->commandLineArguments);
-          $this->setOption($option, $value);
-        }
-        else
-          $this->setOption($option, $option->getValue());
-
-        continue;
-      }
-
-      $this->setOption($option, true);
+      $this->parsedShortOptionValues[$shortcut][] = $value;
     }
   }
 
@@ -314,39 +342,14 @@ class nbCommandLineParser {
    * @param string $argument The option argument
    */
   protected function parseLongOption($argument) {
+    $name = '';
+    $value = true;
     if (false !== strpos($argument, '=')) {
       list($name, $value) = explode('=', $argument, 2);
-
-      if (!$this->options->hasOption($name)) {
-        $this->errors[] = sprintf('The "--%s" option does not exist.', $name);
-        return;
-      }
-
-      $option = $this->options->getOption($name);
-
-      if (!$option->hasParameter()) {
-        $this->errors[] = sprintf('Option "--%s" does not take an argument.', $name);
-        $value = true;
-      }
     } else {
       $name = $argument;
-
-      if (!$this->options->hasOption($name)) {
-        $this->errors[] = sprintf('The "--%s" option does not exist.', $name);
-        return;
-      }
-
-      $option = $this->options->getOption($name);
-
-      if ($option->hasRequiredParameter()) {
-        $this->errors[] = sprintf('Option "--%s" requires an argument.', $name);
-        return;
-      }
-
-      $value = $option->hasParameter() ? $option->getValue() : true;
     }
-
-    $this->setOption($option, $value);
+    $this->parsedLongOptionValues[$name][] = $value;
   }
 
   public function setOption(nbOption $option, $value) {

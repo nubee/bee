@@ -1,0 +1,8 @@
+myNS:
+  myCommand:
+    argumentRequired: fooRequiredCfg
+    argumentOptional: fooOptionalCfg
+    optionWithParameter: barParameterCfg
+    optionDisabledCfg: ~
+    optionCfg: true
+    fakeOption: fakeValue
