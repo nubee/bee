@@ -134,29 +134,33 @@ class nbCommandLineParser {
 
     // if is set option config-file set all arguments and parameters declared in the configuration file
     if (isset($this->parsedLongOptionValues['config-file'])) {
+      $configFile = '';
       if ($this->parsedLongOptionValues['config-file'][0] === true) {
         // get default config file
-        $configFile = $this->options->getOption('config-file')->getValue();
+        if (!(empty($namespace) && empty($commandName)))
+          $configFile = $this->options->getOption('config-file')->getValue();
       }
       else
         $configFile = $this->parsedLongOptionValues['config-file'][0];
-      $configParser = new nbYamlConfigParser();
-      $configParser->parseFile($configFile);
-      $path_yml = $namespace . '_' . $commandName;
-      if (nbConfig::has($path_yml)) {
-        $configurationValues = nbConfig::get($path_yml);
-        foreach ($configurationValues as $name => $value) {
-          if (!$this->getArguments()->hasArgument($name)
-                  || ('' == $value))
-            continue;
-          $this->argumentValues[$name] = $value;
-        }
-        foreach ($configurationValues as $name => $value) {
-          if (!$this->getOptions()->hasOption($name))
-            continue;
-          $option = $this->getOptions()->getOption($name);
-          if ($value !== false && $value !== null)
-            $this->setOption($option, $value);
+      if (file_exists($configFile)) {
+        $configParser = new nbYamlConfigParser();
+        $configParser->parseFile($configFile);
+        $path_yml = $namespace . '_' . $commandName;
+        if (nbConfig::has($path_yml)) {
+          $configurationValues = nbConfig::get($path_yml);
+          foreach ($configurationValues as $name => $value) {
+            if (!$this->getArguments()->hasArgument($name)
+                    || ('' == $value))
+              continue;
+            $this->argumentValues[$name] = $value;
+          }
+          foreach ($configurationValues as $name => $value) {
+            if (!$this->getOptions()->hasOption($name))
+              continue;
+            $option = $this->getOptions()->getOption($name);
+            if ($value !== false && $value !== null)
+              $this->setOption($option, $value);
+          }
         }
       }
     }

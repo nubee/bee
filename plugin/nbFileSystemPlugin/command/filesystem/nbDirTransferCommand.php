@@ -18,7 +18,7 @@ TXT
             )));
 
     $this->setOptions(new nbOptionSet(array(
-                new nbOption('config-file', 'f', nbOption::PARAMETER_OPTIONAL, 'FileSystem plugin configuration file', './.bee/nbFileSystemPlugin.yml'),
+                new nbOption('config-file', '', nbOption::PARAMETER_OPTIONAL, 'FileSystem plugin configuration file', './.bee/nbFileSystemPlugin.yml'),
                 new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'This option execute syncronization'),
                 new nbOption('delete', 'd', nbOption::PARAMETER_NONE, 'This option set delete option'),
                 new nbOption('exclude-from', 'e', nbOption::PARAMETER_REQUIRED, 'This option set the exclude file'),
