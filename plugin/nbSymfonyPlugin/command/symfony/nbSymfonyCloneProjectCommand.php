@@ -24,41 +24,64 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array()) {
     $destination = isset($options['clone-to']) ? $options['clone-to'] . '/' : './';
-    $destination = $destination . $arguments['cloned_project_name'];
+    $destination = $destination . $arguments['cloned_project_name'] . '/';
 
-    try {
-      $this->recurse_copy($arguments['clone_from'], $destination);
-    } catch (Exception $e) {
-      $this->log($e->getMessage(), nbLogger::ERROR);
-    }
+    $filesToCopy = nbFileFinder::create('any')
+      ->discard(array('nbproject'))
+      ->prune(array('nbproject'))
+      ->remove('.')->remove('..')->in($arguments['clone_from']);
     
     preg_match('/\/([^\/]+)$/', $arguments['clone_from'], $result);
     $projectNameCloneFrom = $result[1];
     
-    $finder = nbFileFinder::create('file');
+    $count = 0;
+    foreach ($filesToCopy as $fileToCopy) {
+      $d = preg_replace('/^.+'.$projectNameCloneFrom.'\//', $destination, $fileToCopy);
+      if (is_dir($fileToCopy))
+        nbFileSystem::mkdir($d, true);
+      else
+        nbFileSystem::copy($fileToCopy, $d);
+      
+      if (($count % 100) == 0)
+        $this->log('.');
 
-    $properties = $finder->add('properties.ini')->remove('.')->remove('..')->in($destination);
-    $databases = $finder->add('databases.yml')->remove('.')->remove('..')->in($destination);
-    $files = array_merge($properties, $databases);
-
+      $count++;
+    }
+    
+//    try {
+//      $this->recurse_copy($arguments['clone_from'], $destination);
+//    } catch (Exception $e) {
+//      $this->log($e->getMessage(), nbLogger::ERROR);
+//    }
+    
+//    $finder = nbFileFinder::create('file');
+//
+//    $properties = $finder->add('properties.ini')->remove('.')->remove('..')->in($destination);
+//    $databases = $finder->add('databases.yml')->remove('.')->remove('..')->in($destination);
+//    $files = array_merge($properties, $databases);
+//
+//    nbFileSystem::replaceTokens($projectNameCloneFrom, $arguments['cloned_project_name'], $files);
+    
+    $files = nbFileFinder::create('file')->remove('.')->remove('..')->in($destination);
     nbFileSystem::replaceTokens($projectNameCloneFrom, $arguments['cloned_project_name'], $files);
     
     return true;
   }
 
-  protected function recurse_copy($src, $dst) {
-    $dir = opendir($src);
-    @mkdir($dst);
-    while (false !== ( $file = readdir($dir))) {
-      if (( $file != '.' ) && ( $file != '..' )) {
-        if (is_dir($src . '/' . $file)) {
-          $this->recurse_copy($src . '/' . $file, $dst . '/' . $file);
-        } else {
-          copy($src . '/' . $file, $dst . '/' . $file);
-        }
-      }
-    }
-    closedir($dir);
-  }
+//  protected function recurse_copy($src, $dst) {
+//    $dir = opendir($src);
+//    @mkdir($dst);
+//    while (false !== ( $file = readdir($dir))) {
+//      if (( $file != '.' ) && ( $file != '..' )) {
+//        if (is_dir($src . '/' . $file)) {
+//          $this->recurse_copy($src . '/' . $file, $dst . '/' . $file);
+//        } else {
+//          $this->logLine(sprintf('Coping %s in %s', $src . '/' . $file, $dst), $level);
+//          copy($src . '/' . $file, $dst . '/' . $file);
+//        }
+//      }
+//    }
+//    closedir($dir);
+//  }
 
 }
