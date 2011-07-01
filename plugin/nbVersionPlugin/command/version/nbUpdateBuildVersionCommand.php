@@ -22,7 +22,7 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array()) {
     if (!file_exists($arguments['version-file'])) 
-      throw new Exception('Version file does not exist');
+      throw new Exception('Version file: '.$arguments['version-file'].' does not exist');
     $configParser = new nbYamlConfigParser();
     $configParser->parseFile($arguments['version-file']);
     $initialVersion = nbConfig::get('version');

@@ -33,7 +33,8 @@ TXT
   {
     if(! $arg = $this->getAlias($arguments['command_name']))
       $arg = $arguments['command_name'];
-    $arg .= ' ' . $options['args'];
+    if(isset($options['args']))
+      $arg .= ' ' . $options['args'];
 
     $this->log('Executing: ' . $arg, nbLogger::COMMENT);
     $this->log("\n\n");
