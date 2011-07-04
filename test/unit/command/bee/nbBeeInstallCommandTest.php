@@ -6,9 +6,12 @@ nbConfig::set('nb_command_dir', nbConfig::get('nb_sandbox_dir'));
 #nbFileSystem::rmdir(nbConfig::get('nb_test_installation_dir'), true);
 $shell = new nbShell();
 if (PHP_OS == "Linux") {
+  nbConfig::set('nb_test_installation_dir', nbConfig::get('nb_test_linux_installation_dir'));
   $shell->execute( 'rm -rf '.nbConfig::get('nb_test_installation_dir'));
 }
 else if (PHP_OS == "WINNT") {
+  nbConfig::set('nb_test_installation_dir', nbConfig::get('nb_test_win_installation_dir'));
+  echo nbConfig::get('nb_test_installation_dir');
   $shell->execute( 'rd /S /Q '.nbConfig::get('nb_test_installation_dir'));
 }
 
@@ -31,3 +34,9 @@ else if (PHP_OS == "WINNT") {
   $t->pass( "TODO: check symbolic link");
 }
 
+if (PHP_OS == "Linux") {
+  $shell->execute( 'rm -rf '.nbConfig::get('nb_test_installation_dir'));
+}
+else if (PHP_OS == "WINNT") {
+  $shell->execute( 'rd /S /Q '.nbConfig::get('nb_test_installation_dir'));
+}
