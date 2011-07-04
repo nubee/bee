@@ -19,7 +19,7 @@ $includeFile = nbConfig::get('filesystem_dir-transfer_include-from');
 $cmd = new nbDirTransferCommand();
 
 nbFileSystem::delete($fileToSync);
-nbFileSystem::rmdir($folderToExclude);
+nbFileSystem::rmdir($folderToExclude,true);
 nbFileSystem::delete($fileToExclude);
 nbFileSystem::delete($fileToInclude);
 nbFileSystem::delete($otherFileToSync);
@@ -44,6 +44,7 @@ $t->ok(file_exists($fileToInclude), 'fileToInclude was syncronyzed in the target
 $t->ok(!file_exists($fileToDelete), 'fileToDelete was deleted in the target folder');
 
 nbFileSystem::delete($fileToSync);
+nbFileSystem::delete($folderToExclude.'/readme');
 nbFileSystem::rmdir($folderToExclude);
 nbFileSystem::delete($fileToExclude);
 nbFileSystem::delete($fileToInclude);
@@ -57,7 +58,7 @@ $t->ok(file_exists($fileToSync), 'fileToSync was syncronyzed in the target folde
 $t->ok(file_exists($otherFileToSync), 'otherFileToSync was syncronyzed in the target folder');
 
 nbFileSystem::delete($fileToSync);
-nbFileSystem::rmdir($folderToExclude);
+nbFileSystem::rmdir($folderToExclude,true);
 nbFileSystem::delete($fileToExclude);
 nbFileSystem::delete($fileToInclude);
 nbFileSystem::delete($otherFileToSync);
@@ -88,3 +89,4 @@ nbFileSystem::rmdir($folderToExclude);
 nbFileSystem::delete($fileToExclude);
 nbFileSystem::delete($fileToInclude);
 nbFileSystem::delete($otherFileToSync);
+nbFileSystem::touch(nbFileSystemUtils::sanitize_dir(nbConfig::get('filesystem_dir-transfer_target-path')).'/readme');
