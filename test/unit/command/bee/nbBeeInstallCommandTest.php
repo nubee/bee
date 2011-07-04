@@ -36,7 +36,7 @@ else if (PHP_OS == "WINNT") {
 */
 if (PHP_OS == "Linux") {
   $shell->execute( 'rm -rf '.nbConfig::get('nb_test_installation_dir'));
-  $shell->execute( 'rm  /usr/bin/bee');
+  //$shell->execute( 'rm  /usr/bin/bee');
 }
 else if (PHP_OS == "WINNT") {
   $shell->execute( 'rd /S /Q '.nbConfig::get('nb_test_installation_dir'));
