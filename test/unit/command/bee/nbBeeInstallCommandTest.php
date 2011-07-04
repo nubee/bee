@@ -15,7 +15,7 @@ else if (PHP_OS == "WINNT") {
   $shell->execute( 'rd /S /Q '.nbConfig::get('nb_test_installation_dir'));
 }
 
-$t = new lime_test(8);
+$t = new lime_test(7);
 $cmd = new nbBeeInstallCommand();
 $cmd->run(new nbCommandLineParser(), './ ' . nbConfig::get('nb_test_installation_dir'));
 $t->ok(file_exists(nbConfig::get('nb_test_installation_dir') . '/config'), 'Command create config directory in installation folder');
@@ -25,7 +25,7 @@ $t->ok(file_exists(nbConfig::get('nb_test_installation_dir') . '/lib'), 'Command
 $t->ok(file_exists(nbConfig::get('nb_test_installation_dir') . '/plugin'), 'Command create plugin directory in installation folder');
 $t->ok(file_exists(nbConfig::get('nb_test_installation_dir') . '/test'), 'Command create test directory in installation folder');
 $t->ok(file_exists(nbConfig::get('nb_test_installation_dir') . '/bee'), 'Command create bee file in installation folder');
-
+/*
 if (PHP_OS == "Linux") {
   $t->ok(file_exists('/usr/bin/bee'), 'Command create symbolic link bee /usr/bin');
 }
@@ -33,7 +33,7 @@ else if (PHP_OS == "WINNT") {
 
   $t->pass( "TODO: check symbolic link");
 }
-
+*/
 if (PHP_OS == "Linux") {
   $shell->execute( 'rm -rf '.nbConfig::get('nb_test_installation_dir'));
   $shell->execute( 'rm  /usr/bin/bee');
