@@ -25,7 +25,8 @@ TXT
     $configParser = new nbYamlConfigParser();
     $configParser->parseFile($arguments['config-file']);
 
-    //sync project
+    //sync
+    $this->logLine("symfony2:deploy-stage\n\tsync project");
     if (nbConfig::has('filesystem_dir-transfer')) {
       $cmd = new nbDirTransferCommand();
       $commandLine = '--doit --delete --config-file=' . $arguments['config-file'];
@@ -35,6 +36,7 @@ TXT
     $shell = new nbShell();
 
     //migrate
+    $this->logLine("symfony2:deploy-stage\n\tapply migrations");
     $command = nbConfig::get('symfony2_bin').' doctrine:migrations:migrate --no-interaction';
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("
@@ -46,6 +48,7 @@ TXT
     }
     
     //clear cache
+    $this->logLine("symfony2:deploy-stage\n\tclear cache");
     $command = nbConfig::get('symfony2_bin').' cache:clear';
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("
