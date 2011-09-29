@@ -1,0 +1,12 @@
+#command configuration
+
+symfony2:
+  bin: php symfony/app/console
+
+#sync command
+filesystem:
+  dir-transfer:
+      source-path: .
+      target-path: /var/www/site-directory
+      exclude-from: excludes
+      include-from: includes
