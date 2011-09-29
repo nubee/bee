@@ -21,12 +21,12 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $this->logLine('Running: symfony2:deploy-stage');
+    $this->logLine('Running: symfony2:deploy-stage', nbLogger::COMMENT);
     $configParser = new nbYamlConfigParser();
     $configParser->parseFile($arguments['config-file']);
 
     //sync
-    $this->logLine("symfony2:deploy-stage\n\tsync project");
+    $this->logLine("symfony2:deploy-stage\n\tsync project", nbLogger::COMMENT);
     if (nbConfig::has('filesystem_dir-transfer')) {
       $cmd = new nbDirTransferCommand();
       $commandLine = '--doit --delete --config-file=' . $arguments['config-file'];
@@ -36,7 +36,7 @@ TXT
     $shell = new nbShell();
 
     //migrate
-    $this->logLine("symfony2:deploy-stage\n\tapply migrations");
+    $this->logLine("symfony2:deploy-stage\n\tapply migrations", nbLogger::COMMENT);
     $command = nbConfig::get('symfony2_bin').' doctrine:migrations:migrate --no-interaction';
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("
@@ -48,7 +48,7 @@ TXT
     }
     
     //clear cache
-    $this->logLine("symfony2:deploy-stage\n\tclear cache");
+    $this->logLine("symfony2:deploy-stage\n\tclear cache", nbLogger::COMMENT);
     $command = nbConfig::get('symfony2_bin').' cache:clear';
     if(!$shell->execute($command)) {
       throw new LogicException(sprintf("
@@ -58,8 +58,10 @@ TXT
         $command
       ));
     }
+    
+    //TODO: install assets
 
-    $this->logLine('Done: symfony2:deploy-stage');
+    $this->logLine('Done: symfony2:deploy-stage', nbLogger::COMMENT);
     return true;
   }
 
