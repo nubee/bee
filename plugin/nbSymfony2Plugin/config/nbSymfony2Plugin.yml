@@ -2,6 +2,8 @@
 
 symfony2:
   bin: php symfony/app/console
+  stage-path: /var/www/site-directory
+  web-dir: /var/www/site-directory/httpdocs
 
 #sync command
 filesystem:
