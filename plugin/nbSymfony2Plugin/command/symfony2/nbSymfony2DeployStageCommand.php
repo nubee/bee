@@ -37,7 +37,8 @@ TXT
 
     if (nbConfig::get('symfony2_exec-sync')) {
       //sync
-      $this->logLine("symfony2:deploy-stage\n\tsync project", nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine("\n\tsync project\n", nbLogger::INFO);
       if (nbConfig::has('filesystem_dir-transfer')) {
         $cmd = new nbDirTransferCommand();
         $commandLine = '--doit --delete --config-file=' . $pluginConfigFile;
@@ -49,7 +50,8 @@ TXT
 
     if (nbConfig::get('symfony2_exec-migrate')) {
       //migrate
-      $this->logLine("symfony2:deploy-stage\n\n\t apply migrations", nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine("\n\tmigrate\n", nbLogger::INFO);
       $command = nbConfig::get('symfony2_bin') . ' doctrine:migrations:migrate --no-interaction';
 
       if (!$shell->execute($command))
@@ -58,7 +60,8 @@ TXT
 
     if (nbConfig::get('symfony2_exec-cache-clear')) {
       //clear cache
-      $this->logLine("symfony2:deploy-stage\n\n\t clear cache", nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine("\n\tclear cache\n", nbLogger::INFO);
       $command = nbConfig::get('symfony2_bin') . ' cache:clear';
 
       if (!$shell->execute($command))
@@ -67,7 +70,8 @@ TXT
 
     if (nbConfig::get('symfony2_exec-assets-install')) {
       //install assets
-      $this->logLine("symfony2:deploy-stage\n\n\t install assets", nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine("\n\tinstall assets\n", nbLogger::INFO);
       $command = nbConfig::get('symfony2_bin') . ' assets:install ' . nbConfig::get('symfony2_web-dir');
 
       if (!$shell->execute($command))
@@ -76,10 +80,11 @@ TXT
 
     if (nbConfig::get('symfony2_exec-change-owner')) {
       //change owner
-      $this->logLine("symfony2:deploy-stage\n\n\t change owner to cache, log and web dirs", nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine("\n\t change owner to cache, log and web dirs\n", nbLogger::INFO);
       $command = 'chown -R www-data:www-data '
         . nbConfig::get('symfony2_dir') . '/app/cache '
-        . nbConfig::get('symfony2_dir') . '/app/logs'
+        . nbConfig::get('symfony2_dir') . '/app/logs '
         . nbConfig::get('symfony2_web-dir');
 
       if (!$shell->execute($command))
@@ -88,10 +93,11 @@ TXT
 
     if (nbConfig::get('symfony2_exec-change-mode')) {
       //change mode
-      $this->logLine("symfony2:deploy-stage\n\n\t change mode to cache, log and web dirs", nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine("\n\t change mode to cache, log and web dirs\n", nbLogger::INFO);
       $command = 'chmod -R 755 '
         . nbConfig::get('symfony2_dir') . '/app/cache '
-        . nbConfig::get('symfony2_dir') . '/app/logs'
+        . nbConfig::get('symfony2_dir') . '/app/logs '
         . nbConfig::get('symfony2_web-dir');
 
       if (!$shell->execute($command))
