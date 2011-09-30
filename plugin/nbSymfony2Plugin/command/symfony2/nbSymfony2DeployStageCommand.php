@@ -24,14 +24,16 @@ TXT
 
     $pluginConfigFile = './.bee/nbSymfony2Plugin.yml';
 
-    $configParser = new nbYamlConfigParser();
-    try {
-      $configParser->parseFile($pluginConfigFile);
-    } catch (Exception $e) {
+    if (!file_exists($pluginConfigFile)) {
+      $cmd = new nbConfigPluginCommand();
+      $cmd->run(new nbCommandLineParser(), 'nbSymfony2Plugin');
       $this->logLine('Configuration file "' . $pluginConfigFile . '" was created.', nbLogger::INFO);
       $this->logLine('Modify it and re-run the command.', nbLogger::INFO);
       return true;
     }
+    
+    $configParser = new nbYamlConfigParser();
+    $configParser->parseFile($pluginConfigFile);
 
     if (nbConfig::get('symfony2_exec-sync')) {
       //sync
