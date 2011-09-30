@@ -25,51 +25,61 @@ TXT
     $configParser = new nbYamlConfigParser();
     $configParser->parseFile($arguments['config-file']);
 
-    //sync
-    $this->logLine("symfony2:deploy-stage\n\tsync project", nbLogger::COMMENT);
-    if (nbConfig::has('filesystem_dir-transfer')) {
-      $cmd = new nbDirTransferCommand();
-      $commandLine = '--doit --delete --config-file=' . $arguments['config-file'];
-      $cmd->run(new nbCommandLineParser(), $commandLine);
+    if (nbConfig::get('symfony2_exec-sync')) {
+      //sync
+      $this->logLine("symfony2:deploy-stage\n\tsync project", nbLogger::COMMENT);
+      if (nbConfig::has('filesystem_dir-transfer')) {
+        $cmd = new nbDirTransferCommand();
+        $commandLine = '--doit --delete --config-file=' . $arguments['config-file'];
+        $cmd->run(new nbCommandLineParser(), $commandLine);
+      }
     }
 
     $shell = new nbShell();
 
-    //go to stage dir
-    $this->logLine("symfony2:deploy-stage\n\tmoving to stage dir", nbLogger::COMMENT);
-    $command = 'cd ' . nbConfig::get('symfony2_stage-path');
-
-    //migrate
-    $this->logLine("symfony2:deploy-stage\n\tapply migrations", nbLogger::COMMENT);
-    $command = nbConfig::get('symfony2_bin') . ' doctrine:migrations:migrate --no-interaction';
-    if (!$shell->execute($command)) {
-      throw new LogicException(sprintf("
-[nbSymfony2DeployStageCommand::execute] Error executing command:
-  %s
-", $command
-      ));
+    if (nbConfig::get('symfony2_exec-change-dir')) {
+      //go to stage dir
+      $this->logLine("symfony2:deploy-stage\n\tmoving to stage dir", nbLogger::COMMENT);
+      $command = 'cd ' . nbConfig::get('symfony2_stage-path');
     }
 
-    //clear cache
-    $this->logLine("symfony2:deploy-stage\n\tclear cache", nbLogger::COMMENT);
-    $command = nbConfig::get('symfony2_bin') . ' cache:clear';
-    if (!$shell->execute($command)) {
-      throw new LogicException(sprintf("
+    if (nbConfig::get('symfony2_exec-migrate')) {
+      //migrate
+      $this->logLine("symfony2:deploy-stage\n\tapply migrations", nbLogger::COMMENT);
+      $command = nbConfig::get('symfony2_bin') . ' doctrine:migrations:migrate --no-interaction';
+      if (!$shell->execute($command)) {
+        throw new LogicException(sprintf("
 [nbSymfony2DeployStageCommand::execute] Error executing command:
   %s
 ", $command
-      ));
+        ));
+      }
     }
 
-    //install assets
-    $this->logLine("symfony2:deploy-stage\n\tinstall assets", nbLogger::COMMENT);
-    $command = nbConfig::get('symfony2_bin') . ' assets:install ' . nbConfig::get('symfony2_web-dir');
-    if (!$shell->execute($command)) {
-      throw new LogicException(sprintf("
+    if (nbConfig::get('symfony2_exec-clear-cache')) {
+      //clear cache
+      $this->logLine("symfony2:deploy-stage\n\tclear cache", nbLogger::COMMENT);
+      $command = nbConfig::get('symfony2_bin') . ' cache:clear';
+      if (!$shell->execute($command)) {
+        throw new LogicException(sprintf("
 [nbSymfony2DeployStageCommand::execute] Error executing command:
   %s
 ", $command
-      ));
+        ));
+      }
+    }
+
+    if (nbConfig::get('symfony2_exec-assets-install')) {
+      //install assets
+      $this->logLine("symfony2:deploy-stage\n\tinstall assets", nbLogger::COMMENT);
+      $command = nbConfig::get('symfony2_bin') . ' assets:install ' . nbConfig::get('symfony2_web-dir');
+      if (!$shell->execute($command)) {
+        throw new LogicException(sprintf("
+[nbSymfony2DeployStageCommand::execute] Error executing command:
+  %s
+", $command
+        ));
+      }
     }
 
     $this->logLine('Done: symfony2:deploy-stage', nbLogger::COMMENT);
