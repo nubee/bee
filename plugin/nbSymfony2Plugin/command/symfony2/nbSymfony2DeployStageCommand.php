@@ -77,6 +77,8 @@ TXT
       //install assets
       $this->logLine("symfony2:deploy-stage\n\tinstall assets", nbLogger::COMMENT);
       $command = nbConfig::get('symfony2_bin') . ' assets:install ' . nbConfig::get('symfony2_web-dir');
+      echo $command;
+      die;
       
       if (!$shell->execute($command))
         $this->throwException($command);

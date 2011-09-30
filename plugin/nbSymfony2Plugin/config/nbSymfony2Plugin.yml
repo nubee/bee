@@ -7,7 +7,7 @@
 symfony2:
   dir: <?php echo $symfonyDir."\n"; ?>
   bin: php <?php echo $symfonyDir; ?>/app/console
-  stage-path: <?php echo $siteDir; ?>
+  stage-path: <?php echo $siteDir."\n"; ?>
   web-dir: <?php echo $siteDir; ?>/httpdocs
   exec-sync: true
   exec-migrate: true
@@ -20,6 +20,6 @@ symfony2:
 filesystem:
   dir-transfer:
       source-path: .
-      target-path: <?php echo $siteDir; ?>
+      target-path: <?php echo $siteDir."\n"; ?>
       exclude-from: .bee/excludes
       include-from: .bee/includes
