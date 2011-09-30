@@ -21,6 +21,12 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
+    if (!file_exists('./.bee/')) {
+      $this->logLine('No bee project defined!', nbLogger::ERROR);
+      $this->logLine('Run: bee bee:generate-project', nbLogger::INFO);
+      return true;
+    }
+
     $this->logLine('Running: symfony2:deploy-stage', nbLogger::COMMENT);
 
     $pluginConfigFile = './.bee/nbSymfony2Plugin.yml';
@@ -36,7 +42,7 @@ TXT
     $configParser = new nbYamlConfigParser();
     $configParser->parseFile($pluginConfigFile);
 
-    if (nbConfig::get('symfony2_exec-sync')) {
+    if (nbConfig::get('stage_exec-sync')) {
       //sync
       $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
       $this->logLine("\n\tsync project\n", nbLogger::INFO);
@@ -53,74 +59,85 @@ TXT
       //rebuild database
       $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
       $this->logLine("\n\trebuild database\n", nbLogger::INFO);
-      
-      $command = nbConfig::get('symfony2_bin') . ' doctrine:database:drop --force';
+
+      $command = nbConfig::get('stage_symfony2_bin') . ' doctrine:database:drop --force';
       if (!$shell->execute($command))
         $this->throwException($command);
-      
-      $command = nbConfig::get('symfony2_bin') . ' doctrine:database:create';
+
+      $command = nbConfig::get('stage_symfony2_bin') . ' doctrine:database:create';
       if (!$shell->execute($command))
         $this->throwException($command);
-      
-      $command = nbConfig::get('symfony2_bin') . ' doctrine:schema:create';
+
+      $command = nbConfig::get('stage_symfony2_bin') . ' doctrine:schema:create';
       if (!$shell->execute($command))
         $this->throwException($command);
     } else {
-      if (nbConfig::get('symfony2_exec-migrate')) {
+      if (nbConfig::get('stage_exec-migrate')) {
         //migrate
         $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
         $this->logLine("\n\tmigrate\n", nbLogger::INFO);
-        $command = nbConfig::get('symfony2_bin') . ' doctrine:migrations:migrate --no-interaction';
+        $command = nbConfig::get('stage_symfony2_bin') . ' doctrine:migrations:migrate --no-interaction';
 
         if (!$shell->execute($command))
           $this->throwException($command);
       }
     }
 
-    if (nbConfig::get('symfony2_exec-cache-clear')) {
+    if (nbConfig::get('stage_exec-cache-clear')) {
       //clear cache
       $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
       $this->logLine("\n\tclear cache\n", nbLogger::INFO);
-      $command = nbConfig::get('symfony2_bin') . ' cache:clear';
+      $command = nbConfig::get('stage_symfony2_bin') . ' cache:clear';
 
       if (!$shell->execute($command))
         $this->throwException($command);
     }
 
-    if (nbConfig::get('symfony2_exec-assets-install')) {
+    if (nbConfig::get('stage_exec-assets-install')) {
       //install assets
       $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
       $this->logLine("\n\tinstall assets\n", nbLogger::INFO);
-      $command = nbConfig::get('symfony2_bin') . ' assets:install ' . nbConfig::get('symfony2_web-dir');
+      $command = nbConfig::get('stage_symfony2_bin') . ' assets:install ' . nbConfig::get('stage_web-dir');
 
       if (!$shell->execute($command))
         $this->throwException($command);
     }
 
-    if (nbConfig::get('symfony2_exec-change-owner')) {
+    if (nbConfig::get('stage_exec-change-owner')) {
       //change owner
       $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
-      $this->logLine("\n\t change owner to cache, log and web dirs\n", nbLogger::INFO);
-      $command = 'chown -R www-data:www-data '
-        . nbConfig::get('symfony2_dir') . '/app/cache '
-        . nbConfig::get('symfony2_dir') . '/app/logs '
-        . nbConfig::get('symfony2_web-dir');
+      $this->logLine("\n\t change owner to stage directory: " . nbConfig::get('stage_dir') . "\n", nbLogger::INFO);
+      $command = 'chown -R www-data:www-data ' . nbConfig::get('stage_dir');
 
       if (!$shell->execute($command))
         $this->throwException($command);
     }
 
-    if (nbConfig::get('symfony2_exec-change-mode')) {
+    if (nbConfig::get('stage_exec-change-mode')) {
       //change mode
       $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
-      $this->logLine("\n\t change mode to cache, log and web dirs\n", nbLogger::INFO);
-      $command = 'chmod -R 755 '
-        . nbConfig::get('symfony2_dir') . '/app/cache '
-        . nbConfig::get('symfony2_dir') . '/app/logs '
-        . nbConfig::get('symfony2_web-dir');
+      $this->logLine("\n\t change mode to stage directory: " . nbConfig::get('stage_dir') . "\n", nbLogger::INFO);
+      $command = 'chmod -R 555 ' . nbConfig::get('stage_web-dir');
 
       if (!$shell->execute($command))
         $this->throwException($command);
+
+      $this->logLine("\n\t change mode to cache, logs directories\n", nbLogger::INFO);
+      $command = 'chmod -R 755 '
+        . nbConfig::get('stage_symfony2_cache') . ' '
+        . nbConfig::get('stage_symfony2_logs') . ' '
+        . nbConfig::get('stage_uploads-dir');
+
+      if (!$shell->execute($command))
+        $this->throwException($command);
+
+      if (nbConfig::has('stage_uploads-dir')) {
+        $this->logLine("\n\t change mode to uploads directory\n", nbLogger::INFO);
+        $command = 'chmod -R 755 ' . nbConfig::get('stage_uploads-dir');
+
+        if (!$shell->execute($command))
+          $this->throwException($command);
+      }
     }
 
     $this->logLine('Done: symfony2:deploy-stage', nbLogger::COMMENT);

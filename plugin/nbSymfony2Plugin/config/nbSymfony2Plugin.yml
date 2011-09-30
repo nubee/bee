@@ -1,14 +1,37 @@
 #command configuration
+
 <?php
+  // dev configuration
+  $siteDir = '.';
+  $symfonyDir = $siteDir.'/symfony';
+?>
+dev:
+  dir: <?php echo $siteDir."\n"; ?>
+  web-dir: <?php echo $siteDir; ?>/httpdocs
+  #uploads-dir: <?php echo $siteDir; ?>/httpdocs/uploads
+  symfony2:
+    dir: <?php echo $symfonyDir."\n"; ?>
+    bin: php <?php echo $symfonyDir; ?>/app/console
+  #exec-sync: false
+  exec-migrate: true
+  exec-cache-clear: true
+  #exec-change-owner: false
+  #exec-change-mode: false
+  exec-assets-install: true
+
+<?php
+  // stage configuration
   $siteDir = '/var/www/site-directory';
   $symfonyDir = $siteDir.'/symfony';
 ?>
-
-symfony2:
-  dir: <?php echo $symfonyDir."\n"; ?>
-  bin: php <?php echo $symfonyDir; ?>/app/console
-  stage-path: <?php echo $siteDir."\n"; ?>
+stage:
+  dir: <?php echo $siteDir."\n"; ?>
   web-dir: <?php echo $siteDir; ?>/httpdocs
+  #uploads-dir: <?php echo $siteDir; ?>/httpdocs/uploads
+  symfony2:
+    bin: php <?php echo $symfonyDir; ?>/app/console
+    cache: php <?php echo $symfonyDir; ?>/app/cache
+    logs: php <?php echo $symfonyDir; ?>/app/logs
   exec-sync: true
   exec-migrate: true
   exec-cache-clear: true

@@ -44,7 +44,7 @@ class nbPluginLoader {
    */
   private function addPlugin($pluginName)
   {
-    nbLogger::getInstance()->logLine('Loading Plugin <comment>'.$pluginName.'</comment>...');
+//    nbLogger::getInstance()->logLine('Loading Plugin <comment>'.$pluginName.'</comment>...');
 
     if(key_exists($pluginName, $this->plugins))
       return;
