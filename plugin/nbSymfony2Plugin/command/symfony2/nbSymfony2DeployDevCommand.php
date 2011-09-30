@@ -22,12 +22,12 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array()) {
     if (!file_exists('./.bee/')) {
-      $this->logLine('No bee project defined!', nbLogger::ERROR);
-      $this->logLine('Run: <info>bee bee:generate-project</info>', nbLogger::COMMENT);
+      $this->logLine("\nNo bee project defined!", nbLogger::ERROR);
+      $this->logLine("Run: <info>bee bee:generate-project</info>\n", nbLogger::COMMENT);
       return true;
     }
     
-    $this->logLine('Running: symfony2:deploy-dev', nbLogger::COMMENT);
+    $this->logLine("\n\nsymfony2:deploy-dev:\n\n\t<info>init</info>", nbLogger::COMMENT);
 
     $pluginConfigFile = './.bee/nbSymfony2Plugin.yml';
 
@@ -46,8 +46,7 @@ TXT
 
     if (isset($options['rebuild-db'])) {
       //rebuild database
-      $this->logLine('symfony2:deploy-dev', nbLogger::COMMENT);
-      $this->logLine("\n\trebuild database\n", nbLogger::INFO);
+      $this->logLine("\n\nsymfony2:deploy-dev:\n\n\t<info>rebuild database</info>", nbLogger::COMMENT);
 
       $command = nbConfig::get('dev_symfony2_bin') . ' doctrine:database:drop --force';
       if (!$shell->execute($command))
@@ -61,10 +60,10 @@ TXT
       if (!$shell->execute($command))
         $this->throwException($command);
     } else {
-      if (nbConfig::get('dev_symfony2_exec-migrate')) {
+      if (nbConfig::get('dev_exec-migrate')) {
         //migrate
-        $this->logLine('symfony2:deploy-dev', nbLogger::COMMENT);
-        $this->logLine("\n\tmigrate\n", nbLogger::INFO);
+        $this->logLine("\n\nsymfony2:deploy-dev:\n\n\t<info>migrate</info>", nbLogger::COMMENT);
+        
         $command = nbConfig::get('dev_symfony2_bin') . ' doctrine:migrations:migrate --no-interaction';
 
         if (!$shell->execute($command))
@@ -72,27 +71,27 @@ TXT
       }
     }
 
-    if (nbConfig::get('dev_symfony2_exec-cache-clear')) {
+    if (nbConfig::get('dev_exec-cache-clear')) {
       //clear cache
-      $this->logLine('symfony2:deploy-dev', nbLogger::COMMENT);
-      $this->logLine("\n\tclear cache\n", nbLogger::INFO);
+      $this->logLine("\n\nsymfony2:deploy-dev:\n\n\t<info>clear cache</info>", nbLogger::COMMENT);
+      
       $command = nbConfig::get('dev_symfony2_bin') . ' cache:clear';
 
       if (!$shell->execute($command))
         $this->throwException($command);
     }
 
-    if (nbConfig::get('dev_symfony2_exec-assets-install')) {
+    if (nbConfig::get('dev_exec-assets-install')) {
       //install assets
-      $this->logLine('symfony2:deploy-dev', nbLogger::COMMENT);
-      $this->logLine("\n\tinstall assets\n", nbLogger::INFO);
-      $command = nbConfig::get('dev_symfony2_bin') . ' assets:install ' . nbConfig::get('dev_symfony2_web-dir');
+      $this->logLine("\n\nsymfony2:deploy-dev:\n\n\t<info>install assets</info>", nbLogger::COMMENT);
+      
+      $command = nbConfig::get('dev_symfony2_bin') . ' assets:install ' . nbConfig::get('dev_web-dir');
 
       if (!$shell->execute($command))
         $this->throwException($command);
     }
 
-    $this->logLine('Done: symfony2:deploy-dev', nbLogger::COMMENT);
+    $this->logLine("\n\nsymfony2:deploy-dev:\n\n\t<info>done</info>\n", nbLogger::COMMENT);
     return true;
   }
 
