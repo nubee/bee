@@ -16,6 +16,7 @@ TXT
       )));
 
     $this->setOptions(new nbOptionSet(array(
+        new nbOption('rebuild-db', 'r', nbOption::PARAMETER_NONE, 'Rebuilds the db: database:drop -> database:create -> schema:create'),
       )));
   }
 
@@ -31,7 +32,7 @@ TXT
       $this->logLine('Modify it and re-run the command.', nbLogger::INFO);
       return true;
     }
-    
+
     $configParser = new nbYamlConfigParser();
     $configParser->parseFile($pluginConfigFile);
 
@@ -48,14 +49,32 @@ TXT
 
     $shell = new nbShell();
 
-    if (nbConfig::get('symfony2_exec-migrate')) {
-      //migrate
+    if (isset($options['rebuild-db'])) {
+      //rebuild database
       $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
-      $this->logLine("\n\tmigrate\n", nbLogger::INFO);
-      $command = nbConfig::get('symfony2_bin') . ' doctrine:migrations:migrate --no-interaction';
-
+      $this->logLine("\n\trebuild database\n", nbLogger::INFO);
+      
+      $command = nbConfig::get('symfony2_bin') . ' doctrine:database:drop --force';
       if (!$shell->execute($command))
         $this->throwException($command);
+      
+      $command = nbConfig::get('symfony2_bin') . ' doctrine:database:create';
+      if (!$shell->execute($command))
+        $this->throwException($command);
+      
+      $command = nbConfig::get('symfony2_bin') . ' doctrine:schema:create';
+      if (!$shell->execute($command))
+        $this->throwException($command);
+    } else {
+      if (nbConfig::get('symfony2_exec-migrate')) {
+        //migrate
+        $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+        $this->logLine("\n\tmigrate\n", nbLogger::INFO);
+        $command = nbConfig::get('symfony2_bin') . ' doctrine:migrations:migrate --no-interaction';
+
+        if (!$shell->execute($command))
+          $this->throwException($command);
+      }
     }
 
     if (nbConfig::get('symfony2_exec-cache-clear')) {
