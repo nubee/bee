@@ -23,7 +23,7 @@ TXT
   protected function execute(array $arguments = array(), array $options = array()) {
     if (!file_exists('./.bee/')) {
       $this->logLine('No bee project defined!', nbLogger::ERROR);
-      $this->logLine('Run: bee bee:generate-project', nbLogger::INFO);
+      $this->logLine('Run: <info>bee bee:generate-project</info>', nbLogger::COMMENT);
       return true;
     }
 
@@ -117,7 +117,7 @@ TXT
       //change mode
       $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
       $this->logLine("\n\t change mode to stage directory: " . nbConfig::get('stage_dir') . "\n", nbLogger::INFO);
-      $command = 'chmod -R 555 ' . nbConfig::get('stage_web-dir');
+      $command = 'chmod -R 555 ' . nbConfig::get('stage_dir');
 
       if (!$shell->execute($command))
         $this->throwException($command);
@@ -125,8 +125,7 @@ TXT
       $this->logLine("\n\t change mode to cache, logs directories\n", nbLogger::INFO);
       $command = 'chmod -R 755 '
         . nbConfig::get('stage_symfony2_cache') . ' '
-        . nbConfig::get('stage_symfony2_logs') . ' '
-        . nbConfig::get('stage_uploads-dir');
+        . nbConfig::get('stage_symfony2_logs');
 
       if (!$shell->execute($command))
         $this->throwException($command);

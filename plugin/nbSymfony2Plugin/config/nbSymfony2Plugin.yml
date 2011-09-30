@@ -30,8 +30,8 @@ stage:
   #uploads-dir: <?php echo $siteDir; ?>/httpdocs/uploads
   symfony2:
     bin: php <?php echo $symfonyDir; ?>/app/console
-    cache: php <?php echo $symfonyDir; ?>/app/cache
-    logs: php <?php echo $symfonyDir; ?>/app/logs
+    cache: <?php echo $symfonyDir; ?>/app/cache
+    logs: <?php echo $symfonyDir; ?>/app/logs
   exec-sync: true
   exec-migrate: true
   exec-cache-clear: true
