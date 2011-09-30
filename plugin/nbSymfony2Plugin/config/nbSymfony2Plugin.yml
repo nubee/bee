@@ -12,7 +12,8 @@ symfony2:
   exec-sync: true
   exec-migrate: true
   exec-cache-clear: true
-  exec-change-owner-and-mode: true
+  exec-change-owner: true
+  exec-change-mode: true
   exec-assets-install: true
 
 #sync command
