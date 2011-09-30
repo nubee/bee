@@ -66,10 +66,10 @@ TXT
     if (nbConfig::get('symfony2_exec-change-owner-and-mode')) {
       //clear cache
       $this->logLine("symfony2:deploy-stage\n\tchange owner and mode to 'cache' and 'logs' dirs", nbLogger::COMMENT);
-      $command = 'chown -R www-data:www-data '.nbConfig::get('symfony2_dir').'/cache';
-      $command = 'chown -R www-data:www-data '.nbConfig::get('symfony2_dir').'/logs';
-      $command = 'chmod -R 777 '.nbConfig::get('symfony2_dir').'/cache';
-      $command = 'chmod -R 777 '.nbConfig::get('symfony2_dir').'/logs';
+      $command = 'chown -R www-data:www-data '.nbConfig::get('symfony2_dir').'/app/cache';
+      $command = 'chown -R www-data:www-data '.nbConfig::get('symfony2_dir').'/app/logs';
+      $command = 'chmod -R 777 '.nbConfig::get('symfony2_dir').'/app/cache';
+      $command = 'chmod -R 777 '.nbConfig::get('symfony2_dir').'/app/logs';
       if (!$shell->execute($command)) {
         throw new LogicException(sprintf("
 [nbSymfony2DeployStageCommand::execute] Error executing command:
