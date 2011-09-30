@@ -1,19 +1,24 @@
 #command configuration
+<?php
+  $siteDir = '/var/www/site-directory';
+  $symfonyDir = $siteDir.'/symfony';
+?>
 
 symfony2:
-  bin: php symfony/app/console
-  stage-path: /var/www/site-directory
-  web-dir: /var/www/site-directory/httpdocs
+  dir: <?php echo $symfonyDir."\n"; ?>
+  bin: php <?php echo $symfonyDir; ?>/app/console
+  stage-path: <?php echo $siteDir; ?>
+  web-dir: <?php echo $siteDir; ?>/httpdocs
   exec-sync: true
-  exec-change-dir: true
   exec-migrate: true
-  exec-clear-cache: true
+  exec-cache-clear: true
+  exec-change-owner-and-mode: true
   exec-assets-install: true
 
 #sync command
 filesystem:
   dir-transfer:
       source-path: .
-      target-path: /var/www/site-directory
-      exclude-from: excludes
-      include-from: includes
+      target-path: <?php echo $siteDir; ?>
+      exclude-from: .bee/excludes
+      include-from: .bee/includes

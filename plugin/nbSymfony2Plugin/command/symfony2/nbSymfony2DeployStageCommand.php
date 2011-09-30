@@ -37,12 +37,6 @@ TXT
 
     $shell = new nbShell();
 
-    if (nbConfig::get('symfony2_exec-change-dir')) {
-      //go to stage dir
-      $this->logLine("symfony2:deploy-stage\n\tmoving to stage dir", nbLogger::COMMENT);
-      $command = 'cd ' . nbConfig::get('symfony2_stage-path');
-    }
-
     if (nbConfig::get('symfony2_exec-migrate')) {
       //migrate
       $this->logLine("symfony2:deploy-stage\n\tapply migrations", nbLogger::COMMENT);
@@ -56,10 +50,26 @@ TXT
       }
     }
 
-    if (nbConfig::get('symfony2_exec-clear-cache')) {
+    if (nbConfig::get('symfony2_exec-cache-clear')) {
       //clear cache
       $this->logLine("symfony2:deploy-stage\n\tclear cache", nbLogger::COMMENT);
       $command = nbConfig::get('symfony2_bin') . ' cache:clear';
+      if (!$shell->execute($command)) {
+        throw new LogicException(sprintf("
+[nbSymfony2DeployStageCommand::execute] Error executing command:
+  %s
+", $command
+        ));
+      }
+    }
+    
+    if (nbConfig::get('symfony2_exec-change-owner-and-mode')) {
+      //clear cache
+      $this->logLine("symfony2:deploy-stage\n\tchange owner and mode to 'cache' and 'logs' dirs", nbLogger::COMMENT);
+      $command = 'chown -R www-data:www-data '.nbConfig::get('symfony2_dir').'/cache';
+      $command = 'chown -R www-data:www-data '.nbConfig::get('symfony2_dir').'/logs';
+      $command = 'chmod -R 777 '.nbConfig::get('symfony2_dir').'/cache';
+      $command = 'chmod -R 777 '.nbConfig::get('symfony2_dir').'/logs';
       if (!$shell->execute($command)) {
         throw new LogicException(sprintf("
 [nbSymfony2DeployStageCommand::execute] Error executing command:
