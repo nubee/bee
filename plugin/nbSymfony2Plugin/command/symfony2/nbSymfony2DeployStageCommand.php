@@ -71,6 +71,22 @@ TXT
       $command = nbConfig::get('stage_symfony2_bin') . ' doctrine:schema:create';
       if (!$shell->execute($command))
         $this->throwException($command);
+
+      if (nbConfig::get('stage_exec-migrate')) {
+        $files = nbFileFinder::create('file')
+          ->remove('.')
+          ->remove('..')
+          ->sortByName()
+          ->in(nbConfig::get('stage_symfony2_migrations'));
+
+        foreach ($files as $file) {
+          preg_match('/Version(.+)\.php/s', $file, $version);
+          $command = nbConfig::get('stage_symfony2_bin') . ' doctrine:migrations:version ' . $version[1] . ' --add';
+
+          if (!$shell->execute($command))
+            $this->throwException($command);
+        }
+      }
     } else {
       if (nbConfig::get('stage_exec-migrate')) {
         //migrate

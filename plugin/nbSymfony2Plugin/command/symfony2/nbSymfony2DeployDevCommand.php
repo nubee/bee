@@ -26,7 +26,7 @@ TXT
       $this->logLine("Run: <info>bee bee:generate-project</info>\n", nbLogger::COMMENT);
       return true;
     }
-    
+
     $this->logLine("\n\nsymfony2:deploy-dev:\n\n\t<info>init</info>", nbLogger::COMMENT);
 
     $pluginConfigFile = './.bee/nbSymfony2Plugin.yml';
@@ -59,11 +59,27 @@ TXT
       $command = nbConfig::get('dev_symfony2_bin') . ' doctrine:schema:create';
       if (!$shell->execute($command))
         $this->throwException($command);
+
+      if (nbConfig::get('dev_exec-migrate')) {
+        $files = nbFileFinder::create('file')
+          ->remove('.')
+          ->remove('..')
+          ->sortByName()
+          ->in(nbConfig::get('dev_symfony2_migrations'));
+
+        foreach ($files as $file) {
+          preg_match('/Version(.+)\.php/s', $file, $version);
+          $command = nbConfig::get('dev_symfony2_bin') . ' doctrine:migrations:version ' . $version[1] . ' --add';
+
+          if (!$shell->execute($command))
+            $this->throwException($command);
+        }
+      }
     } else {
       if (nbConfig::get('dev_exec-migrate')) {
         //migrate
         $this->logLine("\n\nsymfony2:deploy-dev:\n\n\t<info>migrate</info>", nbLogger::COMMENT);
-        
+
         $command = nbConfig::get('dev_symfony2_bin') . ' doctrine:migrations:migrate --no-interaction';
 
         if (!$shell->execute($command))
@@ -74,7 +90,7 @@ TXT
     if (nbConfig::get('dev_exec-cache-clear')) {
       //clear cache
       $this->logLine("\n\nsymfony2:deploy-dev:\n\n\t<info>clear cache</info>", nbLogger::COMMENT);
-      
+
       $command = nbConfig::get('dev_symfony2_bin') . ' cache:clear';
 
       if (!$shell->execute($command))
@@ -84,7 +100,7 @@ TXT
     if (nbConfig::get('dev_exec-assets-install')) {
       //install assets
       $this->logLine("\n\nsymfony2:deploy-dev:\n\n\t<info>install assets</info>", nbLogger::COMMENT);
-      
+
       $command = nbConfig::get('dev_symfony2_bin') . ' assets:install ' . nbConfig::get('dev_web-dir');
 
       if (!$shell->execute($command))

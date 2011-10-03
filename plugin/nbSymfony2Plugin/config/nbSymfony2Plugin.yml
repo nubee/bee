@@ -12,6 +12,7 @@ dev:
   symfony2:
     dir: <?php echo $symfonyDir."\n"; ?>
     bin: php <?php echo $symfonyDir; ?>/app/console
+    migrations: <?php echo $symfonyDir; ?>/app/DoctrineMigrations
   #exec-sync: false
   exec-migrate: true
   exec-cache-clear: true
@@ -32,6 +33,7 @@ stage:
     bin: php <?php echo $symfonyDir; ?>/app/console
     cache: <?php echo $symfonyDir; ?>/app/cache
     logs: <?php echo $symfonyDir; ?>/app/logs
+    migrations: <?php echo $symfonyDir; ?>/app/DoctrineMigrations
   exec-sync: true
   exec-migrate: true
   exec-cache-clear: true
