@@ -26,7 +26,7 @@ dev:
     dir: <?php echo $sourceDir."\n"; ?>
     web_dir: <?php echo $sourceDir."/".$webDirName."\n"; ?>
     symfony:
-      dir: php <?php echo $sourceSymfonyDir."\n"; ?>
+      dir: <?php echo $sourceSymfonyDir."\n"; ?>
   
   owner: <?php echo $owner."\n"; ?>
   group: <?php echo $group."\n"; ?>
@@ -65,7 +65,7 @@ prod:
     dir: <?php echo $sourceDir."\n"; ?>
     web_dir: <?php echo $sourceDir."/".$webDirName."\n"; ?>
     symfony:
-      dir: php <?php echo $sourceSymfonyDir."\n"; ?>
+      dir: <?php echo $sourceSymfonyDir."\n"; ?>
   
   owner: <?php echo $owner."\n"; ?>
   group: <?php echo $group."\n"; ?>
