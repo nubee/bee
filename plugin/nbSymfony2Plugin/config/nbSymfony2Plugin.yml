@@ -2,49 +2,79 @@
 
 <?php
   // dev configuration
-  $siteDir = '.';
-  $symfonyDir = $siteDir.'/symfony';
+  $webDirName = 'httpdocs';
+  $symfonyDirName = 'symfony'; //TODO: is it necessary?
+  $wwwDir = '/var/www/site-directory';
+  $sourceDir = '.';
+  $wwwSymfonyDir = $wwwDir."/".$symfonyDirName;
+  $sourceSymfonyDir = $sourceDir."/".$symfonyDirName;
+  $owner = 'www-data';
+  $group = 'www-data';
 ?>
 dev:
-  dir: <?php echo $siteDir."\n"; ?>
-  web-dir: <?php echo $siteDir; ?>/httpdocs
-  #uploads-dir: <?php echo $siteDir; ?>/httpdocs/uploads
-  symfony2:
-    dir: <?php echo $symfonyDir."\n"; ?>
-    bin: php <?php echo $symfonyDir; ?>/app/console
-    migrations: <?php echo $symfonyDir; ?>/app/DoctrineMigrations
-  #exec-sync: false
-  exec-migrate: true
-  exec-cache-clear: true
-  #exec-change-owner: false
-  #exec-change-mode: false
-  exec-assets-install: true
+  www:
+    dir: <?php echo $wwwDir."\n"; ?>
+    web_dir: <?php echo $wwwDir."/".$webDirName."\n"; ?>
+    #uploads_dir: <?php echo $siteDir; ?>/httpdocs/uploads
+    symfony:
+      bin: php <?php echo $wwwSymfonyDir; ?>/app/console
+      dir: php <?php echo $wwwSymfonyDir."\n"; ?>
+      cache_dir: <?php echo $wwwSymfonyDir; ?>/app/cache
+      logs_dir: <?php echo $wwwSymfonyDir; ?>/app/logs
+      migrations_dir: <?php echo $wwwSymfonyDir; ?>/app/DoctrineMigrations
+  source:
+    dir: <?php echo $sourceDir."\n"; ?>
+    web_dir: <?php echo $sourceDir."/".$webDirName."\n"; ?>
+    symfony:
+      dir: php <?php echo $sourceSymfonyDir."\n"; ?>
+  
+  owner: <?php echo $owner."\n"; ?>
+  group: <?php echo $group."\n"; ?>
+  
+  exec:
+    sync: true
+    migrate: true
+    cache_clear: true
+    assets_install: true
+    change_owner: true
+    change_mode: true
 
 <?php
-  // stage configuration
-  $siteDir = '/var/www/site-directory';
-  $symfonyDir = $siteDir.'/symfony';
+  // prod configuration
+  $webDirName = 'httpdocs';
+  $symfonyDirName = 'symfony'; //TODO: is it necessary?
+  $wwwDir = '/var/www/vhosts/site-directory';
+  $sourceDir = '.';
+  $wwwSymfonyDir = $wwwDir."/".$symfonyDirName;
+  $sourceSymfonyDir = $sourceDir."/".$symfonyDirName;
+  $owner = 'apache';
+  $group = 'apache';
 ?>
-stage:
-  dir: <?php echo $siteDir."\n"; ?>
-  web-dir: <?php echo $siteDir; ?>/httpdocs
-  #uploads-dir: <?php echo $siteDir; ?>/httpdocs/uploads
-  symfony2:
-    bin: php <?php echo $symfonyDir; ?>/app/console
-    cache: <?php echo $symfonyDir; ?>/app/cache
-    logs: <?php echo $symfonyDir; ?>/app/logs
-    migrations: <?php echo $symfonyDir; ?>/app/DoctrineMigrations
-  exec-sync: true
-  exec-migrate: true
-  exec-cache-clear: true
-  exec-change-owner: true
-  exec-change-mode: true
-  exec-assets-install: true
+prod:
+  www:
+    dir: <?php echo $wwwDir."\n"; ?>
+    web_dir: <?php echo $wwwDir."/".$webDirName."\n"; ?>
+    #uploads_dir: <?php echo $siteDir; ?>/httpdocs/uploads
+    symfony:
+      bin: php <?php echo $wwwSymfonyDir; ?>/app/console
+      dir: php <?php echo $wwwSymfonyDir."\n"; ?>
+      cache_dir: <?php echo $wwwSymfonyDir; ?>/app/cache
+      logs_dir: <?php echo $wwwSymfonyDir; ?>/app/logs
+      migrations_dir: <?php echo $wwwSymfonyDir; ?>/app/DoctrineMigrations
+  source:
+    dir: <?php echo $sourceDir."\n"; ?>
+    web_dir: <?php echo $sourceDir."/".$webDirName."\n"; ?>
+    symfony:
+      dir: php <?php echo $sourceSymfonyDir."\n"; ?>
+  
+  owner: <?php echo $owner."\n"; ?>
+  group: <?php echo $group."\n"; ?>
+  
+  exec:
+    sync: true
+    migrate: true
+    cache_clear: true
+    assets_install: true
+    change_owner: true
+    change_mode: true
 
-#sync command
-filesystem:
-  dir-transfer:
-      source-path: .
-      target-path: <?php echo $siteDir."\n"; ?>
-      exclude-from: .bee/excludes
-      include-from: .bee/includes
