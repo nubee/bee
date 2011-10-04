@@ -15,10 +15,10 @@ dev:
   www:
     dir: <?php echo $wwwDir."\n"; ?>
     web_dir: <?php echo $wwwDir."/".$webDirName."\n"; ?>
-    #uploads_dir: <?php echo $siteDir; ?>/httpdocs/uploads
+    #uploads_dir: <?php echo $wwwDir."/".$webDirName."/uploads\n"; ?>
     symfony:
       bin: php <?php echo $wwwSymfonyDir; ?>/app/console
-      dir: php <?php echo $wwwSymfonyDir."\n"; ?>
+      dir: <?php echo $wwwSymfonyDir."\n"; ?>
       cache_dir: <?php echo $wwwSymfonyDir; ?>/app/cache
       logs_dir: <?php echo $wwwSymfonyDir; ?>/app/logs
       migrations_dir: <?php echo $wwwSymfonyDir; ?>/app/DoctrineMigrations
@@ -54,10 +54,10 @@ prod:
   www:
     dir: <?php echo $wwwDir."\n"; ?>
     web_dir: <?php echo $wwwDir."/".$webDirName."\n"; ?>
-    #uploads_dir: <?php echo $siteDir; ?>/httpdocs/uploads
+    #uploads_dir: <?php echo $wwwDir."/".$webDirName."/uploads\n"; ?>
     symfony:
       bin: php <?php echo $wwwSymfonyDir; ?>/app/console
-      dir: php <?php echo $wwwSymfonyDir."\n"; ?>
+      dir: <?php echo $wwwSymfonyDir."\n"; ?>
       cache_dir: <?php echo $wwwSymfonyDir; ?>/app/cache
       logs_dir: <?php echo $wwwSymfonyDir; ?>/app/logs
       migrations_dir: <?php echo $wwwSymfonyDir; ?>/app/DoctrineMigrations

@@ -55,14 +55,14 @@ TXT
       $command = new nbDirTransferCommand();
       $commandLine = nbConfig::get($env . '_source_web_dir') . ' '
         . nbConfig::get($env . '_www_web_dir') . ($doit ? ' --doit' : '')
-        . ' --delete --exclude-from "./.bee/excludes"';
+        . ' --delete --exclude-from="./.bee/excludes"';
       $command->run(new nbCommandLineParser(), $commandLine);
 
       //sync symfony
       $command = new nbDirTransferCommand();
       $commandLine = nbConfig::get($env . '_source_symfony_dir') . ' '
         . nbConfig::get($env . '_www_symfony_dir') . ($doit ? ' --doit' : '')
-        . ' --delete --exclude-from "./.bee/excludes"';
+        . ' --delete --exclude-from="./.bee/excludes"';
       $command->run(new nbCommandLineParser(), $commandLine);
     }
 
