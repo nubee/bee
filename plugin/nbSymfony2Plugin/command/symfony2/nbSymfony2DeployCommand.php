@@ -66,8 +66,6 @@ TXT
       $command->run(new nbCommandLineParser(), $commandLine);
     }
 
-    $shell = new nbShell();
-
     if (isset($options['rebuild-db'])) {
       //rebuild database
       $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
@@ -201,6 +199,7 @@ TXT
 
   private function executeCommandLine($command, $doit = false) {
     if ($doit) {
+      $shell = new nbShell();
       if (!$shell->execute($command))
         throw new LogicException(sprintf("
 [nbSymfony2DeployStageCommand::execute] Error executing command:
