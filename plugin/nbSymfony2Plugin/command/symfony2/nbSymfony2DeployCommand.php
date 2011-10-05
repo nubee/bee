@@ -129,11 +129,11 @@ TXT
       //change owner
       $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
 
-      $this->logLine("\n\t change owner to directory: " . nbConfig::get($env . '_www_web_dir') . "\n", nbLogger::INFO);
+      $this->logLine("\n\t<comment>change owner to directory:</comment> " . nbConfig::get($env . '_www_web_dir') . "\n", nbLogger::INFO);
       $command = 'chown -R ' . nbConfig::get($env . '_owner') . ':' . nbConfig::get($env . '_group') . ' ' . nbConfig::get($env . '_www_web_dir');
       $this->executeCommandLine($command, $doit);
 
-      $this->logLine("\n\t change owner to directory: " . nbConfig::get($env . '_www_symfony_dir') . "\n", nbLogger::INFO);
+      $this->logLine("\n\t<comment>change owner to directory:</comment> " . nbConfig::get($env . '_www_symfony_dir') . "\n", nbLogger::INFO);
       $command = 'chown -R ' . nbConfig::get($env . '_owner') . ':' . nbConfig::get($env . '_group') . ' ' . nbConfig::get($env . '_www_symfony_dir');
       $this->executeCommandLine($command, $doit);
     }
@@ -143,54 +143,54 @@ TXT
       $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
       
       //change mode web dir 555
-      $this->logLine("\n\t change mode to directory: " . nbConfig::get($env . '_www_web_dir') . "\n", nbLogger::INFO);
+      $this->logLine("\n\t<comment>change mode to directory:</comment> " . nbConfig::get($env . '_www_web_dir') . "\n", nbLogger::INFO);
       $command = 'find ' . nbConfig::get($env . '_www_web_dir') . ' -type d -exec chmod 555 {} \\; ';
       $this->executeCommandLine($command, $doit);
 
       //change mode web dir (files) 444
-      $this->logLine("\n\t change mode to directory: " . nbConfig::get($env . '_www_web_dir') . " (files)\n", nbLogger::INFO);
+      $this->logLine("\n\t<comment>change mode to directory:</comment> " . nbConfig::get($env . '_www_web_dir') . " (files)\n", nbLogger::INFO);
       $command = 'find ' . nbConfig::get($env . '_www_web_dir') . ' -type f -exec chmod 444 {} \\; ';
       $this->executeCommandLine($command, $doit);
 
       if (nbConfig::has($env . '_www_uploads_dir')) {
         //change mode uploads dir 755
-        $this->logLine("\n\t change mode to directory: " . nbConfig::get($env . '_www_uploads_dir') . "\n", nbLogger::INFO);
+        $this->logLine("\n\t<comment>change mode to directory:</comment> " . nbConfig::get($env . '_www_uploads_dir') . "\n", nbLogger::INFO);
         $command = 'find ' . nbConfig::get($env . '_www_uploads_dir') . ' -type d -exec chmod 755 {} \\; ';
         $this->executeCommandLine($command, $doit);
 
         //change mode uploads dir (files) 644
-        $this->logLine("\n\t change mode to directory: " . nbConfig::get($env . '_www_uploads_dir') . " (files)\n", nbLogger::INFO);
+        $this->logLine("\n\t<comment>change mode to directory:</comment> " . nbConfig::get($env . '_www_uploads_dir') . " (files)\n", nbLogger::INFO);
         $command = 'find ' . nbConfig::get($env . '_www_uploads_dir') . ' -type f -exec chmod 644 {} \\; ';
         $this->executeCommandLine($command, $doit);
       }
 
       //change mode symfony 555
-      $this->logLine("\n\t change mode to directory: " . nbConfig::get($env . '_www_symfony_dir') . "\n", nbLogger::INFO);
+      $this->logLine("\n\t<comment>change mode to directory:</comment> " . nbConfig::get($env . '_www_symfony_dir') . "\n", nbLogger::INFO);
       $command = 'find ' . nbConfig::get($env . '_www_symfony_dir') . ' -type d -exec chmod 555 {} \\; ';
       $this->executeCommandLine($command, $doit);
 
       //change mode symfony (files) 444
-      $this->logLine("\n\t change mode to directory: " . nbConfig::get($env . '_www_symfony_dir') . " (files)\n", nbLogger::INFO);
+      $this->logLine("\n\t<comment>change mode to directory:</comment> " . nbConfig::get($env . '_www_symfony_dir') . " (files)\n", nbLogger::INFO);
       $command = 'find ' . nbConfig::get($env . '_www_symfony_dir') . ' -type f -exec chmod 444 {} \\; ';
       $this->executeCommandLine($command, $doit);
 
       //change mode cache 755
-      $this->logLine("\n\t change mode to directory: " . nbConfig::get($env . '_www_symfony_cache_dir') . "\n", nbLogger::INFO);
+      $this->logLine("\n\t<comment>change mode to directory:</comment> " . nbConfig::get($env . '_www_symfony_cache_dir') . "\n", nbLogger::INFO);
       $command = 'find ' . nbConfig::get($env . '_www_symfony_cache_dir') . ' -type d -exec chmod 755 {} \\; ';
       $this->executeCommandLine($command, $doit);
 
       //change mode cache (files) 644
-      $this->logLine("\n\t change mode to directory: " . nbConfig::get($env . '_www_symfony_cache_dir') . " (files)\n", nbLogger::INFO);
+      $this->logLine("\n\t<comment>change mode to directory:</comment> " . nbConfig::get($env . '_www_symfony_cache_dir') . " (files)\n", nbLogger::INFO);
       $command = 'find ' . nbConfig::get($env . '_www_symfony_cache_dir') . ' -type f -exec chmod 644 {} \\; ';
       $this->executeCommandLine($command, $doit);
 
       //change mode logs 755
-      $this->logLine("\n\t change mode to directory: " . nbConfig::get($env . '_www_symfony_logs_dir') . "\n", nbLogger::INFO);
+      $this->logLine("\n\t<comment>change mode to directory:</comment> " . nbConfig::get($env . '_www_symfony_logs_dir') . "\n", nbLogger::INFO);
       $command = 'find ' . nbConfig::get($env . '_www_symfony_logs_dir') . ' -type d -exec chmod 755 {} \\; ';
       $this->executeCommandLine($command, $doit);
 
       //change mode logs (files) 644
-      $this->logLine("\n\t change mode to directory: " . nbConfig::get($env . '_www_symfony_logs_dir') . " (files)\n", nbLogger::INFO);
+      $this->logLine("\n\t<comment>change mode to directory:</comment> " . nbConfig::get($env . '_www_symfony_logs_dir') . " (files)\n", nbLogger::INFO);
       $command = 'find ' . nbConfig::get($env . '_www_symfony_logs_dir') . ' -type f -exec chmod 644 {} \\; ';
       $this->executeCommandLine($command, $doit);
     }
@@ -208,7 +208,7 @@ TXT
 ", $command
         ));
     } else {
-      $this->logLine("\tcommand to execute: <info>" . $command . "</info>\n", nbLogger::COMMENT);
+      $this->logLine("\t<comment>command to execute:</comment> " . $command . "\n");
     }
   }
 
