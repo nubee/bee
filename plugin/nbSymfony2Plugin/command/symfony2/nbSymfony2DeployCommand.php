@@ -13,7 +13,7 @@ TXT
     );
 
     $this->setArguments(new nbArgumentSet(array(
-        new nbArgument('environment', nbArgument::REQUIRED, 'Environment name ( dev | prod )'),
+        new nbArgument('environment', nbArgument::REQUIRED, 'Environment name ( stage | prod )'),
       )));
 
     $this->setOptions(new nbOptionSet(array(
@@ -29,7 +29,7 @@ TXT
       return true;
     }
 
-    $this->logLine('Running: symfony2:deploy-stage', nbLogger::COMMENT);
+    $this->logLine('Running: symfony2:deploy', nbLogger::COMMENT);
 
     $pluginConfigFile = './.bee/nbSymfony2Plugin.yml';
 
@@ -48,7 +48,7 @@ TXT
 
     if (nbConfig::get($env . '_exec_sync')) {
       //sync
-      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy', nbLogger::COMMENT);
       $this->logLine("\n\tsync project\n", nbLogger::INFO);
 
       //sync httpdocs
@@ -68,16 +68,16 @@ TXT
 
     if (isset($options['rebuild-db'])) {
       //rebuild database
-      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy', nbLogger::COMMENT);
       $this->logLine("\n\trebuild database\n", nbLogger::INFO);
 
-      $command = nbConfig::get($env . '_www_symfony_bin') . ' doctrine:database:drop --force --env=' . $env;
+      $command = nbConfig::get($env . '_www_symfony_bin') . ' doctrine:database:drop --force --env=' . nbConfig::get($env . '_environment');
       $this->executeCommandLine($command, $doit);
 
-      $command = nbConfig::get($env . '_www_symfony_bin') . ' doctrine:database:create --env=' . $env;
+      $command = nbConfig::get($env . '_www_symfony_bin') . ' doctrine:database:create --env=' . nbConfig::get($env . '_environment');
       $this->executeCommandLine($command, $doit);
 
-      $command = nbConfig::get($env . '_www_symfony_bin') . ' doctrine:schema:create --env=' . $env;
+      $command = nbConfig::get($env . '_www_symfony_bin') . ' doctrine:schema:create --env=' . nbConfig::get($env . '_environment');
       $this->executeCommandLine($command, $doit);
 
       if (nbConfig::get($env . '_exec_migrate')) {
@@ -90,33 +90,33 @@ TXT
         foreach ($files as $file) {
           preg_match('/Version(.+)\.php/s', $file, $version);
 
-          $command = nbConfig::get($env . '_www_symfony_bin') . ' doctrine:migrations:version ' . $version[1] . '  --env=' . $env . ' --add';
+          $command = nbConfig::get($env . '_www_symfony_bin') . ' doctrine:migrations:version ' . $version[1] . '  --env=' . nbConfig::get($env . '_environment') . ' --add';
           $this->executeCommandLine($command, $doit);
         }
       }
     } else {
       if (nbConfig::get($env . '_exec_migrate')) {
         //migrate
-        $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+        $this->logLine('symfony2:deploy', nbLogger::COMMENT);
         $this->logLine("\n\tmigrate\n", nbLogger::INFO);
 
-        $command = nbConfig::get($env . '_www_symfony_bin') . ' doctrine:migrations:migrate --env=' . $env . ' --no-interaction';
+        $command = nbConfig::get($env . '_www_symfony_bin') . ' doctrine:migrations:migrate --env=' . nbConfig::get($env . '_environment') . ' --no-interaction';
         $this->executeCommandLine($command, $doit);
       }
     }
 
     if (nbConfig::get($env . '_exec_cache_clear')) {
       //clear cache
-      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy', nbLogger::COMMENT);
       $this->logLine("\n\tclear cache\n", nbLogger::INFO);
 
-      $command = nbConfig::get($env . '_www_symfony_bin') . ' cache:clear --env=' . $env;
+      $command = nbConfig::get($env . '_www_symfony_bin') . ' cache:clear --env=' . nbConfig::get($env . '_environment');
       $this->executeCommandLine($command, $doit);
     }
 
     if (nbConfig::get($env . '_exec_assets_install')) {
       //install assets
-      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy', nbLogger::COMMENT);
       $this->logLine("\n\tinstall assets\n", nbLogger::INFO);
 
       $command = nbConfig::get($env . '_www_symfony_bin') . ' assets:install ' . nbConfig::get($env . '_www_web_dir');
@@ -125,7 +125,7 @@ TXT
 
     if (nbConfig::get($env . '_exec_change_owner')) {
       //change owner
-      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy', nbLogger::COMMENT);
 
       $this->logLine("\n\t<comment>change owner to directory:</comment> " . nbConfig::get($env . '_www_web_dir') . "\n", nbLogger::INFO);
       $command = 'chown -R ' . nbConfig::get($env . '_owner') . ':' . nbConfig::get($env . '_group') . ' ' . nbConfig::get($env . '_www_web_dir');
@@ -138,7 +138,7 @@ TXT
 
     if (nbConfig::get($env . '_exec_change_mode')) {
       //change mode
-      $this->logLine('symfony2:deploy-stage', nbLogger::COMMENT);
+      $this->logLine('symfony2:deploy', nbLogger::COMMENT);
       
       //change mode web dir 555
       $this->logLine("\n\t<comment>change mode to directory:</comment> " . nbConfig::get($env . '_www_web_dir') . "\n", nbLogger::INFO);
@@ -193,7 +193,7 @@ TXT
       $this->executeCommandLine($command, $doit);
     }
 
-    $this->logLine('Done: symfony2:deploy-stage', nbLogger::COMMENT);
+    $this->logLine('Done: symfony2:deploy', nbLogger::COMMENT);
     return true;
   }
 

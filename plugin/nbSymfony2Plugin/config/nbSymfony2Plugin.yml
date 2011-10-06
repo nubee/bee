@@ -1,9 +1,9 @@
 #command configuration
 
 <?php
-  // dev configuration
+  // stage configuration
   $webDirName = 'httpdocs';
-  $symfonyDirName = 'symfony'; //TODO: is it necessary?
+  $symfonyDirName = 'symfony';
   $wwwDir = '/var/www/site-directory';
   $sourceDir = '.';
   $wwwSymfonyDir = $wwwDir."/".$symfonyDirName;
@@ -11,7 +11,8 @@
   $owner = 'www-data';
   $group = 'www-data';
 ?>
-dev:
+stage:
+  environment: prod
   www:
     dir: <?php echo $wwwDir."\n"; ?>
     web_dir: <?php echo $wwwDir."/".$webDirName."\n"; ?>
@@ -51,6 +52,7 @@ dev:
   $group = 'apache';
 ?>
 prod:
+  environment: prod
   www:
     dir: <?php echo $wwwDir."\n"; ?>
     web_dir: <?php echo $wwwDir."/".$webDirName."\n"; ?>
