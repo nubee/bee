@@ -1,0 +1,9 @@
+.svn
+.netbeans
+.bee
+nbproject
+bee.yml
+symfony/log
+symfony/cache
+config/databases.yml
+*.lck
