@@ -65,7 +65,7 @@ TXT
     $tags = (isset($options['tags'])) ? $options['tags'] : false;
     $branches = (isset($options['branches'])) ? $options['branches'] : false;
     
-    $useStandardLayout = (!$trunk && $tags && $branches && !isset($options['no-standard-layout']));
+    $useStandardLayout = (!$trunk && !$tags && !$branches && !isset($options['no-standard-layout']));
     $this->logLine('Standard layout: ' . ($useStandardLayout ? 'true' : 'false'), nbLogger::COMMENT);
 
     $this->logLine('Removing temporary directory: ' . $tempDir, nbLogger::INFO);
@@ -73,6 +73,7 @@ TXT
     
     $shell = new nbShell();
     $command = sprintf('git svn clone %s %s', $source, $destination);
+    
     $params = array(' --no-metadata');
     
     if($authorsFile) $params[] = '-A' . $authorsFile;
