@@ -88,17 +88,20 @@ TXT
     
     $shell->execute($command . implode(' ', $params), $dryRun);
     
+    $this->logLine('Applying git fix', nbLogger::INFO);
     $shell->execute('cd ' . $tempDir . ' && git svn-abandon-fix-refs', $dryRun);
     $shell->execute('cd ' . $tempDir . ' && git svn-abandon-cleanup', $dryRun);
     $shell->execute('cd ' . $tempDir . ' && git config --remove-section svn', $dryRun);
     $shell->execute('cd ' . $tempDir . ' && git config --remove-section svn-remote.svn', $dryRun);
 
+    $this->logLine('Removing svn references', nbLogger::INFO);
     if(!isset($options['dry-run'])) {
       nbFileSystem::rmdir($tempDir . '/.git/svn', true);
       nbFileSystem::rmdir($tempDir . '/.git/refs/remotes/svn', true);
       nbFileSystem::rmdir($tempDir . '/.git/logs/refs/remotes/svn', true);
     }
     
+    $this->logLine('Pushing to ' . $destination, nbLogger::INFO);
     $shell->execute('cd ' . $tempDir . sprintf(' && git remote add origin %s.git', $destination), $dryRun);
     $shell->execute('cd ' . $tempDir . ' && git push --all', $dryRun);
     $shell->execute('cd ' . $tempDir . ' && git push --tags', $dryRun);
