@@ -52,7 +52,7 @@ TXT
     $source = $options['source'] . '/' . $project;
     $destination = $options['username'] . '@' . $options['destination'] . '/' . $destName;
     $authorsFile = isset($options['authors-file']) ? $options['authors-file'] : false;
-    $tempDir = isset($options['temp-dir']) ? $options['temp-dir'] : 'temp';
+    $tempDir = isset($options['temp-dir']) ? $options['temp-dir'] : '~/temp';
     
     $this->logLine('Converting ' . $project, nbLogger::COMMENT);
     $this->logLine('Source: ' . $source, nbLogger::COMMENT);
