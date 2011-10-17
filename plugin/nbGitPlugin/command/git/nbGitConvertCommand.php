@@ -72,7 +72,7 @@ TXT
     nbFileSystem::rmdir($tempDir, true);
     
     $shell = new nbShell();
-    $command = sprintf('git svn clone %s %s', $source, $destination);
+    $command = sprintf('git svn clone %s %s', $source, $tempDir);
     
     $params = array(' --no-metadata');
     
@@ -99,7 +99,7 @@ TXT
       nbFileSystem::rmdir($tempDir . '/.git/logs/refs/remotes/svn', true);
     }
     
-    $shell->execute('cd ' . $tempDir . sprintf(' && git remote add origin git@venus:%s.git', $destName), $dryRun);
+    $shell->execute('cd ' . $tempDir . sprintf(' && git remote add origin %s.git', $destination), $dryRun);
     $shell->execute('cd ' . $tempDir . ' && git push --all', $dryRun);
     $shell->execute('cd ' . $tempDir . ' && git push --tags', $dryRun);
   }
