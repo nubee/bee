@@ -14,7 +14,7 @@ TXT
 
     $this->setArguments(new nbArgumentSet(array(
                 new nbArgument('source_dir', nbArgument::OPTIONAL, 'Source directory','.'),
-                new nbArgument('install_dir', nbArgument::OPTIONAL, 'Installation directory',$this->getDefaultInstallDir())
+                new nbArgument('install_dir', nbArgument::OPTIONAL, 'Installation directory', $this->getDefaultInstallDir())
             )));
 
     $this->setOptions(new nbOptionSet(array(
