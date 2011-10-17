@@ -32,6 +32,7 @@ TXT
       new nbOption('no-standard-layout', 'x', nbOption::PARAMETER_NONE, 'No standard layout'),
       new nbOption('temp-dir', '', nbOption::PARAMETER_REQUIRED, 'Temporary dir'),
       new nbOption('authors-file', 'a', nbOption::PARAMETER_REQUIRED, 'Authors file'),
+      new nbOption('dry-run', '', nbOption::PARAMETER_NONE, 'Dry run'),
     )));
   }
 
@@ -72,27 +73,33 @@ TXT
     
     $shell = new nbShell();
     $command = sprintf('git svn clone %s %s', $source, $destination);
-    $options = array(' --no-metadata');
-    if($authorsFile) $options[] = '-A' . $authorsFile;
-    if($trunk) $options[] = '-T' . $trunk;
-    if($tags) $options[] = '-t' . $tags;
-    if($branches) $options[] = '-b' . $branches;
-    if($useStandardLayout) $options[] = '--stdlayout';
+    $params = array(' --no-metadata');
+    
+    if($authorsFile) $params[] = '-A' . $authorsFile;
+    if($trunk) $params[] = '-T' . $trunk;
+    if($tags) $params[] = '-t' . $tags;
+    if($branches) $params[] = '-b' . $branches;
+    if($useStandardLayout) $params[] = '--stdlayout';
+    
+    $dryRun = isset($options['dry-run']);
     
     $this->logLine('Cloning repository', nbLogger::INFO);
-    $shell->execute($command . implode(' ', $options));
     
-    $shell->execute('cd ' . $tempDir . ' && git svn-abandon-fix-refs');
-    $shell->execute('cd ' . $tempDir . ' && git svn-abandon-cleanup');
-    $shell->execute('cd ' . $tempDir . ' && git config --remove-section svn');
-    $shell->execute('cd ' . $tempDir . ' && git config --remove-section svn-remote.svn');
+    $shell->execute($command . implode(' ', $params), $dryRun);
+    
+    $shell->execute('cd ' . $tempDir . ' && git svn-abandon-fix-refs', $dryRun);
+    $shell->execute('cd ' . $tempDir . ' && git svn-abandon-cleanup', $dryRun);
+    $shell->execute('cd ' . $tempDir . ' && git config --remove-section svn', $dryRun);
+    $shell->execute('cd ' . $tempDir . ' && git config --remove-section svn-remote.svn', $dryRun);
 
-    nbFileSystem::rmdir($tempDir . '/.git/svn', true);
-    nbFileSystem::rmdir($tempDir . '/.git/refs/remotes/svn', true);
-    nbFileSystem::rmdir($tempDir . '/.git/logs/refs/remotes/svn', true);
+    if(!isset($options['dry-run'])) {
+      nbFileSystem::rmdir($tempDir . '/.git/svn', true);
+      nbFileSystem::rmdir($tempDir . '/.git/refs/remotes/svn', true);
+      nbFileSystem::rmdir($tempDir . '/.git/logs/refs/remotes/svn', true);
+    }
     
-    $shell->execute('cd ' . $tempDir . sprintf(' && git remote add origin git@venus:%s.git', $destName));
-    $shell->execute('cd ' . $tempDir . ' && git push --all');
-    $shell->execute('cd ' . $tempDir . ' && git push --tags');
+    $shell->execute('cd ' . $tempDir . sprintf(' && git remote add origin git@venus:%s.git', $destName), $dryRun);
+    $shell->execute('cd ' . $tempDir . ' && git push --all', $dryRun);
+    $shell->execute('cd ' . $tempDir . ' && git push --tags', $dryRun);
   }
 }
