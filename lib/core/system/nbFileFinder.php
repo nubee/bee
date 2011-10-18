@@ -288,10 +288,10 @@ class nbFileFinder
 
     // first argument is an array?
     $args = func_get_args();
-    $count  = count($args);
+    $count = count($args);
     if ($count === 1 && is_array($args[0])) {
       $args = $args[0];
-      $count  = count($args);
+      $count = count($args);
     }
 
     for ($i = 0; $i < $count; ++$i) {
@@ -300,12 +300,12 @@ class nbFileFinder
       if (!is_dir($dir))
         continue;
 
-      $dir = str_replace('\\', '/', $dir);
-
       // absolute path?
       if (!self::isPathAbsolute($dir))
         $dir = $currentDir.'/'.$dir;
-
+      
+      $dir = str_replace('\\', '/', $dir);
+      
       $new_files = str_replace('\\', '/', $finder->searchIn($dir));
 
       if ($this->relative)
@@ -333,9 +333,9 @@ class nbFileFinder
     $files = array();
     $temp_files = array();
     $temp_folders = array();
-    if (is_dir($dir)) {
-      $current_dir = opendir($dir);
-      while (false !== $entryname = readdir($current_dir)) {
+    if (is_dir($dir) && is_readable($dir)) {
+      $currentDir = opendir($dir);
+      while (false !== $entryname = readdir($currentDir)) {
         if ($entryname == '.' || $entryname == '..') continue;
 
         $current_entry = $dir.DIRECTORY_SEPARATOR.$entryname;
@@ -387,7 +387,7 @@ class nbFileFinder
         $files = array_merge($files, $temp_files);
       }
 
-      closedir($current_dir);
+      closedir($currentDir);
     }
 
     return $files;

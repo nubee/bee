@@ -16,12 +16,12 @@ TXT
 
     $this->setArguments(new nbArgumentSet(array(
         new nbArgument('db-name', nbArgument::REQUIRED, 'New database name'),
-        new nbArgument('mysql-user', nbArgument::REQUIRED, 'Mysql user'),
-        new nbArgument('mysql-password', nbArgument::OPTIONAL, 'Mysql user password')
+        new nbArgument('mysql-username', nbArgument::REQUIRED, 'Mysql username'),
+        new nbArgument('mysql-password', nbArgument::OPTIONAL, 'Mysql password', null)
       )));
 
     $this->setOptions(new nbOptionSet(array(
-        new nbOption('user', 'u', nbOption::PARAMETER_REQUIRED, 'New database user'),
+        new nbOption('username', 'u', nbOption::PARAMETER_REQUIRED, 'New database username'),
         new nbOption('password', 'p', nbOption::PARAMETER_REQUIRED, 'New database password')
       )));
   }
@@ -29,11 +29,13 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $shell = new nbShell();
-    $mysqlUser = $arguments['mysql-user'];
+    $mysqlUsername = $arguments['mysql-username'];
     $mysqlPassword = $arguments['mysql-password'];
     $dbName = $arguments['db-name'];
 
-    $cmd = 'mysqladmin -u ' . $mysqlUser . ' -p ' . $mysqlPassword . ' create ' . $dbName;
+    $cmd = 'mysqladmin -u ' . $mysqlUsername . ' create ' . $dbName;
+    if($mysqlPassword)
+      $cmd -= ' -p ' . $mysqlPassword;
     $shell->execute($cmd);
     $this->logLine(sprintf('Database %s created', $dbName));
 
@@ -41,18 +43,25 @@ TXT
     $password = isset($options['password']) ? $options['password'] : null;
 
     if($username) {
-      $cmd = 'mysql -u ' . $mysqlUser . ' -p ' . $mysqlPassword .
-        ' -e "grant all privileges on ' . $dbName . '.* to \'' . $username . '\'@\'localhost\'';
-
-      if($password) {
-        $cmd .= ' identified by \'' . $password . '\'';
-      }
-
-      $cmd .= '"';
+      $cmd = sprintf('mysql -u %s %s -e "grant all privileges on %s.* to \'%s\'@\'localhost\' %s"', 
+        $mysqlUsername, 
+        $this->formatPasswordOption($mysqlPassword), 
+        $dbName,
+        $username, 
+        ($password ? sprintf(' identified by \'%s\'', $password) : ''));
 
       $shell->execute($cmd);
       $this->logLine(sprintf('Datebase user %s successfully created', $username));
     }
+    
+    return true;
+  }
+  
+  protected function formatPasswordOption($password) {
+    if($password)
+      return ' -p' . $password;
+    
+    return '';
   }
 
 }

@@ -15,8 +15,6 @@ $configParser = new nbYamlConfigParser();
 $configParser->parseFile(dirname(__FILE__) . '/../../config/config.yml');
 $configParser->parseFile(dirname(__FILE__) . '/../config/config.test.yml');
 
-
-
 $serviceContainer = new sfServiceContainerBuilder();
 $serviceContainer->register('pluginLoader', 'nbPluginLoader')->
   addArgument(nbConfig::get('nb_plugin_dir'))->
@@ -36,18 +34,17 @@ $logger->setOutput($output);
 $dir = dirname(__FILE__) . '/../sandbox/';
 $dirEntries = glob(rtrim($dir, '/') . '/*');
 
-function recursiveDelete($str){
+function recursiveDelete($str)
+{
   if(is_file($str))
     return @unlink($str);
-//    echo 'unlink: ' . $str . "\n";
   else if(is_dir($str)) {
-    $scan = glob(rtrim($str,'/').'/*');
+    $scan = glob(rtrim($str, '/') . '/*');
 
     foreach($scan as $index => $path)
       recursiveDelete($path);
 
     return @rmdir($str);
-//    echo 'rmdir: ' . $str . "\n";
   }
 }
 

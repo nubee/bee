@@ -1,10 +1,10 @@
 nb:
-  lib_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>lib"
-  command_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>lib/command"
+  lib_dir: "<?php echo nbConfig::get('nb_bee_dir','.') . '/'; ?>lib"
+  command_dir: "<?php echo nbConfig::get('nb_bee_dir','.') . '/'; ?>lib/command"
   test_dir: test/unit
   project_config: bee.yml
-  template_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>data/template"
-  plugin_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>plugin"
+  template_dir: "<?php echo nbConfig::get('nb_bee_dir','.') . '/'; ?>data/template"
+  plugin_dir: "<?php echo nbConfig::get('nb_bee_dir','.') . '/'; ?>plugin"
   default_plugins: ~
   output:
     color: "true"

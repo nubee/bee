@@ -8,6 +8,7 @@
  */
 class nbLimeTestCommand extends nbCommand
 {
+
   protected function configure()
   {
     $this->setName('lime:test')
@@ -16,27 +17,27 @@ class nbLimeTestCommand extends nbCommand
 The <info>{$this->getFullName()}</info> command runs unit tests using lime.
 TXT
     );
-    
+
     $this->setArguments(new nbArgumentSet(array(
-      new nbArgument('name', nbArgument::OPTIONAL | nbArgument::IS_ARRAY, 'The test name'),
-    )));
+        new nbArgument('name', nbArgument::OPTIONAL | nbArgument::IS_ARRAY, 'The test name'),
+      )));
 
     $this->setOptions(new nbOptionSet(array(
-      new nbOption('dir', 'd', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY, 'Load tests from dir'),
-      new nbOption('output', 'o', nbOption::PARAMETER_REQUIRED, 'Outputs to filename'),
-      new nbOption('showall', '', nbOption::PARAMETER_NONE, 'Show all tests one by one'),
-      new nbOption('xml', 'x', nbOption::PARAMETER_NONE, 'Outputs in xml format'),
-      new nbOption('exclude-project-folder', '', nbOption::PARAMETER_NONE, 'Exclude default project folder'),
-    )));
+        new nbOption('dir', 'd', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY, 'Load tests from dir'),
+        new nbOption('output', 'o', nbOption::PARAMETER_REQUIRED, 'Outputs to filename'),
+        new nbOption('showall', '', nbOption::PARAMETER_NONE, 'Show all tests one by one'),
+        new nbOption('xml', 'x', nbOption::PARAMETER_NONE, 'Outputs in xml format'),
+        new nbOption('exclude-project-folder', '', nbOption::PARAMETER_NONE, 'Exclude default project folder'),
+      )));
   }
-  
+
   protected function execute(array $arguments = array(), array $options = array())
   {
     $files = array();
     $dirs = isset($options['dir']) ? $options['dir'] : array();
-    
+
     if(!isset($options['exclude-project-folder']))
-      $dirs[] = nbConfig::get('nb_test_dir','test/unit');
+      $dirs[] = nbConfig::get('nb_test_dir', 'test/unit');
 
     if(count($arguments['name'])) {
       foreach($dirs as $dir)
@@ -57,15 +58,15 @@ TXT
     }
 
     $h = new lime_harness();
-    $h->register($files); 
+    $h->register($files);
 
     $ret = $h->run(isset($options['showall']));
 
     // print output to file
-    if (isset($options['output'])) {
+    if(isset($options['output'])) {
       $fileName = $options['output'];
       $fh = fopen($fileName, 'w');
-      if ($fh === false)
+      if($fh === false)
         return $ret;
 
       fwrite($fh, isset($options['xml']) ? $h->to_xml() : '');
