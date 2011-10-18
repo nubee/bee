@@ -4,7 +4,7 @@ mysql:
   mysql_password: 
   username:       fakeUsername
   password:       fakePassword
-  dump_path:      plugin/nbMysqlPlugin/test/data
-  dump_filename:  plugin/nbMysqlPlugin/test/data/dbtest-xxx.sql
+  dump_path:      ../data
+  dump_filename:  ../data/dbtest-xxx.sql
   
   

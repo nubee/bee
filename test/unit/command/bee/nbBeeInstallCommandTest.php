@@ -11,7 +11,6 @@ if (PHP_OS == "Linux") {
 }
 else if (PHP_OS == "WINNT") {
   nbConfig::set('nb_test_installation_dir', nbConfig::get('nb_test_win_installation_dir'));
-  echo nbConfig::get('nb_test_installation_dir');
   $shell->execute( 'rd /S /Q '.nbConfig::get('nb_test_installation_dir'));
 }
 

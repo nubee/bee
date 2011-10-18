@@ -1,6 +1,6 @@
 <?php
 
-class nbMysqlCreateCommand extends nbCommand
+class nbMysqlCreateCommand extends nbMysqlAbstractCommand
 {
 
   protected function configure()
@@ -28,22 +28,21 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $shell = new nbShell();
     $mysqlUsername = $arguments['mysql-username'];
     $mysqlPassword = $arguments['mysql-password'];
-    $dbName = $arguments['db-name'];
+    $dbName        = $arguments['db-name'];
+    $username      = isset($options['username']) ? $options['username'] : null;
+    $password      = isset($options['password']) ? $options['password'] : null;
+    
+    $shell = new nbShell();
 
-    $cmd = 'mysqladmin -u ' . $mysqlUsername . ' create ' . $dbName;
-    if($mysqlPassword)
-      $cmd -= ' -p ' . $mysqlPassword;
+    $cmd = sprintf('mysqladmin -u%s %s create %s', $mysqlUsername, $this->formatPasswordOption($mysqlPassword), $dbName);
     $shell->execute($cmd);
     $this->logLine(sprintf('Database %s created', $dbName));
 
-    $username = isset($options['username']) ? $options['username'] : null;
-    $password = isset($options['password']) ? $options['password'] : null;
 
     if($username) {
-      $cmd = sprintf('mysql -u %s %s -e "grant all privileges on %s.* to \'%s\'@\'localhost\' %s"', 
+      $cmd = sprintf('mysql -u%s %s -e "grant all privileges on %s.* to \'%s\'@\'localhost\' %s"', 
         $mysqlUsername, 
         $this->formatPasswordOption($mysqlPassword), 
         $dbName,
@@ -55,13 +54,6 @@ TXT
     }
     
     return true;
-  }
-  
-  protected function formatPasswordOption($password) {
-    if($password)
-      return ' -p' . $password;
-    
-    return '';
   }
 
 }

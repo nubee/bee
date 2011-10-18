@@ -1,6 +1,6 @@
 <?php
 
-class nbMysqlDropCommand extends nbCommand
+class nbMysqlDropCommand extends nbMysqlAbstractCommand
 {
 
   protected function configure()
@@ -28,10 +28,14 @@ TXT
     $mysqlPassword = $arguments['mysql-password'];
     $dbName = $arguments['db-name'];
 
-    $cmd = sprintf('mysql -u %s -p %s -e "drop database %s"', $mysqlUsername, $mysqlPassword, $dbName);
+    $cmd = sprintf('mysql -u%s %s -e "drop database %s"', $mysqlUsername, $this->formatPasswordOption($mysqlPassword), $dbName);
 
-    $shell->execute($cmd);
-    $this->logLine(sprintf('Database %s dropped', $dbName));
+    if($shell->execute($cmd)) {
+      $this->logLine(sprintf('Database %s dropped', $dbName));
+      return true;
+    }
+    
+    return false;
   }
 
 }
