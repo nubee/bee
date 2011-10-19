@@ -9,6 +9,7 @@
 class nbFileSystem
 {
   private static $instance;
+  private $isVerbose = false;
 
   public static function getInstance()
   {
@@ -16,6 +17,11 @@ class nbFileSystem
       self::$instance = new nbFileSystem();
 
     return self::$instance;
+  }
+  
+  public function setVerbose($verbose)
+  {
+    $this->isVerbose = $verbose;
   }
 
   /**
@@ -58,29 +64,33 @@ class nbFileSystem
    * This method removes a directory.
    *
    * @param  string $path  The directory path
-   * @param  boolean $leaveEmpty  Leaves the directory empty
+   * @param  boolean $removeIfNotEmpty  Removes the directory content if not empty
+   * @param  boolean $leaveEmptyFolder  Leaves the directory empty
    */
-  public function rmdir($directory, $leaveEmpty = false)
+  public function rmdir($directory, $removeIfNotEmpty = false, $leaveEmptyFolder = false)
   {
     if(substr($directory, -1) == "/") {
       $directory = substr($directory, 0, -1);
     }
 
     if(!file_exists($directory) || !is_dir($directory)) {
-      return false;
+      throw new Exception('[nbFileSystem::rmdir] Folder ' . $directory . ' does not exist');
     }
     elseif(!is_readable($directory)) {
-      return false;
+      throw new Exception('[nbFileSystem::rmdir] Folder ' . $directory . ' is not readable');
     }
     else {
       $directoryHandle = opendir($directory);
 
       while($contents = readdir($directoryHandle)) {
         if($contents != '.' && $contents != '..') {
+          if(!$removeIfNotEmpty)
+            throw new Exception('[nbFileSystem::rmdir] Folder ' . $directory . ' is not empty');
+          
           $path = $directory . "/" . $contents;
 
           if(is_dir($path)) {
-            $this->rmdir($path);
+            $this->rmdir($path, true, false);
           }
           else {
             unlink($path);
@@ -90,7 +100,7 @@ class nbFileSystem
 
       closedir($directoryHandle);
 
-      if(!$leaveEmpty) {
+      if(!$leaveEmptyFolder) {
         if(!rmdir($directory))
           throw new Exception('[nbFileSystem::rmdir] Error deleting folder ' . $path);
       }
@@ -106,7 +116,7 @@ class nbFileSystem
    */
   public function touch($path)
   {
-    if(!touch($path)) {
+    if(!@touch($path)) {
       throw new Exception('[nbFileSystem::touch] Error touching file ' . $path);
     }
   }
@@ -139,40 +149,47 @@ class nbFileSystem
    * @param string $dest  The target filename
    * @param bool  $overwrite
    */
-  public function copy($originFile, $targetFile, $overwrite = false, $checkMostRecent = false)
+  public function copy($source, $destination, $overwrite = false, $checkMostRecent = false)
   {
+    if(!file_exists($source))
+      throw new Exception('[nbFileSystem::copy] Source file: ' . $destination . ' does not exist');
+
     // we create target_dir if needed
-    if(!is_dir(dirname($targetFile))) {
-      $this->mkdir(dirname($targetFile));
+    if(!is_dir(dirname($destination))) {
+      $this->mkdir(dirname($destination));
+    }
+    
+    if(is_dir($destination)) {
+      $destination .= '/' . basename($source);
     }
 
     $mostRecent = false;
-    if(file_exists($targetFile) && $checkMostRecent) {
-      $statTarget = stat($targetFile);
-      $statOrigin = stat($originFile);
+    if(file_exists($destination) && $checkMostRecent) {
+      $statTarget = stat($destination);
+      $statOrigin = stat($source);
       $mostRecent = ($statOrigin['mtime'] > $statTarget['mtime']) ? true : false;
     }
-
-    if(!file_exists($targetFile)) {
-      $this->logLine('file+: ' . $targetFile);
-      copy($originFile, $targetFile);
+    
+    if(!file_exists($destination)) {
+      $this->logLine('file+: ' . $destination);
+      copy($source, $destination);
     }
     else if($overwrite) {
       if($checkMostRecent) {
         if($mostRecent) {
-          $this->logLine('file+: ' . $targetFile . ' overwritten (source most recent)');
-          copy($originFile, $targetFile);
+          $this->logLine('file+: ' . $destination . ' overwritten (source most recent)');
+          copy($source, $destination);
         }
         else
-          $this->logLine('file : ' . $targetFile . ' not copied');
+          $this->logLine('file : ' . $destination . ' not copied');
       }
       else {
-        $this->logLine('file+: ' . $targetFile . ' overwritten');
-        copy($originFile, $targetFile);
+        $this->logLine('file+: ' . $destination . ' overwritten');
+        copy($source, $destination);
       }
     }
     else
-      throw new Exception('[nbFileSystem::copy] Can\'t overwrite file: ' . $targetFile);
+      throw new Exception('[nbFileSystem::copy] Can\'t overwrite file: ' . $destination);
   }
 
   /**
@@ -211,7 +228,7 @@ class nbFileSystem
    */
   public static function move($source, $destination)
   {
-    if(!rename($source, $destination))
+    if(!@rename($source, $destination))
       throw new Exception('[nbFileSystem::moveDir] rename command failed');
   }
 
@@ -306,7 +323,8 @@ class nbFileSystem
    */
   protected function logLine($message, $level = nbLogger::INFO)
   {
-    nbLogger::getInstance()->logLine($message, $level);
+    if($this->isVerbose)
+      nbLogger::getInstance()->logLine($message, $level);
   }
 
   public function sanitizeDirectory($directory)
