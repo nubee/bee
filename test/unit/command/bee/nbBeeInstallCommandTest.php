@@ -28,7 +28,7 @@ $t->ok(file_exists($installDir . '/config'), 'Command created config directory i
 $t->ok(file_exists($installDir . '/data'), 'Command created data directory in installation folder');
 $t->ok(file_exists($installDir . '/docs'), 'Command created docs directory in installation folder');
 $t->ok(file_exists($installDir . '/lib'), 'Command created lib directory in installation folder');
-$t->ok(file_exists($installDir . '/plugin'), 'Command created plugin directory in installation folder');
+$t->ok(file_exists($installDir . '/plugins'), 'Command created plugin directory in installation folder');
 $t->ok(file_exists($installDir . '/test'), 'Command created test directory in installation folder');
 $t->ok(file_exists($installDir . '/bee'), 'Command created bee file in installation folder');
 /*
