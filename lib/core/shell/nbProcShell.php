@@ -36,7 +36,9 @@ class nbProcShell
       if (!$stderrDone) $rx[] = $pipes[2];
 
 //      echo "stream_select: " . stream_select($rx, $tx = array(), $ex = array($rx[0]), 0) . "\n";
-      stream_select($rx, $tx = array(), $ex = array(), 10);
+      $tx = array();
+      $ex = array();
+      stream_select($rx, $tx, $ex, 10);
       
       foreach ($rx as $r) {
         if ($r == $pipes[1]) {
