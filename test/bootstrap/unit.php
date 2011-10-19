@@ -11,9 +11,13 @@ $autoload->addDirectory('vendor/', '*.php', true);
 $autoload->addDirectory('lib/', '*.php', true);
 $autoload->addDirectory('test/lib/', '*.php', true);
 
+
+// Configures bee variables
 $configParser = new nbYamlConfigParser();
+nbConfig::set('nb_bee_dir', dirname(__FILE__) . '/../..');
 $configParser->parseFile(dirname(__FILE__) . '/../../config/config.yml');
 $configParser->parseFile(dirname(__FILE__) . '/../config/config.test.yml');
+
 
 $serviceContainer = new sfServiceContainerBuilder();
 $serviceContainer->register('pluginLoader', 'nbPluginLoader')->

@@ -249,4 +249,8 @@ abstract class nbCommand
   {
     return $this->getName() . $this->getArguments() . $this->getOptions();
   }
+  
+  public function getFileSystem() {
+    return nbFileSystem::getInstance();
+  }
 }

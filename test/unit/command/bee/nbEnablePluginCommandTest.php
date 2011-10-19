@@ -12,10 +12,7 @@ $nbFileSystemYaml = $configDir . '/nbFileSystemPlugin.yml';
 $t = new lime_test(12);
 
 $cmd = new nbGenerateProjectCommand();
-nbFileSystem::delete($beeYaml);
-nbFileSystem::delete($configYaml);
-nbFileSystem::delete($nbFileSystemYaml);
-nbFileSystem::rmdir($configDir);
+$fs = nbFileSystem::getInstance();
 
 $t->ok($cmd->run(new nbCommandLineParser(), $projectDir), 'Command nbGenerateProjectCommand called succefully');
 
@@ -56,10 +53,14 @@ $t->ok(isPluginEnabled($beeYaml, $pluginName), $pluginName . ' found');
 $t->ok(isPluginEnabled($beeYaml, $otherPluginName), $otherPluginName . ' found');
 $t->ok(file_exists($nbFileSystemYaml), 'nbFileSystemPlugin.yml added to the destination dir :' . $nbFileSystemYaml);
 
-nbFileSystem::delete($beeYaml);
-nbFileSystem::delete($configYaml);
-nbFileSystem::delete($nbFileSystemYaml);
-nbFileSystem::rmdir($configDir);
+
+// Tear down
+$fs->delete($beeYaml);
+$fs->delete($configYaml);
+$fs->delete($nbFileSystemYaml);
+$fs->rmdir($configDir);
+
+
 
 #####################################################################
 function isPluginEnabled($beeConfigurationFile, $plugin) {

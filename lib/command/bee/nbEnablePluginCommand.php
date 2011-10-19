@@ -4,7 +4,7 @@ class nbEnablePluginCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('bee:enable-plugin')
-      ->setBriefDescription('Enable a plugin')
+      ->setBriefDescription('Enables a plugin')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 
@@ -49,7 +49,7 @@ TXT
     }
     
     if (file_exists(nbConfig::get('nb_plugin_dir') . '/' . $arguments['plugin-name'] . '/config/' . $arguments['plugin-name'] . '.yml'))
-      nbFileSystem::copy(
+      nbFileSystem::getInstance()->copy(
         nbConfig::get('nb_plugin_dir') . '/' . $arguments['plugin-name'] . '/config/' . $arguments['plugin-name'] . '.yml',
         $arguments['project-dir'] . '/.bee/' . $arguments['plugin-name'] . '.yml',
         $force

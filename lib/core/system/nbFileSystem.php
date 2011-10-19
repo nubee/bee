@@ -8,17 +8,27 @@
  */
 class nbFileSystem
 {
+  private static $instance;
+
+  public static function getInstance()
+  {
+    if(!self::$instance)
+      self::$instance = new nbFileSystem();
+
+    return self::$instance;
+  }
+
   /**
    * This method returns the filename.
    *
    * @param  string $filename  The filename
    * @return string Returns filename component of "filename".
    */
-  public static function getFileName($filename)
+  public function getFileName($filename)
   {
     if(!is_file($filename))
       return '';
-    
+
     return basename($filename);
   }
 
@@ -30,15 +40,17 @@ class nbFileSystem
    *
    * To create parent folders, set "withParents" to true
    */
-  public static function mkdir($path, $withParents = false)
+  public function mkdir($path, $recursive = false, $mode = 0777)
   {
     if(file_exists($path) && is_dir($path))
       return;
+
+    $this->logLine('dir+: ' . $path);
+
 //      throw new Exception('[nbFileSystem::mkdir] The path "'.$path.'" already exists');
     // mode is ignored in windows... but not in linux & co.
-    if(!mkdir($path, 0777, $withParents))
-    {
-      throw new Exception('[nbFileSystem::mkdir] error creating folder '.$path);
+    if(!@mkdir($path, $mode, $recursive)) {
+      throw new Exception('[nbFileSystem::mkdir] Error creating folder ' . $path);
     }
   }
 
@@ -46,27 +58,44 @@ class nbFileSystem
    * This method removes a directory.
    *
    * @param  string $path  The directory path
-   * @param  bool $recursive
-   *
-   * To remove folder contents, set "recursive" to true
+   * @param  boolean $leaveEmpty  Leaves the directory empty
    */
-  public static function rmdir($path, $recursive = false)
+  public function rmdir($directory, $leaveEmpty = false)
   {
-    if(!file_exists($path))
-      return;
-
-    if($recursive) {
-      $finder = nbFileFinder::create('any');
-      $files = $finder->add('*')->remove('.')->remove('..')->in($path);
-      foreach($files as $file)
-        if(is_dir($file))
-          self::rmdir($file,$recursive);
-        else
-          self::delete($file);
+    if(substr($directory, -1) == "/") {
+      $directory = substr($directory, 0, -1);
     }
 
-    if(!rmdir($path)) {
-      throw new Exception('[nbFileSystem::rmdir] error deleting folder '.$path);
+    if(!file_exists($directory) || !is_dir($directory)) {
+      return false;
+    }
+    elseif(!is_readable($directory)) {
+      return false;
+    }
+    else {
+      $directoryHandle = opendir($directory);
+
+      while($contents = readdir($directoryHandle)) {
+        if($contents != '.' && $contents != '..') {
+          $path = $directory . "/" . $contents;
+
+          if(is_dir($path)) {
+            $this->rmdir($path);
+          }
+          else {
+            unlink($path);
+          }
+        }
+      }
+
+      closedir($directoryHandle);
+
+      if(!$leaveEmpty) {
+        if(!rmdir($directory))
+          throw new Exception('[nbFileSystem::rmdir] Error deleting folder ' . $path);
+      }
+      
+      return true;
     }
   }
 
@@ -75,11 +104,10 @@ class nbFileSystem
    *
    * @param string $path  The filename, including path
    */
-  public static function touch($path)
+  public function touch($path)
   {
-    if(!touch($path))
-    {
-      throw new Exception('[nbFileSystem::touch] error touching file '.$path);
+    if(!touch($path)) {
+      throw new Exception('[nbFileSystem::touch] Error touching file ' . $path);
     }
   }
 
@@ -88,14 +116,18 @@ class nbFileSystem
    *
    * @param mixed $file  The filename, including path
    */
-  public static function delete($file)
+  public function delete($file)
   {
     if(!file_exists($file))
-      return;
+      return false;
+
     if(is_dir($file))
-      throw new Exception('[nbFileSystem::delete] can\'t delete folder');
-    elseif(!unlink($file))
-      throw new Exception('[nbFileSystem::delete] can\'t delete file');
+      throw new Exception('[nbFileSystem::delete] Can\'t delete folder');
+
+    if(!unlink($file))
+      throw new Exception('[nbFileSystem::delete] Can\'t delete file');
+
+    return true;
   }
 
   /**
@@ -107,20 +139,68 @@ class nbFileSystem
    * @param string $dest  The target filename
    * @param bool  $overwrite
    */
-  public static function copy($source, $dest = null, $overwrite = false)
+  public function copy($originFile, $targetFile, $overwrite = false, $checkMostRecent = false)
   {
-    if(file_exists($dest) && is_dir($dest)) {
-      $dest .= '/' . self::getFileName($source);
+    // we create target_dir if needed
+    if(!is_dir(dirname($targetFile))) {
+      $this->mkdir(dirname($targetFile));
     }
 
-    if (!file_exists(dirname($dest))) {
-      self::mkdir(dirname($dest), true);
+    $mostRecent = false;
+    if(file_exists($targetFile) && $checkMostRecent) {
+      $statTarget = stat($targetFile);
+      $statOrigin = stat($originFile);
+      $mostRecent = ($statOrigin['mtime'] > $statTarget['mtime']) ? true : false;
     }
 
-    if(file_exists($dest) && !$overwrite)
-      throw new InvalidArgumentException('[nbFileSystem::copy] error copying ' . $source . ': destination file exists: ' . $dest);
-    if(!copy($source, $dest))
-      throw new Exception('[nbFileSystem::copy] error copying ' . $source . ' to ' . $dest);
+    if(!file_exists($targetFile)) {
+      $this->logLine('file+: ' . $targetFile);
+      copy($originFile, $targetFile);
+    }
+    else if($overwrite) {
+      if($checkMostRecent) {
+        if($mostRecent) {
+          $this->logLine('file+: ' . $targetFile . ' overwritten (source most recent)');
+          copy($originFile, $targetFile);
+        }
+        else
+          $this->logLine('file : ' . $targetFile . ' not copied');
+      }
+      else {
+        $this->logLine('file+: ' . $targetFile . ' overwritten');
+        copy($originFile, $targetFile);
+      }
+    }
+    else
+      throw new Exception('[nbFileSystem::copy] Can\'t overwrite file: ' . $targetFile);
+  }
+
+  /**
+   * Mirrors a directory to another.
+   *
+   * @param string   $originDir  The origin directory
+   * @param string   $targetDir  The target directory
+   * @param sfFinder $finder     An sfFinder instance
+   * @param array    $options    An array of options (see copy())
+   */
+  public function mirror($originDir, $targetDir, nbFileFinder $finder, $options = array())
+  {
+    $overwrite = isset($options['overwrite']) ? $options['overwrite'] : false;
+    
+    foreach($finder->relative()->in($originDir) as $file) {
+      if(is_dir($originDir . DIRECTORY_SEPARATOR . $file)) {
+        $this->mkdir($targetDir . DIRECTORY_SEPARATOR . $file);
+      }
+      else if(is_file($originDir . DIRECTORY_SEPARATOR . $file)) {
+        $this->copy($originDir . DIRECTORY_SEPARATOR . $file, $targetDir . DIRECTORY_SEPARATOR . $file, $overwrite);
+      }
+      else if(is_link($originDir . DIRECTORY_SEPARATOR . $file)) {
+        $this->symlink($originDir . DIRECTORY_SEPARATOR . $file, $targetDir . DIRECTORY_SEPARATOR . $file);
+      }
+      else {
+        throw new Exception(sprintf('Unable to guess "%s" file type.', $file));
+      }
+    }
   }
 
   /**
@@ -131,8 +211,8 @@ class nbFileSystem
    */
   public static function move($source, $destination)
   {
-      if(!rename($source, $destination))
-        throw new Exception('[nbFileSystem::moveDir] rename command failed');
+    if(!rename($source, $destination))
+      throw new Exception('[nbFileSystem::moveDir] rename command failed');
   }
 
   /**
@@ -160,53 +240,78 @@ class nbFileSystem
   {
     $perms = fileperms($file);
 
-    if (($perms & 0xC000) == 0xC000) {
-        // Socket
-        $info = 's';
-    } elseif (($perms & 0xA000) == 0xA000) {
-        // Symbolic Link
-        $info = 'l';
-    } elseif (($perms & 0x8000) == 0x8000) {
-        // Regular
-        $info = '-';
-    } elseif (($perms & 0x6000) == 0x6000) {
-        // Block special
-        $info = 'b';
-    } elseif (($perms & 0x4000) == 0x4000) {
-        // Directory
-        $info = 'd';
-    } elseif (($perms & 0x2000) == 0x2000) {
-        // Character special
-        $info = 'c';
-    } elseif (($perms & 0x1000) == 0x1000) {
-        // FIFO pipe
-        $info = 'p';
-    } else {
-        // Unknown
-        $info = 'u';
+    if(($perms & 0xC000) == 0xC000) {
+      // Socket
+      $info = 's';
+    }
+    elseif(($perms & 0xA000) == 0xA000) {
+      // Symbolic Link
+      $info = 'l';
+    }
+    elseif(($perms & 0x8000) == 0x8000) {
+      // Regular
+      $info = '-';
+    }
+    elseif(($perms & 0x6000) == 0x6000) {
+      // Block special
+      $info = 'b';
+    }
+    elseif(($perms & 0x4000) == 0x4000) {
+      // Directory
+      $info = 'd';
+    }
+    elseif(($perms & 0x2000) == 0x2000) {
+      // Character special
+      $info = 'c';
+    }
+    elseif(($perms & 0x1000) == 0x1000) {
+      // FIFO pipe
+      $info = 'p';
+    }
+    else {
+      // Unknown
+      $info = 'u';
     }
 
     // Owner
     $info .= (($perms & 0x0100) ? 'r' : '-');
     $info .= (($perms & 0x0080) ? 'w' : '-');
     $info .= (($perms & 0x0040) ?
-                (($perms & 0x0800) ? 's' : 'x' ) :
-                (($perms & 0x0800) ? 'S' : '-'));
+        (($perms & 0x0800) ? 's' : 'x' ) :
+        (($perms & 0x0800) ? 'S' : '-'));
 
     // Group
     $info .= (($perms & 0x0020) ? 'r' : '-');
     $info .= (($perms & 0x0010) ? 'w' : '-');
     $info .= (($perms & 0x0008) ?
-                (($perms & 0x0400) ? 's' : 'x' ) :
-                (($perms & 0x0400) ? 'S' : '-'));
+        (($perms & 0x0400) ? 's' : 'x' ) :
+        (($perms & 0x0400) ? 'S' : '-'));
 
     // World
     $info .= (($perms & 0x0004) ? 'r' : '-');
     $info .= (($perms & 0x0002) ? 'w' : '-');
     $info .= (($perms & 0x0001) ?
-                (($perms & 0x0200) ? 't' : 'x' ) :
-                (($perms & 0x0200) ? 'T' : '-'));
+        (($perms & 0x0200) ? 't' : 'x' ) :
+        (($perms & 0x0200) ? 'T' : '-'));
 
     return $info;
   }
+
+  /**
+   * Logs a message in a section.
+   *
+   * @param string $section  The section name
+   * @param string $message  The message
+   * @param int    $size     The maximum size of a line
+   */
+  protected function logLine($message, $level = nbLogger::INFO)
+  {
+    nbLogger::getInstance()->logLine($message, $level);
+  }
+
+  public function sanitizeDirectory($directory)
+  {
+    return preg_replace('/\/+$/', '', $directory);
+  }
+
 }

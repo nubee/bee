@@ -1,6 +1,4 @@
 nb:
-  data_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>test/data"
-  sandbox_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>test/sandbox"
-  test_plugin_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>test/data/plugin"
-  test_win_installation_dir: "<?php echo nbConfig::get('bee_dir'); ?>..\bee-installation"
-  test_linux_installation_dir: "<?php echo nbConfig::get('sandbox_dir').'../'; ?>bee-installation"
+  data_dir: "<?php echo nbConfig::get('nb_bee_dir', '.') ?>/test/data"
+  sandbox_dir: "<?php echo nbConfig::get('nb_bee_dir', '.') ?>/test/sandbox"
+  test_plugin_dir: "<?php echo nbConfig::get('nb_bee_dir', '.') ?>/test/data/plugin"

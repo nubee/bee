@@ -1,5 +1,5 @@
 <?php
-class nbFileSystemUtils
+/*class nbFileSystemUtils
 {
     public static function mkdir($directory, $force = false)
     {
@@ -24,9 +24,6 @@ class nbFileSystemUtils
         }
     }
 
-    public static function sanitize_dir($directory)
-    {
-      return preg_replace('/\/+$/', '', $directory);
-    }
 
-}
+
+}*/
