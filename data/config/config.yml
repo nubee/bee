@@ -4,7 +4,7 @@ nb:
   test_dir: myTestDir
   project_config: bee.yml
   template_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>data/template"
-  plugin_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>plugin"
+  plugins_dir: "<?php echo nbConfig::get('nb_bee_dir','.').'/'; ?>plugins"
   default_plugins: ~
   output:
     color: "true"

@@ -45,7 +45,7 @@ $serviceContainer = new sfServiceContainerBuilder();
 
 $serviceContainer->
   register('pluginLoader', 'nbPluginLoader')->
-  addArgument(nbConfig::get('nb_plugin_dir'))->
+  addArgument(nbConfig::get('nb_plugins_dir'))->
   addArgument(new sfServiceReference('commandLoader'))->
   setShared(true)
 ;

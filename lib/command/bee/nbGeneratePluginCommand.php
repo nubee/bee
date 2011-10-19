@@ -28,14 +28,14 @@ TXT
   {
     $pluginName = $arguments['plugin_name'];
 
-    $targetDir = (isset($options['directory']) ? $options['directory'] : nbConfig::get('nb_plugin_dir'));
+    $targetDir = (isset($options['directory']) ? $options['directory'] : nbConfig::get('nb_plugins_dir'));
 
     $pluginDir = $targetDir . '/' . $pluginName;
 
     $fs = $this->getFileSystem();
     
     if(isset($options['force']))
-      $fs->rmdir($pluginDir);
+      $fs->rmdir($pluginDir, true);
     
     $fs->mkdir($pluginDir, true);
     $fs->mkdir($pluginDir . '/command');

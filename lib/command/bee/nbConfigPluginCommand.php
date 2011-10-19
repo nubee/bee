@@ -25,14 +25,14 @@ TXT
     $this->logLine('Running: bee:config-plugin', nbLogger::COMMENT);
     $force = isset($options['force']);
 
-    $source = nbConfig::get('nb_plugin_dir') . '/' . $arguments['plugin-name'] . '/config';
+    $source = nbConfig::get('nb_plugins_dir') . '/' . $arguments['plugin-name'] . '/config';
     $destinaiton = './.bee';
 
     if (!file_exists($source))
       throw new LogicException(sprintf("
 [nbConfigPluginCommand::execute] Error:
   %s
-", 'plugin ' . $arguments['plugin-name'] . ' not found in ' . nbConfig::get('nb_plugin_dir')
+", 'plugin ' . $arguments['plugin-name'] . ' not found in ' . nbConfig::get('nb_plugins_dir')
       ));
 
     $files = nbFileFinder::create('file')

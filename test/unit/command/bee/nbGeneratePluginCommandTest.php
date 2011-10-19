@@ -2,9 +2,9 @@
 
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
 nbConfig::set('nb_command_dir', nbConfig::get('nb_sandbox_dir'));
-nbConfig::set('nb_plugin_dir', nbConfig::get('nb_test_plugin_dir'));
+nbConfig::set('nb_plugins_dir', nbConfig::get('nb_sandbox_dir'));
 
-$pluginDir = nbConfig::get('nb_plugin_dir');
+$pluginDir = nbConfig::get('nb_plugins_dir');
 
 // Setup
 $t = new lime_test(18);
@@ -19,7 +19,7 @@ $t->ok(file_exists($pluginDir . '/pluginName/config'), 'Command create new confi
 $t->ok(file_exists($pluginDir . '/pluginName/lib'), 'Command create new lib directory in pluginName folder');
 $t->ok(file_exists($pluginDir . '/pluginName/test'), 'Command create new test directory in pluginName folder');
 $t->ok(file_exists($pluginDir . '/pluginName/vendor'), 'Command create new vendor directory in pluginName folder');
-$fs->rmdir($pluginDir);
+$fs->rmdir($pluginDir, true);
 
 $fs->mkdir($pluginDir . '/pluginName/otherDir', true);
 $t->ok(file_exists($pluginDir . '/pluginName/otherDir'), 'otherDir folder created');
@@ -31,7 +31,7 @@ $t->ok(file_exists($pluginDir . '/pluginName/lib'), 'Command create new lib dire
 $t->ok(file_exists($pluginDir . '/pluginName/test'), 'Command create new test directory in pluginName folder');
 $t->ok(file_exists($pluginDir . '/pluginName/vendor'), 'Command create new vendor directory in pluginName folder');
 $t->ok(!file_exists($pluginDir . '/pluginName/otherDir'), 'otherDir folder removed');
-$fs->rmdir($pluginDir);
+$fs->rmdir($pluginDir, true);
 
 $pluginOtherDir = nbConfig::get('nb_sandbox_dir') . '/pluginOtherDir';
 $cmd->run(new nbCommandLineParser(), 'pluginName --directory=' . $pluginOtherDir);
@@ -40,4 +40,4 @@ $t->ok(file_exists($pluginOtherDir . '/pluginName/config'), 'Command create new 
 $t->ok(file_exists($pluginOtherDir . '/pluginName/lib'), 'Command create new lib directory in pluginOtherDir/pluginName folder');
 $t->ok(file_exists($pluginOtherDir . '/pluginName/test'), 'Command create new test directory in pluginOtherDir/pluginName folder');
 $t->ok(file_exists($pluginOtherDir . '/pluginName/vendor'), 'Command create new vendor directory in pluginOtherDir/pluginName folder');
-$fs->rmdir($pluginOtherDir);
+$fs->rmdir($pluginOtherDir, true);

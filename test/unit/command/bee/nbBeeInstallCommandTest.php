@@ -50,5 +50,5 @@ else if (PHP_OS == "WINNT") {
 }*/
 
 // Tear down
-nbFileSystem::getInstance()->rmdir($installDir);
+nbFileSystem::getInstance()->rmdir($installDir, true);
 $t->ok(!file_exists($installDir), 'Installation folder removed successfully');

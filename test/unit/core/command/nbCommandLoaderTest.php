@@ -6,7 +6,7 @@ require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 $t = new lime_test();
 
 nbConfig::set('nb_command_dir', nbconfig::get('nb_sandbox_dir'));
-nbConfig::set('nb_plugin_dir', nbconfig::get('nb_sandbox_dir'));
+nbConfig::set('nb_plugins_dir', nbconfig::get('nb_sandbox_dir'));
 nbConfig::set('proj_commands', array());
 
 $t->comment('nbCommandLoaderTest - test ctor');

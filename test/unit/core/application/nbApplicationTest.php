@@ -147,9 +147,9 @@ $t->ok($foo->hasExecuted(), 'command "foo" has executed');
 
 
 $t->comment('nbApplicationTest - Test --enable-plugin option');
-$serviceContainer->pluginLoader->addDir(nbConfig::get('nb_test_plugin_dir'));
+$serviceContainer->pluginLoader->addDir(nbConfig::get('nb_test_plugins_dir'));
 $application = new DummyBeeApplication($serviceContainer);
 
-$application->run('--enable-plugin=tstPlugin TstPluginCommand');
-$t->ok(class_exists('TstPluginCommand'), 'option --enable-plugin enables a single plugin');
+$application->run('--enable-plugin=FirstPlugin first');
+$t->ok(class_exists('DummyCommand'), 'option --enable-plugin enables a single plugin');
 

@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
 nbConfig::set('nb_command_dir', nbConfig::get('nb_sandbox_dir'));
-nbConfig::set('nb_plugin_dir', nbConfig::get('nb_test_plugin_dir'));
+nbConfig::set('nb_plugins_dir', nbConfig::get('nb_test_plugins_dir'));
 
 $configDir = nbConfig::get('nb_sandbox_dir') . '/.bee';
 $beeYaml = $configDir . '/bee.yml';

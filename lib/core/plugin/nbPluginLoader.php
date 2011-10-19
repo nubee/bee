@@ -2,8 +2,8 @@
 
 class nbPluginLoader
 {
-  private $plugins = array(),
-  $pluginDirs = array();
+  private $plugins = array();
+  private $pluginDirs = array();
   static private $commandLoader;
 
   public function __construct($pluginDir, nbCommandLoader $commandLoader)
@@ -43,14 +43,18 @@ class nbPluginLoader
    */
   private function addPlugin($pluginName)
   {
-//    nbLogger::getInstance()->logLine('Loading Plugin <comment>'.$pluginName.'</comment>...');
+//    nbLogger::getInstance()->logLine('Loading Plugin <comment>' . $pluginName . '</comment>...');
 
     if(key_exists($pluginName, $this->plugins))
       return;
 
-    foreach($this->pluginDirs as $dir)
-      if(is_dir($dir . '/' . $pluginName))
-        $this->plugins[$pluginName] = $dir . '/' . $pluginName;
+    foreach($this->pluginDirs as $dir) {
+      $path = $dir . '/' . $pluginName;
+      if(is_dir($path)) {
+        $this->plugins[$pluginName] = $path;
+      }
+    }
+
     if(!key_exists($pluginName, $this->plugins)) {
       nbLogger::getInstance()->logLine('Plugin not found <comment>' . $pluginName . '</comment>', nbLogger::INFO);
       return;
@@ -61,7 +65,7 @@ class nbPluginLoader
     nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName] . '/vendor');
 
     self::$commandLoader->addCommandsFromDir($this->plugins[$pluginName] . '/command');
-
+    
     if(is_dir($this->plugins[$pluginName] . '/test/unit')) {
       $testDirs = nbConfig::get('nb_plugin_test_dirs', array());
       $testDirs[] = $this->plugins[$pluginName] . '/test/unit';
@@ -80,13 +84,15 @@ class nbPluginLoader
     return $this->plugins;
   }
 
-  public function addDir($dir)
+  public function addDir($dirs)
   {
-    if(!is_array($dir))
-      $dir = array($dir);
-    foreach($dir as $d)
-      if(is_dir($d))
-        $this->pluginDirs[] = $d;
+    if(!is_array($dirs))
+      $dirs = array($dirs);
+    
+    foreach($dirs as $dir) {
+      if(is_dir($dir))
+        $this->pluginDirs[] = $dir;
+    }
   }
 
   public function getPluginDirs()

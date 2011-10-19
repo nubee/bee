@@ -27,8 +27,8 @@ TXT
 
     $beeConfigurationFile = $arguments['project-dir'] . '/.bee/bee.yml';
     
-    if (!file_exists(nbConfig::get('nb_plugin_dir') . '/' . $arguments['plugin-name']))
-      throw new Exception('plugin ' . $arguments['plugin-name'] . ' not found in ' . nbConfig::get('nb_plugin_dir'));
+    if (!file_exists(nbConfig::get('nb_plugins_dir') . '/' . $arguments['plugin-name']))
+      throw new Exception('plugin ' . $arguments['plugin-name'] . ' not found in ' . nbConfig::get('nb_plugins_dir'));
     
     if (!file_exists($beeConfigurationFile))
       throw new Exception($beeConfigurationFile . ' not found');
@@ -48,9 +48,9 @@ TXT
       $this->logLine('Plugin ' . $arguments['plugin-name'] . ' already installed');
     }
     
-    if (file_exists(nbConfig::get('nb_plugin_dir') . '/' . $arguments['plugin-name'] . '/config/' . $arguments['plugin-name'] . '.yml'))
+    if (file_exists(nbConfig::get('nb_plugins_dir') . '/' . $arguments['plugin-name'] . '/config/' . $arguments['plugin-name'] . '.yml'))
       nbFileSystem::getInstance()->copy(
-        nbConfig::get('nb_plugin_dir') . '/' . $arguments['plugin-name'] . '/config/' . $arguments['plugin-name'] . '.yml',
+        nbConfig::get('nb_plugins_dir') . '/' . $arguments['plugin-name'] . '/config/' . $arguments['plugin-name'] . '.yml',
         $arguments['project-dir'] . '/.bee/' . $arguments['plugin-name'] . '.yml',
         $force
       );

@@ -37,7 +37,7 @@ TXT
     
     $finder = nbFileFinder::create('any');
     
-    $fs->mirror($source, $dest, $finder);
+    $fs->mirror($source, $dest, $finder, true);
     
     try {
       $shell = new nbShell();
