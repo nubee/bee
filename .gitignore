@@ -2,3 +2,7 @@
 /test/sandbox/.bee/
 /%ProgramFiles%/
 /.netbeans/
+/plugins/nbSymfonyPlugin/test/data/testapp/.bee/
+/plugins/nbSymfonyPlugin/test/data/stageSite/.bee/
+/.bee/
+/plugins/nbSymfonyPlugin/test/data/prodSite/.bee/
