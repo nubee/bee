@@ -1,25 +1,21 @@
 <?php
-require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
-$configParser->parseFile(dirname(__FILE__) . '/../config/config.yml');
-$serviceContainer->pluginLoader->loadPlugins(array('nbSymfonyPlugin','nbArchivePlugin','nbMysqlPlugin','nbFileSystemPlugin'));
 
-if(!file_exists(nbConfig::get('archive_inflate-dir_archive-path'))){
-  nbFileSystem::mkdir(nbConfig::get('archive_inflate-dir_archive-path'));
-}
-$logFolder = nbConfig::get('symfony_project-deploy_symfony-exe-path').'/log';
-$cacheFolder = nbConfig::get('symfony_project-deploy_symfony-exe-path').'/cache';
-nbFileSystem::rmdir($logFolder,true);
-nbFileSystem::rmdir($cacheFolder, true);
+require_once dirname(__FILE__) . '/../bootstrap/unit.php';
+
+$fileSystem->mkdir(nbConfig::get('archive_inflate-dir_archive-path'));
+
+$logFolder = $symfonyRootDir . '/log';
+$cacheFolder = $symfonyRootDir . '/cache';
 
 $t = new lime_test(1);
-$cmd = new nbSymfonyDiemDeployCommand();
-echo $command_line =  dirname(__FILE__) . '/../config/config.yml';
-$t->ok($cmd->run(new nbCommandLineParser(),$command_line),'Command SymfonyDeploy called succefully');
+$t->comment('Symfony Diem Deploy');
 
-nbFileSystem::rmdir($logFolder,true);
-nbFileSystem::rmdir($cacheFolder, true);
-nbFileSystem::rmdir(nbConfig::get('filesystem_dir-transfer_target-path').'/httpdocs',true);
-nbFileSystem::rmdir(nbConfig::get('archive_inflate-dir_archive-path'),true);
-if(!file_exists(nbConfig::get('archive_inflate-dir_archive-path'))){
-  nbFileSystem::mkdir(nbConfig::get('archive_inflate-dir_archive-path'));
-}
+$cmd = new nbSymfonyDiemDeployCommand();
+echo $command_line = dirname(__FILE__) . '/../config/config.yml';
+$t->ok($cmd->run(new nbCommandLineParser(), $command_line), 'Diem project deploy successfully');
+
+// tear down
+$fileSystem->rmdir($logFolder, true);
+$fileSystem->rmdir($cacheFolder, true);
+$fileSystem->rmdir(nbConfig::get('filesystem_dir-transfer_target-path') . '/httpdocs', true);
+$fileSystem->rmdir(nbConfig::get('archive_inflate-dir_archive-path'), true);
