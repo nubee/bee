@@ -327,7 +327,7 @@ class nbFileSystem
       nbLogger::getInstance()->logLine($message, $level);
   }
 
-  public function sanitizeDirectory($directory)
+  public static function sanitizeDir($directory)
   {
     return preg_replace('/\/+$/', '', $directory);
   }

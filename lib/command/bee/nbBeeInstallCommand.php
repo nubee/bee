@@ -27,8 +27,8 @@ TXT
   {
     $fs = $this->getFileSystem();
     
-    $dest = $fs->sanitizeDirectory($arguments['install-dir']);
-    $source = $fs->sanitizeDirectory(isset($options['source-dir']) ? $options['source-dir'] : './');
+    $dest = $fs->sanitizeDir($arguments['install-dir']);
+    $source = $fs->sanitizeDir(isset($options['source-dir']) ? $options['source-dir'] : './');
 
     if(!file_exists($dest))
       $fs->mkdir($dest, true);

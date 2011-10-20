@@ -27,7 +27,7 @@ TXT
   {
     $fs = $this->getFileSystem();
 
-    $configDir = $fs->sanitizeDirectory($arguments['project-dir']) . '/.bee';
+    $configDir = $fs->sanitizeDir($arguments['project-dir']) . '/.bee';
     $force = isset($options['force']) ? true : false;
 
     $fs->mkdir($configDir, $force);

@@ -9,14 +9,13 @@
 abstract class nbCommand
 {
   private
-    $name,
-    $namespace,
-    $briefDescription = '',
-    $description = '',
-    $argumentSet = null,
-    $optionSet = null,
-    $aliases = array();
-
+  $name,
+  $namespace,
+  $briefDescription = '',
+  $description = '',
+  $argumentSet = null,
+  $optionSet = null,
+  $aliases = array();
   private $logger;
 
   public function __construct()
@@ -33,42 +32,39 @@ abstract class nbCommand
     $parser->addArguments($this->getArguments());
     $parser->addOptions($this->getOptions());
 
-    $parser->parse($commandLine,$this->getNamespace(),$this->getName());
+    $parser->parse($commandLine, $this->getNamespace(), $this->getName());
 
     if(!$parser->isValid())
       throw new InvalidArgumentException(sprintf(
-        "[nbCommand::run] Command \"%s\" execution failed: \n  - %s",
-        $this->getFullName(),
-        implode("  \n- ", $parser->getErrors())
+          "[nbCommand::run] Command \"%s\" execution failed: \n  - %s", $this->getFullName(), implode("  \n- ", $parser->getErrors())
       ));
-/*
-    $cmdlineOptionValues = $parser->getOptionValues();
-    $path = 'nb_commands_' . $this->getNamespace() . '_' . $this->getName();
-    if(nbConfig::has($path)) {
+    /*
+      $cmdlineOptionValues = $parser->getOptionValues();
+      $path = 'nb_commands_' . $this->getNamespace() . '_' . $this->getName();
+      if(nbConfig::has($path)) {
       $configOptionValues = nbConfig::get($path);
       foreach($configOptionValues as $name => $value) {
-        if(!$this->getOptions()->hasOption($name)
-          || ('' == $value)
-          || isset($cmdlineOptionValues[$name]))
-          continue;
+      if(!$this->getOptions()->hasOption($name)
+      || ('' == $value)
+      || isset($cmdlineOptionValues[$name]))
+      continue;
 
-        $cmdlineOptionValues[$name] = $value;
+      $cmdlineOptionValues[$name] = $value;
       }
-    }
-    //return $this->execute($parser->getArgumentValues(), $cmdlineOptionValues);
-*/
+      }
+      //return $this->execute($parser->getArgumentValues(), $cmdlineOptionValues);
+     */
     return $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
-
   }
 
   protected abstract function configure();
 
   protected abstract function execute(array $arguments = array(), array $options = array());
-  
+
   public function setName($name)
   {
     $pos = strpos($name, ':');
-    if (false !== $pos) {
+    if(false !== $pos) {
       $namespace = substr($name, 0, $pos);
       $name = substr($name, $pos + 1);
     }
@@ -147,7 +143,7 @@ abstract class nbCommand
   public function hasShortcut($shortcut)
   {
     $pos = strpos($shortcut, ':');
-    if (false !== $pos) {
+    if(false !== $pos) {
       $namespace = substr($shortcut, 0, $pos);
       $name = substr($shortcut, $pos + 1);
     }
@@ -167,6 +163,7 @@ abstract class nbCommand
   /*
    * Returns true if the command has aliases
    */
+
   public function hasAliases()
   {
     return count($this->aliases) > 0;
@@ -175,6 +172,7 @@ abstract class nbCommand
   /*
    * Returns true if the command has alias with given name
    */
+
   public function hasAlias($alias)
   {
     return isset($this->aliases[$alias]);
@@ -183,6 +181,7 @@ abstract class nbCommand
   /*
    * Sets an alias
    */
+
   public function setAlias($alias)
   {
     if($this->hasAlias($alias))
@@ -195,6 +194,7 @@ abstract class nbCommand
   /*
    * Sets an array of aliases
    */
+
   public function setAliases(array $aliases)
   {
     foreach($aliases as $alias)
@@ -249,8 +249,10 @@ abstract class nbCommand
   {
     return $this->getName() . $this->getArguments() . $this->getOptions();
   }
-  
-  public function getFileSystem() {
+
+  public function getFileSystem()
+  {
     return nbFileSystem::getInstance();
   }
+
 }

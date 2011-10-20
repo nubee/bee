@@ -142,12 +142,14 @@ class nbCommandLineParser {
       }
       else
         $configFile = $this->parsedLongOptionValues['config-file'][0];
+      
       if (file_exists($configFile)) {
         $configParser = new nbYamlConfigParser();
         $configParser->parseFile($configFile);
-        $path_yml = $namespace . '_' . $commandName;
-        if (nbConfig::has($path_yml)) {
-          $configurationValues = nbConfig::get($path_yml);
+        $ymlPath = $namespace . '_' . $commandName;
+        
+        if (nbConfig::has($ymlPath)) {
+          $configurationValues = nbConfig::get($ymlPath);
           foreach ($configurationValues as $name => $value) {
             if (!$this->getArguments()->hasArgument($name)
                     || ('' == $value))
