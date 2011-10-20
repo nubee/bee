@@ -1,2 +1,2 @@
 test:
-  version-file: plugin/nbVersionPlugin/test/data/version.yml
+  version-file: plugins/nbVersionPlugin/test/data/version.yml
