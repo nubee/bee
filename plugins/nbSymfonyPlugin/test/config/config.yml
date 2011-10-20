@@ -1,18 +1,18 @@
 <?php
-  $basePath = 'plugin/nbSymfonyPlugin/test/data';
-  $sourcePath = 'plugin/nbSymfonyPlugin/test/data/stageSite';
+  $basePath = 'plugins/nbSymfonyPlugin/test/data';
+  $sourcePath = 'plugins/nbSymfonyPlugin/test/data/stageSite';
   $siteDir = 'prodSite';
-  $archivePath = 'plugin/nbSymfonyPlugin/test/data/archive';
-  $excludeSymfonyFile = 'plugin/nbSymfonyPlugin/test/data/excludeSymfonyProjects';
-  $includeSymfonyFile = 'plugin/nbSymfonyPlugin/test/data/includeSymfonyProjects';
+  $archivePath = 'plugins/nbSymfonyPlugin/test/data/archive';
+  $excludeSymfonyFile = 'plugins/nbSymfonyPlugin/test/data/excludeSymfonyProjects';
+  $includeSymfonyFile = 'plugins/nbSymfonyPlugin/test/data/includeSymfonyProjects';
   $siteUser = 'xxxx';
   $siteGroup = 'yyyy';
   $migrateVersion = 2;
   $dbName = 'dbtest';
   $dbUser = 'dbtestadmin';
   $dbUserPwd = 'dbtestpwd';
-  $dumpPath = 'plugin/nbSymfonyPlugin/test/data/archive';
-  $dumpFile = 'plugin/nbMysqlPlugin/test/data/dbtest-xxx.sql';
+  $dumpPath = 'plugins/nbSymfonyPlugin/test/data/archive';
+  $dumpFile = 'plugins/nbMysqlPlugin/test/data/dbtest-xxx.sql';
 ?>
 symfony:
   project-deploy:
