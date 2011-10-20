@@ -14,10 +14,10 @@ class nbBeeApplication extends nbApplication
     $this->version = '0.1.0';
 
     $this->options->addOptions(array(
-      new nbOption('config', '', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY, 'Changes the configuration properties'),
-      new nbOption('enable-plugin', '', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY, 'Enables a plugin'),
-      new nbOption('enable-all-plugins', '', nbOption::PARAMETER_NONE , 'Enables all plugins'),
-      new nbOption('file', '', nbOption::PARAMETER_REQUIRED, 'Reads configuration from FILE'),
+      new nbOption('config',             '', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY, 'Changes the configuration properties'),
+      new nbOption('config-file',        '', nbOption::PARAMETER_OPTIONAL,                      'Reads configuration from file'),
+      new nbOption('enable-plugin',      '', nbOption::PARAMETER_REQUIRED | nbOption::IS_ARRAY, 'Enables a plugin'),
+      new nbOption('enable-all-plugins', '', nbOption::PARAMETER_NONE,                          'Enables all plugins'),
     ));
 
   }

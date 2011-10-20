@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__).'/../../../bootstrap/unit.php');
+require_once(dirname(__FILE__) . '/../../../bootstrap/unit.php');
 
 $t = new lime_test(99);
 
@@ -64,6 +64,7 @@ $optionSet = array(
   new nbOption('foo12', 'w', nbOption::PARAMETER_NONE),
   new nbOption('foo13', 'x', nbOption::PARAMETER_REQUIRED),
 );
+
 $parser = new nbCommandLineParser($argumentSet, $optionSet);
 $parser->parse('--foo1 -f --foo3 --foo4="foo4" --foo5=foo5 -r "foo6 foo6" -t foo7 --foo8="foo" --foo8=bar -s -u foo10 -v foo11 -w -x foo13 foo1 foo2 foo3 foo4 "foo5 foo5"');
 $arguments = array(
@@ -110,27 +111,27 @@ $t->is($parser->getArgumentValues(), $arguments, '->parse() parses CLI options')
 
 // ->getOptionValue()
 $t->comment('nbCommandLineParserTest - Test get option value');
-foreach ($options as $name => $value)
+foreach($options as $name => $value)
   $t->is($parser->getOptionValue($name), $value, '->getOptionValue() returns the value for the given option name');
 
 try {
   $parser->getOptionValue('undefined');
   $t->fail('->getOptionValue() throws a nbCommandException if the option name does not exist');
 }
-catch (RangeException $e) {
+catch(RangeException $e) {
   $t->pass('->getOptionValue() throws a nbCommandException if the option name does not exist');
 }
 
 // ->getArgumentValue()
 $t->comment('nbCommandLineParserTest - Test get argument value');
-foreach ($arguments as $name => $value)
+foreach($arguments as $name => $value)
   $t->is($parser->getArgumentValue($name), $value, '->getArgumentValue() returns the value for the given argument name');
 
 try {
   $parser->getArgumentValue('undefined');
   $t->fail('->getArgumentValue() throws a nbCommandException if the argument name does not exist');
 }
-catch (RangeException $e) {
+catch(RangeException $e) {
   $t->pass('->getArgumentValue() throws a nbCommandException if the argument name does not exist');
 }
 
@@ -171,7 +172,7 @@ $options = array(
   new nbOption('foo', 'f', nbOption::PARAMETER_REQUIRED),
   new nbOption('bar', 'b', nbOption::PARAMETER_OPTIONAL, '', ''),
   new nbOption('cos', 'c', nbOption::PARAMETER_NONE)
-  );
+);
 $parser = new nbCommandLineParser(array(), $options);
 $parser->parse('-fb argfoo argbar');
 $t->ok($parser->isValid(), '->isValid() returns true if the options are valid');
@@ -250,11 +251,11 @@ $optionSet = array(
 );
 $parser = new nbCommandLineParser($argumentSet, $optionSet);
 $parser->parse(array('"foo1\'arg"'));
-$t->is($parser->isValid(), true, '->parse() parse with success the commandline "foo1\'arg" ');
-$t->is($parser->getArgumentValue('foo1'), '"foo1\'arg"', '->getArgumentValue() return "foo1\'arg" ');
+$t->is($parser->isValid(), true, '->parse() parse with success the commandline "foo1\'arg"');
+$t->is($parser->getArgumentValue('foo1'), '"foo1\'arg"', '->getArgumentValue() return "foo1\'arg"');
 
 $parser->parse(array('\'foo1"arg\''));
-$t->is($parser->isValid(), true, '->parse() parse with success the commandline \'foo1"arg\' ');
+$t->is($parser->isValid(), true, '->parse() parse with success the commandline \'foo1"arg\'');
 $t->is($parser->getArgumentValue('foo1'), '\'foo1"arg\'', '->parse() return \'foo1"arg\'');
 
 $parser->parse(array('\'foo1"arg'));
@@ -269,71 +270,72 @@ $optionSet = array(
 );
 $parser = new nbCommandLineParser($argumentSet, $optionSet);
 $parser->parse('');
-$t->is($parser->isValid(), true, '->parse() parse with success the empty commandline ');
-$t->is($parser->hasOptionValue('opt1'), false, '->hasOptionValue() returns "false" ');
+$t->is($parser->isValid(), true, '->parse() parse with success the empty commandline');
+$t->is($parser->hasOptionValue('opt1'), false, '->hasOptionValue() returns "false"');
 
 $parser = new nbCommandLineParser($argumentSet, $optionSet);
 $parser->parse('--opt1');
-$t->is($parser->hasOptionValue('opt1'), true, '->hasOptionValue() returns "true" ');
-$t->is($parser->getOptionValue('opt1'), 'defaultvalue', '->getOptionValue() returns "defaultvalue" ');
+$t->is($parser->hasOptionValue('opt1'), true, '->hasOptionValue() returns "true"');
+$t->is($parser->getOptionValue('opt1'), 'defaultvalue', '->getOptionValue() returns "defaultvalue"');
 
 $parser = new nbCommandLineParser($argumentSet, $optionSet);
 $parser->parse('--opt1=avalue');
-$t->is($parser->hasOptionValue('opt1'), true, '->hasOptionValue() returns "true" ');
-$t->is($parser->getOptionValue('opt1'), 'avalue', '->getOptionValue() returns "avalue" ');
+$t->is($parser->hasOptionValue('opt1'), true, '->hasOptionValue() returns "true"');
+$t->is($parser->getOptionValue('opt1'), 'avalue', '->getOptionValue() returns "avalue"');
 
+// ->parse()
 $t->comment('nbCommandLineParserTest - Test retrieving argument and option from config file passed by option --config-file');
 $argumentSet = array(
-  new nbArgument('argumentRequired', nbArgument::REQUIRED,'argument required'),
-  new nbArgument('argumentOptional', nbArgument::OPTIONAL,'argument optional', 'fooOptionalDefault')
+  new nbArgument('argumentRequired', nbArgument::REQUIRED, 'argument required'),
+  new nbArgument('argumentOptional', nbArgument::OPTIONAL, 'argument optional', 'fooOptionalDefault')
 );
 $optionSet = array(
-  new nbOption('config-file', '', nbOption::PARAMETER_OPTIONAL, 'MyPlugin option configuration file', dirname(__FILE__).'/../../../data/core/config/myPlugin.yml'),
-  new nbOption('optionWithParameter', 'a', nbOption::PARAMETER_OPTIONAL, 'MyPlugin option optionWithParameter', 'barParameterDefault'),
+  new nbOption('config-file',              '',  nbOption::PARAMETER_OPTIONAL, 'Config file option', dirname(__FILE__) . '/../../../data/core/config/myns-mycommand.yml'),
+  new nbOption('optionWithParameter',      'a', nbOption::PARAMETER_OPTIONAL, 'MyPlugin option optionWithParameter', 'barParameterDefault'),
   new nbOption('otherOptionWithParameter', 'b', nbOption::PARAMETER_OPTIONAL, 'MyPlugin option otherOptionWithParameter', 'bar2ParameterDefault'),
-  new nbOption('optionDisabledCfg', 'n', nbOption::PARAMETER_NONE, 'MyPlugin option optionDisabledCfg'),
-  new nbOption('optionCfg', 'c', nbOption::PARAMETER_NONE, 'MyPlugin option optionCfg')
+  new nbOption('optionDisabledCfg',        'n', nbOption::PARAMETER_NONE, 'MyPlugin option optionDisabledCfg'),
+  new nbOption('optionCfg',                'c', nbOption::PARAMETER_NONE, 'MyPlugin option optionCfg')
 );
 $parser = new nbCommandLineParser($argumentSet, $optionSet);
-$t->comment($commandLine = ' --config-file');
 
-$parser->parse($commandLine,'myNS','myCommand');
-$t->is($parser->isValid(), true, '->parse() parse with success for config file ');
-$t->is($parser->hasArgumentValue('argumentRequired'), true, '->hasArgumentValue(argumentRequired) returns "true" ');
-$t->is($parser->getArgumentValue('argumentRequired'), 'fooRequiredCfg', '->getArgumentValue(argumentRequired) returns "fooRequiredCfg" ');
-$t->is($parser->hasArgumentValue('argumentOptional'), true, '->hasArgumentValue(argOptional) returns "true" ');
-$t->is($parser->getArgumentValue('argumentOptional'), 'fooOptionalCfg', '->getArgumentValue(argumentOptional) returns "fooOptionalCfg" ');
-$t->is($parser->hasOptionValue('optionWithParameter'), true, '->hasOptionValue(optionWithParameter) returns "true" ');
-$t->is($parser->getOptionValue('optionWithParameter'), 'barParameterCfg', '->getOptionValue(optionWithParameter) returns "barParameterCfg" ');
-$t->is($parser->hasOptionValue('optionDisabledCfg'), false, '->hasOptionValue(optionDisabledCfg) returns "false" ');
-$t->is($parser->hasOptionValue('optionCfg'), true, '->hasOptionValue(optionCfg) returns "true" ');
-$t->is($parser->getOptionValue('optionCfg'), true, '->getOptionValue(optionCfg) returns "true" ');
+$commandLine = ' --config-file';
+$parser->parse($commandLine, 'myNS', 'myCommand');
+$t->is($parser->isValid(), true, '->parse() parse with success for config file');
+$t->is($parser->hasArgumentValue('argumentRequired'), true, '->hasArgumentValue(argumentRequired) returns "true"');
+$t->is($parser->getArgumentValue('argumentRequired'), 'fooRequiredCfg', '->getArgumentValue(argumentRequired) returns "fooRequiredCfg"');
+$t->is($parser->hasArgumentValue('argumentOptional'), true, '->hasArgumentValue(argOptional) returns "true"');
+$t->is($parser->getArgumentValue('argumentOptional'), 'fooOptionalCfg', '->getArgumentValue(argumentOptional) returns "fooOptionalCfg"');
+$t->is($parser->hasOptionValue('optionWithParameter'), true, '->hasOptionValue(optionWithParameter) returns "true"');
+$t->is($parser->getOptionValue('optionWithParameter'), 'barParameterCfg', '->getOptionValue(optionWithParameter) returns "barParameterCfg"');
+$t->is($parser->hasOptionValue('optionDisabledCfg'), false, '->hasOptionValue(optionDisabledCfg) returns "false"');
+$t->is($parser->hasOptionValue('optionCfg'), true, '->hasOptionValue(optionCfg) returns "true"');
+$t->is($parser->getOptionValue('optionCfg'), true, '->getOptionValue(optionCfg) returns "true"');
 
 $t->comment('nbCommandLineParserTest - Test that argument or options passed by command line override argument and options from config file passed by option --config-file');
 
-$parser->parse(' --config-file --optionWithParameter=foo bar ','myNS','myCommand');
-$t->is($parser->isValid(), true, '->parse() parse with success for config file ');
-$t->is($parser->hasArgumentValue('argumentRequired'), true, '->hasArgumentValue(argumentRequired) returns "true" ');
-$t->is($parser->getArgumentValue('argumentRequired'), 'bar', '->getArgumentValue(argumentRequired) returns "bar" ');
-$t->is($parser->hasOptionValue('optionWithParameter'), true, '->hasOptionValue(optionWithParameter) returns "true" ');
-$t->is($parser->getOptionValue('optionWithParameter'), 'foo', '->getOptionValue(optionWithParameter) returns "foo" ');
-$t->is($parser->hasArgumentValue('argumentOptional'), true, '->hasArgumentValue(argOptional) returns "true" ');
-$t->is($parser->getArgumentValue('argumentOptional'), 'fooOptionalCfg', '->getArgumentValue(argumentOptional) returns "fooOptionalCfg" ');
-$t->is($parser->hasOptionValue('optionDisabledCfg'), false, '->hasOptionValue(optionDisabledCfg) returns "false" ');
-$t->is($parser->hasOptionValue('optionCfg'), true, '->hasOptionValue(optionCfg) returns "true" ');
-$t->is($parser->getOptionValue('optionCfg'), true, '->getOptionValue(optionCfg) returns "true" ');
+$parser->parse(' --config-file --optionWithParameter=foo bar ', 'myNS', 'myCommand');
+$t->is($parser->isValid(), true, '->parse() parse with success for config file');
+$t->is($parser->hasArgumentValue('argumentRequired'), true, '->hasArgumentValue(argumentRequired) returns "true"');
+$t->is($parser->getArgumentValue('argumentRequired'), 'bar', '->getArgumentValue(argumentRequired) returns "bar"');
+$t->is($parser->hasOptionValue('optionWithParameter'), true, '->hasOptionValue(optionWithParameter) returns "true"');
+$t->is($parser->getOptionValue('optionWithParameter'), 'foo', '->getOptionValue(optionWithParameter) returns "foo"');
+$t->is($parser->hasArgumentValue('argumentOptional'), true, '->hasArgumentValue(argOptional) returns "true"');
+$t->is($parser->getArgumentValue('argumentOptional'), 'fooOptionalCfg', '->getArgumentValue(argumentOptional) returns "fooOptionalCfg"');
+$t->is($parser->hasOptionValue('optionDisabledCfg'), false, '->hasOptionValue(optionDisabledCfg) returns "false"');
+$t->is($parser->hasOptionValue('optionCfg'), true, '->hasOptionValue(optionCfg) returns "true"');
+$t->is($parser->getOptionValue('optionCfg'), true, '->getOptionValue(optionCfg) returns "true"');
 
 
-$parser->parse(' --config-file --optionWithParameter=foo --otherOptionWithParameter bar','myNS','myCommand');
-$t->is($parser->hasArgumentValue('argumentRequired'), true, '->hasArgumentValue(argumentRequired) returns "true" ');
-$t->is($parser->getArgumentValue('argumentRequired'), 'bar', '->getArgumentValue(argumentRequired) returns "bar" ');
-$t->is($parser->hasOptionValue('optionWithParameter'), true, '->hasOptionValue(optionWithParameter) returns "true" ');
-$t->is($parser->getOptionValue('optionWithParameter'), 'foo', '->getOptionValue(optionWithParameter) returns "foo" ');
-$t->is($parser->hasArgumentValue('argumentOptional'), true, '->hasArgumentValue(argOptional) returns "true" ');
-$t->is($parser->getArgumentValue('argumentOptional'), 'fooOptionalCfg', '->getArgumentValue(argumentOptional) returns "fooOptionalCfg" ');
-$t->is($parser->hasOptionValue('optionDisabledCfg'), false, '->hasOptionValue(optionDisabledCfg) returns "false" ');
-$t->is($parser->hasOptionValue('optionCfg'), true, '->hasOptionValue(optionCfg) returns "true" ');
-$t->is($parser->getOptionValue('optionCfg'), true, '->getOptionValue(optionCfg) returns "true" ');
-$t->is($parser->hasOptionValue('otherOptionWithParameter'), true, '->hasOptionValue(otherOptionWithParameter) returns "true" ');
-$t->is($parser->getOptionValue('otherOptionWithParameter'), 'bar2ParameterDefault', '->getOptionValue(otherOptionWithParameter) returns "bar2ParameterDefault" ');
+$parser->parse(' --config-file --optionWithParameter=foo --otherOptionWithParameter bar', 'myNS', 'myCommand');
+$t->is($parser->hasArgumentValue('argumentRequired'), true, '->hasArgumentValue(argumentRequired) returns "true"');
+$t->is($parser->getArgumentValue('argumentRequired'), 'bar', '->getArgumentValue(argumentRequired) returns "bar"');
+$t->is($parser->hasOptionValue('optionWithParameter'), true, '->hasOptionValue(optionWithParameter) returns "true"');
+$t->is($parser->getOptionValue('optionWithParameter'), 'foo', '->getOptionValue(optionWithParameter) returns "foo"');
+$t->is($parser->hasArgumentValue('argumentOptional'), true, '->hasArgumentValue(argOptional) returns "true"');
+$t->is($parser->getArgumentValue('argumentOptional'), 'fooOptionalCfg', '->getArgumentValue(argumentOptional) returns "fooOptionalCfg"');
+$t->is($parser->hasOptionValue('optionDisabledCfg'), false, '->hasOptionValue(optionDisabledCfg) returns "false"');
+$t->is($parser->hasOptionValue('optionCfg'), true, '->hasOptionValue(optionCfg) returns "true"');
+$t->is($parser->getOptionValue('optionCfg'), true, '->getOptionValue(optionCfg) returns "true"');
+$t->is($parser->hasOptionValue('otherOptionWithParameter'), true, '->hasOptionValue(otherOptionWithParameter) returns "true"');
+$t->is($parser->getOptionValue('otherOptionWithParameter'), 'bar2ParameterDefault', '->getOptionValue(otherOptionWithParameter) returns "bar2ParameterDefault"');
 

@@ -19,10 +19,6 @@ TXT
         new nbArgument('target-dir', nbArgument::REQUIRED, 'Target directory'),
         new nbArgument('archive-path', nbArgument::REQUIRED, 'Archive path')
       )));
-
-    $this->setOptions(new nbOptionSet(array(
-        new nbOption('config-file', 'f', nbOption::PARAMETER_OPTIONAL, 'Archive configuration file', './.bee/nbArchivePlugin.yml')
-      )));
   }
 
   protected function execute(array $arguments = array(), array $options = array())

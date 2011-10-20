@@ -22,6 +22,8 @@ $content = removeCarriageReturn(file_get_contents($destinationFile));
 $compare = removeCarriageReturn(file_get_contents($compareFile));
 $t->is($content, $compare, 'Generated file content is correct');
 
+$fs->delete($destinationFile);
+
 try {
   $cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFileNotExists, $destinationFile));
   $t->fail('No template file to check exists');

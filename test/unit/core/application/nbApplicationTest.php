@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(32);
+$t = new lime_test(34);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
@@ -153,3 +153,16 @@ $application = new DummyBeeApplication($serviceContainer);
 $application->run('--enable-plugin=FirstPlugin first');
 $t->ok(class_exists('DummyCommand'), 'option --enable-plugin enables a single plugin');
 
+
+$t->comment('nbApplicationTest - Can execute with verbose option');
+$application = new DummyBeeApplication($serviceContainer);
+$foo = new DummyCommand('foo');
+
+$serviceContainer->commandLoader->reset();
+$serviceContainer->commandLoader->addCommands(array($foo));
+
+$application->run('-v foo');
+$t->is($foo->getLog(), 'Log message', 'command "foo" has logged correctly');
+
+$application->run('foo');
+$t->is($foo->getLog(), 'Log message', 'command "foo" has no log');

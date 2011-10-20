@@ -17,10 +17,10 @@ $t->comment('Check Configuration');
 
 $cmd = new nbCheckConfigurationCommand();
 
-$t->ok($cmd->run(new nbCommandLineParser(), sprintf('%s %s', $configFileOk, $templateFile)), 'Project configuration checked succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $configFileOk)), 'Project configuration checked succefully');
 
 try {
-  $cmd->run(new nbCommandLineParser(), sprintf('%s %s', $configFileNoField, $templateFile));
+  $cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $configFileNoField));
   $t->fail('Config file without required field not checked successfully');
 }
 catch(Exception $e) {
@@ -28,7 +28,7 @@ catch(Exception $e) {
 }
 
 try {
-  $cmd->run(new nbCommandLineParser(), sprintf('%s %s', $configFileNoChild, $templateFile));
+  $cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $configFileNoChild));
   $t->fail('Config file without required child not checked successfully');
 }
 catch(Exception $e) {
@@ -36,7 +36,7 @@ catch(Exception $e) {
 }
 
 try {
-  $cmd->run(new nbCommandLineParser(), sprintf('%s %s', $configFileNotExists, $templateFile));
+  $cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $configFileNotExists));
   $t->fail('No config file to check exists');
 }
 catch(Exception $e) {

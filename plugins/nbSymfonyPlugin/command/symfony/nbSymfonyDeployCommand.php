@@ -14,10 +14,6 @@ The <info>{$this->getFullName()}</info> command:
 TXT
     );
 
-    $this->setArguments(new nbArgumentSet(array(
-        new nbArgument('config-file', nbArgument::OPTIONAL, 'Deploy configuration file', './.bee/nbSymfonyPlugin.yml')
-      )));
-
     $this->setOptions(new nbOptionSet(array(
         new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Make the changes!'),
       )));
@@ -32,18 +28,21 @@ TXT
       
       throw new InvalidArgumentException($message);
     }
+    
+    if(!isset($options['config-file']))
+      throw new Exception('Option --config-file required');
 
     $this->logLine('Running: symfony:project-deploy', nbLogger::COMMENT);
 
-    $pluginConfigFile = $arguments['config-file'];
+    $config = $options['config-file'];
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
 
-    if(!file_exists($pluginConfigFile)) {
+    if(!file_exists($config)) {
       $cmd = new nbConfigPluginCommand();
       $this->executeCommand($cmd, 'nbSymfonyPlugin --force', $doit, $verbose);
       
-      $this->logLine('Configuration file "' . $pluginConfigFile . '" created.', nbLogger::INFO);
+      $this->logLine('Configuration file "' . $config . '" created.', nbLogger::INFO);
       $this->logLine('Modify it and re-run the command.', nbLogger::INFO);
       
       return true;

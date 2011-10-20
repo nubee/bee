@@ -20,10 +20,6 @@ TXT
         new nbArgument('username', nbArgument::REQUIRED, 'Database username'),
         new nbArgument('password', nbArgument::REQUIRED, 'Database password')
       )));
-
-    $this->setOptions(new nbOptionSet(array(
-        new nbOption('config-file', 'f', nbOption::PARAMETER_OPTIONAL, 'Configuration file', './.bee/nbMysqlPlugin.yml')
-      )));
   }
 
   protected function execute(array $arguments = array(), array $options = array())

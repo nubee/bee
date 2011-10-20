@@ -12,10 +12,9 @@ $cmd = new nbMysqlRestoreCommand();
 $commandLine = sprintf('%s %s %s %s', $dbName, $dumpFilename, $username, $password);
 $t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'MysqlRestore executed succefully');
 
-/*
 $cmd = new nbMysqlRestoreCommand();
 $commandLine = sprintf('--config-file=%s', dirname(__FILE__) . '/../config/config.yml');
 $t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'MysqlRestore executed succefully');
-*/
+
 // Tear down
 dropDb($mysqlUsername, $mysqlPassword, $dbName);

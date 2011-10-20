@@ -18,8 +18,8 @@ $dumpFile = sprintf('%s/%s-%s.sql', $dumpPath, $dbName, $timestamp);
 $t->ok(file_exists($dumpFile), 'Dump file exists');
 
 // Cleaning up
-nbFileSystem::delete($dumpFile);
-/*
+$fs->delete($dumpFile);
+
 $commandLine = sprintf('--config-file=%s', dirname(__FILE__) . '/../config/config.yml');
 $t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'MysqlDump executed succefully from config file');
 
@@ -28,8 +28,7 @@ $dumpFile = sprintf('%s/%s-%s.sql', $dumpPath, $dbName, $timestamp);
 $t->ok(file_exists($dumpFile), 'Dump file exists');
 
 // Cleaning up
-nbFileSystem::delete($dumpFile);
-*/
+$fs->delete($dumpFile);
 
 // Tear down
 dropDb($mysqlUsername, $mysqlPassword, $dbName);

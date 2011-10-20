@@ -37,24 +37,27 @@ TXT
   }
   
   private function check($first, $second) {
-//    print_r($first);
-//    print_r($second);
-    
     $required = false;
     
     foreach($second as $key => $value) {
+      $this->logLine('Checking ' . $key);
+      
       $childRequired = false;
       
       if(is_array($value)) {
         $firstKey = isset($first[$key]) ? $first[$key] : null;
         $childRequired = $this->check($firstKey, $value);
         
-        if($childRequired && !$firstKey)
+        if($childRequired && !$firstKey) {
+          $this->logLine('Required field not found', nbLogger::ERROR);
           throw new Exception('Undefined key: ' . $key);
+        }
       }
       
-      if($key == 'required')
+      if($key == 'required') {
+        $this->logLine('Field is required', nbLogger::INFO);
         $required = $value || $childRequired;
+      }
     }
     
     return $required;

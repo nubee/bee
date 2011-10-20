@@ -30,10 +30,10 @@ abstract class nbApplication
     );
 
     $this->options->addOptions(array(
-      new nbOption('version', 'V', nbOption::PARAMETER_NONE, 'Shows the version'),
-      new nbOption('verbose', 'v', nbOption::PARAMETER_NONE, 'Sets verbosity'),
-      new nbOption('trace', 't', nbOption::PARAMETER_NONE, 'Shows exception trace'),
-      new nbOption('help', '?', nbOption::PARAMETER_NONE, 'Shows application help'),
+      new nbOption('version',     'V', nbOption::PARAMETER_NONE, 'Shows the version'),
+      new nbOption('verbose',     'v', nbOption::PARAMETER_NONE, 'Sets verbosity'),
+      new nbOption('trace',       '',  nbOption::PARAMETER_NONE, 'Shows exception trace'),
+      new nbOption('help',        '?', nbOption::PARAMETER_NONE, 'Shows application help'),
     ));
 
     $this->configure();
@@ -64,7 +64,7 @@ abstract class nbApplication
       $command->setApplication($this);
 
     try {
-      $command->run($this->parser, $commandLine);
+      $command->run($this->parser, $commandLine, $this->verbose);
     }
     catch(Exception $e) {
       $this->logger->logLine('');

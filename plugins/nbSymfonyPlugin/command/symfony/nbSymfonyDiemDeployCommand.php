@@ -12,18 +12,19 @@ The <info>{$this->getFullName()}</info> command:
 TXT
     );
 
-    $this->setArguments(new nbArgumentSet(array(
-        new nbArgument('config-file', nbArgument::REQUIRED, 'Deploy configuration file')
-      )));
-
     $this->setOptions(new nbOptionSet(array(
       )));
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
     $this->logLine('Diem Deploy');
+    
+    if(!isset($options['config-file']))
+      throw new Exception('Option --config-file required');
+    
     $configParser = new nbYamlConfigParser();
-    $configParser->parseFile($arguments['config-file']);
+    $configParser->parseFile($options['config-file']);
+    
     $symfonyExePath = nbConfig::get('symfony_project-deploy_symfony-root-dir');
     
     //site offline

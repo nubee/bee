@@ -17,6 +17,7 @@ abstract class nbCommand
   $optionSet = null,
   $aliases = array();
   private $logger;
+  private $verbose;
 
   public function __construct()
   {
@@ -27,7 +28,7 @@ abstract class nbCommand
     $this->configure();
   }
 
-  public function run(nbCommandLineParser $parser, $commandLine)
+  public function run(nbCommandLineParser $parser, $commandLine, $verbose = false)
   {
     $parser->addArguments($this->getArguments());
     $parser->addOptions($this->getOptions());
@@ -38,22 +39,9 @@ abstract class nbCommand
       throw new InvalidArgumentException(sprintf(
           "[nbCommand::run] Command \"%s\" execution failed: \n  - %s", $this->getFullName(), implode("  \n- ", $parser->getErrors())
       ));
-    /*
-      $cmdlineOptionValues = $parser->getOptionValues();
-      $path = 'nb_commands_' . $this->getNamespace() . '_' . $this->getName();
-      if(nbConfig::has($path)) {
-      $configOptionValues = nbConfig::get($path);
-      foreach($configOptionValues as $name => $value) {
-      if(!$this->getOptions()->hasOption($name)
-      || ('' == $value)
-      || isset($cmdlineOptionValues[$name]))
-      continue;
+    
+    $this->verbose = $verbose;
 
-      $cmdlineOptionValues[$name] = $value;
-      }
-      }
-      //return $this->execute($parser->getArgumentValues(), $cmdlineOptionValues);
-     */
     return $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
   }
 
@@ -227,12 +215,14 @@ abstract class nbCommand
 
   public function log($text, $level = null)
   {
-    $this->logger->log($text, $level);
+    if($this->verbose)
+      $this->logger->log($text, $level);
   }
 
   public function logLine($text, $level = null)
   {
-    $this->logger->logLine($text, $level);
+    if($this->verbose)
+      $this->logger->logLine($text, $level);
   }
 
   public function format($text, $level)
@@ -253,6 +243,11 @@ abstract class nbCommand
   public function getFileSystem()
   {
     return nbFileSystem::getInstance();
+  }
+  
+  public function isVerbose()
+  {
+    return $this->verbose;
   }
 
 }

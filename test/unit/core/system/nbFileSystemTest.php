@@ -69,15 +69,15 @@ $fs->rmdir($sandboxDir . '/dir2', true);
 $t->ok(!file_exists($sandboxDir . '/dir2'), '$fs->rmdir() can remove folder recursively');
 
 try {
-  $fs->rmdir($sandboxDir.'/dir3');
+  $fs->rmdir($sandboxDir . '/dir3');
   $t->fail('$fs->rmdir() throws if folder doesn\'t exist');
 }
 catch(Exception $e) {
   $t->pass('$fs->rmdir() throws if folder doesn\'t exist');
 }
-$fs->touch($sandboxDir.'/file');
+$fs->touch($sandboxDir . '/file');
 try {
-  $fs->rmdir($sandboxDir.'/file');
+  $fs->rmdir($sandboxDir . '/file');
   $t->fail('$fs->rmdir() doesn\'t remove files');
 }
 catch(Exception $e) {
@@ -159,11 +159,12 @@ $t->ok(file_exists($sandboxDir . '/dir4/file1'), '$fs->copy() copies source file
 $fs->copy($sandboxDir . '/file1', $sandboxDir . '/dir_not_created/file1');
 $t->ok(file_exists($sandboxDir . '/dir_not_created/file1'), '$fs->copy() copies source file in another file creating all the needed folders');
 
+$fs->rmdir($sandboxDir, true, true);
+
+
 ////////////////////////////////////////
 // Test move
 $t->comment('nbFileSystemTest - Test Move');
-
-cleanDir($sandboxDir);
 
 $fs->mkdir($sandboxDir . '/dir/dir1', true);
 $fs->touch($sandboxDir . '/dir/dir1/file1');
@@ -176,7 +177,7 @@ $t->ok(file_exists($sandboxDir . '/dir2/dir1/file1'), '$fs->move() move folder c
 $t->ok(!file_exists($sandboxDir . '/dir/dir1'), '$fs->move() remove from old source the dir moved');
 $t->ok(file_exists($sandboxDir . '/dir'), '$fs->move() doesn\'t remove parent folders');
 
-cleanDir($sandboxDir);
+$fs->rmdir($sandboxDir, true, true);
 
 $fs->mkdir($sandboxDir . '/dir1', true);
 $fs->mkdir($sandboxDir . '/dir', true);
@@ -210,13 +211,13 @@ $fs->mkdir($sandboxDir . '/dir2');
 $fs->move($sandboxDir . '/dir1', $sandboxDir . '/dir2/dir');
 $t->ok(is_dir($sandboxDir . '/dir2' . '/dir'), '$fs->move() renames folder in "destination" if basename("destination") doesn\'t exist');
 
-cleanDir($sandboxDir);
+$fs->rmdir($sandboxDir, true, true);
 
 // Works only on linux
 if(php_uname('s') == 'Linux') {
   $t->comment('nbFileSystemTest - Test Chmod');
 
-  cleanDir($sandboxDir);
+  $fs->rmdir($sandboxDir, true, true);
 
   $filename = $sandboxDir . '/file1';
   $fs->touch($filename);
@@ -234,17 +235,5 @@ if(php_uname('s') == 'Linux') {
   echo $fs->formatPermissions($filename);
   $t->ok($perms & 0x0080);  // user write
 
-  cleanDir($sandboxDir);
-}
-
-function cleanDir($dir)
-{
-  $fs = nbFileSystem::getInstance();
-  $finder = nbFileFinder::create('any');
-  $files = $finder->add('*.*')->remove('.')->remove('..')->in($dir);
-  foreach($files as $file)
-    if(is_dir($file))
-      $fs->rmdir($file, true);
-    else
-      $fs->delete($file);
+  $fs->rmdir($sandboxDir, true, true);
 }

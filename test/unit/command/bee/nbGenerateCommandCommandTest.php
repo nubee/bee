@@ -31,4 +31,4 @@ $t->ok(file_exists($commandDir . '/customFolder/className.php'), 'Command accept
 
 // Tear down
 // TODO clean up
-nbFileSystem::getInstance()->rmdir($commandDir, true);
+nbFileSystem::getInstance()->rmdir($commandDir, true, true);

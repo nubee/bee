@@ -4,6 +4,7 @@ class DummyCommand extends nbCommand
 {
   private $executed = false;
   private $successOnExecute = true;
+  private $log = '';
   
   public function __construct($name = 'dummy', nbArgumentSet $arguments = null, nbOptionSet $options = null)
   {
@@ -28,6 +29,8 @@ class DummyCommand extends nbCommand
     $this->arguments = $arguments;
     $this->options = $options;
     $this->executed = true;
+    if(isset($options['verbose']))
+      $this->log = 'Log message';
     return $this->successOnExecute;
   }
 
@@ -50,4 +53,10 @@ class DummyCommand extends nbCommand
   {
     return $this->options[$optionName];
   }
+  
+  public function getLog()
+  {
+    return $this->log;
+  }
+
 }

@@ -132,16 +132,9 @@ class nbCommandLineParser {
         $this->parsedArgumentValues[] = $argument;
     }
 
-    // if is set option config-file set all arguments and parameters declared in the configuration file
+    // If option config-file is set, get all arguments and parameters from the configuration file
     if (isset($this->parsedLongOptionValues['config-file'])) {
-      $configFile = '';
-      if ($this->parsedLongOptionValues['config-file'][0] === true) {
-        // get default config file
-        if (!(empty($namespace) && empty($commandName)))
-          $configFile = $this->options->getOption('config-file')->getValue();
-      }
-      else
-        $configFile = $this->parsedLongOptionValues['config-file'][0];
+      $configFile = $this->options->getOption('config-file')->getValue();
       
       if (file_exists($configFile)) {
         $configParser = new nbYamlConfigParser();
@@ -151,8 +144,7 @@ class nbCommandLineParser {
         if (nbConfig::has($ymlPath)) {
           $configurationValues = nbConfig::get($ymlPath);
           foreach ($configurationValues as $name => $value) {
-            if (!$this->getArguments()->hasArgument($name)
-                    || ('' == $value))
+            if (!$this->getArguments()->hasArgument($name) || ('' == $value))
               continue;
             $this->argumentValues[$name] = $value;
           }
@@ -165,6 +157,8 @@ class nbCommandLineParser {
           }
         }
       }
+      else 
+        throw new Exception('Config file: ' . $configFile . ' not found');
     }
 
     //set argumentValues parsed from command line

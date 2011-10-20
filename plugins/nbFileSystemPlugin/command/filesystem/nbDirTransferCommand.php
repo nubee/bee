@@ -15,14 +15,13 @@ TXT
     );
 
     $this->setArguments(new nbArgumentSet(array(
-        new nbArgument('source-path', nbArgument::REQUIRED, 'Source path'),
-        new nbArgument('target-path', nbArgument::REQUIRED, 'Target path')
+        new nbArgument('source-dir', nbArgument::REQUIRED, 'Source dir'),
+        new nbArgument('target-dir', nbArgument::REQUIRED, 'Target dir')
       )));
 
     $this->setOptions(new nbOptionSet(array(
-        new nbOption('config-file', '', nbOption::PARAMETER_OPTIONAL, 'Configuration file', './.bee/nbFileSystemPlugin.yml'),
-        new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Synchronize for real'),
-        new nbOption('delete', 'd', nbOption::PARAMETER_NONE, 'Deletes from remote'),
+        new nbOption('doit',         'x', nbOption::PARAMETER_NONE,     'Execute synchronization'),
+        new nbOption('delete',       'd', nbOption::PARAMETER_NONE,     'Deletes from remote'),
         new nbOption('exclude-from', 'e', nbOption::PARAMETER_REQUIRED, 'Exclude file'),
         new nbOption('include-from', 'i', nbOption::PARAMETER_REQUIRED, 'Include file')
       )));
@@ -38,8 +37,8 @@ TXT
     $delete = '';
     
     // Trailing slash must be added after sanitize dir
-    $sourceDir = nbFileSystem::sanitizeDir($arguments['source-path']) . '/';
-    $targetDir = nbFileSystem::sanitizeDir($arguments['target-path']);
+    $sourceDir = nbFileSystem::sanitizeDir($arguments['source-dir']) . '/';
+    $targetDir = nbFileSystem::sanitizeDir($arguments['target-dir']);
     
     if(isset($options['exclude-from']) && file_exists($options['exclude-from']))
       $exclude = ' --exclude-from \'' . $options['exclude-from'] . '\' ';
