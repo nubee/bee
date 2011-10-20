@@ -1,19 +1,21 @@
 filesystem:
   remote-dir-transfer:
-      source-path: plugin/nbFileSystemPlugin/test/data/dirToSync
-      remote-server: xxxx
-      remote-user:  xxxx
-      remote-path: /home/voyager/test-ssh
-      exclude-from: plugin/nbFileSystemPlugin/test/config/excludeList
-      include-from: plugin/nbFileSystemPlugin/test/config/includeList
+    source-path:   plugins/nbFileSystemPlugin/test/data/dirToSync
+    remote-server: xxxx
+    remote-user:   xxxx
+    remote-path:   /home/voyager/test-ssh
+    exclude-from:  plugins/nbFileSystemPlugin/test/config/excludeList
+    include-from:  plugins/nbFileSystemPlugin/test/config/includeList
+    
   dir-transfer:
-      source-path: plugin/nbFileSystemPlugin/test/data/dirToSync
-      target-path: plugin/nbFileSystemPlugin/test/data/targetDir
-      exclude-from: plugin/nbFileSystemPlugin/test/config/excludeList
-      include-from: plugin/nbFileSystemPlugin/test/config/includeList
+    source-path:  plugins/nbFileSystemPlugin/test/data/dirToSync
+    target-path:  plugins/nbFileSystemPlugin/test/sandbox
+    exclude-from: plugins/nbFileSystemPlugin/test/config/excludeList
+    include-from: plugins/nbFileSystemPlugin/test/config/includeList
+    
   test:
-      file-to-sync: fileToSync
-      folder-to-exclude: folderToExclude
-      file-to-exclude: fileToExclude
-      file-to-include: fileToInclude
-      other-file-to-sync: otherFileToSync
+    file-to-sync:       fileToSync
+    folder-to-exclude:  folderToExclude
+    file-to-exclude:    fileToExclude
+    file-to-include:    fileToInclude
+    other-file-to-sync: otherFileToSync

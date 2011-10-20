@@ -15,53 +15,53 @@
   $dumpFile = 'plugin/nbMysqlPlugin/test/data/dbtest-xxx.sql';
 ?>
 symfony:
-  project_deploy:
-    symfony_root_dir: <?php echo $basePath; ?>/<?php echo $siteDir; ?>/symfony
-    site_dir: <?php echo $basePath; ?>/<?php echo $siteDir; ?><?php echo "\n"; ?>
-    site_user: <?php echo $siteUser; ?><?php echo "\n"; ?>
-    site_group: <?php echo $siteGroup; ?><?php echo "\n"; ?>
-    site_applications:
+  project-deploy:
+    symfony-root-dir: <?php echo $basePath; ?>/<?php echo $siteDir; ?>/symfony
+    site-dir: <?php echo $basePath; ?>/<?php echo $siteDir; ?><?php echo "\n"; ?>
+    site-user: <?php echo $siteUser; ?><?php echo "\n"; ?>
+    site-group: <?php echo $siteGroup; ?><?php echo "\n"; ?>
+    site-applications:
       app1:
         name: frontend
         env: prod
 #        app2:
 #          name: backend
 #          env: prod
-  doctrine_migrate:
+  doctrine-migrate:
     version: <?php echo $migrateVersion; ?><?php echo "\n"; ?>
-  project_clone:
+  project-clone:
     from: <?php echo $basePath; ?>/testapp
     to: <?php echo $basePath; ?><?php echo "\n"; ?>
     name: clonedtestapp
     
 archive:
-  inflate_dir:
-    target_path: <?php echo $basePath; ?><?php echo "\n"; ?>
-    target_dir: <?php echo $siteDir; ?><?php echo "\n"; ?>
-    archive_path: <?php echo $archivePath; ?><?php echo "\n"; ?>
+  inflate-dir:
+    target-path: <?php echo $basePath; ?><?php echo "\n"; ?>
+    target-dir: <?php echo $siteDir; ?><?php echo "\n"; ?>
+    archive-path: <?php echo $archivePath; ?><?php echo "\n"; ?>
 
 filesystem:
-  dir_transfer:
-    source_path: <?php echo $sourcePath; ?><?php echo "\n"; ?>
-    target_path: <?php echo $basePath; ?>/<?php echo $siteDir; ?><?php echo "\n"; ?>
-    exclude_from: <?php echo $excludeSymfonyFile; ?><?php echo "\n"; ?>
-    include_from: <?php echo $includeSymfonyFile; ?><?php echo "\n"; ?>
+  dir-transfer:
+    source-path: <?php echo $sourcePath; ?><?php echo "\n"; ?>
+    target-path: <?php echo $basePath; ?>/<?php echo $siteDir; ?><?php echo "\n"; ?>
+    exclude-from: <?php echo $excludeSymfonyFile; ?><?php echo "\n"; ?>
+    include-from: <?php echo $includeSymfonyFile; ?><?php echo "\n"; ?>
     
 mysql:
-  db_name: <?php echo $dbName; ?><?php echo "\n"; ?>
+  db-name: <?php echo $dbName; ?><?php echo "\n"; ?>
   username: <?php echo $dbUser; ?><?php echo "\n"; ?>
   password: <?php echo $dbUserPwd; ?><?php echo "\n"; ?>
-  dump_path: <?php echo $dumpPath; ?><?php echo "\n"; ?>
-  dump_file: <?php echo $dumpFile; ?><?php echo "\n"; ?>
+  dump-path: <?php echo $dumpPath; ?><?php echo "\n"; ?>
+  dump-file: <?php echo $dumpFile; ?><?php echo "\n"; ?>
   
 test:
-  doctrine_migrate:
-    version_low: 2
-    version_high: 4
-  check_website: http://di-side.com
-  go_offline:
+  doctrine-migrate:
+    version-low: 2
+    version-high: 4
+  check-website: http://di-side.com
+  go-offline:
     application: frontend
     enviroment: prod
-  go_online:
+  go-online:
     application: frontend
     enviroment: prod

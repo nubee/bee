@@ -129,13 +129,13 @@ class nbFileSystem
   public function delete($file)
   {
     if(!file_exists($file))
-      return false;
+      throw new Exception('[nbFileSystem::delete] File does not exist: ' . $file);
 
     if(is_dir($file))
-      throw new Exception('[nbFileSystem::delete] Can\'t delete folder');
+      throw new Exception('[nbFileSystem::delete] Can\'t delete file: ' . $file . ' (it\'s a directory)');
 
     if(!unlink($file))
-      throw new Exception('[nbFileSystem::delete] Can\'t delete file');
+      throw new Exception('[nbFileSystem::delete] Can\'t delete file: ' . $file);
 
     return true;
   }
