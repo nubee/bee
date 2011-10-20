@@ -35,7 +35,9 @@ TXT
 ", $cmd
       ));
     }
+    
     $this->logLine('Done - SymfonyGoOfflineCommand');
+    
     return true;
   }
 

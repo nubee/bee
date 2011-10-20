@@ -13,7 +13,7 @@ TXT
     );
 
     $this->setArguments(new nbArgumentSet(array(
-                new nbArgument('symfony_path', nbArgument::REQUIRED, 'Symfony executable path'),
+                new nbArgument('symfony-path', nbArgument::REQUIRED, 'Symfony executable path'),
             )));
 
     $this->setOptions(new nbOptionSet(array(
@@ -23,10 +23,20 @@ TXT
   protected function execute(array $arguments = array(), array $options = array()) {
     $this->logLine('Diem setup');
     $shell = new nbShell();
-    $cmd = 'php ' . $arguments['symfony_path'] . '/symfony dm:setup';
+    
+    $cmd = 'php ' . $arguments['symfony-path'] . '/symfony dm:setup';
+    
     $this->logLine($cmd);
-    $shell->execute($cmd);
+    if (!$shell->execute($cmd)) {
+      throw new LogicException(sprintf("
+[nbSymfonyDiemSetupCommand::execute] Error executing command:
+  %s
+", $cmd
+      ));
+    }
+    
     $this->logLine('Done - Diem setup');
+    
     return true;
   }
 

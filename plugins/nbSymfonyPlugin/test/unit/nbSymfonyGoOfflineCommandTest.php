@@ -1,15 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
+require_once dirname(__FILE__) . '/../bootstrap/unit.php';
 
-$configParser->parseFile(dirname(__FILE__) . '/../config/config.yml');
-$serviceContainer->pluginLoader->loadPlugins(array('nbSymfonyPlugin'));
-
-$t = new lime_test(0);
-
-$symfony = nbConfig::get('symfony_project-deploy_symfony-root-dir');
-$application = nbConfig::get('test_go-offline_application');
-$environment = nbConfig::get('test_go-offline_enviroment');
+$t = new lime_test(1);
 
 $cmd = new nbSymfonyGoOfflineCommand();
-$cmd->run(new nbCommandLineParser(), sprintf('%s %s %s', $symfony, $application, $environment), 'Command runs succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), sprintf('%s %s %s', $symfonyRootDir, $application, $environment)), 'Command runs succefully');

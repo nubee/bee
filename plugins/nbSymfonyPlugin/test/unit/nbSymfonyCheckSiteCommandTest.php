@@ -1,13 +1,16 @@
 <?php
-require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
-$configParser->parseFile(dirname(__FILE__) . '/../config/config.yml');
-$serviceContainer->pluginLoader->loadPlugins(array('nbSymfonyPlugin'));
+
+require_once dirname(__FILE__) . '/../bootstrap/unit.php';
+
 $t = new lime_test(2);
+$t->comment('Symfony Check Site');
+
 $cmd = new nbSymfonyCheckSiteCommand();
-$commandLine =  nbConfig::get('test_check-website').' 200';
 
-$t->ok($cmd->run(new nbCommandLineParser(), $commandLine),'Command SymfonyCheckSite called succefully');
+$checkSite = nbConfig::get('test_check-website');
 
-$commandLine =  nbConfig::get('test_check-website').' 500';
+$commandLine =  $checkSite. ' 200';
+$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'SymfonyCheckSite returned successfully with 200');
 
-$t->ok(!$cmd->run(new nbCommandLineParser(), $commandLine),'Command SymfonyCheckSite called succefully');
+$commandLine = $checkSite . ' 500';
+$t->ok(!$cmd->run(new nbCommandLineParser(), $commandLine), 'SymfonyCheckSite did not return a 500');
