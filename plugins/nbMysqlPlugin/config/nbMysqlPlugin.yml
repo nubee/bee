@@ -1,11 +1,10 @@
 mysql:
-    dump:
-      db-name: dbtest
-      db-user: dbtestadmin
-      db-user-pwd: dbtestpwd
-      dump-path: plugin/nbMysqlPlugin/test/data
-    restore:
-      db-name: dbtest
-      db-user: dbtestadmin
-      db-user-pwd: dbtestpwd
+  db-name: dbtest
+  db-user: dbtestadmin
+  db-user-pwd: dbtestpwd
+  dump-path: plugin/nbMysqlPlugin/test/data
+  restore:
+    db-name: dbtest
+    db-user: dbtestadmin
+    db-user-pwd: dbtestpwd
       dump-file: plugin/nbMysqlPlugin/test/data/dbtest-xxx.sql

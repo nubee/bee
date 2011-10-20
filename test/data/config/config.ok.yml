@@ -1,0 +1,6 @@
+app:
+  required_field: text
+  required_child: { field: value }
+  param1:         value4
+  #param2: not required
+    

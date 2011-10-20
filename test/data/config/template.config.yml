@@ -1,0 +1,6 @@
+app:
+  required_field: { required: true, default: text }
+  required_child: { field: { required: true, default: value } }
+  param1:         { default: value1 }
+  param2:         
+    

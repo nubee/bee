@@ -15,17 +15,15 @@ TXT
     $this->setArguments(new nbArgumentSet(array(
         new nbArgument('version-file', nbArgument::OPTIONAL, 'Version file', 'version.yml'),
       )));
-
-    $this->setOptions(new nbOptionSet(array(
-      )));
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    if (!file_exists($arguments['version-file']))
-      throw new Exception('Version file: ' . $arguments['version-file'] . ' does not exist');
+    $versionFile = $arguments['version-file'];
+    if (!file_exists($versionFile))
+      throw new Exception('Version file: ' . $versionFile . ' does not exist');
     
     $configParser = new nbYamlConfigParser();
-    $configParser->parseFile($arguments['version-file']);
+    $configParser->parseFile($versionFile);
     
     $initialVersion = nbConfig::get('version');
     
@@ -35,7 +33,7 @@ TXT
     
     $finalVersion = join('.', $arrayVersion);
     
-    nbFileSystem::replaceTokens($initialVersion, $finalVersion, $arguments['version-file']);
+    nbFileSystem::replaceTokens($initialVersion, $finalVersion, $versionFile);
     
     return true;
   }

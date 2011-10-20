@@ -1,9 +1,9 @@
 <?php
 
-class nbConfigPluginCommand extends nbCommand {
+class nbConfigurePluginCommand extends nbCommand {
 
   protected function configure() {
-    $this->setName('bee:config-plugin')
+    $this->setName('bee:configure-plugin')
       ->setBriefDescription('Copy the default plugin configuration in .bee directory')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
@@ -22,7 +22,7 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $pluginName = $arguments['plugin-name'];
+/*    $pluginName = $arguments['plugin-name'];
     $this->logLine('Configuring plugin: ' . $pluginName, nbLogger::COMMENT);
     
     $force = isset($options['force']);
@@ -46,7 +46,7 @@ TXT
     }
 
     $this->logLine('Done: bee:config-plugin', nbLogger::COMMENT);
-    
+*/    
     return true;
   }
 
