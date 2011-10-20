@@ -1,10 +1,9 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
+require_once dirname(__FILE__) . '/../bootstrap/unit.php';
 
-$configParser->parseFile(dirname(__FILE__) . '/../config/config.yml');
-$serviceContainer->pluginLoader->loadPlugins(array('nbSymfonyPlugin'));
-$t = new lime_test(0);
+$t = new lime_test(1);
+$t->comment('Symfony Diem Setup');
 
 $cmd = new nbSymfonyDiemSetupCommand();
-$cmd->run(new nbCommandLineParser(), nbConfig::get('symfony_project-deploy_symfony-exe-path'), 'Command SymfonyDiemSetup called succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), $symfonyRootDir), 'Diem project set up successfully');
