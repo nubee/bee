@@ -22,18 +22,18 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $this->logLine('Running: bee:config-plugin', nbLogger::COMMENT);
+    $pluginName = $arguments['plugin-name'];
+    $this->logLine('Configuring plugin: ' . $pluginName, nbLogger::COMMENT);
+    
     $force = isset($options['force']);
+    
+    $pluginsDir = nbConfig::get('nb_plugins_dir');
 
-    $source = nbConfig::get('nb_plugins_dir') . '/' . $arguments['plugin-name'] . '/config';
-    $destinaiton = './.bee';
+    $source = sprintf('%s/%s/config', $pluginsDir, $pluginName);
+    $destination = './.bee';
 
     if (!file_exists($source))
-      throw new LogicException(sprintf("
-[nbConfigPluginCommand::execute] Error:
-  %s
-", 'plugin ' . $arguments['plugin-name'] . ' not found in ' . nbConfig::get('nb_plugins_dir')
-      ));
+      throw new LogicException('Plugin ' . $pluginName . ' not found in ' . nbConfig::get('nb_plugins_dir'));
 
     $files = nbFileFinder::create('file')
       ->remove('.')
@@ -41,11 +41,12 @@ TXT
       ->in($source);
 
     foreach ($files as $file) {
-      nbFileSystem::copy($file, $destinaiton, $force);
-      $this->logLine('file+: ' . $destinaiton . '/' . basename($file), nbLogger::INFO);
+      $this->getFileSystem()->copy($file, $destination, $force);
+      $this->logLine('file+: ' . $destination . '/' . basename($file), nbLogger::INFO);
     }
 
     $this->logLine('Done: bee:config-plugin', nbLogger::COMMENT);
+    
     return true;
   }
 

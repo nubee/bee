@@ -5,10 +5,11 @@
   $sandboxDir         = $testDir . '/sandbox';
   
   $sourceDir          = $dataDir . '/stageSite';
-  $archiveDir        = $dataDir . '/archive';
+  $archiveDir         = $dataDir . '/archive';
   $excludeSymfonyFile = $dataDir . '/excludeSymfonyProjects';
   $includeSymfonyFile = $dataDir . '/includeSymfonyProjects';
   $siteDir            = 'prodSite';
+  $symfonyRootDir     = $dataDir . '/' . $siteDir . '/symfony';
   $siteUser           = 'xxxx';
   $siteGroup          = 'yyyy';
   $migrateVersion     = 2;
@@ -20,7 +21,8 @@
 ?>
 symfony:
   project-deploy:
-    symfony-root-dir: <?php echo $dataDir; ?>/<?php echo $siteDir; ?>/symfony
+    symfony-root-dir: <?php echo $symfonyRootDir; ?><?php echo "\n"; ?>
+    symfony-exe-path: <?php echo $symfonyRootDir; ?>/symfony
     site-dir:         <?php echo $dataDir; ?>/<?php echo $siteDir; ?><?php echo "\n"; ?>
     site-user:        <?php echo $siteUser; ?><?php echo "\n"; ?>
     site-group:       <?php echo $siteGroup; ?><?php echo "\n"; ?>
@@ -65,5 +67,5 @@ test:
     version-low:  2
     version-high: 4
   check-website: http://di-side.com
-  application: frontend
-  enviroment:  prod
+  application:   frontend
+  enviroment:    prod
