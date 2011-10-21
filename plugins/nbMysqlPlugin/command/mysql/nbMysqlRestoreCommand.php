@@ -29,6 +29,9 @@ TXT
     $username = $arguments['username'];
     $password = $arguments['password'];
     
+    if(!file_exists($filename))
+      throw new InvalidArgumentException('File: ' . $filename . ' does not exist');
+    
     $this->logLine('Restoring ' . $filename . ' to ' . $dbName);
     
     $shell = new nbShell();

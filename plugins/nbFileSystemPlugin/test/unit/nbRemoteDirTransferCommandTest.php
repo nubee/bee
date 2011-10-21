@@ -1,7 +1,6 @@
 <?php
-require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
-$configParser->parseFile(dirname(__FILE__) . '/../config/config.yml');
-$serviceContainer->pluginLoader->loadPlugins(array('nbFileSystemPlugin'));
+require_once dirname(__FILE__) . '/../bootstrap/unit.php';
+
 $t = new lime_test(0);
 
 /*

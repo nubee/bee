@@ -38,7 +38,7 @@ TXT
 
     if(!isset($options['exclude-project-folder']))
       $dirs[] = nbConfig::get('nb_test_dir', 'test/unit');
-
+    
     if(count($arguments['name'])) {
       foreach($dirs as $dir)
         foreach($arguments['name'] as $name) {

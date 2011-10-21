@@ -7,7 +7,7 @@ $t = new lime_test();
 
 nbConfig::set('nb_command_dir', nbconfig::get('nb_sandbox_dir'));
 nbConfig::set('nb_plugins_dir', nbconfig::get('nb_sandbox_dir'));
-nbConfig::set('proj_commands', array());
+nbConfig::set('project_commands', array());
 
 $t->comment('nbCommandLoaderTest - test ctor');
 $commandLoader = new nbCommandLoader();
@@ -23,11 +23,11 @@ $t->is($commandLoader->getCommands()->count(), 1, '->loadCommands() has loaded 1
 $t->ok($commandLoader->getCommands()->hasCommand(EmptyCommand::Name()), '->loadCommands() has loaded 1 commands');
 
 $t->comment('nbCommandLoaderTest - load command aliases');
-nbConfig::set('proj_commands_namespace_aliascmd', EmptyCommand::Name());
+nbConfig::set('project_commands_namespace_aliascmd', EmptyCommand::Name());
 $commandLoader->loadCommandAliases();
 $t->ok($commandLoader->getCommands()->hasCommand('namespace:aliascmd'), '->loadCommandAliases() has loaded 1 alias');
 nbConfig::set('nb_command_dir', 'test/data/core/command');
-nbConfig::set('proj_commands_default_aliascmd1', EmptyCommand::Name());
+nbConfig::set('project_commands_default_aliascmd1', EmptyCommand::Name());
 $commandLoader = new nbCommandLoader();
 $commandLoader->loadCommands();
 $commandLoader->loadCommandAliases();

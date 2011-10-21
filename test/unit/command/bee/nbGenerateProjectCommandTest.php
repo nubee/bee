@@ -11,7 +11,7 @@ $configYaml = $configDir . '/config.yml';
 $t = new lime_test(7);
 
 $cmd = new nbGenerateProjectCommand();
-$t->ok($cmd->run(new nbCommandLineParser(), nbConfig::get('nb_sandbox_dir')), 'Command nbGenerateProjectCommand called succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), nbConfig::get('nb_sandbox_dir')), 'Command nbGenerateProjectCommand called successfully');
 
 $t->ok(file_exists($beeYaml), 'bee.yml added to the destination dir :' . $beeYaml);
 $t->ok(file_exists($configYaml), 'config.yml added to the destination dir :' . $configYaml);
@@ -24,7 +24,7 @@ catch(Exception $e) {
   $t->pass('Exception nbFileSystem::copy() thrown');
 }
 
-$t->ok($cmd->run(new nbCommandLineParser(), '--force ' . nbConfig::get('nb_sandbox_dir')), 'Command nbGenerateProjectCommand called succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), '--force ' . nbConfig::get('nb_sandbox_dir')), 'Command nbGenerateProjectCommand called successfully');
 
 $t->ok(file_exists($beeYaml), 'bee.yml added to the destination dir :' . $beeYaml);
 $t->ok(file_exists($configYaml), 'config.yml added to the destination dir :' . $configYaml);

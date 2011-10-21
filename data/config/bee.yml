@@ -1,4 +1,4 @@
-proj:
+project:
   name: bee
   description: bee is a project automation tool written in PHP
   type: php/app

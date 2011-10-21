@@ -17,36 +17,41 @@ TXT
       )));
 
     $this->setOptions(new nbOptionSet(array(
-        new nbOption('force', 'f', nbOption::PARAMETER_NONE, 'Overwrites the existing configuration'),
+        new nbOption('force',      'f', nbOption::PARAMETER_NONE, 'Overwrites the existing configuration'),
+        new nbOption('config-dir', '',  nbOption::PARAMETER_REQUIRED, 'Configuration directory'),
       )));
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-/*    $pluginName = $arguments['plugin-name'];
+    $pluginName  = $arguments['plugin-name'];
+    $force       = isset($options['force']);
+    $destination = isset($options['config-dir']) ? $options['config-dir'] : nbConfig::get('nb_config_dir');
+    $pluginsDir  = nbConfig::get('nb_plugins_dir');
+    $pluginDir   = sprintf('%s/%s', $pluginsDir, $pluginName);
+    
     $this->logLine('Configuring plugin: ' . $pluginName, nbLogger::COMMENT);
-    
-    $force = isset($options['force']);
-    
-    $pluginsDir = nbConfig::get('nb_plugins_dir');
+
+    if(!is_dir($pluginDir))
+      throw new LogicException('Plugin ' . $pluginName . ' not found in ' . $pluginsDir);
 
     $source = sprintf('%s/%s/config', $pluginsDir, $pluginName);
-    $destination = './.bee';
-
-    if (!file_exists($source))
-      throw new LogicException('Plugin ' . $pluginName . ' not found in ' . nbConfig::get('nb_plugins_dir'));
-
     $files = nbFileFinder::create('file')
+      ->add('*.template.yml')
       ->remove('.')
       ->remove('..')
       ->in($source);
 
-    foreach ($files as $file) {
-      $this->getFileSystem()->copy($file, $destination, $force);
-      $this->logLine('file+: ' . $destination . '/' . basename($file), nbLogger::INFO);
+    $generator = new nbConfigurationGenerator();
+    $this->getFileSystem()->mkdir($destination, true);
+    foreach($files as $file) {
+      $target = sprintf('%s/%s', $destination, str_replace('.template.yml', '.yml', basename($file)));
+      
+      $generator->generate($file, $target, $force);
+      $this->logLine('file+: ' . $target, nbLogger::INFO);
     }
 
-    $this->logLine('Done: bee:config-plugin', nbLogger::COMMENT);
-*/    
+    $this->logLine(sprintf('Plugin %s successully configured in %s', $pluginName, $destination), nbLogger::COMMENT);
+
     return true;
   }
 

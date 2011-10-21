@@ -16,7 +16,7 @@ $t->is($aliasCommand->getFullname(), "ns:alias", '->getFullName() returns a name
 
 $t->comment('nbAliasCommandTest - Test arguments');
 $t->is($aliasCommand->getArguments()->count(), 1, '->getArguments() returns 1 argument');
-$t->is($aliasCommand->getOptions()->count(), 1, '->getOptions() returns 1 options');
+$t->is($aliasCommand->getOptions()->count(), 2, '->getOptions() returns 1 options');
 
 $t->comment('nbAliasCommandTest - Test description');
 $t->is($aliasCommand->getBriefDescription(), "brief description", '->getBriefDescription() returns a the contained command description');

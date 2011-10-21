@@ -14,7 +14,7 @@ $build = getBuildVersion($versionFile);
 $t = new lime_test(2);
 $cmd = new nbUpdateBuildVersionCommand();
 $commandLine = $versionFile;
-$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'Command run succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'Command run successfully');
 
 $t->is(getBuildVersion($versionFile), $build + 1, 'Build version incremented');
 $fs->move($versionFile . '.original', $versionFile);

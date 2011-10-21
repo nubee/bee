@@ -35,7 +35,7 @@ TXT
     $shell = new nbShell();
     $exclude = '';
     $include = '';
-    $doit    = 'n';
+    $doit    = '--dry-run';
     $delete  = '';
     
     // Trailing slash must be added after sanitize dir

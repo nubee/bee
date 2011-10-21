@@ -25,14 +25,13 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $fs = $this->getFileSystem();
-
+    $fs        = $this->getFileSystem();
     $configDir = $fs->sanitizeDir($arguments['project-dir']) . '/.bee';
-    $force = isset($options['force']) ? true : false;
+    $force     = isset($options['force']) ? true : false;
 
-    $fs->mkdir($configDir, $force);
-    $fs->copy(nbConfig::get('nb_bee_dir', '.') . '/data/config/bee.yml', $configDir . '/bee.yml', $force);
-    $fs->copy(nbConfig::get('nb_bee_dir', '.') . '/data/config/config.yml', $configDir . '/config.yml', $force);
+    $fs->mkdir($configDir, true);
+    $fs->copy(nbConfig::get('nb_bee_dir') . '/data/config/bee.yml', $configDir . '/bee.yml', $force);
+    $fs->copy(nbConfig::get('nb_bee_dir') . '/data/config/config.yml', $configDir . '/config.yml', $force);
 
     return true;
   }

@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__) . '/../../../bootstrap/unit.php');
 
-$t = new lime_test(99);
+$t = new lime_test(102);
 
 // __construct()
 $t->comment('nbCommandLineParserTest - Test constructor');
@@ -283,6 +283,39 @@ $parser->parse('--opt1=avalue');
 $t->is($parser->hasOptionValue('opt1'), true, '->hasOptionValue() returns "true"');
 $t->is($parser->getOptionValue('opt1'), 'avalue', '->getOptionValue() returns "avalue"');
 
+// test config file
+$t->comment('nbCommandLineParserTest - Test option --config-file');
+$optionSet = array(
+  new nbOption('config-file', '',  nbOption::PARAMETER_OPTIONAL, 'Config file option', 'myns-mycommand.yml'),
+);
+$parser = new nbTestCommandLineParser(array(), $optionSet);
+
+$commandLine = '--config-file';
+$parser->parse($commandLine, 'myNS', 'myCommand');
+$t->is($parser->isValid(), true, '->parse() with config file option and default value');
+
+$commandLine = ' --config-file=config.yml';
+$parser->parse($commandLine, 'myNS', 'myCommand');
+$t->is($parser->isValid(), true, '->parse() with config file option and set value');
+
+// test config file errors
+$t->comment('nbCommandLineParserTest - Test option --config-file errors');
+$optionSet = array(
+  new nbOption('config-file', '',  nbOption::PARAMETER_OPTIONAL, 'Config file option', ''),
+);
+$parser = new nbTestCommandLineParser(array(), $optionSet);
+
+$commandLine = '--config-file';
+try {
+  $parser->parse($commandLine, 'myNS', 'myCommand');
+  $parser->isValid();
+  $t->fail('->parse() error when config file has no default value');
+}
+catch(InvalidArgumentException $e)
+{
+  $t->pass('->parse() error when config file has no default value');
+}
+
 // ->parse()
 $t->comment('nbCommandLineParserTest - Test retrieving argument and option from config file passed by option --config-file');
 $argumentSet = array(
@@ -290,17 +323,20 @@ $argumentSet = array(
   new nbArgument('argumentOptional', nbArgument::OPTIONAL, 'argument optional', 'fooOptionalDefault')
 );
 $optionSet = array(
-  new nbOption('config-file',              '',  nbOption::PARAMETER_OPTIONAL, 'Config file option', dirname(__FILE__) . '/../../../data/core/config/myns-mycommand.yml'),
+  new nbOption('config-file',              '',  nbOption::PARAMETER_OPTIONAL, 'Config file option', 'myns-mycommand.yml'),
   new nbOption('optionWithParameter',      'a', nbOption::PARAMETER_OPTIONAL, 'MyPlugin option optionWithParameter', 'barParameterDefault'),
   new nbOption('otherOptionWithParameter', 'b', nbOption::PARAMETER_OPTIONAL, 'MyPlugin option otherOptionWithParameter', 'bar2ParameterDefault'),
   new nbOption('optionDisabledCfg',        'n', nbOption::PARAMETER_NONE, 'MyPlugin option optionDisabledCfg'),
   new nbOption('optionCfg',                'c', nbOption::PARAMETER_NONE, 'MyPlugin option optionCfg')
 );
 $parser = new nbCommandLineParser($argumentSet, $optionSet);
+$parser->setDefaultConfigurationDirs(array(
+  nbConfig::get('nb_data_dir') . '/config',
+));
 
 $commandLine = ' --config-file';
 $parser->parse($commandLine, 'myNS', 'myCommand');
-$t->is($parser->isValid(), true, '->parse() parse with success for config file');
+$t->is($parser->isValid(), true, '->parse() success with config file');
 $t->is($parser->hasArgumentValue('argumentRequired'), true, '->hasArgumentValue(argumentRequired) returns "true"');
 $t->is($parser->getArgumentValue('argumentRequired'), 'fooRequiredCfg', '->getArgumentValue(argumentRequired) returns "fooRequiredCfg"');
 $t->is($parser->hasArgumentValue('argumentOptional'), true, '->hasArgumentValue(argOptional) returns "true"');
@@ -314,7 +350,7 @@ $t->is($parser->getOptionValue('optionCfg'), true, '->getOptionValue(optionCfg) 
 $t->comment('nbCommandLineParserTest - Test that argument or options passed by command line override argument and options from config file passed by option --config-file');
 
 $parser->parse(' --config-file --optionWithParameter=foo bar ', 'myNS', 'myCommand');
-$t->is($parser->isValid(), true, '->parse() parse with success for config file');
+$t->is($parser->isValid(), true, '->parse() success with config file');
 $t->is($parser->hasArgumentValue('argumentRequired'), true, '->hasArgumentValue(argumentRequired) returns "true"');
 $t->is($parser->getArgumentValue('argumentRequired'), 'bar', '->getArgumentValue(argumentRequired) returns "bar"');
 $t->is($parser->hasOptionValue('optionWithParameter'), true, '->hasOptionValue(optionWithParameter) returns "true"');

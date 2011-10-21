@@ -7,4 +7,4 @@ $t->comment('Symfony Clear Cache');
 
 $cmd = new nbSymfonyClearCacheCommand();
 
-$t->ok($cmd->run(new nbCommandLineParser(), $symfonyRootDir), 'Symfony cache cleared succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), $symfonyRootDir), 'Symfony cache cleared successfully');

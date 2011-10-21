@@ -6,7 +6,7 @@ class nbGtestTestCommand extends nbCommand
   {
     $this->setName('gtest:test')
       ->setArguments(new nbArgumentSet(array(
-        new nbArgument('testapp', nbArgument::OPTIONAL, 'Test application', nbConfig::get('proj_testapp'))
+        new nbArgument('testapp', nbArgument::OPTIONAL, 'Test application', nbConfig::get('project_testapp'))
       )))
       ->setOptions(new nbOptionSet(array(
 //        new nbOption('list', '', nbOption::PARAMETER_NONE, 'Lists tests'),
@@ -31,7 +31,7 @@ TXT
     $command = '"' . $arguments['testapp'] . '" ';
     if(isset($options['output'])) {
       $command .= '--gtest_output=xml:' . $options['output'] . ' ';
-      $testResultDir = dirname(nbConfig::get('proj_testresult'));
+      $testResultDir = dirname(nbConfig::get('project_testresult'));
       nbFileSystem::rmdir($testResultDir, true);
       nbFileSystem::mkdir($testResultDir, true);
     }

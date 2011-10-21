@@ -26,6 +26,26 @@ abstract class nbCommand
 
     $this->logger = nbLogger::getInstance();
     $this->configure();
+    
+    if(!$this->getName())
+      throw new InvalidArgumentException('Command name must be set');
+
+    // Config file option must be added after setName
+    if(!$this->optionSet->hasOption('config-file')) {
+      $this->optionSet->addOption(
+        new nbOption('config-file', '', nbOption::PARAMETER_OPTIONAL, 'Reads configuration from file', $this->generateDefaultConfigFile())
+      );
+    }
+  }
+  
+  public function generateDefaultConfigFile() {
+    $configFile = nbString::uncamelize($this->getNamespace());
+    if($configFile != '')
+      $configFile .= '-';
+    
+    $configFile .= nbString::uncamelize($this->getName());
+    
+    return $configFile . '.yml';
   }
 
   public function run(nbCommandLineParser $parser, $commandLine, $verbose = false)
@@ -215,13 +235,13 @@ abstract class nbCommand
 
   public function log($text, $level = null)
   {
-    if($this->verbose)
+//    if($this->verbose)
       $this->logger->log($text, $level);
   }
 
   public function logLine($text, $level = null)
   {
-    if($this->verbose)
+//    if($this->verbose)
       $this->logger->logLine($text, $level);
   }
 
@@ -243,6 +263,11 @@ abstract class nbCommand
   public function getFileSystem()
   {
     return nbFileSystem::getInstance();
+  }
+  
+  public function getLogger()
+  {
+    return $this->logger;
   }
   
   public function isVerbose()

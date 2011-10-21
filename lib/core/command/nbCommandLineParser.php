@@ -16,7 +16,8 @@ class nbCommandLineParser {
   $argumentValues = array(),
   $parsedArgumentValues = array(),
   $parsedLongOptionValues = array(),
-  $parsedShortOptionValues = array();
+  $parsedShortOptionValues = array(),
+  $defaultConfigurationDirs = array();
 
   /**
    * Constructor.
@@ -27,6 +28,15 @@ class nbCommandLineParser {
   public function __construct(array $arguments = array(), array $options = array()) {
     $this->setArguments($arguments);
     $this->setOptions($options);
+    
+    $execDir = getcwd();
+    
+    $this->setDefaultConfigurationDirs(array(
+      $execDir, 
+      $execDir . '/.bee', 
+      nbConfig::get('nb_bee_dir'), 
+      nbConfig::get('nb_bee_dir') . '/.bee'
+    ));
   }
 
   /**
@@ -134,31 +144,40 @@ class nbCommandLineParser {
 
     // If option config-file is set, get all arguments and parameters from the configuration file
     if (isset($this->parsedLongOptionValues['config-file'])) {
-      $configFile = $this->options->getOption('config-file')->getValue();
+      $option = $this->parsedLongOptionValues['config-file'];
       
-      if (file_exists($configFile)) {
-        $configParser = new nbYamlConfigParser();
-        $configParser->parseFile($configFile);
-        $ymlPath = $namespace . '_' . $commandName;
-        
-        if (nbConfig::has($ymlPath)) {
-          $configurationValues = nbConfig::get($ymlPath);
-          foreach ($configurationValues as $name => $value) {
-            if (!$this->getArguments()->hasArgument($name) || ('' == $value))
-              continue;
-            $this->argumentValues[$name] = $value;
-          }
-          foreach ($configurationValues as $name => $value) {
-            if (!$this->getOptions()->hasOption($name))
-              continue;
-            $option = $this->getOptions()->getOption($name);
-            if ($value !== false && $value !== null)
-              $this->setOption($option, $value);
-          }
+      $configFilename = (isset($option[0]) && !is_bool($option[0])) ? $option[0] : null;
+      if(!$configFilename)
+        $configFilename = $this->options->getOption('config-file')->getValue();
+      
+      if(!$configFilename)
+        throw new InvalidArgumentException('Config filename not defined (and no default provided)');
+      
+      $configFile = $this->checkDefaultConfigurationDirs($configFilename);
+      
+      if(!$configFile)
+        throw new InvalidArgumentException(
+          sprintf('Config file: %s not found (checked in %s)', $configFilename, implode(', ', $this->getDefaultConfigurationDirs())));
+      
+      $configParser = new nbYamlConfigParser();
+      $configParser->parseFile($configFile);
+      $ymlPath = $namespace . '_' . $commandName;
+
+      if (nbConfig::has($ymlPath)) {
+        $configurationValues = nbConfig::get($ymlPath);
+        foreach ($configurationValues as $name => $value) {
+          if (!$this->getArguments()->hasArgument($name) || ('' == $value))
+            continue;
+          $this->argumentValues[$name] = $value;
+        }
+        foreach ($configurationValues as $name => $value) {
+          if (!$this->getOptions()->hasOption($name))
+            continue;
+          $option = $this->getOptions()->getOption($name);
+          if ($value !== false && $value !== null)
+            $this->setOption($option, $value);
         }
       }
-      else 
-        throw new Exception('Config file: ' . $configFile . ' not found');
     }
 
     //set argumentValues parsed from command line
@@ -193,6 +212,28 @@ class nbCommandLineParser {
       }
     }
   }
+  
+  protected function checkDefaultConfigurationDirs($filename) {
+    foreach($this->getDefaultConfigurationDirs() as $dir) {
+      $file = $dir . '/' . $filename;
+      if(file_exists($file))
+        return $file;
+    }
+    
+    return null;
+  }
+  
+  public function getDefaultConfigurationDirs() {
+    return $this->defaultConfigurationDirs;
+  }
+  
+  public function setDefaultConfigurationDirs($dirs) {
+    if(!is_array($dirs))
+      $dirs = array($dirs);
+    
+    $this->defaultConfigurationDirs = $dirs;
+  }
+  
 
   /**
    * Returns true if the current command line options validate the argument and option sets.

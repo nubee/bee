@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
-$configParser->parseFile(dirname(__FILE__) . '/../config/config.yml');
+$configParser->parseFile(dirname(__FILE__) . '/../data/config/config.yml');
 $serviceContainer->pluginLoader->loadPlugins(array('nbArchivePlugin'));
 
 $fs = nbFileSystem::getInstance();
@@ -30,8 +30,14 @@ $fs->delete($fileTgz);
 $timestamp = date('YmdHi', time());
 $fileTgz =  sprintf('%s/%s-%s.tgz', $archivePath, $targetDir, $timestamp);
 
-$commandLine = '--config-file=' . dirname(__FILE__) . '/../config/config.yml';
-$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'Command archive:inflate-dir inflate a directory into a destination file');
+$commandLine = '--config-file=config.yml';
+
+$parser = new nbCommandLineParser();
+$parser->setDefaultConfigurationDirs(
+  dirname(__FILE__) . '/../data/config'
+);
+
+$t->ok($cmd->run($parser, $commandLine), 'Command archive:inflate-dir inflate a directory into a destination file');
 $t->ok(file_exists($fileTgz), 'Destination file exists');
 
 // Tear down

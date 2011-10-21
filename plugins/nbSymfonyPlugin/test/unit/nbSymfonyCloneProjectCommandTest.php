@@ -16,7 +16,7 @@ $commandLine = sprintf('%s %s %s', $cloneFrom, $cloneTo, $name);
 $finder = nbFileFinder::create('any');
 $appFiles = $finder->add('*.*')->remove('.')->remove('..')->relative()->in($cloneFrom);
 
-$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'Symfony project cloned succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'Symfony project cloned successfully');
 $t->ok(file_exists($cloneTo . '/' . $name), 'project is cloned');
 
 //TODO rivedere directory cache e il test in generale 20???

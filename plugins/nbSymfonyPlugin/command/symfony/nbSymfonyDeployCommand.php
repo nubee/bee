@@ -14,6 +14,10 @@ The <info>{$this->getFullName()}</info> command:
 TXT
     );
 
+    $this->addArgument(
+      new nbArgument('config-file', nbArgument::REQUIRED, 'Configuration file')
+    );
+
     $this->setOptions(new nbOptionSet(array(
         new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Make the changes!'),
       )));
@@ -25,31 +29,28 @@ TXT
     if(!is_dir('./.bee') && !file_exists('./bee.yml')) {
       $message = 'No bee project defined!';
       $message .= "\n\n  Run: bee bee:generate-project";
-      
+
       throw new InvalidArgumentException($message);
     }
-    
-    if(!isset($options['config-file']))
-      throw new Exception('Option --config-file required');
 
     $this->logLine('Running: symfony:project-deploy', nbLogger::COMMENT);
 
-    $config = $options['config-file'];
+    $config = $arguments['config-file'];
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
 
     if(!file_exists($config)) {
       $cmd = new nbConfigPluginCommand();
       $this->executeCommand($cmd, 'nbSymfonyPlugin --force', $doit, $verbose);
-      
+
       $this->logLine('Configuration file "' . $config . '" created.', nbLogger::INFO);
       $this->logLine('Modify it and re-run the command.', nbLogger::INFO);
-      
+
       return true;
     }
 
     $configParser = new nbYamlConfigParser();
-    $configParser->parseFile($pluginConfigFile);
+    $configParser->parseFile($config);
 
     $symfonyRootDir = nbConfig::get('symfony_project-deploy_symfony-root-dir');
 
@@ -58,9 +59,7 @@ TXT
       foreach(nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
         $cmd = new nbSymfonyGoOfflineCommand();
 
-        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, 
-          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), 
-          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
+        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
 
         $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
       }
@@ -68,14 +67,14 @@ TXT
     // Archive site directory
     if(nbConfig::has('archive_inflate-dir')) {
       $cmd = new nbInflateDirCommand();
-      $cmdLine = '--config-file=' . $pluginConfigFile;
+      $cmdLine = '--config-file=' . $config;
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
     // Sync project
     if(nbConfig::has('filesystem_dir-transfer')) {
       $cmd = new nbDirTransferCommand();
-      $cmdLine = '--doit --delete --config-file=' . $pluginConfigFile;
+      $cmdLine = '--doit --delete --config-file=' . $config;
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
@@ -91,9 +90,7 @@ TXT
 
     // Change ownership
     $cmd = new nbSymfonyChangeOwnershipCommand();
-    $cmdLine = sprintf('%s %s %s', $symfonyRootDir, 
-      nbConfig::get('symfony_project-deploy_site-user'), 
-      nbConfig::get('symfony_project-deploy_site-group'));
+    $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-user'), nbConfig::get('symfony_project-deploy_site-group'));
     $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
 
     // Clear cache
@@ -104,9 +101,7 @@ TXT
     if(nbConfig::has('symfony_project-deploy_site-applications')) {
       foreach(nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
         $cmd = new nbSymfonyGoOnlineCommand();
-        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, 
-          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), 
-          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
+        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
 
         $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
       }

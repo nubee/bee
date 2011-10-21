@@ -8,7 +8,6 @@ class DummyCommand extends nbCommand
   
   public function __construct($name = 'dummy', nbArgumentSet $arguments = null, nbOptionSet $options = null)
   {
-    parent::__construct();
     if(!$arguments)
       $arguments = new nbArgumentSet();
     if(!$options)
@@ -21,7 +20,7 @@ class DummyCommand extends nbCommand
 
   protected function configure()
   {
-
+    $this->setName('dummy');
   }
   
   protected function execute(array $arguments = array(), array $options = array())

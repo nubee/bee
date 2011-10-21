@@ -7,4 +7,4 @@ $t->comment('Symfony Check Permissions');
 
 $cmd = new nbSymfonyCheckPermissionsCommand();
 
-$t->ok($cmd->run(new nbCommandLineParser(), $symfonyRootDir), 'Command SymfonyCheckPermissions called succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), $symfonyRootDir), 'Command SymfonyCheckPermissions called successfully');

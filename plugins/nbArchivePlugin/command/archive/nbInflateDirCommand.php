@@ -28,20 +28,22 @@ TXT
     $targetDir = nbFileSystem::sanitizeDir($arguments['target-dir']);
     $archivePath = nbFileSystem::sanitizeDir($arguments['archive-path']);
     
-    if(!file_exists($targetPath . '/' . $targetDir)) {
+    if(!file_exists($targetPath . '/' . $targetDir)) 
       throw new Exception("dir to inflate not found: " . $targetPath . '/' . $targetDir);
-    }
-    if(!file_exists($archivePath)) {
-      throw new Exception("archive path not found");
-    }
+
+    if(!file_exists($archivePath)) 
+      throw new Exception("Archive path not found. " . $archivePath);
     
     $targetFile = $targetDir . '-' . $timestamp . '.tgz';
-    $this->logLine('Archiving ' . $targetPath . '/' . $targetDir . ' in ' . $archivePath . '/' . $targetFile);
+    $this->logLine(sprintf('Archiving %s/%s in %s/%s', $targetPath, $targetDir, $archivePath, $targetFile));
+    
     $shell = new nbShell();
-    $cmd = 'tar -czvf ' . $archivePath . '/' . $targetFile . ' -C ' . $targetPath . ' ' . $targetDir;
+    $cmd = sprintf('tar -czvf %s/%s -C %s %s', $archivePath, $targetFile, $targetPath, $targetDir);
+    
     $this->logLine('Tar command: ' . $cmd);
     $shell->execute($cmd);
-    $this->logLine('Done- Inflate dir' . $targetDir);
+    $this->logLine('Dir inflated: ' . $targetDir);
+    
     return true;
   }
 

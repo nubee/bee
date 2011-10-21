@@ -1,30 +1,34 @@
 <?php
 
+require_once dirname(__FILE__) . '/../bootstrap/unit.php';
 
-require_once dirname(__FILE__) . '/bootstrap.php';
+$fs = nbFileSystem::getInstance();
 
-$t = new lime_test(2);
+$t = new lime_test(4);
 $t->comment('Mysql Dump Command');
 
 // Setup
 createDb($mysqlUsername, $mysqlPassword, $dbName, $username, $password);
-
 $cmd = new nbMysqlDumpCommand();
+
 $commandLine = sprintf('%s %s %s %s', $dbName, $dumpPath, $username, $password);
-$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'MysqlDump executed succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'MysqlDump executed successfully');
 
 $timestamp = date('YmdHi', time());
-$dumpFile = sprintf('%s/%s-%s.sql', $dumpPath, $dbName, $timestamp);
+$dumpFile = sprintf('%s/%s/%s-%s.sql', getcwd(), $dumpPath, $dbName, $timestamp);
 $t->ok(file_exists($dumpFile), 'Dump file exists');
 
 // Cleaning up
 $fs->delete($dumpFile);
 
-$commandLine = sprintf('--config-file=%s', dirname(__FILE__) . '/../config/config.yml');
-$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'MysqlDump executed succefully from config file');
+$parser = new nbCommandLineParser();
+$parser->setDefaultConfigurationDirs(dirname(__FILE__) . '/../data/config');
+
+$commandLine = '--config-file=mysql-plugin.yml';
+$t->ok($cmd->run($parser, $commandLine), 'MysqlDump executed successfully from config file');
 
 $timestamp = date('YmdHi', time());
-$dumpFile = sprintf('%s/%s-%s.sql', $dumpPath, $dbName, $timestamp);
+$dumpFile = sprintf('%s/%s/%s-%s.sql', getcwd(), $dumpPath, $dbName, $timestamp);
 $t->ok(file_exists($dumpFile), 'Dump file exists');
 
 // Cleaning up

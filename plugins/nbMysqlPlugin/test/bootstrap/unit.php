@@ -1,16 +1,16 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
-$configParser->parseFile(dirname(__FILE__) . '/../config/config.yml');
+$configParser->parseFile(dirname(__FILE__) . '/../data/config/config.yml');
 $serviceContainer->pluginLoader->loadPlugins(array('nbMysqlPlugin'));
 
-$dbName = nbConfig::get('mysql_db_name');
-$mysqlUsername = nbConfig::get('mysql_mysql_username');
-$mysqlPassword = nbConfig::get('mysql_mysql_password');
-$username = nbConfig::get('mysql_username');
-$password = nbConfig::get('mysql_password');
-$dumpPath = dirname(__FILE__) . '/' . nbConfig::get('mysql_dump_path');
-$dumpFilename = dirname(__FILE__) . '/' . nbConfig::get('mysql_dump_filename');
+$dbName        = nbConfig::get('mysql_db-name');
+$mysqlUsername = nbConfig::get('mysql_mysql-username');
+$mysqlPassword = nbConfig::get('mysql_mysql-password');
+$username      = nbConfig::get('mysql_username');
+$password      = nbConfig::get('mysql_password');
+$dumpPath      = nbConfig::get('mysql_dump-path');
+$dumpFilename  = nbConfig::get('mysql_dump-filename');
 
 function formatPassword($password, $option = '')
 {

@@ -24,7 +24,7 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $project = isset($options['test']) ? nbConfig::get('proj_test') : nbConfig::get('proj_core');
+    $project = isset($options['test']) ? nbConfig::get('project_test') : nbConfig::get('project_core');
 //    $configuration = isset($options['configuration']) ? $options['configuration'] : nbConfig::get('nb_commands_vs_build_configuration');
     $configuration = $arguments['configuration'];
 

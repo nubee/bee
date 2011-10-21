@@ -61,8 +61,8 @@ $logger = nbLogger::getInstance();
 $logger->setOutput($output);
 
 /* * ********************* */
-if(nbConfig::has('proj_bee_plugins_dir'))
-  $serviceContainer->pluginLoader->addDir(nbConfig::get('proj_bee_plugins_dir'));
+if(nbConfig::has('project_bee_plugins_dir'))
+  $serviceContainer->pluginLoader->addDir(nbConfig::get('project_bee_plugins_dir'));
 
 // Loads default plugins from path/to/bee/config/config.yml
 if(!$default_plugins = nbConfig::get('nb_default_plugins'))
@@ -71,8 +71,8 @@ else
   $serviceContainer->pluginLoader->loadPlugins($default_plugins);
 
 //loads project plugins from project/path/bee.yml
-if(nbConfig::has('proj_bee_plugins_enabled')) {
-  $plugins = nbConfig::get('proj_bee_plugins_enabled');
+if(nbConfig::has('project_bee_plugins_enabled')) {
+  $plugins = nbConfig::get('project_bee_plugins_enabled');
 
   (null === $plugins) ?
       $serviceContainer->pluginLoader->loadAllPlugins() :
@@ -83,7 +83,6 @@ $autoload->addDirectory(nbConfig::get('nb_command_dir'), 'Command.php', true);
 
 $serviceContainer->commandLoader->loadCommands();
 $serviceContainer->commandLoader->loadCommandAliases();
-//$commandSet = $commandLoader->getCommands();
 
 try {
   $application = new nbBeeApplication($serviceContainer);

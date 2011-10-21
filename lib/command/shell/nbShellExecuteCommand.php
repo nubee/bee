@@ -44,7 +44,7 @@ TXT
   
   protected function getAlias($command)
   {
-    $aliases = nbConfig::get('proj_shell_aliases');
+    $aliases = nbConfig::get('project_shell_aliases');
     if(null !== $aliases && is_array($aliases) && array_key_exists($command, $aliases)) {
       $this->log('Alias found for ' . $command, nbLogger::COMMENT);
       $this->log("\n\n");

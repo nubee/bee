@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . '/bootstrap.php';
+require_once dirname(__FILE__) . '/../bootstrap/unit.php';
 
-$t = new lime_test(1);
+$t = new lime_test(2);
 $t->comment('Mysql Restore Command');
 
 // Setup
@@ -10,11 +10,13 @@ createDb($mysqlUsername, $mysqlPassword, $dbName, $username, $password);
 
 $cmd = new nbMysqlRestoreCommand();
 $commandLine = sprintf('%s %s %s %s', $dbName, $dumpFilename, $username, $password);
-$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'MysqlRestore executed succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'MysqlRestore executed successfully');
 
-$cmd = new nbMysqlRestoreCommand();
-$commandLine = sprintf('--config-file=%s', dirname(__FILE__) . '/../config/config.yml');
-$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'MysqlRestore executed succefully');
+$parser = new nbCommandLineParser();
+$parser->setDefaultConfigurationDirs(dirname(__FILE__) . '/../data/config');
+
+$commandLine = '--config-file=mysql-plugin.yml';
+$t->ok($cmd->run($parser, $commandLine), 'MysqlRestore executed successfully');
 
 // Tear down
 dropDb($mysqlUsername, $mysqlPassword, $dbName);

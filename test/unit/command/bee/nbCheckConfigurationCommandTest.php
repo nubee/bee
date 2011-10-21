@@ -17,7 +17,7 @@ $t->comment('Check Configuration');
 
 $cmd = new nbCheckConfigurationCommand();
 
-$t->ok($cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $configFileOk)), 'Project configuration checked succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $configFileOk)), 'Project configuration checked successfully');
 
 try {
   $cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $configFileNoField));

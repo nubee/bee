@@ -1,8 +1,10 @@
 <?php
 
-class nbEnablePluginCommand extends nbCommand {
+class nbEnablePluginCommand extends nbCommand
+{
 
-  protected function configure() {
+  protected function configure()
+  {
     $this->setName('bee:enable-plugin')
       ->setBriefDescription('Enables a plugin')
       ->setDescription(<<<TXT
@@ -22,39 +24,55 @@ TXT
       )));
   }
 
-  protected function execute(array $arguments = array(), array $options = array()) {
+  protected function execute(array $arguments = array(), array $options = array())
+  {
+    $allPluginsDir = nbConfig::get('nb_plugins_dir');
+    $pluginName = $arguments['plugin-name'];
+    $projectDir = $arguments['project-dir'];
+    $configDir  = $projectDir . '/.bee';
+    $beeConfig  = $configDir . '/bee.yml';
     $force = isset($options['force']);
+    $pluginPath = $allPluginsDir . '/' . $pluginName;
 
-    $beeConfigurationFile = $arguments['project-dir'] . '/.bee/bee.yml';
-    
-    if (!file_exists(nbConfig::get('nb_plugins_dir') . '/' . $arguments['plugin-name']))
-      throw new Exception('plugin ' . $arguments['plugin-name'] . ' not found in ' . nbConfig::get('nb_plugins_dir'));
-    
-    if (!file_exists($beeConfigurationFile))
-      throw new Exception($beeConfigurationFile . ' not found');
-    
-    $configParser = sfYaml::load($beeConfigurationFile);
-    
-    if (!isset($configParser['proj']['bee']['plugins_enabled']))
-      $configParser['proj']['bee']['plugins_enabled'] = array();
+    if(!file_exists($pluginPath))
+      throw new Exception('plugin ' . $pluginName . ' not found in ' . nbConfig::get('nb_plugins_dir'));
 
-    $plugins = $configParser['proj']['bee']['plugins_enabled'];
+    if(!file_exists($beeConfig))
+      throw new Exception($beeConfig . ' not found');
+
+    $configParser = sfYaml::load($beeConfig);
+
+    $plugins = $configParser['project']['bee']['plugins_enabled'];
+    $plugins = isset($configParser['project']['bee']['plugins_enabled'])
+      ? $configParser['project']['bee']['plugins_enabled'] : array();
+
+    if(!is_array($plugins))
+      $plugins = array();
     
-    if (!in_array($arguments['plugin-name'], $plugins)) {
-      array_push($configParser['proj']['bee']['plugins_enabled'], $arguments['plugin-name']);
-      $yml = sfYaml::dump($configParser, 10);
-      file_put_contents($beeConfigurationFile, $yml);
-    } else {
-      $this->logLine('Plugin ' . $arguments['plugin-name'] . ' already installed');
+    if(!in_array($pluginName, $plugins)) {
+      array_push($plugins, $pluginName);
+      $configParser['project']['bee']['plugins_enabled'] = $plugins;
+      $yml = sfYaml::dump($configParser, 99);
+
+      file_put_contents($beeConfig, $yml);
     }
-    
-    if (file_exists(nbConfig::get('nb_plugins_dir') . '/' . $arguments['plugin-name'] . '/config/' . $arguments['plugin-name'] . '.yml'))
-      nbFileSystem::getInstance()->copy(
-        nbConfig::get('nb_plugins_dir') . '/' . $arguments['plugin-name'] . '/config/' . $arguments['plugin-name'] . '.yml',
-        $arguments['project-dir'] . '/.bee/' . $arguments['plugin-name'] . '.yml',
-        $force
-      );
-    
+    else {
+      $this->logLine('Plugin ' . $pluginName . ' already installed');
+    }
+
+    // Configure plugin
+    $pluginConfigDir = sprintf('%s/%s/config', $allPluginsDir, $pluginName);
+    $files = nbFileFinder::create('file')->add('*.template.yml')->in($pluginConfigDir);
+
+    $generator = new nbConfigurationGenerator();
+    $this->getFileSystem()->mkdir($configDir, true);
+    foreach($files as $file) {
+      $target = sprintf('%s/%s', $configDir, str_replace('.template.yml', '.yml', basename($file)));
+      
+      $generator->generate($file, $target, $force);
+      $this->logLine('file+: ' . $target, nbLogger::INFO);
+    }
+
     return true;
   }
 

@@ -1,8 +1,8 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
-$configParser->parseFile(dirname(__FILE__) . '/../config/config.yml');
-$serviceContainer->pluginLoader->loadPlugins(array('nbSymfonyPlugin','nbArchivePlugin','nbMysqlPlugin','nbFileSystemPlugin'));
+$configParser->parseFile(dirname(__FILE__) . '/../data/config/config.yml');
+$serviceContainer->pluginLoader->loadPlugins(array('nbSymfonyPlugin', 'nbArchivePlugin', 'nbMysqlPlugin', 'nbFileSystemPlugin'));
 
 $fileSystem = nbFileSystem::getInstance();
 

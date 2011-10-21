@@ -1,0 +1,26 @@
+mysql:
+  create:
+    db-name:        dbtest
+    mysql-username: root
+    mysql-password: 
+    username:       fakeUsername
+    password:       fakePassword
+  
+  drop:
+    db-name:        dbtest
+    mysql-username: root
+    mysql-password: 
+  
+  dump:
+    db-name:        dbtest
+    username:       fakeUsername
+    password:       fakePassword
+    dump-path:      test/sandbox
+  
+  restore:
+    db-name:        dbtest
+    username:       fakeUsername
+    password:       fakePassword
+    dump-filename:  plugins/nbMysqlPlugin/test/data/dbtest-xxx.sql
+  
+  

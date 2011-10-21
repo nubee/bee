@@ -16,7 +16,7 @@ $t->comment('Generate Configuration');
 $cmd = new nbGenerateConfigurationCommand();
 $fs = nbFileSystem::getInstance();
 
-$t->ok($cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $destinationFile)), 'Project configuration generate succefully');
+$t->ok($cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $destinationFile)), 'Project configuration generate successfully');
 
 $content = removeCarriageReturn(file_get_contents($destinationFile));
 $compare = removeCarriageReturn(file_get_contents($compareFile));

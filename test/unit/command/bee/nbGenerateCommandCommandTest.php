@@ -30,5 +30,4 @@ $cmd->run(new nbCommandLineParser(), '--directory='.$commandDir.'/customFolder :
 $t->ok(file_exists($commandDir . '/customFolder/className.php'), 'Command accept --directory option');
 
 // Tear down
-// TODO clean up
 nbFileSystem::getInstance()->rmdir($commandDir, true, true);

@@ -3,31 +3,38 @@
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
 nbConfig::set('nb_command_dir', nbConfig::get('nb_sandbox_dir'));
 
-$projectDir = nbConfig::get('nb_sandbox_dir') ;
-$configDir = nbConfig::get('nb_sandbox_dir') . '/.bee';
-$beeYaml = $configDir . '/bee.yml';
-$configYaml = $configDir . '/config.yml';
-$nbFileSystemYaml = $configDir . '/nbFileSystemPlugin.yml';
+$projectDir       = nbConfig::get('nb_sandbox_dir') ;
+$configDir        = nbConfig::get('nb_sandbox_dir') . '/.bee';
+$beeConfig        = $configDir . '/bee.yml';
+$config           = $configDir . '/config.yml';
+$fileSystemConfig = $configDir . '/filesystem-plugin.yml';
+
+function isPluginEnabled($beeConfig, $plugin) {
+  if(!file_exists($beeConfig))
+    throw new Exception('bee config file not found');
+    
+  $parser = sfYaml::load($beeConfig);
+  
+  $plugins = isset($parser['project']['bee']['plugins_enabled']) ? $parser['project']['bee']['plugins_enabled'] : array();
+  
+  return in_array($plugin, $plugins);
+}
 
 $t = new lime_test(12);
 
 $cmd = new nbGenerateProjectCommand();
-$fs = nbFileSystem::getInstance();
+$t->ok($cmd->run(new nbCommandLineParser(), $projectDir), 'Command nbGenerateProjectCommand called successfully');
 
-$t->ok($cmd->run(new nbCommandLineParser(), $projectDir), 'Command nbGenerateProjectCommand called succefully');
-
-$t->ok(file_exists($beeYaml), 'bee.yml added to the destination dir :' . $beeYaml);
-$t->ok(file_exists($configYaml), 'config.yml added to the destination dir :' . $configYaml);
+$t->ok(file_exists($beeConfig), 'bee.yml added to the destination dir :' . $beeConfig);
+$t->ok(file_exists($config), 'config.yml added to the destination dir :' . $config);
 
 $t->comment('enabling nbDummyPlugin');
-$pluginName = 'nbDummyPlugin';
+$plugin = 'nbDummyPlugin';
 
-$t->ok(!isPluginEnabled($beeYaml, $pluginName), $pluginName . ' not found');
-
+$t->ok(!isPluginEnabled($beeConfig, $plugin), $plugin . ' not found');
 $cmd = new nbEnablePluginCommand();
-$t->ok($cmd->run(new nbCommandLineParser(), $pluginName . ' ' . $projectDir), 'Command nbEnablePluginCommand called succefully');
-
-$t->ok(isPluginEnabled($beeYaml, $pluginName), $pluginName . ' found');
+$t->ok($cmd->run(new nbCommandLineParser(), $plugin . ' ' . $projectDir), 'Plugin enabled successfully');
+$t->ok(isPluginEnabled($beeConfig, $plugin), $plugin . ' found');
 
 $t->comment('enabling a fake plugin');
 $cmd = new nbEnablePluginCommand();
@@ -40,39 +47,22 @@ catch(Exception $e){
   $t->pass('plugin nbNonExistentPlugin not exists');
 }
 
-
 $t->comment('enabling nbFileSystemPlugin');
-$otherPluginName = 'nbFileSystemPlugin';
+$secondPlugin = 'nbFileSystemPlugin';
 
-$t->ok(!isPluginEnabled($beeYaml, $otherPluginName), $otherPluginName . ' not found');
+$t->ok(!isPluginEnabled($beeConfig, $secondPlugin), $secondPlugin . ' not enabled');
 
 $cmd = new nbEnablePluginCommand();
-$t->ok($cmd->run(new nbCommandLineParser(), $otherPluginName . ' ' . $projectDir), 'Command nbEnablePluginCommand called succefully');
-
-$t->ok(isPluginEnabled($beeYaml, $pluginName), $pluginName . ' found');
-$t->ok(isPluginEnabled($beeYaml, $otherPluginName), $otherPluginName . ' found');
-$t->ok(file_exists($nbFileSystemYaml), 'nbFileSystemPlugin.yml added to the destination dir :' . $nbFileSystemYaml);
+$t->ok($cmd->run(new nbCommandLineParser(), $secondPlugin . ' ' . $projectDir), 'Plugin ' . $secondPlugin . ' enabled');
+$t->ok(isPluginEnabled($beeConfig, $plugin), $plugin . ' enabled');
+$t->ok(isPluginEnabled($beeConfig, $secondPlugin), $secondPlugin . ' enabled');
+$t->ok(file_exists($fileSystemConfig), 'configuration file added to the destination dir: ' . $fileSystemConfig);
 
 
 // Tear down
-$fs->delete($beeYaml);
-$fs->delete($configYaml);
-$fs->delete($nbFileSystemYaml);
+$fs = nbFileSystem::getInstance();
+$fs->delete($beeConfig);
+$fs->delete($config);
+$fs->delete($fileSystemConfig);
 $fs->rmdir($configDir);
 
-
-
-#####################################################################
-function isPluginEnabled($beeConfigurationFile, $plugin) {
-  if (file_exists($beeConfigurationFile))
-    $configParser = sfYaml::load($beeConfigurationFile);
-  else {
-    throw new Exception('bee config file not found');
-  }
-  $plugins = array();
-  if (isset($configParser['proj']['bee']['plugins_enabled'])) {
-    $plugins = $configParser['proj']['bee']['plugins_enabled'];
-  }
-  
-  return in_array($plugin, $plugins);
-}

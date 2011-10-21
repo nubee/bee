@@ -16,25 +16,23 @@ TXT
         new nbArgument('template', nbArgument::REQUIRED, 'Config template'),
         new nbArgument('destination', nbArgument::REQUIRED, 'Config file destination name'),
       )));
+
+    $this->addOption(
+      new nbOption('force', 'f', nbOption::PARAMETER_NONE, 'Overwrite the existing configuration')
+    );
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
     $template = $arguments['template'];
     $destination = $arguments['destination'];
-    
-    if (!file_exists($template))
-      throw new Exception(sprintf('Template %s does not exist', $template));
 
 //    if (!file_exists($config))
 //      throw new Exception(sprintf('Filename %s does not exist', $config));
 //      
       
-    $templateParser = sfYaml::load($template);
+    $generator = new nbConfigurationGenerator();
     
-    $yml = $this->generate($templateParser);
-    $yml = sfYaml::dump($yml);
-    $yml = str_replace('\'\'', '', $yml);
-    file_put_contents($destination, $yml);
+    $generator->generate($template, $destination);
 
     return true;
   }
