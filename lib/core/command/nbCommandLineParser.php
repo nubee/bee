@@ -160,7 +160,7 @@ class nbCommandLineParser {
           sprintf('Config file: %s not found (checked in %s)', $configFilename, implode(', ', $this->getDefaultConfigurationDirs())));
       
       $configParser = new nbYamlConfigParser();
-      $configParser->parseFile($configFile);
+      $configParser->parseFile($configFile, '', true);
       $ymlPath = $namespace . '_' . $commandName;
 
       if (nbConfig::has($ymlPath)) {

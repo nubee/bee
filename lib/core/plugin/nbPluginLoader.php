@@ -76,7 +76,7 @@ class nbPluginLoader
       return;
 
     $yamlParser = new nbYamlConfigParser();
-    $yamlParser->parseFile($this->plugins[$pluginName] . '/config/config.yml');
+    $yamlParser->parseFile($this->plugins[$pluginName] . '/config/config.yml', '', true);
   }
 
   public function getPlugins()

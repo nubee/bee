@@ -15,8 +15,8 @@ nbConfig::set('nb_bee_dir', dirname(__FILE__) . '/../..');
 nbConfig::set('nb_config_dir', nbConfig::get('nb_bee_dir') . '/config');
 nbConfig::set('nb_test_config_dir', dirname(__FILE__) . '/../config/');
 
-$configParser->parseFile(nbConfig::get('nb_config_dir') . '/config.yml');
-$configParser->parseFile(nbConfig::get('nb_test_config_dir') . '/config.yml');
+$configParser->parseFile(nbConfig::get('nb_config_dir') . '/config.yml', '', true);
+$configParser->parseFile(nbConfig::get('nb_test_config_dir') . '/config.yml', '', true);
 
 
 $serviceContainer = new sfServiceContainerBuilder();

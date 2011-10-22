@@ -20,13 +20,13 @@ else {
 nbConfig::set('nb_user_config', nbConfig::get('nb_user_dir') . '/config.yml');
 
 $yaml = new nbYamlConfigParser();
-$yaml->parseFile(nbConfig::get('nb_bee_dir') . '/config/config.yml');
+$yaml->parseFile(nbConfig::get('nb_bee_dir') . '/config/config.yml', '', true);
 
 if(file_exists(nbConfig::get('nb_user_config')))
-  $yaml->parseFile(nbConfig::get('nb_user_config'));
+  $yaml->parseFile(nbConfig::get('nb_user_config'), '', true);
 
 if(file_exists('.bee/config.yml'))
-  $yaml->parseFile('.bee/config.yml');
+  $yaml->parseFile('.bee/config.yml', '', true);
 
 if(file_exists('./.bee/' . nbConfig::get('nb_project_config')))
   $projectConfigurationFile = './.bee/' . nbConfig::get('nb_project_config');
@@ -35,7 +35,7 @@ else if(file_exists('./' . nbConfig::get('nb_project_config')))
 else if(file_exists(nbConfig::get('nb_bee_dir') . '/' . nbConfig::get('nb_project_config')))
   $projectConfigurationFile = nbConfig::get('nb_bee_dir') . '/' . nbConfig::get('nb_project_config');
 
-$yaml->parseFile($projectConfigurationFile);
+$yaml->parseFile($projectConfigurationFile, '', true);
 
 
 /* * ********************* */

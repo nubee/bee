@@ -2,9 +2,19 @@
 
 class nbYamlConfigParser
 {
-  public function parse($yamlString, $prefix = '', $replaceTokens = false)
+  private $configuration;
+  
+  public function __construct(nbConfiguration $configuration = null) {
+    $this->configuration = $configuration;
+  }
+  
+  public function parse($yaml, $prefix = '', $replaceTokens = false)
   {
-    nbConfig::add(sfYaml::load($yamlString), $prefix, $replaceTokens);
+    $values = sfYaml::load($yaml);
+    if($this->configuration)
+      $this->configuration->add($values, $prefix, $replaceTokens);
+    else 
+      nbConfig::add($values, $prefix, $replaceTokens);
   }
 
   public function parseFile($file, $prefix = '', $replaceTokens = false)

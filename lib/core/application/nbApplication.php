@@ -108,13 +108,6 @@ abstract class nbApplication
       return true;
     }
 
-    if(isset($options['file'])) {
-      if(file_exists($options['file'])) {
-        $yaml = new nbYamlConfigParser();
-        $yaml->parseFile($options['file']);
-      }
-    }
-
     if(isset($options['config'])) {
       foreach ($options['config'] as $option) {
         $property = preg_split('/[\s]*=[\s]*/', $option, 2);

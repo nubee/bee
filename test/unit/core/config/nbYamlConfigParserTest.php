@@ -10,7 +10,8 @@ $configFile2     = $dataDir . '/parser2.config.yml';
 
 $t = new lime_test(16);
 
-$parser = new nbYamlConfigParser();
+$configuration = new nbConfiguration();
+$parser = new nbYamlConfigParser($configuration);
 
 $t->comment('Test get');
 
@@ -22,27 +23,27 @@ EOF;
 
 $t->comment('Test parse');
 $parser->parse($yaml);
-$t->is(nbConfig::get('key1'), 'value', '->parse() parse a yaml string and set configuration keys');
-$t->is(nbConfig::get('key2'), '%key1%', '->parse() by default does not replace tokens');
-$t->is(nbConfig::get('key3_subkey1'), '%key2%', '->parse() by default does not replace tokens');
-nbConfig::reset();
+$t->is($configuration->get('key1'), 'value', '->parse() parse a yaml string and set configuration keys');
+$t->is($configuration->get('key2'), '%key1%', '->parse() by default does not replace tokens');
+$t->is($configuration->get('key3_subkey1'), '%key2%', '->parse() by default does not replace tokens');
+$configuration->reset();
 
 $parser->parse($yaml, 'myprefix');
-$t->is(nbConfig::get('myprefix_key1'), 'value', '->parse() can accept a prefix for config keys');
-$t->is(nbConfig::get('myprefix_key2'), '%key1%', '->parse() can accept a prefix for config keys');
-nbConfig::reset();
+$t->is($configuration->get('myprefix_key1'), 'value', '->parse() can accept a prefix for config keys');
+$t->is($configuration->get('myprefix_key2'), '%key1%', '->parse() can accept a prefix for config keys');
+$configuration->reset();
 
 $parser->parse($yaml, '', true);
-$t->is(nbConfig::get('key2'), nbConfig::get('key1'), '->parse() can replace tokens');
-$t->is(nbConfig::get('key2'), 'value', '->parse() can replace tokens');
-$t->is(nbConfig::get('key3_subkey1'), nbConfig::get('key1'), '->parse() can replace tokens');
-$t->is(nbConfig::get('key3_subkey1'), 'value', '->parse() can replace tokens');
-nbConfig::reset();
+$t->is($configuration->get('key2'), $configuration->get('key1'), '->parse() can replace tokens');
+$t->is($configuration->get('key2'), 'value', '->parse() can replace tokens');
+$t->is($configuration->get('key3_subkey1'), $configuration->get('key1'), '->parse() can replace tokens');
+$t->is($configuration->get('key3_subkey1'), 'value', '->parse() can replace tokens');
+$configuration->reset();
 
 $parser->parse($yaml, 'myprefix', true);
-$t->is(nbConfig::get('myprefix_key2'), 'value', '->parse() can replace tokens with prefix');
-$t->is(nbConfig::get('myprefix_key3_subkey1'), 'value', '->parse() can replace tokens with prefix');
-nbConfig::reset();
+$t->is($configuration->get('myprefix_key2'), 'value', '->parse() can replace tokens with prefix');
+$t->is($configuration->get('myprefix_key3_subkey1'), 'value', '->parse() can replace tokens with prefix');
+$configuration->reset();
 
 
 $t->comment('Test parseFile');
@@ -51,11 +52,11 @@ $main = array('main' => array(
     'key1' => 'appValue1',
     'key2' => 'appValue2')
 );
-$t->is(nbConfig::get('main'), $main['main'], '->parseFile() parse a yaml file and set configuration');
-nbConfig::reset();
+$t->is($configuration->get('main'), $main['main'], '->parseFile() parse a yaml file and set configuration');
+$configuration->reset();
 
 $parser->parseFile($configFile1);
-$t->is(nbConfig::get('app_plugin1_server'), '%app_server%', '->parseFile() by default does not replace tokens');
+$t->is($configuration->get('app_plugin1_server'), '%app_server%', '->parseFile() by default does not replace tokens');
 
 try {
   $parser->parseFile($dataDir . '/fake-file.yml');
@@ -64,14 +65,12 @@ try {
 catch (InvalidArgumentException $e) {
   $t->pass("->parseFile() throws if file doesn\'t exist");
 }
-nbConfig::reset();
+$configuration->reset();
 
 
 $t->comment('->parseFile() and replace tokens');
 $parser->parseFile($configFile1, '', true);
 
-print_r(nbConfig::getAll(true));
-
-$t->is(nbConfig::get('app_plugin1_server'), nbConfig::get('app_server'), '->parseFile() can replace tokens');
-$t->is(nbConfig::get('app_plugin1_server'), 'myserver', '->parseFile() can replace tokens');
-nbConfig::reset();
+$t->is($configuration->get('app_plugin1_server'), $configuration->get('app_server'), '->parseFile() can replace tokens');
+$t->is($configuration->get('app_plugin1_server'), 'myserver', '->parseFile() can replace tokens');
+$configuration->reset();

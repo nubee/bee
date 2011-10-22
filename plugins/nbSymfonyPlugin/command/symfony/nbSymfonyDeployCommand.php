@@ -40,7 +40,7 @@ TXT
     $verbose = isset($options['verbose']) || !$doit;
 
     if(!file_exists($config)) {
-      $cmd = new nbConfigPluginCommand();
+      $cmd = new nbConfigurePluginCommand();
       $this->executeCommand($cmd, 'nbSymfonyPlugin --force', $doit, $verbose);
 
       $this->logLine('Configuration file "' . $config . '" created.', nbLogger::INFO);
@@ -50,7 +50,7 @@ TXT
     }
 
     $configParser = new nbYamlConfigParser();
-    $configParser->parseFile($config);
+    $configParser->parseFile($config, '', true);
 
     $symfonyRootDir = nbConfig::get('symfony_project-deploy_symfony-root-dir');
 
