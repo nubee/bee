@@ -10,11 +10,13 @@ class nbConfig
 
     $config = self::$config;
     while($k = array_shift($keys)) {
+      if(!is_array($config))
+        return false;
       if(!key_exists($k, $config))
         return false;
       $config = $config[$k];
     }
-    
+
     return true;
   }
 
@@ -66,16 +68,50 @@ class nbConfig
       self::setElementByPath($path, $value, $array[$k]);
     }
   }
-  
-  public static function add($array = array(), $prefix = '')
-  {
 
-  //TODO: replace with preg_replace
-	$prefix = trim($prefix,' _.,?');
-	if(strlen($prefix)>0)
-		$prefix .= '_';
-    foreach(nbArrayUtils::getAssociative($array) as $path=>$value)
-      self::set($prefix.$path,$value);
+  public static function add($array = array(), $prefix = '', $replaceTokens = false)
+  {
+    $prefix = trim($prefix, ' _.,?');
+    if(strlen($prefix) > 0)
+      $prefix .= '_';
+    
+    foreach(nbArrayUtils::getAssociative($array) as $path => $value) {
+      self::set($prefix . $path, $value);
+    }
+    
+    while($replaceTokens) {
+      $replaceTokens = false;
+      
+      foreach(nbArrayUtils::getAssociative(self::$config) as $path => $value) {
+        $tokenizer = new ConfigTokenReplacer($prefix);
+        $replaced = preg_replace_callback('/%(.*)%/', array(&$tokenizer, 'replaceTokens'), $value);
+
+        if($replaced != $value) {
+          self::set($path, $replaced);
+          $replaceTokens = true;
+        }
+      }
+    }
+    
   }
 
+}
+
+class ConfigTokenReplacer
+{
+  private $prefix;
+  
+  public function __construct($prefix) {
+    $this->prefix = $prefix;
+  }
+  
+  public function replaceTokens($match) {
+    $value = $this->prefix . $match[1];
+    if(nbConfig::has($value)) {
+      echo 'found: ' . $value . "\n";
+      return nbConfig::get($value);
+    }
+    
+    return $match[0];
+  }
 }

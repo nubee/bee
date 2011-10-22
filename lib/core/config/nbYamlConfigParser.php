@@ -1,15 +1,18 @@
 <?php
+
 class nbYamlConfigParser
 {
-  public function parse($yamlString, $prefix = '')
+  public function parse($yamlString, $prefix = '', $replaceTokens = false)
   {
-    nbConfig::add(sfYaml::load($yamlString), $prefix);
+    nbConfig::add(sfYaml::load($yamlString), $prefix, $replaceTokens);
   }
 
-  public function parseFile($filePath, $prefix = '')
+  public function parseFile($file, $prefix = '', $replaceTokens = false)
   {
-    if(! file_exists($filePath))
-      throw new InvalidArgumentException(sprintf('[nbYamlConfigurationParser::parseFile] file \'%s\' does not exist',$filePath ));
-    $this->parse($filePath, $prefix);
+    if(!file_exists($file))
+      throw new InvalidArgumentException(sprintf('File %s does not exist', $file));
+    
+    $this->parse($file, $prefix, $replaceTokens);
   }
+
 }

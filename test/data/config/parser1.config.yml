@@ -1,0 +1,5 @@
+app:
+  server: myserver
+  
+  plugin1:
+    server: %app_server%
