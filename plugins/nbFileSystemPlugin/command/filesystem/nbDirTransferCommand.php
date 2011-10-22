@@ -29,7 +29,7 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->logLine('Start folder syncronization');
+    $this->logLine('Starting folder synchronization');
     $shell = new nbShell();
     $exclude = '';
     $include = '';
@@ -55,7 +55,7 @@ TXT
     $cmd = sprintf('rsync -azvoChpA %s %s %s %s %s %s', $doit, $include, $exclude, $delete, $sourceDir, $targetDir);
     
     $shell->execute($cmd);
-    $this->logLine('Done folder syncronization');
+    $this->logLine('Folders synchronization completed');
     
     return true;
   }

@@ -31,7 +31,7 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->logLine('Start remote folder syncronization');
+    $this->logLine('Starting remote folder synchronization');
     $shell = new nbShell();
     $exclude = '';
     $include = '';
@@ -56,14 +56,13 @@ TXT
     if(isset($s['delete']))
       $delete = '--delete';
     
-    
     $cmd = sprintf('rsync -azvoChpA %s %s %s %s %s -e ssh %s@%s:%s', 
       $doit, $include, $exclude, $delete, $sourceDir, 
       $remoteUser, $remoteServer, $remotePath);
     
     $this->logLine($cmd);
     $shell->execute($cmd);
-    $this->logLine('Done remote folder syncronization');
+    $this->logLine('Remote folder synchronization completed');
     return true;
   }
 

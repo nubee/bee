@@ -1,0 +1,6 @@
+Please run 
+
+./bee test:unit
+./bee test:plugin
+
+to run all tests.
