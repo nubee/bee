@@ -111,7 +111,7 @@ class ConfigTokenReplacer
   
   public function replaceTokens($match) {
     $value = $this->prefix . $match[1];
-    echo 'checking: ' . $value . "\n";
+    //echo 'checking: ' . $value . "\n";
     if($this->configuration->has($value)) {
       return $this->configuration->get($value);
     }

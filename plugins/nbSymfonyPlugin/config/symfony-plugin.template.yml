@@ -5,10 +5,11 @@ sandbox_dir:       %test_dir%/sandbox
 archive_dir:       %data_dir%/archive
 exclude_list:      %data_dir%/exclude-list
 include_list:      %data_dir%/include-list
-app_dir:           prodSite    
+app_prod_dir:      prodSite    
+app_stage_dir:     stageSite    
 web_user:          adam    
 web_group:         adam    
-symfony_root_dir:  %data_dir%/%app_dir%/symfony
+symfony_root_dir:  %data_dir%/%app_prod_dir%/symfony
 migration_version: 2
 database:          dbtest
 db_username:       dbtestadmin
@@ -20,7 +21,7 @@ symfony:
   project-deploy:
     symfony-root-dir: %symfony_root_dir%
     symfony-exe-path: %symfony_root_dir%/symfony
-    site-dir:         %data_dir%/%app_dir%
+    site-dir:         %data_dir%/%app_prod_dir%
     site-user:        %web_user%
     site-group:       %web_group%
     site-applications:
@@ -32,7 +33,7 @@ symfony:
 #          env: prod
 
   doctrine-migrate:
-    version:          %migration_version%
+    version:          $migration_version%
     
   project-clone:
     from: %data_dir%/testapp
@@ -42,27 +43,27 @@ symfony:
 archive:
   inflate-dir:
     target-dir:  %data_dir%
-    target-dir:  %app_dir%
+    target-dir:  %app_prod_dir%
     archive-dir: %archive_dir%
 
 filesystem:
   dir-transfer:
-    source-dir:   %source_dir%
-    target-dir:   %data_dir%/%app_dir%
+    source-dir:   %app_stage_dir%
+    target-dir:   %data_dir%/%app_prod_dir%
     exclude-from: %exclude_list%
     include-from: %include_list%
     
 mysql:
-  db-name:        %database%
-  username:       %db_username%
-  password:       %db_password%
-  dump-path:      %dump_dir%
-  dump-file:      %dump_file%
+  db-name:   %database%
+  username:  %db_username%
+  password:  %db_password%
+  dump-path: %dump_dir%
+  dump-file: %dump_file%
   
 test:
   doctrine-migrate:
     version-low:  2
     version-high: 4
-  check-website:  http://di-side.com
-  application:    frontend
-  enviroment:     prod
+  check-website: http://di-side.com
+  application:   frontend
+  enviroment:    prod
