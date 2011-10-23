@@ -2,7 +2,7 @@ plugins_dir:       plugins
 test_dir:          %plugins_dir%/nbSymfonyPlugin/test
 data_dir:          %test_dir%/data
 sandbox_dir:       %test_dir%/sandbox
-archive_dir:       %data_dir%/archive
+archive_dir:       %sandbox_dir%
 exclude_list:      %data_dir%/exclude-list
 include_list:      %data_dir%/include-list
 app_prod_dir:      prodSite    
@@ -15,7 +15,7 @@ database:          dbtest
 db_username:       dbtestadmin
 db_password:       dbtestpwd
 dump_dir:          %sandbox_dir%/archive
-dump_file:         %plugins%/nbMysqlPlugin/test/data/dbtest-xxx.sql
+dump_file:         %plugins_dir%/nbMysqlPlugin/test/data/dbtest-xxx.sql
 
 symfony:
   project-deploy:
@@ -37,13 +37,12 @@ symfony:
     
   project-clone:
     from: %data_dir%/testapp
-    to:   %sandbox_dir%/
+    to:   %sandbox_dir%
     name: cloned-project
     
 archive:
   inflate-dir:
-    target-dir:  %data_dir%
-    target-dir:  %app_prod_dir%
+    source-dir:  %data_dir%/%app_prod_dir%
     archive-dir: %archive_dir%
 
 filesystem:

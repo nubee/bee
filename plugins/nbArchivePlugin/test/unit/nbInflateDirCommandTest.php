@@ -1,24 +1,23 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
-$configParser->parseFile(dirname(__FILE__) . '/../data/config/config.yml');
+$configParser->parseFile(dirname(__FILE__) . '/../data/config/archive-plugin.yml');
 $serviceContainer->pluginLoader->loadPlugins(array('nbArchivePlugin'));
 
 $fs = nbFileSystem::getInstance();
+$archiveDir = nbConfig::get('archive_inflate-dir_archive-dir');
+$sourceDir  = nbConfig::get('archive_inflate-dir_source-dir');
+
+$filename = basename($sourceDir);
 
 $t = new lime_test(4);
+$t->comment('Inflate Dir');
 
 $cmd = new nbInflateDirCommand();
-
-$archivePath = nbConfig::get('archive_inflate-dir_archive-path');
-$targetPath = nbConfig::get('archive_inflate-dir_target-path');
-$targetDir = nbConfig::get('archive_inflate-dir_target-dir');
-
-// parameter passed as arguments in command line
 $timestamp = date('YmdHi', time());
-$fileTgz =  sprintf('%s/%s-%s.tgz', $archivePath, $targetDir, $timestamp);
+$fileTgz =  sprintf('%s/%s-%s.tgz', $archiveDir, $filename, $timestamp);
 
-$commandLine = $targetPath . ' ' . $targetDir . ' ' . $archivePath;
+$commandLine = $sourceDir . ' ' . $archiveDir;
 $t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'Command archive:inflate-dir inflate a directory into a destination file');
 $t->ok(file_exists($fileTgz), 'Destination file exists');
 
@@ -28,9 +27,9 @@ $fs->delete($fileTgz);
 
 // parameter passed as config-file options
 $timestamp = date('YmdHi', time());
-$fileTgz =  sprintf('%s/%s-%s.tgz', $archivePath, $targetDir, $timestamp);
+$fileTgz =  sprintf('%s/%s-%s.tgz', $archiveDir, $filename, $timestamp);
 
-$commandLine = '--config-file=config.yml';
+$commandLine = '--config-file=archive-plugin.yml';
 
 $parser = new nbCommandLineParser();
 $parser->setDefaultConfigurationDirs(

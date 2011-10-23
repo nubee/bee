@@ -25,7 +25,11 @@ TXT
   {
     $fs = $this->getFileSystem();
     
-    $destination = $arguments['to'] . '/' . $arguments['project-name'] . '/';
+    $from = $arguments['from'];
+    $to = $arguments['to'];
+    $projectName = $arguments['project-name'];
+    
+    $destination = sprintf('%s/%s/', $to, $projectName);
 
     $exclude = array(
       'nbproject', '.netbeans', 'cache', 'log'
@@ -36,21 +40,21 @@ TXT
       ->prune($exclude)
       ->remove('.')
       ->remove('..')
-      ->in($arguments['from']);
+      ->in($from);
 
     $cloneExists = is_dir($destination);
     if($cloneExists) {
       $finder = nbFileFinder::create('file');
 
-      $files = array_diff($files, $finder->add('*.yml')->in($arguments['from'] . '/config'));
-      $files = array_diff($files, $finder->add('*')->in($arguments['from'] . '/web/images'));
-      $files = array_diff($files, $finder->add('*.css')->in($arguments['from'] . '/web/css'));
-      $files = array_diff($files, $finder->add('*.js')->in($arguments['from'] . '/web/js'));
-      $files = array_diff($files, $finder->add('*.yml')->in($arguments['from'] . '/apps/frontend/config'));
-      $files = array_diff($files, $finder->add('*.yml')->in($arguments['from'] . '/apps/admin/config'));
+      $files = array_diff($files, $finder->add('*.yml')->in($from . '/config'));
+      $files = array_diff($files, $finder->add('*')->in($from . '/web/images'));
+      $files = array_diff($files, $finder->add('*.css')->in($from . '/web/css'));
+      $files = array_diff($files, $finder->add('*.js')->in($from . '/web/js'));
+      $files = array_diff($files, $finder->add('*.yml')->in($from . '/apps/frontend/config'));
+      $files = array_diff($files, $finder->add('*.yml')->in($from . '/apps/admin/config'));
     }
     
-    $sourceProjectName = basename($arguments['from']);
+    $sourceProjectName = basename($from);
 
     $verbose = isset($options['verbose']) && $options['verbose'];
     
@@ -74,7 +78,7 @@ TXT
 
     if(!$cloneExists) {
       $files = nbFileFinder::create('file')->remove('.')->remove('..')->in($destination);
-      $fs->replaceTokens($sourceProjectName, $arguments['project-name'], $files);
+      $fs->replaceTokens($sourceProjectName, $projectName, $files);
     }
 
     return true;

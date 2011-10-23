@@ -14,10 +14,6 @@ The <info>{$this->getFullName()}</info> command:
 TXT
     );
 
-    $this->addArgument(
-      new nbArgument('config-file', nbArgument::REQUIRED, 'Configuration file')
-    );
-
     $this->setOptions(new nbOptionSet(array(
         new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Make the changes!'),
       )));
@@ -25,6 +21,8 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
+    $this->logLine('Deploying symfony project', nbLogger::COMMENT);
+    
     // bee project must be defined
     if(!is_dir('./.bee') && !file_exists('./bee.yml')) {
       $message = 'No bee project defined!';
@@ -32,25 +30,29 @@ TXT
 
       throw new InvalidArgumentException($message);
     }
-
-    $this->logLine('Running: symfony:project-deploy', nbLogger::COMMENT);
-
-    $config = $arguments['config-file'];
+    if(!isset($options['config-file']))
+      throw new Exception('--config-file option required (CHANGE THIS)');
+    
+    $config = $options['config-file'];
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
 
-    if(!file_exists($config)) {
-      $cmd = new nbConfigurePluginCommand();
+    // Configuring plugin if not found
+//    if(!file_exists($config)) {
+//      $message = sprintf("Configuration file '%s' not found!\n", $config);
+//      $message .= 'Please run bee:configure-plugin';
+//      throw new InvalidArgumentException($message);
+/*      $cmd = new nbConfigurePluginCommand();
       $this->executeCommand($cmd, 'nbSymfonyPlugin --force', $doit, $verbose);
 
       $this->logLine('Configuration file "' . $config . '" created.', nbLogger::INFO);
       $this->logLine('Modify it and re-run the command.', nbLogger::INFO);
 
       return true;
-    }
+*///    }
 
-    $configParser = new nbYamlConfigParser();
-    $configParser->parseFile($config, '', true);
+//    $configParser = new nbYamlConfigParser();
+//    $configParser->parseFile($config, '', true);
 
     $symfonyRootDir = nbConfig::get('symfony_project-deploy_symfony-root-dir');
 
@@ -59,11 +61,14 @@ TXT
       foreach(nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
         $cmd = new nbSymfonyGoOfflineCommand();
 
-        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
+        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, 
+          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), 
+          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
 
         $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
       }
     }
+    
     // Archive site directory
     if(nbConfig::has('archive_inflate-dir')) {
       $cmd = new nbInflateDirCommand();

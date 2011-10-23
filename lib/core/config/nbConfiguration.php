@@ -113,6 +113,9 @@ class ConfigTokenReplacer
     $value = $this->prefix . $match[1];
     //echo 'checking: ' . $value . "\n";
     if($this->configuration->has($value)) {
+      if(is_array($this->configuration->get($value)))
+        throw new InvalidArgumentException('Cannot replace an value with an array (checking: ' . $value . ')');
+      
       return $this->configuration->get($value);
     }
     

@@ -19,6 +19,9 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array()) {
     $filename = $arguments['filename'];
+    
+    $this->logLine('');
+    $this->logLine('Configuration for file: ' . $filename, nbLogger::COMMENT);
 
     $configuration = new nbConfiguration();
     
@@ -27,13 +30,15 @@ TXT
     
     foreach($configuration->getAll(true) as $key => $value)
 //      $this->logLine($this->formatPrint($key, $value, 0));
-      $this->logLine($this->formatPrint($key, $value, 0));
+      $this->log($this->formatPrint($key, $value, 0));
+    
+    $this->logLine('');
     
     return true;
   }
   
   private function formatPrint($key, $value, $indent) {
-    $text = $key;
+    $text = '';
     if(is_array($value)) {
       foreach($value as $k => $v) {
         $text .= $this->formatPrint($k, $v, $indent + 1);
@@ -44,7 +49,7 @@ TXT
     
     $text = preg_replace_callback('/%([^%]*)%/', array(&$this, 'highlight'), $text);
     
-    return sprintf("%s%s: %s", str_repeat('--', $indent), $key, $text);
+    return sprintf("\n%s%s: %s", str_repeat('  ', $indent), $key, $text);
   }
   
   private function highlight($match) {
