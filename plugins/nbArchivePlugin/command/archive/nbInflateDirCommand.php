@@ -18,6 +18,10 @@ TXT
         new nbArgument('source-dir', nbArgument::REQUIRED, 'Source directory'),
         new nbArgument('archive-dir', nbArgument::REQUIRED, 'Archive directory')
       )));
+    
+    $this->setOptions(new nbOptionSet(array(
+        new nbOption('create-archive-dir', '', nbOption::PARAMETER_NONE, 'Create archive dir if not exists'),
+      )));    
   }
 
   protected function execute(array $arguments = array(), array $options = array())
@@ -26,20 +30,25 @@ TXT
     $sourceDir = nbFileSystem::sanitizeDir($arguments['source-dir']);
     $archiveDir = nbFileSystem::sanitizeDir($arguments['archive-dir']);
     
+    $createArchiveDir = isset($options['create-archive-dir']);
+    
     if(!is_dir($sourceDir)) 
       throw new Exception("Source directory not found: " . $sourceDir);
 
-    if(!is_dir($archiveDir)) 
-      throw new Exception("Archive directory not found. " . $archiveDir);
+    if(!is_dir($archiveDir)) {
+      if(!$createArchiveDir) 
+        throw new Exception("Archive directory not found. " . $archiveDir);
+      
+      $this->getFileSystem()->mkdir($archiveDir, true);
+    }
     
     $targetDir = basename($sourceDir);
     $targetFile = $targetDir . '-' . $timestamp . '.tgz';
     $this->logLine(sprintf('Archiving %s in %s/%s', $sourceDir, $archiveDir, $targetFile));
     
-    $cmd = sprintf('tar -czvf %s/%s %s', $archiveDir, $targetFile, $sourceDir);
+    $cmd = sprintf('tar -czvf "%s/%s" %s', $archiveDir, $targetFile, $sourceDir);
     
-    $shell = new nbShell();
-    $shell->execute($cmd);
+    $this->executeShellCommand($cmd, $code);
 
     $this->logLine(sprintf('Directory inflated: %s in %s ', $sourceDir, $targetFile));
     

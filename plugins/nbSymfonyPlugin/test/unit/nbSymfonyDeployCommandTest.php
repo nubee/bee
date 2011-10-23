@@ -15,6 +15,6 @@ $t->ok($cmd->run(new nbCommandLineParser(), $commandLine . ' --doit'), 'Symfony 
 
 $fileSystem->rmdir($logDir, true);
 $fileSystem->rmdir($cacheDir, true);
-$fileSystem->rmdir(nbConfig::get('filesystem_dir-transfer_target-path') . '/httpdocs', true);
-$fileSystem->rmdir(nbConfig::get('archive_inflate-dir_archive-path'), true);
+$fileSystem->rmdir(nbConfig::get('filesystem_dir-transfer_target-dir'), true);
+$fileSystem->rmdir(nbConfig::get('archive_inflate-dir_archive-dir'), true);
 

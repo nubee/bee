@@ -37,23 +37,6 @@ TXT
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
 
-    // Configuring plugin if not found
-//    if(!file_exists($config)) {
-//      $message = sprintf("Configuration file '%s' not found!\n", $config);
-//      $message .= 'Please run bee:configure-plugin';
-//      throw new InvalidArgumentException($message);
-/*      $cmd = new nbConfigurePluginCommand();
-      $this->executeCommand($cmd, 'nbSymfonyPlugin --force', $doit, $verbose);
-
-      $this->logLine('Configuration file "' . $config . '" created.', nbLogger::INFO);
-      $this->logLine('Modify it and re-run the command.', nbLogger::INFO);
-
-      return true;
-*///    }
-
-//    $configParser = new nbYamlConfigParser();
-//    $configParser->parseFile($config, '', true);
-
     $symfonyRootDir = nbConfig::get('symfony_project-deploy_symfony-root-dir');
 
     // Put site offline
@@ -72,7 +55,7 @@ TXT
     // Archive site directory
     if(nbConfig::has('archive_inflate-dir')) {
       $cmd = new nbInflateDirCommand();
-      $cmdLine = '--config-file=' . $config;
+      $cmdLine = sprintf('--config-file=%s --create-archive-dir', $config);
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
@@ -118,8 +101,10 @@ TXT
 
   private function executeCommand(nbCommand $command, $commandLine, $doit, $verbose)
   {
-    if($doit)
-      $command->run(new nbCommandLineParser(), $commandLine);
+    if($doit) {
+      if(!$command->run(new nbCommandLineParser(), $commandLine))
+        throw new Exception('Error executing: ' . $cmd);
+    }
 
     if($verbose)
       $this->logLine(sprintf("  <comment>Executing command: %s</comment>\n   %s\n", $command->getFullName(), $commandLine));
