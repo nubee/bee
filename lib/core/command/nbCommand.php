@@ -275,9 +275,9 @@ abstract class nbCommand
     return $this->verbose;
   }
   
-  public function executeShellCommand($command, $successCode = 1) {
+  public function executeShellCommand($command, $successCode = 1, $doit = true) {
     $shell = new nbShell();
-    $code = $shell->execute($command);
+    $code = $shell->execute($command, $doit);
     if($code != $successCode)
       throw new Exception(sprintf('Command "%s" exited with error: %s', $command, $code));
     

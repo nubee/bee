@@ -12,15 +12,15 @@ class nbShell
     $this->returnCode = null;
   }
 
-  public function execute($command, $dryRun = false)
+  public function execute($command, $doit = true)
   {
-    if($dryRun) {
-      nbLogger::getInstance()->logLine($command);
-      return true;
-    }
-    else {
+    if($doit) {
       $this->output = system($command, $this->returnCode);
       return ($this->returnCode === 0);
+    }
+    else {
+      nbLogger::getInstance()->logLine($command);
+      return true;
     }
   }
 

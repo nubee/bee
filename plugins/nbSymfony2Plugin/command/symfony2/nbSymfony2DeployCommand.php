@@ -134,6 +134,18 @@ TXT
       $this->logLine("\t<comment>change owner to directory:</comment> " . nbConfig::get($env . '_www_web_dir') . "", nbLogger::INFO);
       $command = 'chown -R ' . nbConfig::get($env . '_owner') . ':' . nbConfig::get($env . '_group') . ' ' . nbConfig::get($env . '_www_web_dir');
       $this->executeCommandLine($command, $doit);
+      
+//      $command = new nbChangeOwnershipCommand();
+//      $commandLine = sprintf('%s %s %s',
+//        nbConfig::get($env . '_www_web_dir'),
+//        nbConfig::get($env . '_owner'),
+//        nbConfig::get($env . '_group'),
+//        $doit);
+//      $command->run(new nbCommandLineParser(), $commandLine);
+      
+      
+      
+      
 
       $this->logLine("\t<comment>change owner to directory:</comment> " . nbConfig::get($env . '_www_symfony_dir') . "", nbLogger::INFO);
       $command = 'chown -R ' . nbConfig::get($env . '_owner') . ':' . nbConfig::get($env . '_group') . ' ' . nbConfig::get($env . '_www_symfony_dir');
