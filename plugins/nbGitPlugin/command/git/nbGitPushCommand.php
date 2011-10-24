@@ -42,7 +42,7 @@ TXT
     }
 
     $command = sprintf('git push "%s" "%s"', $repository, $branch);
-    $this->executeShellCommand($command);
+    $this->executeShellCommand($command, 1);
   }
 
 }
