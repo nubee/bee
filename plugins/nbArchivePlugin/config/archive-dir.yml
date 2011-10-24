@@ -1,0 +1,4 @@
+archive:
+  archive-dir:
+    source-dir: plugin/nbArchivePlugin/test/data/target-dir/testFolder
+    destination-dir: plugin/nbArchivePlugin/test/data/archive

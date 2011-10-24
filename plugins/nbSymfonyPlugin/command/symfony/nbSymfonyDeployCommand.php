@@ -53,9 +53,9 @@ TXT
     }
     
     // Archive site directory
-    if(nbConfig::has('archive_inflate-dir')) {
-      $cmd = new nbInflateDirCommand();
-      $cmdLine = sprintf('--config-file=%s --create-archive-dir', $config);
+    if(nbConfig::has('archive_archive-dir')) {
+      $cmd = new nbArchiveDirCommand();
+      $cmdLine = sprintf('--config-file=%s --create-destination-dir', $config);
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 

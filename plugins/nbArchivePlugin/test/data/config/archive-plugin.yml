@@ -1,4 +1,4 @@
 archive:
-  inflate-dir:
+  archive-dir:
     source-dir: plugins/nbArchivePlugin/test/data/target-dir/testFolder
-    archive-dir: test/sandbox
+    destination-dir: test/sandbox

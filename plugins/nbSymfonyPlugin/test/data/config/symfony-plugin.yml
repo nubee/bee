@@ -41,9 +41,9 @@ symfony:
     name: cloned-project
     
 archive:
-  inflate-dir:
-    source-dir:  %data_dir%/%app_prod_dir%
-    archive-dir: %archive_dir%
+  archive-dir:
+    source-dir:      %data_dir%/%app_prod_dir%
+    destination-dir: %archive_dir%
 
 filesystem:
   dir-transfer:
