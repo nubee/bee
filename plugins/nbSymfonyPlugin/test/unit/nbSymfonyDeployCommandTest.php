@@ -13,8 +13,8 @@ $commandLine = sprintf('--config-file=%s', '/plugins/nbSymfonyPlugin/test/data/c
 $t->ok($cmd->run(new nbCommandLineParser(), $commandLine . ' --doit'), 'Symfony project deployed successfully');
 //$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'Symfony project deployed successfully');
 
-$fileSystem->rmdir($logDir, true);
-$fileSystem->rmdir($cacheDir, true);
-$fileSystem->rmdir(nbConfig::get('filesystem_dir-transfer_target-dir'), true);
+$fileSystem->rmdir($logDir, true, true);
+$fileSystem->rmdir($cacheDir, true, true);
+//$fileSystem->rmdir(nbConfig::get('filesystem_dir-transfer_target-dir'), true);
 $fileSystem->rmdir(nbConfig::get('archive_inflate-dir_archive-dir'), true);
 

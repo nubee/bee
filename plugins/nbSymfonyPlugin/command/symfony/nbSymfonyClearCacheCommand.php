@@ -15,24 +15,22 @@ TXT
     );
 
     $this->setArguments(new nbArgumentSet(array(
-        new nbArgument('symfony_path', nbArgument::REQUIRED, 'Symfony executable path')
-      )));
-
-    $this->setOptions(new nbOptionSet(array(
+        new nbArgument('symfony-path', nbArgument::REQUIRED, 'Symfony executable path')
       )));
   }
 
   protected function execute(array $arguments = array(), array $options = array())
   {
+    $path = $arguments['symfony-path'];
+
     $this->logLine('Clearing symfony cache');
     
-    $cmd = 'php ' . $arguments['symfony_path'] . '/symfony cc';
+    $cmd = 'php ' . $path . '/symfony cc';
     
-    //$this->logLine($cmd);
-    $shell = new nbShell();
-    $shell->execute($cmd);
+    $this->executeShellCommand($cmd);
     
-    $this->logLine('Symfony cache cleared');
+    $this->logLine('Symfony cache cleared!');
+    
     return true;
   }
 

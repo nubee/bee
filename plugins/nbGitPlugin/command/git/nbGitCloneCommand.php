@@ -26,26 +26,13 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Cloning repository ', nbLogger::COMMENT);
-    $this->log($arguments['repository']);
-    $this->log(' in ', nbLogger::COMMENT);
-    $this->log($arguments['repository']);
-    $this->log("\n");
-    $shell = new nbShell();
-    $command = 'git clone "' . $arguments['repository'] . '" "' . $arguments['local'] . '"';
+    $repository = $arguments['repository'];
+    $localRepository = $arguments['local'];
+    
+    $this->logLine(sprintf('Cloning repository %s in %s', $repository, $local));
+    
+    $command = sprintf('git clone "%s" "%s"', $repository, $local);
 
-    //TODO: $shell->execute($command) returns true on git error (!)
-    if(!$shell->execute($command)) {
-      throw new LogicException(sprintf("
-[nbGitCloneCommand::execute] Error executing command:
-  %s
-  repository -> %s
-  local      -> %s
-",
-        $command, $arguments['repository'], $arguments['local']
-      ));
-    }
-
-    //$this->log($this->formatLine(' ' . implode("\n ", $shell->getOutput()), nbLogger::COMMENT));
+    $this->executeShellCommand($command);
   }
 }

@@ -23,19 +23,17 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $shell = new nbShell();
     $mysqlUsername = $arguments['mysql-username'];
     $mysqlPassword = $arguments['mysql-password'];
     $dbName = $arguments['db-name'];
+    $this->logLine(sprintf('Dropping database %s', $dbName));
 
     $cmd = sprintf('mysql -u%s %s -e "drop database %s"', $mysqlUsername, $this->formatPasswordOption($mysqlPassword), $dbName);
 
-    if($shell->execute($cmd)) {
-      $this->logLine(sprintf('Database %s dropped', $dbName));
-      return true;
-    }
+    $this->executeShellCommand($cmd);
+    $this->logLine(sprintf('Database %s dropped', $dbName));
     
-    return false;
+    return true;
   }
 
 }

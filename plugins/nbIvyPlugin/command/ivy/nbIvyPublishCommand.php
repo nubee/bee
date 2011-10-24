@@ -2,38 +2,31 @@
 
 class nbIvyPublishCommand extends nbCommand
 {
+
   protected function configure()
   {
     $this->setName('ivy:publish')
-      ->setOptions(new nbOptionSet(array(
-        new nbOption('local', 'l', nbOption::PARAMETER_NONE, 'Publish into local repository')
-      )))
       ->setBriefDescription('Publishes dependencies into local repository')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info>:
 
     <info>./bee {$this->getFullName()}</info>
 TXT
-      );
+    );
+
+    $this->addOption(
+      new nbOption('local', 'l', nbOption::PARAMETER_NONE, 'Publish into local repository')
+    );
   }
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $shell = new nbShell();
     $client = new nbIvyClient();
 
-    $this->log('Publishing...', nbLogger::COMMENT);
-    $this->log("\n");
+    $this->logLine('Publishing... ', nbLogger::COMMENT);
     $command = $client->getPublishCmdLine(isset($options['local']));
-    echo $command . "\n"; die;
 
-    if(!$shell->execute($command)) {
-      throw new LogicException(sprintf("
-[nbIvyPublishCommand::execute] Error executing command:
-  %s
-",
-        $command
-      ));
-    }
+    $this->executeShellCommand($command);
   }
+
 }

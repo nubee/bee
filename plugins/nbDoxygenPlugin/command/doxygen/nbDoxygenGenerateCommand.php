@@ -24,12 +24,9 @@ TXT
   {
     $antClient = new nbAntClient();
     $command = "ant docs";
+    
     $antClient->getCommandLine($command);
-    $shell = new nbShell();
-    if(!$shell->execute($command)) {
-      throw new LogicException(sprintf("
-[nbDoxigenGenerateCommand::execute] Error executing command:
-  %s", $command));
-    }
+    
+    $this->executeShellCommand($command);
   }
 }

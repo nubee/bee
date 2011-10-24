@@ -42,16 +42,16 @@ TXT
 
     $configParser = sfYaml::load($beeConfig);
 
-    $plugins = $configParser['project']['bee']['plugins_enabled'];
-    $plugins = isset($configParser['project']['bee']['plugins_enabled'])
-      ? $configParser['project']['bee']['plugins_enabled'] : array();
+    $plugins = $configParser['project']['bee']['enabled_plugins'];
+    $plugins = isset($configParser['project']['bee']['enabled_plugins'])
+      ? $configParser['project']['bee']['enabled_plugins'] : array();
 
     if(!is_array($plugins))
       $plugins = array();
     
     if(!in_array($pluginName, $plugins)) {
       array_push($plugins, $pluginName);
-      $configParser['project']['bee']['plugins_enabled'] = $plugins;
+      $configParser['project']['bee']['enabled_plugins'] = $plugins;
       $yml = sfYaml::dump($configParser, 99);
 
       file_put_contents($beeConfig, $yml);

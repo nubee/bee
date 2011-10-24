@@ -25,36 +25,17 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $project = isset($options['test']) ? nbConfig::get('project_test') : nbConfig::get('project_core');
-//    $configuration = isset($options['configuration']) ? $options['configuration'] : nbConfig::get('nb_commands_vs_build_configuration');
     $configuration = $arguments['configuration'];
+    $incremental = isset($options['incremental']) ? '/rebuild' : '';
 
-    $this->log('Building project ', nbLogger::COMMENT);
-    $this->log($project);
-    $this->log("\n");
-    $this->log('Target configuration ', nbLogger::COMMENT);
-    $this->log($configuration);
-    $this->log("\n");
+    $this->logLine(sprintf('Building project "%s" (target: %s'), $project, $configuration);
 
     $info = "\033[32m[info]: \033[0m";
     $warning = "\033[33m[warning]: \033[0m";
     $error = "\033[31m[error]: \033[0m";
 
-    $command = "vcbuild /nondefmsbuild /nologo /info:\"" . $info . "\" /warning:\"" . $warning . "\" /error:\"" . $error . "\" ";
-    if(!isset($options['incremental']))
-      $command .= '/rebuild ';
-    $command .= '"' . $project . '" "' . $configuration . '"';
+    $command = sprintf('vcbuild /nondefmsbuild /nologo /info:"%s" /warning:"%s" /error:"%s" %s "%s" "%s"', $info, $warning, $error, $incremental, $project, $configuration);
 
-    $shell = new nbShell();
-    if(!$shell->execute($command)) {
-      throw new LogicException(sprintf("
-[nbVsBuildCommand::execute] Error executing command:
-  %s
-  configuration -> %s
-  test          -> %s
-  incremental   -> %s
-",
-        $command, @$arguments['configuration'], @$options['test'], @$options['incremental']
-      ));
-    }
+    $this->executeShellCommand($command);
   }
 }

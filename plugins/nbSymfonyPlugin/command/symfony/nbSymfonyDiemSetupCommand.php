@@ -18,23 +18,15 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $this->logLine('Diem setup');
-    $shell = new nbShell();
+    $path = $arguments['symfony-path'];
 
-    $cmd = 'php ' . $arguments['symfony-path'] . '/symfony dm:setup';
+    $this->logLine('Setting Diem project up');
 
-    $this->logLine($cmd);
-    if (!$shell->execute($cmd)) {
-      throw new LogicException(sprintf("
-[nbSymfonyDiemSetupCommand::execute] Error executing command:
-  %s
-", $cmd
-      ));
-    }
+    $cmd = 'php ' . $path . '/symfony dm:setup';
 
-    $this->logLine('Done - Diem setup');
+    $this->executeShellCommand($cmd);
 
-    return true;
+    $this->logLine('Diem project set up!');
   }
 
 }

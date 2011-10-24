@@ -15,7 +15,7 @@ function isPluginEnabled($beeConfig, $plugin) {
     
   $parser = sfYaml::load($beeConfig);
   
-  $plugins = isset($parser['project']['bee']['plugins_enabled']) ? $parser['project']['bee']['plugins_enabled'] : array();
+  $plugins = isset($parser['project']['bee']['enabled_plugins']) ? $parser['project']['bee']['enabled_plugins'] : array();
   
   return in_array($plugin, $plugins);
 }

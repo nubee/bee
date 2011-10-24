@@ -21,14 +21,24 @@ function formatPassword($password, $option = '')
 }
 
 function createDb($mysqlUsername, $mysqlPassword, $dbName, $username, $password) {
-  $cmd = new nbMysqlCreateCommand();
-  $commandLine = sprintf('%s %s %s --username=%s --password=%s', $dbName, $mysqlUsername, formatPassword($mysqlPassword), $username, $password);
-  $cmd->run(new nbCommandLineParser(), $commandLine);
+  try {
+    $cmd = new nbMysqlCreateCommand();
+    $commandLine = sprintf('%s %s %s --username=%s --password=%s', $dbName, $mysqlUsername, formatPassword($mysqlPassword), $username, $password);
+    $cmd->run(new nbCommandLineParser(), $commandLine);
+  }
+  catch(Exception $e) {
+    // Ignore errors
+  }
 }
 
 function dropDb($mysqlUsername, $mysqlPassword, $dbName)
 {
-  $cmd = new nbMysqlDropCommand();
-  $commandLine = sprintf('%s %s %s', $dbName, $mysqlUsername, formatPassword($mysqlPassword));
-  $cmd->run(new nbCommandLineParser(), $commandLine);
+  try {
+    $cmd = new nbMysqlDropCommand();
+    $commandLine = sprintf('%s %s %s', $dbName, $mysqlUsername, formatPassword($mysqlPassword));
+    $cmd->run(new nbCommandLineParser(), $commandLine);
+  }
+  catch(Exception $e) {
+    // Ignore errors
+  }
 }

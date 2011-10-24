@@ -40,11 +40,11 @@ TXT
     $fs->mirror($source, $dest, $finder, true);
     
     try {
-      $shell = new nbShell();
       if(PHP_OS == "Linux") {
         if(file_exists('/usr/bin/bee'))
-          $shell->execute('rm /usr/bin/bee');
-        $shell->execute('ln -s ' . $dest . '/bee /usr/bin/bee');
+          $this->executeShellCommand('rm /usr/bin/bee');
+        
+        $this->executeShellCommand('ln -s ' . $dest . '/bee /usr/bin/bee');
       }
       else if(PHP_OS == "WINNT") {
         $this->logLine('Remember to add ' . $dest . ' to your Path enviroment variable', nbLogger::COMMENT);
@@ -55,21 +55,9 @@ TXT
       $this->logLine('Bee successfully installed', nbLogger::COMMENT);
     }
     catch(Exception $e) {
-      $this->logLine('Error installing bee: ' . $e->getMessage(), nbLogger::COMMENT);
+      $this->logLine('Error installing bee: ' . $e->getMessage(), nbLogger::ERROR);
+      
       throw $e;
     }
   }
-/*
-  protected function getDefaultInstallDir()
-  {
-    if(PHP_OS == "Linux") {
-      return "/var/source/bee";
-    }
-    else if(PHP_OS == "WINNT") {
-      return "%ProgramFiles%/bee";
-    }
-    else
-      throw new Exception("Operating System not supported");
-  }
-*/
 }

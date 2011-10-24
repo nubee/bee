@@ -279,6 +279,8 @@ abstract class nbCommand
     $shell = new nbShell();
     if(!($code = $shell->execute($command)))
       throw new Exception(sprintf('Command "%s" exited with error: ', $command, $code));
+    
+    return $shell->getOutput();
   }
 
 }

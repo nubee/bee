@@ -25,15 +25,8 @@ TXT
 
     $this->logLine('Updating bee from ' . $sourceDir, nbLogger::COMMENT);
 
-    try {
-      $shell = new nbShell();
-      $shell->execute('cd ' . $sourceDir . ' && git pull');
-      $this->logLine('Bee successfully updated', nbLogger::COMMENT);
-    } 
-    catch(Exception $e) {
-      $this->logLine('Error updating bee: ' . $e->getMessage(), nbLogger::COMMENT);
-      throw $e;
-    }
+    $this->executeShellCommand('cd ' . $sourceDir . ' && git pull');
+    $this->logLine('Bee successfully updated', nbLogger::COMMENT);
   }
 
 }

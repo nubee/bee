@@ -21,7 +21,9 @@ class nbPluginLoader
   public function loadAllPlugins()
   {
     $plugins = nbFileFinder::create('dir')
-        ->add('*Plugin')->in($this->pluginDirs);
+      ->discard('test')->prune('test')
+      ->add('*Plugin')
+      ->in($this->pluginDirs);
 
     foreach($plugins as $plugin)
       $this->addPlugin(basename($plugin));
@@ -46,7 +48,7 @@ class nbPluginLoader
 //    nbLogger::getInstance()->logLine('Loading Plugin <comment>' . $pluginName . '</comment>...');
 
     if(key_exists($pluginName, $this->plugins))
-      return;
+      return true;
 
     foreach($this->pluginDirs as $dir) {
       $path = $dir . '/' . $pluginName;
@@ -55,10 +57,8 @@ class nbPluginLoader
       }
     }
 
-    if(!key_exists($pluginName, $this->plugins)) {
-      nbLogger::getInstance()->logLine('Plugin not found <comment>' . $pluginName . '</comment>', nbLogger::INFO);
-      return;
-    }
+    if(!key_exists($pluginName, $this->plugins))
+      throw new Exception(sprintf('Plugin %s not found', $pluginName));
 
     nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName] . '/lib', '*.php', true);
     nbAutoload::getInstance()->addDirectory($this->plugins[$pluginName] . '/command', '*Command.php', true);
@@ -73,7 +73,7 @@ class nbPluginLoader
     }
 
     if(!file_exists($this->plugins[$pluginName] . '/config/config.yml'))
-      return;
+      return true;
 
     $yamlParser = new nbYamlConfigParser();
     $yamlParser->parseFile($this->plugins[$pluginName] . '/config/config.yml', '', true);

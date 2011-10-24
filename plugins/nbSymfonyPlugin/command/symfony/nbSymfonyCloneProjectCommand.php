@@ -15,8 +15,8 @@ TXT
     );
 
     $this->setArguments(new nbArgumentSet(array(
-        new nbArgument('from', nbArgument::REQUIRED, 'The path of the project to clone.'),
-        new nbArgument('to', nbArgument::REQUIRED, 'The path where to save the clone'),
+        new nbArgument('from', nbArgument::REQUIRED, 'The path of the project to clone'),
+        new nbArgument('to', nbArgument::REQUIRED, 'The path where to save the cloned project'),
         new nbArgument('project-name', nbArgument::REQUIRED, 'The name of the cloned project'),
       )));
   }
@@ -36,10 +36,8 @@ TXT
     );
     
     $files = nbFileFinder::create('any')
-      ->discard($exclude)
-      ->prune($exclude)
-      ->remove('.')
-      ->remove('..')
+      ->discard($exclude)->prune($exclude)
+      ->remove('.')->remove('..')
       ->in($from);
 
     $cloneExists = is_dir($destination);
@@ -54,7 +52,7 @@ TXT
       $files = array_diff($files, $finder->add('*.yml')->in($from . '/apps/admin/config'));
     }
     
-    $sourceProjectName = basename($from);
+    $sourceProjectName = isset($options['source-project-name']) ? $options['source-project-name'] : basename($from);
 
     $verbose = isset($options['verbose']) && $options['verbose'];
     
@@ -75,6 +73,7 @@ TXT
       if(!$verbose && ($count++ % 100) == 0)
         $this->log('.');
     }
+    $this->logLine('');
 
     if(!$cloneExists) {
       $files = nbFileFinder::create('file')->remove('.')->remove('..')->in($destination);

@@ -24,6 +24,7 @@ TXT
     $this->logLine('Configuration for file: ' . $filename, nbLogger::COMMENT);
 
     $configuration = new nbConfiguration();
+    $configuration->add(nbConfig::getAll());    
     
     $yamlParser = new nbYamlConfigParser($configuration);
     $yamlParser->parseFile($filename, '', true);

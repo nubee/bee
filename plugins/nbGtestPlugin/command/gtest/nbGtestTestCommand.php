@@ -24,29 +24,19 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $shell = new nbShell();
-    $this->log('Running tests', nbLogger::COMMENT);
-    $this->log("\n");
+    $this->logLine('Running tests', nbLogger::COMMENT);
 
     $command = '"' . $arguments['testapp'] . '" ';
     if(isset($options['output'])) {
       $command .= '--gtest_output=xml:' . $options['output'] . ' ';
       $testResultDir = dirname(nbConfig::get('project_testresult'));
+      
       nbFileSystem::rmdir($testResultDir, true);
       nbFileSystem::mkdir($testResultDir, true);
     }
 //    if(isset($options['nocolor']))
 //      $command .= '--gtest_color=no ';
 
-    if(!$shell->execute($command)) {
-      throw new LogicException(sprintf("
-[nbGtestTestCommand::execute] Error executing command:
-  %s
-  testapp: %s
-  output:  %s
-",
-        $command, @$arguments['testapp'], @$options['output']
-      ));
-    }
+    $this->executeShellCommand($command);
   }
 }

@@ -22,11 +22,8 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Status of branch', nbLogger::COMMENT);
-    $this->log("\n");
-    $shell = new nbShell();
+    $this->logLine('Status of branch', nbLogger::COMMENT);
 
-    if(!$shell->execute('git status'))
-      throw new LogicException("[nbGitStatusCommand::execute] Error executing command");
+    $this->executeShellCommand('git status');
   }
 }

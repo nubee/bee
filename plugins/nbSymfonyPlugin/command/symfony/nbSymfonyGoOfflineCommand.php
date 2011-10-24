@@ -23,20 +23,19 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $this->logLine('Site is going offline');
-    $shell = new nbShell();
-    $cmd = sprintf('php %s/symfony project:disable %s %s', $arguments['symfony-path'], $arguments['application'], $arguments['enviroment']);
-
-    $this->logLine($cmd);
-    if (!$shell->execute($cmd)) {
-      throw new LogicException(sprintf("
-[nbSymfonyGoOfflineCommand::execute] Error executing command:
-  %s
-", $cmd
-      ));
-    }
+    $path = $arguments['symfony-path'];
+    $application = $arguments['application'];
+    $environment = $arguments['enviroment'];
     
-    $this->logLine('Done - SymfonyGoOfflineCommand');
+    $website = sprintf('%s/%s (%s)', $path, $application, $environment);
+    
+    $this->logLine(sprintf('Putting site "%s" offline', $website));
+    
+    $cmd = sprintf('php %s/symfony project:disable %s %s', $path, $application, $environment);
+
+    $this->executeShellCommand($cmd);
+    
+    $this->logLine(sprintf('Site "%s" is offline', $website));
     
     return true;
   }

@@ -30,11 +30,9 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $this->logLine('Starting folder synchronization');
-    $shell = new nbShell();
     $exclude = '';
     $include = '';
-    $doit = '--dry-run';
-    $delete = '';
+    $doit    = '--dry-run';
     
     // Trailing slash must be added after sanitize dir
     $sourceDir = nbFileSystem::sanitizeDir($arguments['source-dir']) . '/';
@@ -49,12 +47,11 @@ TXT
     if(isset($options['doit']))
       $doit = '';
     
-    if(isset($options['delete']))
-      $delete = '--delete';
+    $delete = isset($options['delete']) ? '--delete' : '';
     
     $cmd = sprintf('rsync -azvoChpA %s %s %s %s %s %s', $doit, $include, $exclude, $delete, $sourceDir, $targetDir);
     
-    $shell->execute($cmd);
+    $this->executeShellCommand($cmd);
     $this->logLine('Folders synchronization completed');
     
     return true;

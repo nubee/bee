@@ -32,17 +32,14 @@ TXT
     $timestamp = date('YmdHi', time());
     $dump = sprintf('%s/%s-%s.sql', $path, $dbName, $timestamp);
     
-    $this->logLine('Dumping ' . $dbName . ' to ' . $dump);
+    $this->logLine(sprintf('Dumping database "%s" to "%s"', $dbName, $dump));
     
-    $shell = new nbShell();
     $cmd = sprintf('mysqldump -u%s -p%s %s > %s', $username, $password, $dbName, $dump);
 
-    if($shell->execute($cmd)) {
-      $this->logLine('Mysql database dumped!');
-      return true;
-    }
+    $this->executeShellCommand($cmd);
+    $this->logLine('MySql database dumped!');
     
-    return false;
+    return true;
   }
 
 }

@@ -21,13 +21,13 @@ $t->ok(file_exists($cloneTo . '/' . $name), 'project is cloned');
 
 //TODO rivedere directory cache e il test in generale 20???
 $clonedAppFiles = $finder->add('*.*')->remove('.')->remove('..')->relative()->in($cloneTo . '/' . $name);
-$t->is(count(array_diff($appFiles, $clonedAppFiles)), 20, 'All files are cloned');
+$t->is(count($clonedAppFiles), 45, 'All files are cloned');
 
-$fsr = new File_SearchReplace($name, '', $cloneTo . '/' . $name . '/trunk/symfony/config/properties.ini', '', false);
+$fsr = new File_SearchReplace($name, '', $cloneTo . '/' . $name . '/symfony/config/properties.ini', '', false);
 $fsr->doSearch();
 $t->is($fsr->getNumOccurences(), 1, 'File properties.ini modified');
 
-$fsr = new File_SearchReplace($name, '', $cloneTo . '/' . $name . '/trunk/symfony/config/databases.yml', '', false);
+$fsr = new File_SearchReplace($name, '', $cloneTo . '/' . $name . '/symfony/config/databases.yml', '', false);
 $fsr->doSearch();
 $t->is($fsr->getNumOccurences(), 2, 'File databases.yml modified');
 

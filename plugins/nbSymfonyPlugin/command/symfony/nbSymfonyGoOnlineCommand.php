@@ -23,21 +23,19 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $this->logLine('Site is going online');
-    $shell = new nbShell();
+    $path = $arguments['symfony-path'];
+    $application = $arguments['application'];
+    $environment = $arguments['enviroment'];
+    
+    $website = sprintf('%s/%s (%s)', $path, $application, $environment);
+    
+    $this->logLine(sprintf('Putting site "%s" online', $website));
+    
+    $cmd = sprintf('php %s/symfony project:enable %s %s', $path, $application, $environment);
 
-    $cmd = sprintf('php %s/symfony project:enable %s %s', $arguments['symfony-path'], $arguments['application'], $arguments['enviroment']);
-
-    $this->logLine($cmd);
-    if (!$shell->execute($cmd)) {
-      throw new LogicException(sprintf("
-[nbSymfonyGoOnlineCommand::execute] Error executing command:
-  %s
-", $cmd
-      ));
-    }
-
-    $this->logLine('Done - SymfonyGoOnlineCommand');
+    $this->executeShellCommand($cmd);
+    
+    $this->logLine(sprintf('Site "%s" is online', $website));
 
     return true;
   }

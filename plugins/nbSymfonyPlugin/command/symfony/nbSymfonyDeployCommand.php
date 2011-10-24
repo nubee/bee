@@ -77,9 +77,14 @@ TXT
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
     // Change ownership
-    $cmd = new nbSymfonyChangeOwnershipCommand();
+    $cmd = new nbChangeOwnershipCommand();
     $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-user'), nbConfig::get('symfony_project-deploy_site-group'));
-    $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    try {
+      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    }
+    catch(Exception $e) {
+      $this->logLine('Cannot change permissions', nbLogger::ERROR);
+    }
 
     // Clear cache
     $cmd = new nbSymfonyClearCacheCommand();

@@ -71,7 +71,6 @@ TXT
     $this->logLine('Removing temporary directory: ' . $tempDir, nbLogger::INFO);
     nbFileSystem::rmdir($tempDir, true);
     
-    $shell = new nbShell();
     $command = sprintf('git svn clone %s %s', $source, $tempDir);
     
     $params = array(' --no-metadata');
@@ -86,13 +85,13 @@ TXT
     
     $this->logLine('Cloning repository', nbLogger::INFO);
     
-    $shell->execute($command . implode(' ', $params), $dryRun);
+    $this->executeShellCommand($command . implode(' ', $params), $dryRun);
     
     $this->logLine('Applying git fix', nbLogger::INFO);
-    $shell->execute('cd ' . $tempDir . ' && git svn-abandon-fix-refs', $dryRun);
-    $shell->execute('cd ' . $tempDir . ' && git svn-abandon-cleanup', $dryRun);
-    $shell->execute('cd ' . $tempDir . ' && git config --remove-section svn', $dryRun);
-    $shell->execute('cd ' . $tempDir . ' && git config --remove-section svn-remote.svn', $dryRun);
+    $this->executeShellCommand('cd ' . $tempDir . ' && git svn-abandon-fix-refs', $dryRun);
+    $this->executeShellCommand('cd ' . $tempDir . ' && git svn-abandon-cleanup', $dryRun);
+    $this->executeShellCommand('cd ' . $tempDir . ' && git config --remove-section svn', $dryRun);
+    $this->executeShellCommand('cd ' . $tempDir . ' && git config --remove-section svn-remote.svn', $dryRun);
 
     $this->logLine('Removing svn references', nbLogger::INFO);
     if(!isset($options['dry-run'])) {
@@ -102,8 +101,8 @@ TXT
     }
     
     $this->logLine('Pushing to ' . $destination, nbLogger::INFO);
-    $shell->execute('cd ' . $tempDir . sprintf(' && git remote add origin %s.git', $destination), $dryRun);
-    $shell->execute('cd ' . $tempDir . ' && git push --all', $dryRun);
-    $shell->execute('cd ' . $tempDir . ' && git push --tags', $dryRun);
+    $this->executeShellCommand('cd ' . $tempDir . sprintf(' && git remote add origin %s.git', $destination), $dryRun);
+    $this->executeShellCommand('cd ' . $tempDir . ' && git push --all', $dryRun);
+    $this->executeShellCommand('cd ' . $tempDir . ' && git push --tags', $dryRun);
   }
 }

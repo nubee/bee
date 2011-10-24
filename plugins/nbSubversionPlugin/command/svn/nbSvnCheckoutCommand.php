@@ -30,33 +30,21 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Checking out ', nbLogger::COMMENT);
-    $this->log($arguments['repository']);
-    $this->log(' in ', nbLogger::COMMENT);
-    $this->log($arguments['local']);
-    $this->log("\n");
-    $shell = new nbShell();
+    $repository = $arguments['repository'];
+    $local = $arguments['local'];
+    
+    $this->logLine(sprintf('Checking out "%s" in "%s"', $repository, $local), nbLogger::COMMENT);
+
     $client = new nbSvnClient();
 
     $command = $client->getCheckoutCmdLine(
-      $arguments['repository'],
-      $arguments['local'],
+      $repository,
+      $local,
       true, //force checkout
       isset($options['username']) ? $options['username'] : '',
       isset($options['password']) ? $options['password'] : ''
     );
     
-    if(!$shell->execute($command)) {
-      throw new LogicException(sprintf("
-[nbSvnCheckoutCommand::execute] Error executing command:
-  %s
-  repository -> %s
-  local      -> %s
-  username   -> %s
-  password   -> %s
-",
-        $command, $arguments['repository'], $arguments['local'], $options['username'], $options['password']
-      ));
-    }
+    $this->executeShellCommand($command);
   }
 }

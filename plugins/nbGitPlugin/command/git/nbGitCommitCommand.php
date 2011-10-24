@@ -25,28 +25,16 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Commit changes', nbLogger::COMMENT);
-    $this->log("\n");
-    $shell = new nbShell();
+    $this->logLine('Commiting git changes');
+    
+    $message = $arguments['message'];
 
     $command = 'git add .';
-    if(!$shell->execute($command)) {
-      throw new LogicException(sprintf("
-[nbGitCommitCommand::execute] Error executing command:
-  %s
-",
-        $command
-      ));
-    }
+    $this->executeShellCommand($command);
 
-    $command = 'git commit -a -m "' . $arguments['message'] . '"';
-    if(!$shell->execute($command)) {
-      throw new LogicException(sprintf("
-[nbGitCommitCommand::execute] Error executing command:
-  %s
-",
-        $command
-      ));
-    }
+    $command = sprintf('git commit -a -m "%s"', $message);
+    $this->executeShellCommand($command);
+
+    $this->logLine('Git changes committed successfully');
   }
 }

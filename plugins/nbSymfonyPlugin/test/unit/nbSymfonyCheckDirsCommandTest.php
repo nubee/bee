@@ -13,5 +13,5 @@ $t->ok($cmd->run(new nbCommandLineParser(), $symfonyRootDir), 'Command SymfonyCh
 $t->ok(file_exists($logDir), 'Check log dir existence');
 $t->ok(file_exists($cacheDir), 'Check cache dir existence');
 
-$fileSystem->rmdir($logDir, true);
-$fileSystem->rmdir($cacheDir, true);
+$fileSystem->rmdir($logDir, true, true);
+$fileSystem->rmdir($cacheDir, true, true);

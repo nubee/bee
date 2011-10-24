@@ -29,28 +29,16 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Updating ', nbLogger::COMMENT);
-    $this->log($arguments['local']);
-    $this->log("\n");
-    $shell = new nbShell();
+    $local = $arguments['local'];
+    $username = isset($options['username']) ? $options['username'] : '';
+    $password = isset($options['password']) ? $options['password'] : '';
+    
+    $this->logLine(sprintf('Updating repository: %s', $local), nbLogger::COMMENT);
+
     $client = new nbSvnClient();
 
-    $command = $client->getUpdateCmdLine(
-      $arguments['local'],
-      isset($options['username']) ? $options['username'] : '',
-      isset($options['password']) ? $options['password'] : ''
-    );
+    $command = $client->getUpdateCmdLine($local, $username, $password);
 
-    if(!$shell->execute($command)) {
-      throw new LogicException(sprintf("
-[nbSvnUpdateCommand::execute] Error executing command:
-  %s
-  local    -> %s
-  username -> %s
-  password -> %s
-",
-        $command, $arguments['local'], $options['username'], $options['password']
-      ));
-    }
+    $this->executeShellCommand($command);
   }
 }

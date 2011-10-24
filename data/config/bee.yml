@@ -9,7 +9,7 @@ project:
     default:
       integrate: ["lime:test"]
   bee:  # bee extra configuration keys
-    plugins_enabled: ~
+    enabled_plugins: ~
   repository:
     type: git
   shell:

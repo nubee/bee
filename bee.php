@@ -7,7 +7,7 @@ $autoload->register();
 $autoload->addDirectory(dirname(__FILE__) . '/lib/', '*.php', true);
 $autoload->addDirectory(dirname(__FILE__) . '/vendor/', '*.php', true);
 
-$beeDir = str_replace('\\', '/', dirname(__FILE__));
+$beeDir = nbFileSystem::sanitizeDir(dirname(__FILE__));
 
 nbConfig::set('nb_bee_dir', $beeDir);
 
@@ -37,7 +37,6 @@ else if(file_exists(nbConfig::get('nb_bee_dir') . '/' . nbConfig::get('nb_projec
 
 $yaml->parseFile($projectConfigurationFile, '', true);
 
-
 /* * ********************* */
 sfServiceContainerAutoloader::register();
 
@@ -65,14 +64,14 @@ if(nbConfig::has('project_bee_plugins_dir'))
   $serviceContainer->pluginLoader->addDir(nbConfig::get('project_bee_plugins_dir'));
 
 // Loads default plugins from path/to/bee/config/config.yml
-if(!$default_plugins = nbConfig::get('nb_default_plugins'))
-  $default_plugins = array();
+if(!$defaultPlugins = nbConfig::get('nb_default_plugins'))
+  $defaultPlugins = array();
 else
-  $serviceContainer->pluginLoader->loadPlugins($default_plugins);
+  $serviceContainer->pluginLoader->loadPlugins($defaultPlugins);
 
 //loads project plugins from project/path/bee.yml
-if(nbConfig::has('project_bee_plugins_enabled')) {
-  $plugins = nbConfig::get('project_bee_plugins_enabled');
+if(nbConfig::has('project_bee_enabled_plugins')) {
+  $plugins = nbConfig::get('project_bee_enabled_plugins');
 
   (null === $plugins) ?
       $serviceContainer->pluginLoader->loadAllPlugins() :

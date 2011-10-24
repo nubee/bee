@@ -38,7 +38,7 @@ TXT
 
     if(!isset($options['exclude-project-folder']))
       $dirs[] = nbConfig::get('nb_test_dir', 'test/unit');
-    
+
     if(count($arguments['name'])) {
       foreach($dirs as $dir)
         foreach($arguments['name'] as $name) {
@@ -61,8 +61,6 @@ TXT
     $h->register($files);
 
     $ret = $h->run(isset($options['showall']));
-    die;
-    echo '2';
 
     // print output to file
     if(isset($options['output'])) {

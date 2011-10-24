@@ -48,7 +48,7 @@ TXT
     
     $cmd = sprintf('tar -czvf "%s/%s" %s', $archiveDir, $targetFile, $sourceDir);
     
-    $this->executeShellCommand($cmd, $code);
+    $this->executeShellCommand($cmd);
 
     $this->logLine(sprintf('Directory inflated: %s in %s ', $sourceDir, $targetFile));
     

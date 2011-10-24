@@ -32,11 +32,8 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $this->logLine('Starting remote folder synchronization');
-    $shell = new nbShell();
     $exclude = '';
     $include = '';
-    $doit    = '--dry-run';
-    $delete  = '';
     
     // Trailing slash must be added after sanitize dir
     $sourceDir = nbFileSystem::sanitizeDir($arguments['source-dir']) . '/*';
@@ -50,20 +47,15 @@ TXT
     if(isset($s['include-from']) && file_exists($s['include-from']))
       $include = ' --include-from \'' . $s['include-from'] . '\' ';
     
-    if(isset($s['doit']))
-      $doit = '';
-    
-    if(isset($s['delete']))
-      $delete = '--delete';
+    $doit = isset($s['doit']) ? '' : '--dry-run';
+    $delete = isset($s['delete']) ? '--delete' : '';
     
     $cmd = sprintf('rsync -azvoChpA %s %s %s %s %s -e ssh %s@%s:%s', 
       $doit, $include, $exclude, $delete, $sourceDir, 
       $remoteUser, $remoteServer, $remotePath);
     
-    $this->logLine($cmd);
-    $shell->execute($cmd);
+    $this->executeShellCommand($cmd);
     $this->logLine('Remote folder synchronization completed');
-    return true;
   }
 
 }

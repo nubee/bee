@@ -331,30 +331,30 @@ class nbFileFinder
       return array();
 
     $files = array();
-    $temp_files = array();
-    $temp_folders = array();
+    $tempFiles = array();
+    $tempFolders = array();
     if (is_dir($dir) && is_readable($dir)) {
       $currentDir = opendir($dir);
       while (false !== $entryname = readdir($currentDir)) {
         if ($entryname == '.' || $entryname == '..') continue;
 
-        $current_entry = $dir.DIRECTORY_SEPARATOR.$entryname;
-        if ((!$this->followLink) && is_link($current_entry))
+        $currentEntry = $dir.DIRECTORY_SEPARATOR.$entryname;
+        if ((!$this->followLink) && is_link($currentEntry))
           continue;
 
-        if (is_dir($current_entry)) {
+        if (is_dir($currentEntry)) {
           if ($this->sort === 'type')
-            $temp_folders[$entryname] = $current_entry;
+            $tempFolders[$entryname] = $currentEntry;
           else {
             if (($this->type === 'directory' || $this->type === 'any')
               && ($depth >= $this->mindepth)
               && !$this->isDiscarded($dir, $entryname)
               && $this->matchRules($dir, $entryname)
               && $this->hasExecuted($dir, $entryname))
-              $files[] = $current_entry;
+              $files[] = $currentEntry;
 
             if (!$this->isPruned($dir, $entryname))
-              $files = array_merge($files, $this->searchIn($current_entry, $depth + 1));
+              $files = array_merge($files, $this->searchIn($currentEntry, $depth + 1));
           }
         }
         else {
@@ -366,25 +366,25 @@ class nbFileFinder
             && $this->hasExecuted($dir, $entryname))
           {
             if ($this->sort === 'type')
-              $temp_files[] = $current_entry;
+              $tempFiles[] = $currentEntry;
             else
-              $files[] = $current_entry;
+              $files[] = $currentEntry;
           }
         }
       }
 
       if ($this->sort === 'type') {
-        ksort($temp_folders);
-        foreach($temp_folders as $entryname => $current_entry) {
+        ksort($tempFolders);
+        foreach($tempFolders as $entryname => $currentEntry) {
           if (($this->type === 'directory' || $this->type === 'any') && ($depth >= $this->mindepth) && !$this->is_discarded($dir, $entryname) && $this->match_names($dir, $entryname) && $this->exec_ok($dir, $entryname))
-            $files[] = $current_entry;
+            $files[] = $currentEntry;
 
           if (!$this->isPruned($dir, $entryname))
-            $files = array_merge($files, $this->search_in($current_entry, $depth + 1));
+            $files = array_merge($files, $this->search_in($currentEntry, $depth + 1));
         }
 
-        sort($temp_files);
-        $files = array_merge($files, $temp_files);
+        sort($tempFiles);
+        $files = array_merge($files, $tempFiles);
       }
 
       closedir($currentDir);

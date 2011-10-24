@@ -22,14 +22,10 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->log('Initializing repository', nbLogger::COMMENT);
-    $this->log("\n");
-    $shell = new nbShell();
+    $this->logLine('Initializing git repository', nbLogger::COMMENT);
 
-    if(!$shell->execute('git init')) {
-      throw new LogicException("[nbGitInitCommand::execute] Error executing command");
-    }
+    $this->executeShellCommand('git init');
     
-    //$this->log($this->formatLine(' ' . implode("\n ", $shell->getOutput()), nbLogger::COMMENT));
+    $this->logLine(sprintf('git repository initialized successfully in %s', getcwd()), nbLogger::COMMENT);
   }
 }

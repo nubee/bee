@@ -34,12 +34,9 @@ TXT
     $username      = isset($options['username']) ? $options['username'] : null;
     $password      = isset($options['password']) ? $options['password'] : null;
     
-    $shell = new nbShell();
-
     $cmd = sprintf('mysqladmin -u%s %s create %s', $mysqlUsername, $this->formatPasswordOption($mysqlPassword), $dbName);
-    $shell->execute($cmd);
+    $this->executeShellCommand($cmd);
     $this->logLine(sprintf('Database %s created', $dbName));
-
 
     if($username) {
       $cmd = sprintf('mysql -u%s %s -e "grant all privileges on %s.* to \'%s\'@\'localhost\' %s"', 
@@ -49,7 +46,7 @@ TXT
         $username, 
         ($password ? sprintf(' identified by \'%s\'', $password) : ''));
 
-      $shell->execute($cmd);
+      $this->executeShellCommand($cmd);
       $this->logLine(sprintf('Datebase user %s successfully created', $username));
     }
     

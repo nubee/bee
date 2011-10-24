@@ -30,19 +30,17 @@ TXT
     $password = $arguments['password'];
     
     if(!file_exists($filename))
-      throw new InvalidArgumentException('File: ' . $filename . ' does not exist');
+      throw new InvalidArgumentException('Database dump file: ' . $filename . ' does not exist');
     
-    $this->logLine('Restoring ' . $filename . ' to ' . $dbName);
+    $this->logLine('Restoring ' . $filename . ' to database ' . $dbName);
     
-    $shell = new nbShell();
     $cmd = sprintf('mysql -u%s -p%s %s < %s', $username, $password, $dbName, $filename);
     $this->logLine($cmd);
-    if($shell->execute($cmd)) {
-      $this->logLine('MySql database restored!');
-      return true;
-    }
+    $this->executeShellCommand($cmd);
     
-    return false;
+    $this->logLine('MySql database restored!');
+    
+    return true;
   }
 
 }
