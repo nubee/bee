@@ -1,7 +1,7 @@
 plugins_dir:       plugins
 test_dir:          %plugins_dir%/nbSymfonyPlugin/test
 data_dir:          %test_dir%/data
-sandbox_dir:       test/sandbox
+sandbox_dir:       %test_dir%/sandbox
 archive_dir:       %sandbox_dir%/archive
 exclude_list:      %data_dir%/exclude-list
 include_list:      %data_dir%/include-list
