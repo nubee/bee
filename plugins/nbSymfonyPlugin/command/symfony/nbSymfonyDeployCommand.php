@@ -32,10 +32,25 @@ TXT
     }
     if(!isset($options['config-file']))
       throw new Exception('--config-file option required (CHANGE THIS)');
-    
-    $config = $this->parser->checkDefaultConfigurationDirs($options['config-file']);
+
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
+    
+    $config = $this->parser->checkDefaultConfigurationDirs($options['config-file']);
+    $pluginConfigDir = nbConfig::get('nb_plugins_dir') . '/nbSymfonyPlugin/config/';
+    
+    //check configuration
+    $cmd = new nbCheckConfigurationCommand();
+    $cmdLine = sprintf('%s %s', $pluginConfigDir . $this->getTemplateConfigFilename(), $config);
+    try {
+      $cmd->run(new nbCommandLineParser(), $cmdLine);
+    } catch (Exception $e) {
+      $this->logLine('<error>Configuration file doesn\'t match the template</error>');
+//      $cmd = new nbPrintConfigurationCommand();
+//      $cmdLine = $config;
+//      $cmd->run(new nbCommandLineParser(), $cmdLine);
+      die;
+    }
     
     $yamlParser = new nbYamlConfigParser(new nbConfiguration());
     $yamlParser->parseFile($config, '', true);

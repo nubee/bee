@@ -37,7 +37,7 @@ TXT
     
     $finder = nbFileFinder::create('any');
     
-    $fs->mirror($source, $dest, $finder, true);
+    $fs->mirror($source, $dest, $finder, array('overwrite' => true));
     
     try {
       if(PHP_OS == "Linux") {

@@ -15,7 +15,7 @@ class nbConfigurationGenerator
 
     $yml = $this->doGenerate($templateParser);
     
-    $yml = sfYaml::dump($yml);
+    $yml = sfYaml::dump($yml, 10);
     $yml = str_replace('\'\'', '', $yml);
     file_put_contents($destination, $yml);
     

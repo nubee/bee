@@ -49,6 +49,16 @@ abstract class nbCommand
     return $configFile . '.yml';
   }
   
+  public function getTemplateConfigFilename() {
+    $templateConfigFilename = nbString::uncamelize($this->getNamespace());
+    if($templateConfigFilename != '')
+      $templateConfigFilename .= '-';
+    
+    $templateConfigFilename .= nbString::uncamelize($this->getName());
+    
+    return $templateConfigFilename . '.template.yml';
+  }
+  
   public function run(nbCommandLineParser $parser, $commandLine, $verbose = false)
   {
     $this->parser = $parser;
