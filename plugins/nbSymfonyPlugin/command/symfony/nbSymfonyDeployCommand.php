@@ -49,7 +49,7 @@ TXT
 //      $cmd = new nbPrintConfigurationCommand();
 //      $cmdLine = $config;
 //      $cmd->run(new nbCommandLineParser(), $cmdLine);
-      die;
+      return;
     }
     
     $yamlParser = new nbYamlConfigParser(new nbConfiguration());

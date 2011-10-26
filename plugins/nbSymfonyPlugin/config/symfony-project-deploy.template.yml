@@ -1,8 +1,9 @@
+app_name:          { required: true }
 archive_dir:       { required: true, default: /backup/directory }
 exclude_list:      { required: true, default: .bee/exclude-list_symfony-plugin }
 include_list:      { required: false, default: .bee/include-list_symfony-plugin }
-app_prod_dir:      { required: true }
-app_stage_dir:     { required: true }
+app_source_dir:    { required: true, default: ./ }
+app_prod_dir:      { required: true, default: /var/www/%app_name% }
 web_user:          { required: true, default: www-data }
 web_group:         { required: true, default: www-data }
 symfony_root_dir:  { required: true, default: %app_prod_dir%/symfony }
@@ -32,7 +33,7 @@ archive:
 
 filesystem:
   dir-transfer:
-    source-dir:   { required: true, default: %app_stage_dir% }
+    source-dir:   { required: true, default: %app_source_dir% }
     target-dir:   { required: true, default: %app_prod_dir% }
     exclude-from: { required: true, default: %exclude_list% }
     include-from: { required: false, default: %include_list% }

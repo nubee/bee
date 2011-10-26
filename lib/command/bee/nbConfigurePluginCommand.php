@@ -35,6 +35,7 @@ TXT
       throw new LogicException('Plugin ' . $pluginName . ' not found in ' . $pluginsDir);
 
     $source = sprintf('%s/%s/config', $pluginsDir, $pluginName);
+    //TODO: copy all files in config (?)
     $files = nbFileFinder::create('file')
       ->add('*.template.yml')
       ->remove('.')

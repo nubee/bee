@@ -1,9 +1,10 @@
 data_dir:         plugins/nbSymfonyPlugin/test/data
+app_name:         name
+app_source_dir:   %data_dir%/stage-site
 archive_dir:      %data_dir%/../sandbox/archive
 exclude_list:     %data_dir%/config/exclude-list
 include_list:     %data_dir%/config/include-list
 app_prod_dir:     %data_dir%/production-site
-app_stage_dir:    %data_dir%/stage-site
 web_user:         www-data
 web_group:        www-data
 symfony_root_dir: '%app_prod_dir%/symfony'
@@ -30,7 +31,7 @@ archive:
 
 filesystem:
   dir-transfer:
-    source-dir:   '%app_stage_dir%'
+    source-dir:   '%app_source_dir%'
     target-dir:   '%app_prod_dir%'
     exclude-from: '%exclude_list%'
     include-from: '%include_list%'
