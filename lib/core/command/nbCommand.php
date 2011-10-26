@@ -16,6 +16,7 @@ abstract class nbCommand
   $argumentSet = null,
   $optionSet = null,
   $aliases = array();
+  protected $parser;
   private $logger;
   private $verbose;
 
@@ -47,22 +48,24 @@ abstract class nbCommand
     
     return $configFile . '.yml';
   }
-
+  
   public function run(nbCommandLineParser $parser, $commandLine, $verbose = false)
   {
-    $parser->addArguments($this->getArguments());
-    $parser->addOptions($this->getOptions());
-
-    $parser->parse($commandLine, $this->getNamespace(), $this->getName());
-
-    if(!$parser->isValid())
-      throw new InvalidArgumentException(sprintf(
-          "[nbCommand::run] Command \"%s\" execution failed: \n  - %s", $this->getFullName(), implode("  \n- ", $parser->getErrors())
-      ));
+    $this->parser = $parser;
+    $this->parser->addArguments($this->getArguments());
+    $this->parser->addOptions($this->getOptions());
+    
+    $this->parser->parse($commandLine, $this->getNamespace(), $this->getName());
+    
+    if (!$this->parser->hasOptionValue('config-file')) // command::execute must check arguments and options!
+      if(!$this->parser->isValid())
+        throw new InvalidArgumentException(sprintf(
+            "[nbCommand::run] Command \"%s\" execution failed: \n  - %s", $this->getFullName(), implode("  \n- ", $this->parser->getErrors())
+        ));
     
     $this->verbose = $verbose;
 
-    return $this->execute($parser->getArgumentValues(), $parser->getOptionValues());
+    return $this->execute($this->parser->getArgumentValues(), $this->parser->getOptionValues());
   }
 
   protected abstract function configure();

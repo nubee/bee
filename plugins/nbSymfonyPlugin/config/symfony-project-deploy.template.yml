@@ -1,0 +1,45 @@
+archive_dir:       { required: true, default: /backup/directory }
+exclude_list:      { required: true, default: .bee/exclude-list_symfony-plugin }
+include_list:      { required: false, default: .bee/include-list_symfony-plugin }
+app_prod_dir:      { required: true }
+app_stage_dir:     { required: true }
+web_user:          { required: true, default: www-data }
+web_group:         { required: true, default: www-data }
+symfony_root_dir:  { required: true, default: %app_prod_dir%/symfony }
+db_name:           { required: false }
+db_username:       { required: false }
+db_password:       { required: false }
+db_dump_dir:       { required: false, default: %archive_dir% }
+
+symfony:
+  project-deploy:
+    symfony-root-dir:  { required: true, default: %symfony_root_dir% }
+    symfony-exe-path:  { required: true, default: %symfony_root_dir%/symfony }
+    site-dir:          { required: true, default: %app_prod_dir% }
+    site-user:         { required: true, default: %web_user% }
+    site-group:        { required: true, default: %web_group% }
+    site-applications:
+      app1:
+        name: { required: true, default: frontend }
+        env:  { required: true, default: prod }
+#        app2:
+#          name: backend
+#          env: prod
+archive:
+  archive-dir:
+    source-dir:      { required: true, default: %app_prod_dir% }
+    destination-dir: { required: true, default: %archive_dir% }
+
+filesystem:
+  dir-transfer:
+    source-dir:   { required: true, default: %app_stage_dir% }
+    target-dir:   { required: true, default: %app_prod_dir% }
+    exclude-from: { required: true, default: %exclude_list% }
+    include-from: { required: false, default: %include_list% }
+
+mysql:
+  dump:
+    db-name:   { required: false, default: %db_name% }
+    dump-path: { required: false, default: %db_dump_dir% }
+    username:  { required: false, default: %db_username% }
+    password:  { required: false, default: %db_password% }

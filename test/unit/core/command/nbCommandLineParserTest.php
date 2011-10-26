@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__) . '/../../../bootstrap/unit.php');
 
-$t = new lime_test(102);
+$t = new lime_test(108);
 
 // __construct()
 $t->comment('nbCommandLineParserTest - Test constructor');
@@ -375,3 +375,25 @@ $t->is($parser->getOptionValue('optionCfg'), true, '->getOptionValue(optionCfg) 
 $t->is($parser->hasOptionValue('otherOptionWithParameter'), true, '->hasOptionValue(otherOptionWithParameter) returns "true"');
 $t->is($parser->getOptionValue('otherOptionWithParameter'), 'bar2ParameterDefault', '->getOptionValue(otherOptionWithParameter) returns "bar2ParameterDefault"');
 
+$t->comment('nbCommandLineParserTest - Test set/getDefaultConfigurationDirs');
+$parser = new nbCommandLineParser();
+$dataConfigDir = nbConfig::get('nb_data_dir') . '/config';
+$parser->setDefaultConfigurationDirs($dataConfigDir);
+$t->is($parser->getDefaultConfigurationDirs(), array($dataConfigDir), 'Default configuration dir is ' . $dataConfigDir);
+
+$t->comment('nbCommandLineParserTest - Test checkDefaultConfigurationDirs
+  (only filename is provided (eg.: config.ok.yml))');
+
+$t->is($parser->checkDefaultConfigurationDirs('config.ok.yml'), $dataConfigDir . '/config.ok.yml', 'File was found in ' . $dataConfigDir);
+$t->is($parser->checkDefaultConfigurationDirs('config.notexists.yml'), null, 'File doesn\'t exists');
+
+$t->comment('nbCommandLineParserTest - Test checkDefaultConfigurationDirs
+  (an absolute or relative filename is provided (eg.: ../../../data/config/config.ok.yml))');
+
+$t->is(
+  $parser->checkDefaultConfigurationDirs($dataConfigDir . '/config.ok.yml'),
+  $dataConfigDir . '/config.ok.yml',
+  'The file exists: ' . $dataConfigDir . '/config.ok.yml');
+
+$t->is($parser->checkDefaultConfigurationDirs($dataConfigDir . '/config.notexists.yml'), null, 'File doesn\'t exists');
+$t->is($parser->checkDefaultConfigurationDirs($dataConfigDir), null, 'Only file (not dir) is valid');

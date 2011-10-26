@@ -33,10 +33,13 @@ TXT
     if(!isset($options['config-file']))
       throw new Exception('--config-file option required (CHANGE THIS)');
     
-    $config = $options['config-file'];
+    $config = $this->parser->checkDefaultConfigurationDirs($options['config-file']);
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
-
+    
+    $yamlParser = new nbYamlConfigParser(new nbConfiguration());
+    $yamlParser->parseFile($config, '', true);
+    
     $symfonyRootDir = nbConfig::get('symfony_project-deploy_symfony-root-dir');
 
     // Put site offline
@@ -107,7 +110,10 @@ TXT
   private function executeCommand(nbCommand $command, $commandLine, $doit, $verbose)
   {
     if($doit) {
-      if(!$command->run(new nbCommandLineParser(), $commandLine))
+      $parser = new nbCommandLineParser();
+      $parser->setDefaultConfigurationDirs($this->parser->getDefaultConfigurationDirs());
+      
+      if(!$command->run($parser, $commandLine))
         throw new Exception('Error executing: ' . $cmd);
     }
 

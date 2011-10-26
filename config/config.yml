@@ -2,6 +2,7 @@ nb:
   lib_dir:         <?php echo nbConfig::get('nb_bee_dir') ?>/lib
   command_dir:     <?php echo nbConfig::get('nb_bee_dir') ?>/lib/command
   #test_dir:        myTestDir
+  config_dir:      ./.bee
   project_config:  bee.yml
   template_dir:    <?php echo nbConfig::get('nb_bee_dir') ?>/data/template
   plugins_dir:     <?php echo nbConfig::get('nb_bee_dir') ?>/plugins

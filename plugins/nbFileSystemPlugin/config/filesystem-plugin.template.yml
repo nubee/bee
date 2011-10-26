@@ -6,7 +6,6 @@ filesystem:
     remote-dir:    { required: true }
     exclude-from:  { default: .bee/exclude-list }
     include-from:  { default: .bee/include-list }
-    
   dir-transfer:
     source-dir:    { required: true }
     target-dir:    { required: true }

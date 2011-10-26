@@ -1,10 +1,8 @@
 <?php
 
-class nbChangeModeCommand extends nbCommand
-{
+class nbChangeModeCommand extends nbCommand {
 
-  protected function configure()
-  {
+  protected function configure() {
     $this->setName('filesystem:change-mode')
       ->setBriefDescription('Changes files mode for a directory')
       ->setDescription(<<<TXT
@@ -20,9 +18,8 @@ TXT
       )));
   }
 
-  protected function execute(array $arguments = array(), array $options = array())
-  {
-    $dir  = $arguments['dir'];
+  protected function execute(array $arguments = array(), array $options = array()) {
+    $dir = $arguments['dir'];
     $mode = $arguments['mode'];
 
     $this->logLine(sprintf('Changing mode for directory %s in %s', $dir, $mode));
@@ -30,7 +27,7 @@ TXT
 
     $this->executeShellCommand($cmd);
     $this->logLine('Mode changed successfully!');
-    
+
     return true;
   }
 

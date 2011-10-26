@@ -143,10 +143,11 @@ class nbCommandLineParser {
     }
 
     // If option config-file is set, get all arguments and parameters from the configuration file
-    if (isset($this->parsedLongOptionValues['config-file'])) {
+    if (isset($this->parsedLongOptionValues['config-file']) && $this->options->hasOption('config-file')) {
       $option = $this->parsedLongOptionValues['config-file'];
       
       $configFilename = (isset($option[0]) && !is_bool($option[0])) ? $option[0] : null;
+      
       if(!$configFilename)
         $configFilename = $this->options->getOption('config-file')->getValue();
       
@@ -213,7 +214,11 @@ class nbCommandLineParser {
     }
   }
   
-  protected function checkDefaultConfigurationDirs($filename) {
+  public function checkDefaultConfigurationDirs($filename) {
+    if (is_file($filename)) {
+      return $filename;
+    }
+      
     foreach($this->getDefaultConfigurationDirs() as $dir) {
       $file = $dir . '/' . $filename;
       if(file_exists($file))

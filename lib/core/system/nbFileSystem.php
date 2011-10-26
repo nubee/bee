@@ -252,6 +252,41 @@ class nbFileSystem
     if(!chmod($file, $mode))
       throw new Exception('[nbFileSystem::chmod] chmod command failed');
   }
+  
+  public static function chmodRecursive($path, $filemode, $dirmode)
+  {
+    if (is_dir($path)) {
+      if (!chmod($path, $dirmode))
+        throw new Exception('[nbFileSystem::chmodRecursive] chmodRecursive command failed');
+
+      $dh = opendir($path);
+
+      while (($file = readdir($dh)) !== false) {
+        if ($file != '.' && $file != '..') {
+          $fullpath = $path . '/' . $file;
+          self::chmodRecursive($fullpath, $filemode, $dirmode);
+        }
+      }
+      
+      closedir($dh);
+    } else {
+      if (is_link($path))
+        return;
+      
+      if (!chmod($path, $filemode))
+        throw new Exception('[nbFileSystem::chmodRecursive] chmodRecursive command failed');
+    }
+  }
+
+  public static function chown($file, $user, $group = null)
+  {
+    if(!chown($file, $user))
+      throw new Exception('[nbFileSystem::chmod] chmod command failed');
+    
+    if (isset($group))
+      if (!chgrp($file, $group))
+        throw new Exception('[nbFileSystem::chmod] chmod command failed');
+  }
 
   public static function formatPermissions($file)
   {

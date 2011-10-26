@@ -9,8 +9,14 @@ $t = new lime_test(1);
 $t->comment('Symfony Deploy');
 
 $cmd = new nbSymfonyDeployCommand();
-$commandLine = sprintf('--config-file=%s', '/plugins/nbSymfonyPlugin/test/data/config/symfony-plugin.yml');
-$t->ok($cmd->run(new nbCommandLineParser(), $commandLine . ' --doit'), 'Symfony project deployed successfully');
+$parser = new nbCommandLineParser();
+$parser->setDefaultConfigurationDirs(array(dirname(__FILE__) . '/../data/config'));
+
+//print_r($cmd->getDefaultConfigurationDirs());
+//die;
+//$commandLine = sprintf('--config-file=%s', '/plugins/nbSymfonyPlugin/test/data/config/symfony-plugin.yml');
+$commandLine = '--config-file';
+$t->ok($cmd->run($parser, $commandLine . ' --doit'), 'Symfony project deployed successfully');
 //$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'Symfony project deployed successfully');
 
 $fileSystem->rmdir($logDir, true, true);
