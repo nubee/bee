@@ -21,7 +21,7 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $sourceDir = nbFileSystemUtils::sanitize_dir($arguments['source_dir']);
+    $sourceDir = nbFileSystem::sanitizeDir($arguments['source_dir']);
 
     $this->logLine('Updating bee from ' . $sourceDir, nbLogger::COMMENT);
 
