@@ -12,31 +12,71 @@ The <info>{$this->getFullName()}</info> command:
 TXT
     );
 
-    $this->setArguments(new nbArgumentSet(array(
-        new nbArgument('filename', nbArgument::REQUIRED, 'Config file name'),
-      )));
+    $this->addOption(
+        new nbOption('filename', 'f', nbOption::PARAMETER_REQUIRED, 'Config file name')
+      );
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $filename = $arguments['filename'];
-    
-    $this->logLine('');
-    $this->logLine('Configuration for file: ' . $filename, nbLogger::COMMENT);
+    $filename = isset($options['filename']) ? $options['filename'] : null;
 
-    $configuration = new nbConfiguration();
-    $configuration->add(nbConfig::getAll());    
+    $printer = new nbConfigurationPrinter();
+    $printer->addConfiguration(nbConfig::getAll());
     
-    $yamlParser = new nbYamlConfigParser($configuration);
-    $yamlParser->parseFile($filename, '', true);
+    if($filename) {
+      $this->logLine(sprintf('bee configuration (file: %s)', $filename), nbLogger::COMMENT);
+
+      $printer->addConfigurationFile($filename);
+    }
+    else {
+      $dirs = array('./', nbConfig::get('nb_config_dir'));
+      $this->logLine(sprintf('bee configuration (dirs: %s)', implode(', ', $dirs)), nbLogger::COMMENT);
+      
+      $finder = nbFileFinder::create('file')->add('*.yml')->maxdepth(0);
+        
+      foreach($dirs as $dir) {
+        $files = $finder->in($dir);
+        
+        foreach($files as $file) {
+          $this->logLine('Adding ' . $file, nbLogger::COMMENT);
+          $printer->addConfigurationFile($file);
+        }
+      }
+    }
     
-    foreach($configuration->getAll(true) as $key => $value)
-//      $this->logLine($this->formatPrint($key, $value, 0));
-      $this->log($this->formatPrint($key, $value, 0));
-    
-    $this->logLine('');
+    $this->logLine($printer->printAll());
     
     return true;
   }
+
+
+}
+
+class nbConfigurationPrinter {
+  private $configuration = null;
+  
+  public function __construct() {
+    $this->configuration = new nbConfiguration();
+  }
+  
+  public function addConfiguration(array $values) {
+    $this->configuration->add($values);
+  }
+
+  public function addConfigurationFile($filename) {
+    $yamlParser = new nbYamlConfigParser($this->configuration);
+    $yamlParser->parseFile($filename, '', true);
+  }
+  
+  public function printAll() {
+    $text = '';
+    foreach($this->configuration->getAll(true) as $key => $value)
+//      $this->logLine($this->formatPrint($key, $value, 0));
+      $text .= $this->formatPrint($key, $value, 0);
+    
+    return $text;
+  }
+  
   
   private function formatPrint($key, $value, $indent) {
     $text = '';
@@ -56,5 +96,5 @@ TXT
   private function highlight($match) {
     return '<info>' . $match[0] . '</info>';
   }
-
+  
 }

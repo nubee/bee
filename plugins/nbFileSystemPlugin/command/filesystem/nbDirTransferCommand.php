@@ -32,11 +32,6 @@ TXT
     $this->logLine('Starting folder synchronization');
     $exclude = '';
     $include = '';
-    $doit    = '--dry-run';
-    
-    // Trailing slash must be added after sanitize dir
-    $sourceDir = nbFileSystem::sanitizeDir($arguments['source-dir']) . '/';
-    $targetDir = nbFileSystem::sanitizeDir($arguments['target-dir']);
     
     if(isset($options['exclude-from']) && file_exists($options['exclude-from']))
       $exclude = ' --exclude-from \'' . $options['exclude-from'] . '\' ';
@@ -44,12 +39,14 @@ TXT
     if(isset($options['include-from']) && file_exists($options['include-from']))
       $include = ' --include-from \'' . $options['include-from'] . '\' ';
     
-    if(isset($options['doit']))
-      $doit = '';
-    
+    $doit    = isset($options['doit']) ? '' : '--dry-run';
     $delete = isset($options['delete']) ? '--delete' : '';
     
-    $cmd = sprintf('rsync -azvoChpA %s %s %s %s %s %s', $doit, $include, $exclude, $delete, $sourceDir, $targetDir);
+    // Trailing slash must be added after sanitize dir
+    $sourceDir = nbFileSystem::sanitizeDir($arguments['source-dir']) . '/';
+    $targetDir = nbFileSystem::sanitizeDir($arguments['target-dir']);
+    
+    $cmd = sprintf('rsync -azoChpA %s %s %s %s %s %s %s', ($this->isVerbose() ? '-v' : ''), $doit, $include, $exclude, $delete, $sourceDir, $targetDir);
     
     $this->executeShellCommand($cmd);
     $this->logLine('Folders synchronization completed');

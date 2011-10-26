@@ -11,11 +11,13 @@ $t = new lime_test(2);
 $t->comment('Print Configuration');
 
 $cmd = new nbPrintConfigurationCommand();
+$commandLine = '--filename=' . $configFileOk;
 
-$t->ok($cmd->run(new nbCommandLineParser(), $configFileOk), 'Project configuration printed successfully');
+$t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'Project configuration printed successfully');
 
 try {
-  $cmd->run(new nbCommandLineParser(), $configFileNotExists);
+  $commandLine = '--filename=' . $configFileNotExists;
+  $cmd->run(new nbCommandLineParser(), $commandLine);
   $t->fail('No config file to print exists');
 }
 catch(Exception $e) {

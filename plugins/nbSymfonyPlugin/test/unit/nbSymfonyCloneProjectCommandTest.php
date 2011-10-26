@@ -22,7 +22,7 @@ $t->ok(file_exists($cloneTo . '/' . $name), 'project is cloned');
 //TODO rivedere directory cache e il test in generale 20???
 $t->comment('Total files are 45 with cache and log directories');
 $clonedAppFiles = $finder->add('*.*')->remove('.')->remove('..')->relative()->in($cloneTo . '/' . $name);
-$t->is(count($clonedAppFiles), 43, 'All files (cache and log are excluded) are cloned');
+$t->is(count($clonedAppFiles), 45, 'All files (cache and log are excluded) are cloned');
 
 $fsr = new File_SearchReplace($name, '', $cloneTo . '/' . $name . '/symfony/config/properties.ini', '', false);
 $fsr->doSearch();

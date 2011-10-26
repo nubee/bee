@@ -22,7 +22,7 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $this->logLine('Deploying symfony project', nbLogger::COMMENT);
-    
+
     // bee project must be defined
     if(!is_dir('./.bee') && !file_exists('./bee.yml')) {
       $message = 'No bee project defined!';
@@ -35,26 +35,34 @@ TXT
 
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
-    
+
     $config = $this->parser->checkDefaultConfigurationDirs($options['config-file']);
     $pluginConfigDir = nbConfig::get('nb_plugins_dir') . '/nbSymfonyPlugin/config/';
+
+    // Check configuration
+    $checker = new nbConfigurationChecker();
     
-    //check configuration
-    $cmd = new nbCheckConfigurationCommand();
-    $cmdLine = sprintf('%s %s', $pluginConfigDir . $this->getTemplateConfigFilename(), $config);
     try {
-      $cmd->run(new nbCommandLineParser(), $cmdLine);
-    } catch (Exception $e) {
+      $checker->check($pluginConfigDir . $this->getTemplateConfigFilename(), $config, array(
+        'logger' => $this->getLogger(), 
+        'verbose' => $this->isVerbose()
+      ));
+    }
+    catch(Exception $e) {
       $this->logLine('<error>Configuration file doesn\'t match the template</error>');
-//      $cmd = new nbPrintConfigurationCommand();
-//      $cmdLine = $config;
-//      $cmd->run(new nbCommandLineParser(), $cmdLine);
+      
+      $printer = new nbConfigurationPrinter();
+      $printer->addConfiguration(nbConfig::getAll());
+
+      $printer->addConfigurationFile($config);      
+      
+      $this->logLine($printer->printAll());
       return;
     }
-    
+
     $yamlParser = new nbYamlConfigParser(new nbConfiguration());
     $yamlParser->parseFile($config, '', true);
-    
+
     $symfonyRootDir = nbConfig::get('symfony_project-deploy_symfony-root-dir');
 
     // Put site offline
@@ -62,14 +70,12 @@ TXT
       foreach(nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
         $cmd = new nbSymfonyGoOfflineCommand();
 
-        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, 
-          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), 
-          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
+        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
 
         $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
       }
     }
-    
+
     // Archive site directory
     if(nbConfig::has('archive_archive-dir')) {
       $cmd = new nbArchiveDirCommand();
@@ -127,7 +133,7 @@ TXT
     if($doit) {
       $parser = new nbCommandLineParser();
       $parser->setDefaultConfigurationDirs($this->parser->getDefaultConfigurationDirs());
-      
+
       if(!$command->run($parser, $commandLine))
         throw new Exception('Error executing: ' . $cmd);
     }

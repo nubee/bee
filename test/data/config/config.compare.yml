@@ -1,5 +1,6 @@
 app:
   required_field: text
-  required_child: { field: value }
+  required_child:
+    field: value
   param1: value1
   param2: 

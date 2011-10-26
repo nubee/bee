@@ -33,6 +33,8 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
+    $this->logLine('Unit testing bee');
+    
     $files = array();
     $dirs = isset($options['dir']) ? $options['dir'] : array();
 

@@ -66,6 +66,7 @@ TXT
 
     $generator = new nbConfigurationGenerator();
     $this->getFileSystem()->mkdir($configDir, true);
+    
     foreach($files as $file) {
       $target = sprintf('%s/%s', $configDir, str_replace('.template.yml', '.yml', basename($file)));
       

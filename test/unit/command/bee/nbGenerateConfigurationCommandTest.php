@@ -33,5 +33,8 @@ catch(Exception $e) {
 }
 
 function removeCarriageReturn($text) {
-  return str_replace("\r", '', $text);
+  $text = str_replace("\r", '', $text);
+  $text = str_replace("\n", '\n', $text);
+  
+  return $text;
 }

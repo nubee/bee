@@ -26,41 +26,14 @@ TXT
     $template = $arguments['template'];
     $destination = $arguments['destination'];
 
-//    if (!file_exists($config))
-//      throw new Exception(sprintf('Filename %s does not exist', $config));
-//      
+    if (!file_exists($template))
+      throw new Exception(sprintf('Template file %s does not exist', $template));
       
     $generator = new nbConfigurationGenerator();
     
     $generator->generate($template, $destination);
 
     return true;
-  }
-  
-  private function generate($array) {
-    $config = '';
-    
-    foreach($array as $key => $value) {
-      if(is_array($value)) {
-        if(!$config)
-          $config = array();
-        
-        $child = $this->generate($value);
-
-        $config[$key] = $child;
-      }
-      else {
-        if($key == 'required')
-          continue;
-
-        if($key == 'default')
-          return $value;
-        
-        $config[$key] = '';
-      }
-    }
-    
-    return $config;
   }
 
 }

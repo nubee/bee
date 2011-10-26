@@ -7,3 +7,4 @@
 /.bee/
 /plugins/nbSymfonyPlugin/test/data/prodSite/.bee/
 /plugins/nbSymfonyPlugin/test/data/stageSite_1/.bee/
+/test/sandbox/.bee
