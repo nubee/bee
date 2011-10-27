@@ -54,10 +54,12 @@ TXT
       $printer = new nbConfigurationPrinter();
       $printer->addConfiguration(nbConfig::getAll());
       $printer->addConfigurationFile($config);      
+      $printer->addConfigurationErrors($checker->getErrors());
       
       $this->logLine($printer->printAll());
       
-      throw $e;
+      return false;
+      //throw $e;
     }
 
     $yamlParser = new nbYamlConfigParser(new nbConfiguration());
