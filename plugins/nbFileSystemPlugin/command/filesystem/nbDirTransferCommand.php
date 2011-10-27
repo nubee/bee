@@ -33,6 +33,38 @@ TXT
     $exclude = '';
     $include = '';
     
+    
+    
+    $config = $this->parser->checkDefaultConfigurationDirs($options['config-file']);
+    $pluginConfigDir = nbConfig::get('nb_plugins_dir') . '/nbFileSystemPlugin/config/';
+
+    // Check configuration
+    $checker = new nbConfigurationChecker();
+    
+    try {
+      $checker->check($pluginConfigDir . $this->getTemplateConfigFilename(), $config, array(
+        'logger' => $this->getLogger(), 
+        'verbose' => $this->isVerbose()
+      ));
+    }
+    catch(Exception $e) {
+      $this->logLine('<error>Configuration file doesn\'t match the template</error>');
+      
+      $printer = new nbConfigurationPrinter();
+      $printer->addConfiguration(nbConfig::getAll());
+      $printer->addConfigurationFile($config);      
+      $printer->addConfigurationErrors($checker->getErrors());
+      
+      $this->logLine($printer->printAll());
+      
+      return false;
+      //throw $e;
+    }
+    
+    
+    
+    
+    
     if(isset($options['exclude-from']) && file_exists($options['exclude-from']))
       $exclude = ' --exclude-from \'' . $options['exclude-from'] . '\' ';
     
