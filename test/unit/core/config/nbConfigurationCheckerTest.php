@@ -21,11 +21,11 @@ $checker = new nbConfigurationChecker(array(
 //  'logger' => nbLogger::getInstance()
 ));
 
-$t->ok($checker->check($templateFile, $configFileOk), 'Project configuration checked successfully');
+$t->ok($checker->checkConfigFile($templateFile, $configFileOk), 'Project configuration checked successfully');
 
 $t->comment(' 2. Config file has errors (no child and no required field)');
 try {
-  $checker->check($templateFile, $configFileNoField);
+  $checker->checkConfigFile($templateFile, $configFileNoField);
   $t->fail('Config file without required field not checked successfully');
 }
 catch(Exception $e) {
@@ -44,7 +44,7 @@ $t->is($checker->getErrors(), $errors, 'Config file has errors formatted correct
 
 $t->comment(' 3. Config file has errors (no child)');
 try {
-  $checker->check($templateFile, $configFileNoChild);
+  $checker->checkConfigFile($templateFile, $configFileNoChild);
   $t->fail('Config file without required child not checked successfully');
 }
 catch(Exception $e) {
@@ -56,7 +56,7 @@ $t->is(count($checker->getErrors()), 1, 'Config file has 1 error');
 
 $t->comment(' 4. Config file checks if files exist');
 try {
-  $checker->check($templateFile, $configFileNotExists);
+  $checker->checkConfigFile($templateFile, $configFileNotExists);
   $t->fail('No config file to check exists');
 }
 catch(Exception $e) {
@@ -64,9 +64,29 @@ catch(Exception $e) {
 }
 
 try {
-  $checker->check($configFileOk, $templateFileNotExists);
+  $checker->checkConfigFile($configFileOk, $templateFileNotExists);
   $t->fail('No template file to check exists');
 }
 catch(Exception $e) {
   $t->pass('No template file to check exists');
 }
+
+$t->comment(' 5. Checks whole configuration');
+try {
+  $checker->checkWholeConfig($templateFile);
+  $t->fail('Whole configuration without required fields not checked successfully');
+}
+catch(Exception $e) {
+  $t->pass('Whole configuration without required fields not checked successfully');
+}
+
+$t->ok($checker->hasErrors(), 'Configuration has errors');
+$t->is(count($checker->getErrors()), 2, 'Configuration has 2 error');
+
+nbConfig::set('app_required_field', 'arequiredvalue');
+$checker->checkWholeConfig($templateFile);
+$t->is(count($checker->getErrors()), 1, 'Configuration has 1 error');
+
+//nbConfig::set('app_required_child_field', 'anotherrequiredvalue');
+//$checker->checkWholeConfig($templateFile);
+//$t->ok(!$checker->hasErrors(), 'Configuration has no error');

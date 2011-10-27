@@ -14,18 +14,27 @@ class nbConfigurationChecker {
     $this->verbose = isset($options['verbose']) ? $options['verbose'] : false;
   }
   
-  public function check($template, $config) {
-    if (!file_exists($template))
-      throw new Exception(sprintf('Template %s does not exist', $template));
-
-    if (!file_exists($config))
-      throw new Exception(sprintf('Filename %s does not exist', $config));
+  public function checkConfigFile($templateFile, $configFile) {
+    if (!file_exists($configFile))
+      throw new Exception(sprintf('Filename %s does not exist', $configFile));
     
-    $configParser = sfYaml::load($config);
-    $templateParser = sfYaml::load($template);
+    $config = sfYaml::load($configFile);
+    
+    return $this->check($templateFile, $config);
+  }
+  
+  public function checkWholeConfig($templateFile) {
+    return $this->check($templateFile, nbConfig::getAll(true));
+  }
+  
+  public function check($templateFile, $config) {
+    if (!file_exists($templateFile))
+      throw new Exception(sprintf('Template %s does not exist', $templateFile));
+    
+    $template = sfYaml::load($templateFile);
     
     $this->errors = array();
-    $this->doCheck('', $configParser, $templateParser);
+    $this->doCheck('', $config, $template);
     
     if($this->hasErrors()) {
       $message = "Configuration has errors: \n";
