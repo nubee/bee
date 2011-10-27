@@ -21,18 +21,18 @@ $t->ok($cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $con
 
 try {
   $cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $configFileNoField));
-  $t->fail('Config file without required field not checked successfully');
+  $t->fail('Config file without required field not checked');
 }
 catch(Exception $e) {
-  $t->pass('Config file without required field not checked successfully');
+  $t->pass('Config file without required field not checked');
 }
 
 try {
   $cmd->run(new nbCommandLineParser(), sprintf('%s %s', $templateFile, $configFileNoChild));
-  $t->fail('Config file without required child not checked successfully');
+  $t->fail('Config file without required child not checked');
 }
 catch(Exception $e) {
-  $t->pass('Config file without required child not checked successfully');
+  $t->pass('Config file without required child not checked');
 }
 
 try {

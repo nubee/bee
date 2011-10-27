@@ -3,11 +3,12 @@
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
 nbConfig::set('nb_command_dir', nbConfig::get('nb_sandbox_dir'));
 
-$projectDir       = nbConfig::get('nb_sandbox_dir') ;
-$configDir        = nbConfig::get('nb_sandbox_dir') . '/.bee';
-$beeConfig        = $configDir . '/bee.yml';
-$config           = $configDir . '/config.yml';
-$fileSystemConfig = $configDir . '/filesystem-plugin.yml';
+$projectDir        = nbConfig::get('nb_sandbox_dir') ;
+$configDir         = nbConfig::get('nb_sandbox_dir') . '/.bee';
+$beeConfig         = $configDir . '/bee.yml';
+$config            = $configDir . '/config.yml';
+$fileSystemConfig  = $configDir . '/filesystem-plugin.yml';
+$dirTransferConfig = $configDir . '/filesystem-dir-transfer.yml';
 
 function isPluginEnabled($beeConfig, $plugin) {
   if(!file_exists($beeConfig))
@@ -64,5 +65,6 @@ $fs = nbFileSystem::getInstance();
 $fs->delete($beeConfig);
 $fs->delete($config);
 $fs->delete($fileSystemConfig);
+$fs->delete($dirTransferConfig);
 $fs->rmdir($configDir);
 

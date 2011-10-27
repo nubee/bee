@@ -31,7 +31,9 @@ TXT
     $sourceDir = nbFileSystem::sanitizeDir($arguments['source-dir']);
     $destinationDir = nbFileSystem::sanitizeDir($arguments['destination-dir']);
     $createDestinationDir = isset($options['create-destination-dir']);
-    $filename = isset($options['filename']) ? $options['filename'] : sprintf('%s-%s.tar.gz', basename($sourceDir), $timestamp);
+    $archiveDir = basename($sourceDir);
+    
+    $filename = isset($options['filename']) ? $options['filename'] : sprintf('%s-%s.tar.gz', $archiveDir, $timestamp);
     $this->logLine(sprintf('Archiving %s in %s/%s', $sourceDir, $destinationDir, $filename));
     
     if(!is_dir($sourceDir)) 
@@ -39,12 +41,18 @@ TXT
 
     if(!is_dir($destinationDir)) {
       if(!$createDestinationDir) 
-        throw new InvalidArgumentException("Archive directory not found. " . $destinationDir);
+        throw new InvalidArgumentException("Archive directory not found: " . $destinationDir);
       
       $this->getFileSystem()->mkdir($destinationDir, true);
     }
     
-    $cmd = sprintf('tar -czvf "%s/%s" %s', $destinationDir, $filename, $sourceDir);
+    // Options:
+    // c: compress
+    // v: verbose
+    // z: gzip archive
+    // f: archive to file
+    // C: root dir in the archived file
+    $cmd = sprintf('tar -c%szf "%s/%s" %s -C"%s"', $this->isVerbose() ? 'v' : '', $destinationDir, $filename, $sourceDir, $archiveDir);
     
     $this->executeShellCommand($cmd);
 
@@ -52,5 +60,6 @@ TXT
     
     return true;
   }
+
 
 }

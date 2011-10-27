@@ -25,7 +25,9 @@ catch(Exception $e) {
 $text = '
 app_required_child_field: value
 app_required_field: text
-app_param1: value4';
+app_param1: value4
+app_dir1: plugins/nbFileSystemPlugin/test/data/dir
+app_file1: plugins/nbFileSystemPlugin/test/data/dir/readme';
 
 $t->is(removeCarriageReturn($printer->printAll()), removeCarriageReturn($text), 'Printed text is formatted correctly');
 
