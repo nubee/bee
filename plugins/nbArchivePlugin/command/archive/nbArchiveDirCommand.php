@@ -31,9 +31,10 @@ TXT
     $sourceDir = nbFileSystem::sanitizeDir($arguments['source-dir']);
     $destinationDir = nbFileSystem::sanitizeDir($arguments['destination-dir']);
     $createDestinationDir = isset($options['create-destination-dir']);
-    $archiveDir = basename($sourceDir);
+    $archiveName = basename($sourceDir);
+    $archiveDir = dirname($sourceDir);
     
-    $filename = isset($options['filename']) ? $options['filename'] : sprintf('%s-%s.tar.gz', $archiveDir, $timestamp);
+    $filename = isset($options['filename']) ? $options['filename'] : sprintf('%s-%s.tar.gz', $archiveName, $timestamp);
     $this->logLine(sprintf('Archiving %s in %s/%s', $sourceDir, $destinationDir, $filename));
     
     if(!is_dir($sourceDir)) 
@@ -52,9 +53,9 @@ TXT
     // z: gzip archive
     // f: archive to file
     // C: root dir in the archived file
-    $cmd = sprintf('tar -c%szf "%s/%s" %s -C"%s"', $this->isVerbose() ? 'v' : '', $destinationDir, $filename, $sourceDir, $archiveDir);
+    $cmd = sprintf('tar -c%szf %s/%s %s -C"%s"', $this->isVerbose() ? 'v' : '', $destinationDir, $filename, $sourceDir, $archiveDir);
     
-    $this->executeShellCommand($cmd);
+    $this->executeShellCommand($cmd, 1, true);
 
     $this->logLine(sprintf('Directory archived: %s in %s ', $sourceDir, $filename));
     

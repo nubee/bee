@@ -24,7 +24,7 @@ TXT
       
     $checker = new nbConfigurationChecker();
     
-    $checker->check($template, $config, array(
+    $checker->checkConfigFile($template, $config, array(
       'logger' => $this->getLogger(), 
       'verbose' => $this->isVerbose()
     ));
