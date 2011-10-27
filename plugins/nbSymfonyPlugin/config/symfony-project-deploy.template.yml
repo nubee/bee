@@ -1,23 +1,23 @@
 web_base_dir:      { required: true }
 app_name:          { required: true }
-archive_dir:       { required: true, default: /backup/directory }
-exclude_list:      { required: true, default: .bee/exclude-list_symfony-plugin }
-include_list:      { required: false, default: .bee/include-list_symfony-plugin }
-app_source_dir:    { required: true, default: ./ }
-app_prod_dir:      { required: true, default: %web_base_dir%/%app_name% }
+archive_dir:       { required: true, default: /backup/directory, dir_exists: true }
+exclude_list:      { required: true, default: .bee/exclude-list_symfony-plugin, file_exists: true }
+include_list:      { required: false, default: .bee/include-list_symfony-plugin, file_exists: true }
+app_source_dir:    { required: true, default: ./, dir_exists: true }
+app_prod_dir:      { required: true, default: %web_base_dir%/%app_name%, dir_exists: true }
 web_user:          { required: true, default: www-data }
 web_group:         { required: true, default: www-data }
-symfony_root_dir:  { required: true, default: %app_prod_dir%/symfony }
+symfony_root_dir:  { required: true, default: %app_prod_dir%/symfony, dir_exists: true }
 db_name:           { required: false }
 db_username:       { required: false }
 db_password:       { required: false }
-db_dump_dir:       { required: false, default: %archive_dir% }
+db_dump_dir:       { required: false, default: %archive_dir%, dir_exists: true }
 
 symfony:
   project-deploy:
-    symfony-root-dir:  { required: true, default: %symfony_root_dir% }
-    symfony-exe-path:  { required: true, default: %symfony_root_dir%/symfony }
-    site-dir:          { required: true, default: %app_prod_dir% }
+    symfony-root-dir:  { required: true, default: %symfony_root_dir%, dir_exists: true }
+    symfony-exe-path:  { required: true, default: %symfony_root_dir%/symfony, file_exists: true }
+    site-dir:          { required: true, default: %app_prod_dir%, dir_exists: true }
     site-user:         { required: true, default: %web_user% }
     site-group:        { required: true, default: %web_group% }
     site-applications:
@@ -29,19 +29,19 @@ symfony:
 #          env: prod
 archive:
   archive-dir:
-    source-dir:      { required: true, default: %app_prod_dir% }
-    destination-dir: { required: true, default: %archive_dir% }
+    source-dir:      { required: true, default: %app_prod_dir%, dir_exists: true }
+    destination-dir: { required: true, default: %archive_dir%, dir_exists: true }
 
 filesystem:
   dir-transfer:
-    source-dir:   { required: true, default: %app_source_dir% }
-    target-dir:   { required: true, default: %app_prod_dir% }
+    source-dir:   { required: true, default: %app_source_dir%, dir_exists: true }
+    target-dir:   { required: true, default: %app_prod_dir%, dir_exists: true }
     exclude-from: { required: true, default: %exclude_list% }
     include-from: { required: false, default: %include_list% }
 
 mysql:
   dump:
     db-name:   { required: false, default: %db_name% }
-    dump-path: { required: false, default: %db_dump_dir% }
+    dump-path: { required: false, default: %db_dump_dir%, dir_exists: true }
     username:  { required: false, default: %db_username% }
     password:  { required: false, default: %db_password% }

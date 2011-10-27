@@ -1,0 +1,7 @@
+app:
+  required_field: value
+  required_child: { field: value }
+  param1:         value
+  dir1:           wrong-dir
+  file1:          plugins/nbFileSystemPlugin/test/data/dir/readme
+    

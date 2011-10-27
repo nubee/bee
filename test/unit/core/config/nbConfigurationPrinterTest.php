@@ -26,8 +26,8 @@ $text = '
 app_required_child_field: value
 app_required_field: text
 app_param1: value4
-app_dir1: plugins/nbFileSystemPlugin/test/data/dir
-app_file1: plugins/nbFileSystemPlugin/test/data/dir/readme';
+app_dir1: test/data/system
+app_file1: test/data/system/Class.java';
 
 $t->is(removeCarriageReturn($printer->printAll()), removeCarriageReturn($text), 'Printed text is formatted correctly');
 
@@ -38,10 +38,14 @@ $printer->addConfigurationFile($configFileNoChild);
 $text = '
 app_required_child_field: <error>required</error>
 app_required_field: value
-app_param3: value3';
+app_param3: value3
+app_dir1: <error>dir_exists</error>
+app_file1: <error>file_exists</error>';
 
 $errors = array(
-  'app_required_child_field' => 'required'
+  'app_required_child_field' => 'required',
+  'app_dir1' => 'dir_exists',
+  'app_file1' => 'file_exists'
 );
 $printer->addConfigurationErrors($errors);
 

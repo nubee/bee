@@ -3,6 +3,6 @@ app:
   required_child: { field: value }
   param1:         value4
   #param2: not required
-  dir1:           plugins/nbFileSystemPlugin/test/data/dir
-  file1:          plugins/nbFileSystemPlugin/test/data/dir/readme
+  dir1:           test/data/system
+  file1:          test/data/system/Class.java
     

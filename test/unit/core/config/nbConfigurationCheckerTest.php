@@ -9,10 +9,12 @@ $configFileOk = $dataDir . '/config.ok.yml';
 $configFileNoField = $dataDir . '/config.nofield.yml';
 $configFileNoChild = $dataDir . '/config.nochild.yml';
 $configFileNotExists = $dataDir . '/config.notexists.yml';
+$dirNotExists = $dataDir . '/config.dirnotexists.yml';
+$fileNotExists = $dataDir . '/config.filenotexists.yml';
 $templateFile = $dataDir . '/template.config.yml';
 $templateFileNotExists = $dataDir . '/template.notexists.sample.yml';
 
-$t = new lime_test(10);
+$t = new lime_test(12);
 $t->comment('Check Configuration');
 
 $t->comment(' 1. Config file checks correctly');
@@ -33,11 +35,13 @@ catch(Exception $e) {
 }
 
 $t->ok($checker->hasErrors(), 'Config file has errors');
-$t->is(count($checker->getErrors()), 2, 'Config file has 2 errors');
+$t->is(count($checker->getErrors()), 4, 'Config file has 4 errors');
 
 $errors = array(
   'app_required_field' => 'required',
-  'app_required_child_field' => 'required'
+  'app_required_child_field' => 'required',
+  'app_dir1' => 'dir_exists',
+  'app_file1' => 'file_exists'
 );
 $t->is($checker->getErrors(), $errors, 'Config file has errors formatted correctly');
 
@@ -52,7 +56,7 @@ catch(Exception $e) {
 }
 
 $t->ok($checker->hasErrors(), 'Config file has errors');
-$t->is(count($checker->getErrors()), 1, 'Config file has 1 error');
+$t->is(count($checker->getErrors()), 3, 'Config file has 3 errors');
 
 $t->comment(' 4. Config file checks if files exist');
 try {
@@ -64,11 +68,27 @@ catch(Exception $e) {
 }
 
 try {
-  $checker->checkConfigFile($configFileOk, $templateFileNotExists);
+  $checker->checkConfigFile($templateFileNotExists, $configFileOk);
   $t->fail('No template file to check exists');
 }
 catch(Exception $e) {
   $t->pass('No template file to check exists');
+}
+
+try {
+  $checker->checkConfigFile($templateFile, $dirNotExists);
+  $t->fail('No directory exists (and it should be)');
+}
+catch(Exception $e) {
+  $t->pass('No directory exists (and it should be)');
+}
+
+try {
+  $checker->checkConfigFile($templateFile, $fileNotExists);
+  $t->fail('No file exists (and it should be)');
+}
+catch(Exception $e) {
+  $t->pass('No file exists (and it should be)');
 }
 
 

@@ -45,42 +45,62 @@ class nbConfigurationChecker {
   }
   
   private function doCheck($path, $first, $second) {
-    $required = false;
+    $options = array();
     
     foreach($second as $key => $value) {
       //$this->logLine('Checking: ' . $key);
       
       $childRequired = false;
       
-      
       if(is_array($value)) {
         $subkey = $path . $key;
         
         $firstKey = isset($first[$key]) ? $first[$key] : null;
 
-        $childRequired = $this->doCheck($subkey . '_', $firstKey, $value);
+        $options = $this->doCheck($subkey . '_', $firstKey, $value);
         
-        if($childRequired && !$firstKey) {
-          $this->errors[$path . $key] = 'required';
-          $this->logLine(sprintf('Required field "%s" not found', $subkey), nbLogger::ERROR);
+        if(isset($options['required'])) {
+          if(!$firstKey) {
+//          $this->logLine(sprintf('Required field "%s" not found', $subkey), nbLogger::ERROR);
+            $this->errors[$path . $key] = 'required';
+          }
+          unset($options['required']);
+        }
+        
+        if(isset($options['dir_exists'])) {
+//          $this->logLine(sprintf('Check if directory "%s" exists', $firstKey), nbLogger::INFO);
+          if(!is_dir($firstKey)) {
+            $this->errors[$path . $key] = 'dir_exists';
+          }
+          unset($options['dir_exists']);
+        }
+        
+        if(isset($options['file_exists']) ) {
+//          $this->logLine(sprintf('Check if file "%s" exists', $firstKey), nbLogger::INFO);
+          if(is_array($firstKey) || !file_exists($firstKey)) {
+            $this->errors[$path . $key] = 'file_exists';
+          }
+          unset($options['file_exists']);
         }
       }
       
       if($key == 'required') {
         //$this->logLine(sprintf('Field "%s" is required', $key), nbLogger::INFO);
         // Whatever value of required will set "required" to true
-        $required = $value || $childRequired;
+        $options['required'] = $value;// || $childRequired;
       }
       
       if($key == 'dir_exists') {
-        $this->logLine(sprintf('Check if directory "%s" exists', $first[$key]), nbLogger::INFO);
-        // Whatever value of required will set "required" to true
-        //$required = $value || $childRequired;
+        $options['dir_exists'] = $value;
+      }
+
+      if($key == 'file_exists') {
+        $options['file_exists'] = $value;
       }
       
     }
     
-    return $required;
+    return $options;
   }
   
   public function logLine($text, $level = null)
