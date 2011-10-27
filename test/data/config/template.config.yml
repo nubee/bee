@@ -3,5 +3,5 @@ app:
   required_child: { field: { required: true, default: value } }
   param1:         { default: value1 }
   param2:         
-#  dir1:           { dir_exists: true }
-#  file1:          { file_exists: true }
+  dir1:           { dir_exists: true }
+  file1:          { file_exists: true }

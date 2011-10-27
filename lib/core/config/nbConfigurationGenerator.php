@@ -38,6 +38,10 @@ class nbConfigurationGenerator
       else {
         if($key == 'required')
           continue;
+        if($key == 'dir_exists')
+          continue;
+        if($key == 'file_exists')
+          continue;
 
         if($key == 'default')
           return $value;

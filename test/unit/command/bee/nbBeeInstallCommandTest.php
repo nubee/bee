@@ -2,6 +2,12 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
+if(nbConfig::get('nb_ignore_long_tests', true)) {
+  nbLogger::getInstance()->logLine('Ignoring tests: ' . dirname(__FILE__), nbLogger::INFO);
+  $t = new lime_test(0);
+  return;
+}
+
 $t = new lime_test(9);
 
 // Setup
