@@ -28,7 +28,7 @@ class nbConfigurationChecker {
       throw new Exception(sprintf('Template %s does not exist', $templateFile));
     
     $template = new nbConfiguration();
-    $template->add(sfYaml::load($templateFile), '', true);
+    $template->add(sfYaml::load($templateFile), '');
     
     $config = new nbConfiguration();
     $config->add($values, '', true);

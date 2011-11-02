@@ -8,9 +8,9 @@ app_prod_dir:     %web_base_dir%/production-site
 web_user:         www-data
 web_group:        www-data
 symfony_root_dir: %app_prod_dir%/symfony
-db_name:          
-db_username: 
-db_password: 
+db_name:          dbtest
+db_username:      dbuser
+db_password:      
 db_dump_dir:      %archive_dir%
 
 symfony:
