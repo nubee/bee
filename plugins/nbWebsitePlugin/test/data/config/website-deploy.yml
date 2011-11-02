@@ -19,7 +19,6 @@ archive:
 
 
 filesystem:
-  
   dir-transfer:
     source-dir:   %app_source_dir%
     target-dir:   %app_prod_dir%

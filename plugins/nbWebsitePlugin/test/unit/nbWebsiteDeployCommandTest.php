@@ -2,8 +2,8 @@
 
 require_once dirname(__FILE__) . '/../bootstrap/unit.php';
 
-$fileSystem->mkdir(nbConfig::get('archive_archive-dir_destination-dir'));
-$fileSystem->mkdir(nbConfig::get('app_prod_dir'));
+$fileSystem->mkdir(nbConfig::get('archive_archive-dir_destination-dir'), true);
+$fileSystem->mkdir(nbConfig::get('app_prod_dir'), true);
 
 $t = new lime_test(3);
 $t->comment('Website deploy');
