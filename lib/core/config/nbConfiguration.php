@@ -3,7 +3,12 @@
 class nbConfiguration
 {
   private $config = array();
-
+  
+  const REQUIRED = 'required';
+  const DIR_EXISTS = 'dir-exists';
+  const FILE_EXISTS = 'file-exists';
+  const DEFAULT_VALUE = 'default';
+  
   public function has($path)
   {
     $keys = explode('_', $path);

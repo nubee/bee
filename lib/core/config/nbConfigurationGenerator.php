@@ -36,14 +36,14 @@ class nbConfigurationGenerator
         $config[$key] = $child;
       }
       else {
-        if($key == 'required')
+        if($key == nbConfiguration::REQUIRED)
           continue;
-        if($key == 'dir_exists')
+        if($key == nbConfiguration::DIR_EXISTS)
           continue;
-        if($key == 'file_exists')
+        if($key == nbConfiguration::FILE_EXISTS)
           continue;
 
-        if($key == 'default')
+        if($key == nbConfiguration::DEFAULT_VALUE)
           return $value;
 
         $config[$key] = '';

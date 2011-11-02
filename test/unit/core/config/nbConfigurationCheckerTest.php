@@ -35,13 +35,14 @@ catch(Exception $e) {
 }
 
 $t->ok($checker->hasErrors(), 'Config file has errors');
-$t->is(count($checker->getErrors()), 4, 'Config file has 4 errors');
+$t->is(count($checker->getErrors()), 2, 'Config file has 2 errors');
 
 $errors = array(
   'app_required_field' => 'required',
   'app_required_child_field' => 'required',
-  'app_dir1' => 'dir_exists',
-  'app_file1' => 'file_exists'
+  // These are not errors, since fields are not required
+//  'app_dir1' => 'dir_exists',
+//  'app_file1' => 'file_exists'
 );
 $t->is($checker->getErrors(), $errors, 'Config file has errors formatted correctly');
 
@@ -56,7 +57,7 @@ catch(Exception $e) {
 }
 
 $t->ok($checker->hasErrors(), 'Config file has errors');
-$t->is(count($checker->getErrors()), 3, 'Config file has 3 errors');
+$t->is(count($checker->getErrors()), 1, 'Config file has 1 errors');
 
 $t->comment(' 4. Config file checks if files exist');
 try {

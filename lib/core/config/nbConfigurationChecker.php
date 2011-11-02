@@ -23,14 +23,19 @@ class nbConfigurationChecker {
     return $this->check($templateFile, $config);
   }
   
-  public function check($templateFile, $config) {
+  public function check($templateFile, $values) {
     if (!file_exists($templateFile))
       throw new Exception(sprintf('Template %s does not exist', $templateFile));
     
-    $template = sfYaml::load($templateFile);
+    $template = new nbConfiguration();
+    $template->add(sfYaml::load($templateFile), '', true);
+    
+    $config = new nbConfiguration();
+    $config->add($values, '', true);
     
     $this->errors = array();
-    $this->doCheck('', $config, $template);
+
+    $this->doCheck('', $config->getAll(), $template->getAll());
     
     if($this->hasErrors()) {
       $message = "Configuration has errors: \n";
@@ -59,43 +64,49 @@ class nbConfigurationChecker {
 
         $options = $this->doCheck($subkey . '_', $firstKey, $value);
         
-        if(isset($options['required'])) {
+        $required = isset($options[nbConfiguration::REQUIRED]) && $options[nbConfiguration::REQUIRED];
+        
+        if($required) {
           if(!$firstKey) {
 //          $this->logLine(sprintf('Required field "%s" not found', $subkey), nbLogger::ERROR);
-            $this->errors[$path . $key] = 'required';
+            $this->errors[$path . $key] = nbConfiguration::REQUIRED;
           }
-          unset($options['required']);
+          unset($options[nbConfiguration::REQUIRED]);
         }
         
-        if(isset($options['dir_exists'])) {
+        if(isset($options[nbConfiguration::DIR_EXISTS])) {
 //          $this->logLine(sprintf('Check if directory "%s" exists', $firstKey), nbLogger::INFO);
-          if(!is_dir($firstKey)) {
-            $this->errors[$path . $key] = 'dir_exists';
+          // Check if the key exists, when the key is not required
+          // Otherwise, the required test will fail
+          if(isset($first[$key]) && !is_dir($firstKey)) {
+            $this->errors[$path . $key] = sprintf('Directory "%s" does not exist', $firstKey);
           }
-          unset($options['dir_exists']);
+          unset($options[nbConfiguration::DIR_EXISTS]);
         }
         
-        if(isset($options['file_exists']) ) {
+        if(isset($options[nbConfiguration::FILE_EXISTS]) ) {
 //          $this->logLine(sprintf('Check if file "%s" exists', $firstKey), nbLogger::INFO);
-          if(is_array($firstKey) || !file_exists($firstKey)) {
-            $this->errors[$path . $key] = 'file_exists';
+          // Check if the key exists, when the key is not required
+          // Otherwise, the required test will fail
+          if(isset($first[$key]) && (is_array($firstKey) || !file_exists($firstKey))) {
+            $this->errors[$path . $key] = sprintf('File "%s" does not exist', $firstKey);
           }
-          unset($options['file_exists']);
+          unset($options[nbConfiguration::FILE_EXISTS]);
         }
       }
       
-      if($key == 'required') {
+      if($key == nbConfiguration::REQUIRED) {
         //$this->logLine(sprintf('Field "%s" is required', $key), nbLogger::INFO);
         // Whatever value of required will set "required" to true
-        $options['required'] = $value;// || $childRequired;
+        $options[nbConfiguration::REQUIRED] = $value;// || $childRequired;
       }
       
-      if($key == 'dir_exists') {
-        $options['dir_exists'] = $value;
+      if($key == nbConfiguration::DIR_EXISTS) {
+        $options[nbConfiguration::DIR_EXISTS] = $value;
       }
 
-      if($key == 'file_exists') {
-        $options['file_exists'] = $value;
+      if($key == nbConfiguration::FILE_EXISTS) {
+        $options[nbConfiguration::FILE_EXISTS] = $value;
       }
       
     }

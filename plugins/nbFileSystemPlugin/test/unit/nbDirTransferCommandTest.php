@@ -65,7 +65,7 @@ $fs->delete($fileToSync);
 $fs->delete($fileToInclude);
 $fs->delete($otherFileToSync);
 
-$commandLine = '--delete ' . '--config-file=config.yml';
+$commandLine = '--delete --config-file=config.yml';
 $parser = new nbCommandLineParser();
 $parser->setDefaultConfigurationDirs($dataDir);
 

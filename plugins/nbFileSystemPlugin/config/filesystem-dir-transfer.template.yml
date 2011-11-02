@@ -1,6 +1,6 @@
 filesystem:
   dir-transfer:
-    source-dir:    { required: true }
-    target-dir:    { required: true }
-    exclude-from:  { default: .bee/exclude-list }
-    include-from:  { default: .bee/include-list }
+    source-dir:    { required: true, dir-exists: true }
+    target-dir:    { required: true, dir-exists: true }
+    exclude-from:  { default: .bee/exclude-list, file-exists: true }
+    include-from:  { default: .bee/include-list, file-exists: true }

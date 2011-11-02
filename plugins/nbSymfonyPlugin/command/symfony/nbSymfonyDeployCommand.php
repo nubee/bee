@@ -43,7 +43,7 @@ TXT
     $checker = new nbConfigurationChecker();
     
     try {
-      $checker->check($pluginConfigDir . $this->getTemplateConfigFilename(), $config, array(
+      $checker->checkConfigFile($pluginConfigDir . $this->getTemplateConfigFilename(), $config, array(
         'logger' => $this->getLogger(), 
         'verbose' => $this->isVerbose()
       ));
