@@ -26,11 +26,12 @@ TXT
     $dir   = $arguments['dir'];
     $user  = $arguments['user'];
     $group = $arguments['group'];
+    $doit  = isset($options['doit']);
 
     $this->logLine(sprintf('Changing ownership for project: %s to %s.%s', $dir, $user, $group));
-    $cmd = sprintf('chown -R %s.%s %s', $user, $group, $dir);
+    $cmd = sprintf('chown -R %s:%s %s', $user, $group, $dir);
 
-    $this->executeShellCommand($cmd);
+    $this->executeShellCommand($cmd, $doit);
     $this->logLine('Ownership changed successfully!');
     
     return true;
