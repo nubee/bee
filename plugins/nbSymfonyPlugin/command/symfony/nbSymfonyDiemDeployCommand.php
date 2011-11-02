@@ -26,7 +26,7 @@ TXT
     
     $symfonyExePath = nbConfig::get('symfony_project-deploy_symfony-root-dir');
     
-    //site offline
+    // Put website offline
     if (nbConfig::has('symfony_project-deploy_site-applications')) {
       foreach (nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
         $cmd = new nbSymfonyGoOfflineCommand();
@@ -36,38 +36,38 @@ TXT
       }
     }
     
-    //archive site directory
+    // Archive site directory
     if (nbConfig::has('archive_inflate-dir')) {
       $cmd = new nbInflateDirCommand();
       $commandLine = '--config-file=' . $arguments['config-file'];
       $cmd->run(new nbCommandLineParser(), $commandLine);
     }
 
-    //dump database
+    // Dump database
     if (nbConfig::has('mysql_dump')) {
       $cmd = new nbMysqlDumpCommand();
       $commandLine = '--config-file=' . $arguments['config-file'];
       $cmd->run(new nbCommandLineParser(), $commandLine);
     }
     
-    //sync project
+    // Sync project
     if (nbConfig::has('filesystem_dir-transfer')) {
       $cmd = new nbDirTransferCommand();
       $commandLine = '--doit --delete --config-file=' . $arguments['config-file'];
       $cmd->run(new nbCommandLineParser(), $commandLine);
     }
 
-    //check dirs
+    // Check dirs
     $cmd = new nbSymfonyCheckDirsCommand();
     $commandLine = $symfonyExePath;
     $cmd->run(new nbCommandLineParser(), $commandLine);
 
-    //check permission
+    // Check permissions
     $cmd = new nbSymfonyCheckPermissionsCommand();
     $commandLine = $symfonyExePath;
     $cmd->run(new nbCommandLineParser(), $commandLine);
 
-    //change ownership
+    // Change ownership
     $cmd = new nbSymfonyChangeOwnershipCommand();
     $commandLine = sprintf('%s %s %s',
       nbConfig::get('symfony_project-deploy_site-dir'),
@@ -75,24 +75,24 @@ TXT
       nbConfig::get('symfony_project-deploy_site-group'));
     $cmd->run(new nbCommandLineParser(), $commandLine);
 
-    //restore database
+    // Restore database
     if (nbConfig::has('mysql_restore')) {
       $cmd = new nbMysqlRestoreCommand();
       $commandLine = '--config-file=' . $arguments['config-file'];
       $cmd->run(new nbCommandLineParser(), $commandLine);
     }
 
-    //diem setup
+    // Diem setup
     $cmd = new nbSymfonyDiemSetupCommand();
     $commandLine = $symfonyExePath;
     $cmd->run(new nbCommandLineParser(), $commandLine);
 
-    //clear cache
+    // Clear cache
     $cmd = new nbSymfonyClearCacheCommand();
     $commandLine = $symfonyExePath;
     $cmd->run(new nbCommandLineParser(), $commandLine);
 
-    //site online
+    // Put site online
     if (nbConfig::has('symfony_project-deploy_site-applications')) {
       foreach (nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
         $cmd = new nbSymfonyGoOnlineCommand();

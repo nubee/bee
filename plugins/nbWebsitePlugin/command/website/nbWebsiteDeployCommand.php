@@ -30,58 +30,36 @@ TXT
 
       throw new InvalidArgumentException($message);
     }
+    
     if(!isset($options['config-file']))
       throw new Exception('--config-file option required (CHANGE THIS)');
 
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
 
-    $config = $this->parser->checkDefaultConfigurationDirs($options['config-file']);
-    $pluginConfigDir = nbConfig::get('nb_plugins_dir') . '/nbWebsitePlugin/config/';
-
-    // Check configuration
-    $checker = new nbConfigurationChecker();
+    $configDir = nbConfig::get('nb_plugins_dir') . '/nbWebsitePlugin/config/';
+    $configFilename = $options['config-file'];
     
-    try {
-      $checker->checkConfigFile($pluginConfigDir . $this->getTemplateConfigFilename(), $config, array(
-        'logger' => $this->getLogger(), 
-        'verbose' => $this->isVerbose()
-      ));
-    }
-    catch(Exception $e) {
-      $this->logLine('<error>Configuration file doesn\'t match the template</error>');
-      
-      $printer = new nbConfigurationPrinter();
-      $printer->addConfiguration(nbConfig::getAll());
-      $printer->addConfigurationFile($config);      
-      $printer->addConfigurationErrors($checker->getErrors());
-      
-      $this->logLine($printer->printAll());
-      
-      return false;
-    }
-
-    $yamlParser = new nbYamlConfigParser(new nbConfiguration());
-    $yamlParser->parseFile($config, '', true);
-
+    $this->loadConfiguration($configDir, $configFilename);
+    
     // Archive site directory
     if(nbConfig::has('archive_archive-dir')) {
       $cmd = new nbArchiveDirCommand();
-      $cmdLine = sprintf('--config-file=%s --create-destination-dir', $config);
+      $cmdLine = sprintf('--config-file=%s --create-destination-dir', $configFilename);
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
     // Sync project
     if(nbConfig::has('filesystem_dir-transfer')) {
       $cmd = new nbDirTransferCommand();
-      $cmdLine = '--doit --delete --config-file=' . $config;
+      $cmdLine = '--doit --delete --config-file=' . $configFilename;
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
     // Change ownership
     if(nbConfig::has('filesystem_change-ownership')) {
       $cmd = new nbChangeOwnershipCommand();
-      $cmdLine = '--doit --config-file=' . $config;
+      $cmdLine = '--doit --config-file=' . $configFilename;
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
     
@@ -94,7 +72,7 @@ TXT
   {
     if($doit) {
       $parser = new nbCommandLineParser();
-      $parser->setDefaultConfigurationDirs($this->parser->getDefaultConfigurationDirs());
+      $parser->setDefaultConfigurationDirs($this->getParser()->getDefaultConfigurationDirs());
 
       if(!$command->run($parser, $commandLine))
         throw new Exception('Error executing: ' . $cmd);

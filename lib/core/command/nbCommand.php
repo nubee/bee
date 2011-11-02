@@ -16,7 +16,8 @@ abstract class nbCommand
   $argumentSet = null,
   $optionSet = null,
   $aliases = array();
-  protected $parser;
+  
+  private $parser;
   private $logger;
   private $verbose;
 
@@ -278,6 +279,10 @@ abstract class nbCommand
     return nbFileSystem::getInstance();
   }
   
+  public function getParser() {
+    return $this->parser;
+  }
+  
   public function getLogger()
   {
     return $this->logger;
@@ -295,6 +300,41 @@ abstract class nbCommand
       throw new Exception(sprintf('Command "%s" exited with error: %s', $command, $code));
     
     return $shell->getOutput();
+  }
+  
+  public function checkConfiguration($configDir, $configFilename) {
+    $configFile = $this->parser->checkDefaultConfigurationDirs($configFilename);
+
+    // Check configuration
+    $checker = new nbConfigurationChecker();
+
+    try {
+      $checker->checkConfigFile($configDir . $this->getTemplateConfigFilename(), $configFile, array(
+        'logger' => $this->getLogger(),
+        'verbose' => $this->isVerbose()
+      ));
+    }
+    catch (Exception $e) {
+      $this->logLine('Configuration file doesn\'t match the template', nbLogger::ERROR);
+
+      $printer = new nbConfigurationPrinter();
+      $printer->addConfiguration(nbConfig::getAll());
+      $printer->addConfigurationFile($configFile);
+      $printer->addConfigurationErrors($checker->getErrors());
+
+      $this->logLine($printer->printAll());
+
+      throw $e;
+    }
+    
+    return $configFile;
+  }
+  
+  public function loadConfiguration($configDir, $configFilename) {
+    $configFile = $this->checkConfiguration($configDir, $configFilename);
+    
+    $yamlParser = new nbYamlConfigParser(new nbConfiguration());
+    $yamlParser->parseFile($configFile, '', true);
   }
 
 }

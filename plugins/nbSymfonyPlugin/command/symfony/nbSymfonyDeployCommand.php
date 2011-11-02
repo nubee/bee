@@ -2,7 +2,6 @@
 
 class nbSymfonyDeployCommand extends nbApplicationCommand
 {
-
   protected function configure()
   {
     $this->setName('symfony:project-deploy')
@@ -13,6 +12,11 @@ The <info>{$this->getFullName()}</info> command:
   <info>./bee {$this->getFullName()}</info>
 TXT
     );
+
+    $this->setArguments(new nbArgumentSet(array(
+        new nbArgument('environment', nbArgument::REQUIRED, 'Environment name ( stage | prod )'),
+      )));
+
 
     $this->setOptions(new nbOptionSet(array(
         new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Make the changes!'),
@@ -30,40 +34,18 @@ TXT
 
       throw new InvalidArgumentException($message);
     }
-    if(!isset($options['config-file']))
-      throw new Exception('--config-file option required (CHANGE THIS)');
-
+    
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
 
-    $config = $this->parser->checkDefaultConfigurationDirs($options['config-file']);
-    $pluginConfigDir = nbConfig::get('nb_plugins_dir') . '/nbSymfonyPlugin/config/';
+    // Load configuration
+    if(!isset($options['config-file']))
+      throw new Exception('--config-file option required (CHANGE THIS)');
 
-    // Check configuration
-    $checker = new nbConfigurationChecker();
+    $configDir = nbConfig::get('nb_plugins_dir') . '/nbSymfonyPlugin/config/';
+    $configFilename = $options['config-file'];
     
-    try {
-      $checker->checkConfigFile($pluginConfigDir . $this->getTemplateConfigFilename(), $config, array(
-        'logger' => $this->getLogger(), 
-        'verbose' => $this->isVerbose()
-      ));
-    }
-    catch(Exception $e) {
-      $this->logLine('<error>Configuration file doesn\'t match the template</error>');
-      
-      $printer = new nbConfigurationPrinter();
-      $printer->addConfiguration(nbConfig::getAll());
-      $printer->addConfigurationFile($config);      
-      $printer->addConfigurationErrors($checker->getErrors());
-      
-      $this->logLine($printer->printAll());
-      
-      return false;
-      //throw $e;
-    }
-
-    $yamlParser = new nbYamlConfigParser(new nbConfiguration());
-    $yamlParser->parseFile($config, '', true);
+    $this->loadConfiguration($configDir, $configFilename);
 
     $symfonyRootDir = nbConfig::get('symfony_project-deploy_symfony-root-dir');
 
@@ -71,9 +53,7 @@ TXT
     if(nbConfig::has('symfony_project-deploy_site-applications')) {
       foreach(nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
         $cmd = new nbSymfonyGoOfflineCommand();
-
         $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
-
         $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
       }
     }
@@ -81,14 +61,14 @@ TXT
     // Archive site directory
     if(nbConfig::has('archive_archive-dir')) {
       $cmd = new nbArchiveDirCommand();
-      $cmdLine = sprintf('--config-file=%s --create-destination-dir', $config);
+      $cmdLine = sprintf('--config-file=%s --create-destination-dir', $configFilename);
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
     // Sync project
     if(nbConfig::has('filesystem_dir-transfer')) {
       $cmd = new nbDirTransferCommand();
-      $cmdLine = '--doit --delete --config-file=' . $config;
+      $cmdLine = '--doit --delete --config-file=' . $configFilename;
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
@@ -108,7 +88,7 @@ TXT
     try {
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
-    catch(Exception $e) {
+    catch (Exception $e) {
       $this->logLine('Cannot change permissions', nbLogger::ERROR);
     }
 
@@ -134,7 +114,7 @@ TXT
   {
     if($doit) {
       $parser = new nbCommandLineParser();
-      $parser->setDefaultConfigurationDirs($this->parser->getDefaultConfigurationDirs());
+      $parser->setDefaultConfigurationDirs($this->getParser()->getDefaultConfigurationDirs());
 
       if(!$command->run($parser, $commandLine))
         throw new Exception('Error executing: ' . $cmd);

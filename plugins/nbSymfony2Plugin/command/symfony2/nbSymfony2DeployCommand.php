@@ -5,8 +5,8 @@ class nbSymfony2DeployCommand extends nbApplicationCommand
 
   protected function configure()
   {
-    $this->setName('symfony2:deploy')
-      ->setBriefDescription('Deploys a symfony 2 project in a specified environment')
+    $this->setName('Symfony2:project-deploy')
+      ->setBriefDescription('Deploys a symfony 2 project')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 
@@ -26,13 +26,17 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    if(!file_exists('./.bee/')) {
-      $this->logLine('No bee project defined!', nbLogger::ERROR);
-      $this->logLine('Run: <info>bee bee:generate-project</info>', nbLogger::COMMENT);
-      return true;
-    }
+    $this->logLine('Deploying symfony2 project', nbLogger::COMMENT);
+    
+    if(!is_dir('./.bee') && !file_exists('./bee.yml')) {
+      $message = 'No bee project defined!';
+      $message .= "\n\n  Run: bee bee:generate-project";
 
-    $this->logLine('Running: symfony2:deploy', nbLogger::COMMENT);
+      throw new InvalidArgumentException($message);
+    }
+    
+    if(!isset($options['config-file']))
+      throw new Exception('--config-file option required (CHANGE THIS)');
 
     $pluginConfigFile = './.bee/nbSymfony2Plugin.yml';
 
