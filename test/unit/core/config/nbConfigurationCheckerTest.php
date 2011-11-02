@@ -14,7 +14,7 @@ $fileNotExists = $dataDir . '/config.filenotexists.yml';
 $templateFile = $dataDir . '/template.config.yml';
 $templateFileNotExists = $dataDir . '/template.notexists.sample.yml';
 
-$t = new lime_test(12);
+$t = new lime_test(16);
 $t->comment('Check Configuration');
 
 $t->comment(' 1. Config file checks correctly');
@@ -93,25 +93,10 @@ catch(Exception $e) {
 }
 
 
-
-/////////////////////////////////////////////
-// Questo test può essere effettuato solo se nbConfig è restituito come yml corretto
-// Ora come ora, restituisce
-// app:
-//   required:
-//     field:
-//
-// oppure
-// app_required_field
-//
-// mentre il check viene fatto con 
-// app:
-//   required_field
-/*
-
 $t->comment(' 5. Check whole configuration');
+nbConfig::set('app_required_field', 'value');
 try {
-  $checker->check($templateFile, nbConfig::getAll(true));
+  $checker->check($templateFile, nbConfig::getAll());
   $t->fail('Whole configuration without required fields not checked successfully');
 }
 catch(Exception $e) {
@@ -119,23 +104,8 @@ catch(Exception $e) {
 }
 
 $t->ok($checker->hasErrors(), 'Configuration has errors');
-$t->is(count($checker->getErrors()), 2, 'Configuration has 2 error');
-
-nbConfig::set('app_required_field', 'value');
-
-try {
-  $checker->check($templateFile, nbConfig::getAll(true));
-  $t->fail('Whole configuration without required fields not checked successfully');
-}
-catch(Exception $e) {
-  $t->pass('Whole configuration without required fields not checked successfully');
-}
-
-print_r($checker->getErrors());
-
 $t->is(count($checker->getErrors()), 1, 'Configuration has 1 error');
 
-nbConfig::set('app_required_child_field', 'anotherrequiredvalue');
-$checker->check($templateFile, nbConfig::getAll(true));
+nbConfig::set('app_required_child_field', 'value');
+$checker->check($templateFile, nbConfig::getAll());
 $t->ok(!$checker->hasErrors(), 'Configuration has no errors');
-*/
