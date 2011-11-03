@@ -38,20 +38,36 @@ TXT
     if(!isset($options['config-file']))
       throw new Exception('--config-file option required (CHANGE THIS)');
 
-    $pluginConfigFile = './.bee/nbSymfony2Plugin.yml';
-
-    if(!file_exists($pluginConfigFile)) {
-      $cmd = new nbConfigPluginCommand();
-      $cmd->run(new nbCommandLineParser(), 'nbSymfony2Plugin');
-      $this->logLine('Configuration file "' . $pluginConfigFile . '" was created.', nbLogger::INFO);
-      $this->logLine('Modify it and re-run the command.', nbLogger::INFO);
-      return true;
-    }
-
     $doit = isset($options['doit']);
+    $verbose = isset($options['verbose']) || !$doit;
     $env = $arguments['environment'];
+    
+    // Load configuration
+    $configDir = nbConfig::get('nb_plugins_dir') . '/nbSymfony2Plugin/config/';
+    $configFilename = $options['config-file'];
+    
+    $this->loadConfiguration($configDir, $configFilename);
+    
     $configParser = new nbYamlConfigParser();
     $configParser->parseFile($pluginConfigFile);
+    
+    // Put site offline
+
+    // Archive site directory
+    
+    // Sync project
+
+    // Check dirs
+    
+    // Publish assets
+    
+    // Clear cache
+
+    // Check permissions
+
+    // Change ownership
+    
+    // Put site online
 
     if(nbConfig::get($env . '_exec_sync')) {
       //sync
