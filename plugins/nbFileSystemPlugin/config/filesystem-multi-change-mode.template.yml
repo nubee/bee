@@ -1,0 +1,2 @@
+filesystem:
+  multi-change-mode: [ directory: { required: true, dir-exists: true }, dir-mode:  { required: true }, file-mode: { required: true } ]

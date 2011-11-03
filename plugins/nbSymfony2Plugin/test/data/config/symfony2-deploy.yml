@@ -1,0 +1,49 @@
+web_base_dir:     plugins/nbSymfony2Plugin/test/data
+app_name:         name
+app_source_dir:   %web_base_dir%/stage-site
+archive_dir:      %web_base_dir%/../sandbox/archive
+exclude_list:     %web_base_dir%/config/exclude-list
+include_list:     %web_base_dir%/config/include-list
+app_prod_dir:     %web_base_dir%/production-site
+web_user:         www-data
+web_group:        www-data
+symfony_root_dir: %app_prod_dir%/Symfony
+db_name:          dbtest
+db_username:      dbuser
+db_password:      
+db_dump_dir:      %archive_dir%
+
+Symfony2:
+  deploy:
+    symfony-root-dir: %symfony_root_dir%
+    symfony-exe-path: %symfony_root_dir%/app/console
+    site-dir:         %app_prod_dir%
+    site-user:        %web_user%
+    site-group:       %web_group%
+    public-dir:       %app_prod_dir%/httpdocs
+    uploads-dir:      %Symfony2_deploy_public-dir%/uploads
+
+archive:
+  archive-dir:
+    source-dir:      %app_prod_dir%
+    destination-dir: %archive_dir%
+
+filesystem:
+  dir-transfer:
+    source-dir:   %app_source_dir%
+    target-dir:   %app_prod_dir%
+    exclude-from: %exclude_list%
+    include-from: %include_list%
+  multi-change-mode:
+    - { directory: %Symfony2_deploy_public-dir%,                 dir-mode: 555, file-mode: 444 }
+    - { directory: %Symfony2_deploy_uploads-dir%,                dir-mode: 755, file-mode: 644 }
+    - { directory: %Symfony2_deploy_symfony-root-dir%,           dir-mode: 555, file-mode: 444 }
+    - { directory: %Symfony2_deploy_symfony-root-dir%/app/cache, dir-mode: 755, file-mode: 644 }
+    - { directory: %Symfony2_deploy_symfony-root-dir%/app/logs,  dir-mode: 755, file-mode: 644 }
+
+mysql:
+  dump:
+    db-name:   %db_name%
+    dump-path: %db_dump_dir%
+    username:  %db_username%
+    password:  %db_password%

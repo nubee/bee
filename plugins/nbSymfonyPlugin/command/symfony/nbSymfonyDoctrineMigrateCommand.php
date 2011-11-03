@@ -33,7 +33,7 @@ TXT
     $this->logLine(sprintf('Migrating database to version %s (%s)', $version, isset($options['env']) ? '(' . $environment . ')' : ''));
 
     
-    $latestVersion = $this->executeShellCommand('php ' . $path . '/symfony doctrine:get-latest-migration-version');;
+    $latestVersion = $this->executeShellCommand('php ' . $path . '/symfony doctrine:get-latest-migration-version');
     
     if(preg_match('/^\d+$/', $latestVersion) == 0)
       throw new Exception('Error retrieving latest migration version');
@@ -42,7 +42,7 @@ TXT
       throw new Exception(sprintf('Cannot migrate from version %s to version %s', $latestVersion, $version));
     
     
-    $currentVersion = $this->executeShellCommand('php ' . $path . '/symfony doctrine:get-migration-version');;
+    $currentVersion = $this->executeShellCommand('php ' . $path . '/symfony doctrine:get-migration-version');
     if(preg_match('/^\d+$/', $currentVersion) == 0)
       throw new Exception('Error retrieving current migration version');
     

@@ -30,10 +30,10 @@ TXT
     $message = $arguments['message'];
 
     $command = 'git add .';
-    $this->executeShellCommand($command, 1);
+    $this->executeShellCommand($command);
 
     $command = sprintf('git commit -a -m "%s"', $message);
-    $this->executeShellCommand($command, 1);
+    $this->executeShellCommand($command);
 
     $this->logLine('Git changes committed successfully');
   }

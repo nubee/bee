@@ -55,7 +55,7 @@ TXT
     // C: root dir in the archived file
     $cmd = sprintf('tar -c%szf %s/%s %s -C"%s"', $this->isVerbose() ? 'v' : '', $destinationDir, $filename, $sourceDir, $archiveDir);
     
-    $this->executeShellCommand($cmd, 1, true);
+    $this->executeShellCommand($cmd, true);
 
     $this->logLine(sprintf('Directory archived: %s in %s ', $sourceDir, $filename));
     

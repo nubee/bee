@@ -35,14 +35,14 @@ TXT
       $cmd->run(new nbCommandLineParser(), $versionYaml);
 
       $command = 'git add ' . $versionYaml;
-      $this->executeShellCommand($command, 1);
+      $this->executeShellCommand($command);
 
       $command = 'git commit -m "build version update"';
-      $this->executeShellCommand($command, 1);
+      $this->executeShellCommand($command);
     }
 
     $command = sprintf('git push "%s" "%s"', $repository, $branch);
-    $this->executeShellCommand($command, 1);
+    $this->executeShellCommand($command);
   }
 
 }

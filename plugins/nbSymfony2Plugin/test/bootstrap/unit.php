@@ -2,7 +2,8 @@
 
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
 
-$configParser->parseFile(dirname(__FILE__) . '/../data/config/symfony2-plugin.yml', '', true);
+//$configParser->parseFile(dirname(__FILE__) . '/../data/config/symfony2-plugin.yml', '', true);
+$configParser->parseFile(dirname(__FILE__) . '/../data/config/symfony2-deploy.yml', '', true);
 $serviceContainer->pluginLoader->loadPlugins(array('nbSymfony2Plugin', 'nbArchivePlugin', 'nbMysqlPlugin', 'nbFileSystemPlugin'));
 
 $fileSystem = nbFileSystem::getInstance();
