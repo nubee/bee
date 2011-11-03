@@ -42,15 +42,15 @@ class nbConfigurationPrinter {
         $text .= $this->formatPrint($k, $v, $indent + 1);
       }
     }
-    else
-      $text = $value;
-
-    $text = preg_replace_callback('/%([^%]*)%/', array(&$this, 'highlight'), $text);
+    else {
+      $text = preg_replace_callback('/%([^%]+)%/', array(&$this, 'highlight'), $value);
+    }
 
     return sprintf("\n%s%s: %s", str_repeat('  ', $indent), $key, $text);
   }
 
   private function highlight($match) {
+    //echo 'Replacing: ' . $match[0];
     return '<info>' . $match[0] . '</info>';
   }
 

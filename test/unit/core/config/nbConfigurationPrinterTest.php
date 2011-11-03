@@ -27,7 +27,12 @@ app_required_child_field: value
 app_required_field: text
 app_param1: value4
 app_dir1: test/data/system
-app_file1: test/data/system/Class.java';
+app_file1: test/data/system/Class.java
+app_array: 
+  0: 
+    key1: value4
+  1: 
+    key2: field2';
 
 $t->is(removeCarriageReturn($printer->printAll()), removeCarriageReturn($text), 'Printed text is formatted correctly');
 

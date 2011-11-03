@@ -21,7 +21,7 @@ class nbArrayUtils
     return $result;
   }
 
-  private static function isAssociative($array)
+  public static function isAssociative($array)
   {
     return (is_array($array) && 0 !== count(array_diff_key($array, array_keys(array_keys($array)))));
   }

@@ -5,4 +5,7 @@ app:
   #param2: not required
   dir1:           test/data/system
   file1:          %app_dir1%/Class.java
+  array:
+    - { key1: %app_param1% }
+    - { key2: field2 }
     

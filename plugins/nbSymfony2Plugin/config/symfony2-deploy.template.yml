@@ -1,7 +1,7 @@
 web_base_dir:      { required: true }
 app_name:          { required: true }
 archive_dir:       { required: true, default: /backup/directory, dir-exists: true }
-exclude_list:      { required: true, default: .bee/excludes-symfony2-plugin, file-exists: true }
+exclude_list:      { required: true, default: .bee/exclude-list-symfony2-plugin, file-exists: true }
 include_list:      { default: .bee/includes-symfony2-plugin, file-exists: true }
 app_source_dir:    { required: true, default: ./, dir-exists: true }
 app_prod_dir:      { required: true, default: %web_base_dir%/%app_name%, dir-exists: true }
@@ -36,23 +36,28 @@ filesystem:
     include-from: { default: %include_list%, file-exists: true }
   
   multi-change-mode:
-    - directory: { required: true, default: %Symfony2_deploy_public-dir%, dir-exists: true }
+    - 
+      directory: { required: true, default: %Symfony2_deploy_public-dir%, dir-exists: true }
       dir-mode:  { required: true, default: 555 }
       file-mode: { required: true, default: 444 }
 
-    - directory: { required: true, default: %Symfony2_deploy_uploads-dir%, dir-exists: true }
+    - 
+      directory: { required: true, default: %Symfony2_deploy_uploads-dir%, dir-exists: true }
       dir-mode:  { required: true, default: 755 }
       file-mode: { required: true, default: 644 }
 
-    - directory: { required: true, default: %Symfony2_deploy_symfony-root-dir%, dir-exists: true }
+    - 
+      directory: { required: true, default: %Symfony2_deploy_symfony-root-dir%, dir-exists: true }
       dir-mode:  { required: true, default: 555 }
       file-mode: { required: true, default: 444 }
 
-    - directory: { required: true, default: %Symfony2_deploy_symfony-root-dir%/app/cache, dir-exists: true }
+    - 
+      directory: { required: true, default: %Symfony2_deploy_symfony-root-dir%/app/cache, dir-exists: true }
       dir-mode:  { required: true, default: 755 }
       file-mode: { required: true, default: 644 }
 
-    - directory: { required: true, default: %Symfony2_deploy_symfony-root-dir%/app/logs, dir-exists: true }
+    - 
+      directory: { required: true, default: %Symfony2_deploy_symfony-root-dir%/app/logs, dir-exists: true }
       dir-mode:  { required: true, default: 755 }
       file-mode: { required: true, default: 644 }
 
