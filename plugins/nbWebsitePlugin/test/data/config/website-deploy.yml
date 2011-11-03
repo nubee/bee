@@ -1,4 +1,5 @@
-web_base_dir:      plugins/nbWebsitePlugin/test/data
+#This var is set in nbConfig (bootstrap/unit.php)
+#web_base_dir:      plugins/nbWebsitePlugin/test/data
 app_name:          testSite
 archive_dir:       %web_base_dir%/../sandbox/archive
 exclude_list:      %web_base_dir%/config/exclude-list-website-plugin

@@ -306,20 +306,24 @@ abstract class nbCommand
     $configFile = $this->parser->checkDefaultConfigurationDirs($configFilename);
 
     // Check configuration
-    $checker = new nbConfigurationChecker();
+    $checker = new nbConfigurationChecker(array(
+      'logger' => $this->getLogger(),
+      'verbose' => $this->isVerbose()
+    ));
+    
+    $configuration = new nbConfiguration();
+    $configuration->add(nbConfig::getAll());
+    $configuration->add(sfYaml::load($configFile), '', true);
 
     try {
-      $checker->checkConfigFile($configDir . $this->getTemplateConfigFilename(), $configFile, array(
-        'logger' => $this->getLogger(),
-        'verbose' => $this->isVerbose()
-      ));
+      $checker->check($configDir . $this->getTemplateConfigFilename(), $configuration);
     }
     catch (Exception $e) {
       $this->logLine('Configuration file doesn\'t match the template', nbLogger::ERROR);
 
       $printer = new nbConfigurationPrinter();
-      $printer->addConfiguration(nbConfig::getAll());
-      $printer->addConfigurationFile($configFile);
+      $printer->addConfiguration($configuration->getAll());
+//      $printer->addConfigurationFile($configFile);
       $printer->addConfigurationErrors($checker->getErrors());
 
       $this->logLine($printer->printAll());

@@ -22,12 +22,12 @@ TXT
     $template = $arguments['template'];
     $config = $arguments['filename'];
       
-    $checker = new nbConfigurationChecker();
-    
-    $checker->checkConfigFile($template, $config, array(
+    $checker = new nbConfigurationChecker(array(
       'logger' => $this->getLogger(), 
       'verbose' => $this->isVerbose()
     ));
+    
+    $checker->checkConfigFile($template, $config);
 
     return true;
   }

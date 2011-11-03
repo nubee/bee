@@ -41,7 +41,7 @@ TXT
     $configFilename = $options['config-file'];
     
     $this->loadConfiguration($configDir, $configFilename);
-    
+
     // Archive site directory
     if(nbConfig::has('archive_archive-dir')) {
       $cmd = new nbArchiveDirCommand();

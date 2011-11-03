@@ -96,7 +96,7 @@ catch(Exception $e) {
 $t->comment(' 5. Check whole configuration');
 nbConfig::set('app_required_field', 'value');
 try {
-  $checker->check($templateFile, nbConfig::getAll());
+  $checker->check($templateFile, nbConfig::getConfiguration());
   $t->fail('Whole configuration without required fields not checked successfully');
 }
 catch(Exception $e) {
@@ -107,5 +107,5 @@ $t->ok($checker->hasErrors(), 'Configuration has errors');
 $t->is(count($checker->getErrors()), 1, 'Configuration has 1 error');
 
 nbConfig::set('app_required_child_field', 'value');
-$checker->check($templateFile, nbConfig::getAll());
+$checker->check($templateFile, nbConfig::getConfiguration());
 $t->ok(!$checker->hasErrors(), 'Configuration has no errors');
