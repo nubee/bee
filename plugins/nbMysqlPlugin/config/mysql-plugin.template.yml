@@ -1,0 +1,33 @@
+mysql:
+  db-name:        { required: true }
+  mysql-username: { required: true, default: root }
+  mysql-password: { required: true, default: '' }
+  username:       { required: true }
+  password:       { required: true }
+  dump-path:      { required: true }
+  dump-file:      { required: true }
+  
+  create:
+    db-name:        { required: true, default: %mysql_db-name% }
+    mysql-username: { required: true, default: %mysql_mysql-username% }
+    mysql-password: { required: true, default: %mysql_mysql-password% }
+    username:       { required: true, default: %mysql_username% }
+    password:       { required: true, default: %mysql_password% }
+    
+  drop:
+    db-name:        { required: true, default: %mysql_db-name% }
+    mysql-username: { required: true, default: %mysql_mysql-username% }
+    mysql-password: { required: true, default: %mysql_mysql-password% }
+
+  dump:
+    db-name:        { required: true, default: %mysql_db-name% }
+    username:       { required: true, default: %mysql_username% }
+    password:       { required: true, default: %mysql_password% }
+    dump-path:      { required: true, default: %mysql_dump-path% }
+
+  restore:
+    db-name:        { required: true, default: %mysql_db-name% }
+    username:       { required: true, default: %mysql_username% }
+    password:       { required: true, default: %mysql_password% }
+    dump-file:      { required: true, default: %mysql_dump-file% }
+    
