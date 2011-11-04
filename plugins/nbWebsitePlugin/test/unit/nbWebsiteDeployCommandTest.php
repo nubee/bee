@@ -18,8 +18,8 @@ if(php_uname('s') == 'Linux') {
   $commandLine = '--config-file --doit';
   $t->ok($cmd->run($parser, $commandLine), 'Website deployed successfully');
 
-  $t->ok(is_file(nbConfig::get('app_prod_dir') . '/filetoSync1'), 'File deployed successfully');
-  $t->ok(is_file(nbConfig::get('app_prod_dir') . '/filetoSync2'), 'File deployed successfully');
+  $t->ok(is_file(nbConfig::get('app_prod_dir') . '/fileToSync1'), 'File deployed successfully');
+  $t->ok(is_file(nbConfig::get('app_prod_dir') . '/fileToSync2'), 'File deployed successfully');
 }
 else {
   $t = new lime_test(1);
