@@ -40,7 +40,7 @@ TXT
 
       $this->logLine(sprintf('Changing file mode in %s for files in %s', $fileMode, $directory));
       $command = sprintf('find %s -type f -exec chmod %s {} \\;', $directory, $fileMode);
-      $this->executeCommandLine($command, $doit);
+      $this->executeShellCommand($command, $doit);
     }
 
     $this->logLine('Mode changed successfully!');
