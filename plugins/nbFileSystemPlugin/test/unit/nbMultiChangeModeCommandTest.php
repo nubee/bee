@@ -20,18 +20,18 @@ if(php_uname('s') == 'Linux') {
   $cmd = new nbMultiChangeModeCommand();
   nbConfig::set('test_dir_1', $testDir1);
   nbConfig::set('test_dir_2', $testDir2);
-  nbConfig::set('dir_mode', '666');
-  nbConfig::set('file_mode', '444');
+  nbConfig::set('dir_mode', '766');
+  nbConfig::set('file_mode', '744');
   
   $commandLine = sprintf('%s --doit', $listFile);
 
   $t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'Folder mode changed successfully');
-  $t->is(fileperms($testDir1), '666');
-  $t->is(fileperms($testDir1.$dirname), '666');
-  $t->is(fileperms($testDir1.$filename), '444');
-  $t->is(fileperms($testDir2), '666');
-  $t->is(fileperms($testDir2.$dirname), '666');
-  $t->is(fileperms($testDir2.$filename), '444');
+  $t->is($fileSystem->formatPermissions($testDir1), 'drwxrw-rw-');
+  $t->is($fileSystem->formatPermissions($testDir1.$dirname), 'drwxrw-rw-');
+  $t->is($fileSystem->formatPermissions($testDir1.$filename), '-rwxr--r--');
+  $t->is($fileSystem->formatPermissions($testDir2), 'drwxrw-rw-');
+  $t->is($fileSystem->formatPermissions($testDir2.$dirname), 'drwxrw-rw-');
+  $t->is($fileSystem->formatPermissions($testDir2.$filename), '-rwxr--r--');
   
   //tear down
   $fileSystem->rmdir($testDir1, true);
