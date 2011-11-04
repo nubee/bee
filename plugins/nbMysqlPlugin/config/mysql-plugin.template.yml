@@ -1,7 +1,7 @@
 mysql:
   db-name:        { required: true }
-  mysql-username: { required: true, default: root }
-  mysql-password: { required: true, default: '' }
+  mysql-username: { required: true, default: %mysql_admin-username% }
+  mysql-password: { required: true, default: %mysql_admin-password% }
   username:       { required: true }
   password:       { required: true }
   dump-path:      { required: true }

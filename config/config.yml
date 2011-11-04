@@ -9,3 +9,7 @@ nb:
   default_plugins: ~
   output:
     color:         "true"
+    
+mysql:
+  admin-username:  root
+  admin-password:  

@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../../../test/bootstrap/unit.php';
-$configParser->parseFile(dirname(__FILE__) . '/../data/config/config.yml');
+$configParser->parseFile(dirname(__FILE__) . '/../data/config/config.yml', '', true);
 $serviceContainer->pluginLoader->loadPlugins(array('nbMysqlPlugin'));
 
 $dbName        = nbConfig::get('mysql_db-name');

@@ -1,7 +1,7 @@
 mysql:
   db-name:        dbtest
-  mysql-username: root
-  mysql-password: 
+  mysql-username: %mysql_admin-username%
+  mysql-password: %mysql_admin-password%
   username:       fakeUsername
   password:       fakePassword
   dump-path:      test/sandbox

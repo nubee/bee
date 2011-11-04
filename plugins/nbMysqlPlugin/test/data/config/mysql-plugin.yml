@@ -1,15 +1,15 @@
 mysql:
   create:
     db-name:        dbtest
-    mysql-username: root
-    mysql-password: 
+    mysql-username: %mysql_admin-username%
+    mysql-password: %mysql_admin-password%
     username:       fakeUsername
     password:       fakePassword
   
   drop:
     db-name:        dbtest
-    mysql-username: root
-    mysql-password: 
+    mysql-username: %mysql_admin-username%
+    mysql-password: %mysql_admin-password%
   
   dump:
     db-name:        dbtest
