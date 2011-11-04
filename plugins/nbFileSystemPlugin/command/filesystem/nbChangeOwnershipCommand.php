@@ -19,6 +19,10 @@ TXT
         new nbArgument('user', nbArgument::REQUIRED, 'Owner user id'),
         new nbArgument('group', nbArgument::REQUIRED, 'Owner group')
       )));
+    
+    $this->setOptions(new nbOptionSet(array(
+        new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Make the changes!'),
+      )));
   }
 
   protected function execute(array $arguments = array(), array $options = array())
@@ -28,7 +32,7 @@ TXT
     $group = $arguments['group'];
     $doit  = isset($options['doit']);
 
-    $this->logLine(sprintf('Changing ownership for project: %s to %s.%s', $dir, $user, $group));
+    $this->logLine(sprintf('Changing ownership for project: %s to %s:%s', $dir, $user, $group));
     $cmd = sprintf('chown -R %s:%s %s', $user, $group, $dir);
 
     $this->executeShellCommand($cmd, $doit);

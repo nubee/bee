@@ -1,10 +1,8 @@
 <?php
 
-class nbMysqlDumpCommand extends nbMysqlAbstractCommand
-{
+class nbMysqlDumpCommand extends nbMysqlAbstractCommand {
 
-  protected function configure()
-  {
+  protected function configure() {
     $this->setName('mysql:dump')
       ->setBriefDescription('Dumps a mysql database')
       ->setDescription(<<<TXT
@@ -15,30 +13,29 @@ TXT
     );
 
     $this->setArguments(new nbArgumentSet(array(
-        new nbArgument('db-name',   nbArgument::REQUIRED, 'Database name'),
+        new nbArgument('db-name', nbArgument::REQUIRED, 'Database name'),
         new nbArgument('dump-path', nbArgument::REQUIRED, 'Database dump path'),
-        new nbArgument('username',  nbArgument::REQUIRED, 'Database username'),
-        new nbArgument('password',  nbArgument::REQUIRED, 'Database password')
+        new nbArgument('username', nbArgument::REQUIRED, 'Database username'),
+        new nbArgument('password', nbArgument::REQUIRED, 'Database password')
       )));
   }
 
-  protected function execute(array $arguments = array(), array $options = array())
-  {
-    $dbName   = $arguments['db-name'];
-    $path     = $arguments['dump-path'];
+  protected function execute(array $arguments = array(), array $options = array()) {
+    $dbName = $arguments['db-name'];
+    $path = $arguments['dump-path'];
     $username = $arguments['username'];
     $password = $arguments['password'];
 
     $timestamp = date('YmdHi', time());
     $dump = sprintf('%s/%s-%s.sql', $path, $dbName, $timestamp);
-    
+
     $this->logLine(sprintf('Dumping database "%s" to "%s"', $dbName, $dump));
-    
+
     $cmd = sprintf('mysqldump -u%s -p%s %s > %s', $username, $password, $dbName, $dump);
 
     $this->executeShellCommand($cmd);
     $this->logLine('MySql database dumped!');
-    
+
     return true;
   }
 

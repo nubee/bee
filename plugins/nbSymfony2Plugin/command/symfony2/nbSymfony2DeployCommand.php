@@ -38,14 +38,14 @@ TXT
     $configFilename = $options['config-file'];
 
     $this->loadConfiguration($configDir, $configFilename);
-    
+
     // Setup config parameters
     $exePath = nbConfig::get('Symfony2_deploy_symfony-exe-path');
     $publicDir = nbConfig::get('Symfony2_deploy_public-dir');
     $webUser = nbConfig::get('web_user');
     $webGroup = nbConfig::get('web_group');
-    $symfonyRootDir = nbConfig::get('Symfony2_deploy_symfony-root-dir');    
-    
+    $symfonyRootDir = nbConfig::get('Symfony2_deploy_symfony-root-dir');
+
 
     // Put site offline
     // TODO
@@ -56,11 +56,13 @@ TXT
     $this->executeCommand($command, $commandLine, $doit, $verbose);
 
     // Dump database
-    // TODO
+    $command = new nbMysqlDumpCommand();
+    $commandLine = '--config-file=' . $configFilename;
+    $this->executeCommand($command, $commandLine, $doit, $verbose);
 
     // Sync project
     $command = new nbDirTransferCommand();
-    $commandLine = '--doit --delete --config-file=' . $configFilename;
+    $commandLine = '--delete --config-file=' . $configFilename;
     $this->executeCommand($command, $commandLine, $doit, $verbose);
 
     // Install assets
@@ -96,7 +98,7 @@ TXT
       $parser = new nbCommandLineParser();
       $parser->setDefaultConfigurationDirs($this->getParser()->getDefaultConfigurationDirs());
 
-      if (!$command->run($parser, $commandLine))
+      if (!$command->run($parser, sprintf('%s --doit', $commandLine)))
         throw new Exception('Error executing: ' . $cmd);
     }
 
