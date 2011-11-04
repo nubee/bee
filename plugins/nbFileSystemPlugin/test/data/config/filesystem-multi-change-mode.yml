@@ -1,10 +1,10 @@
 filesystem:
   multi-change-mode:
     - 
-      directory: plugins/nbFileSystemPlugin/test/sandbox
-      dir-mode:  754
-      file-mode: 643
+      directory: %test_dir_1%
+      dir-mode:  %dir_mode%
+      file-mode: %file_mode%
     - 
-      directory: plugins/nbFileSystemPlugin/test/sandbox
-      dir-mode:  755
-      file-mode: 644
+      directory: %test_dir_2%
+      dir-mode:  %dir_mode%
+      file-mode: %file_mode%
