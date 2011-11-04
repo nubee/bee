@@ -38,6 +38,14 @@ TXT
     $configFilename = $options['config-file'];
 
     $this->loadConfiguration($configDir, $configFilename);
+    
+    // Setup config parameters
+    $exePath = nbConfig::get('Symfony2_deploy_symfony-exe-path');
+    $publicDir = nbConfig::get('Symfony2_deploy_public-dir');
+    $webUser = nbConfig::get('web_user');
+    $webGroup = nbConfig::get('web_group');
+    $symfonyRootDir = nbConfig::get('Symfony2_deploy_symfony-root-dir');    
+    
 
     // Put site offline
     // TODO
@@ -56,20 +64,20 @@ TXT
     $this->executeCommand($command, $commandLine, $doit, $verbose);
 
     // Install assets
-    $command = sprintf('%s assets:install %s', nbConfig::get('Symfony2_deploy_symfony-exe-path'), nbConfig::get('Symfony2_deploy_public-dir'));
+    $command = sprintf('php %s assets:install %s', $exePath, $publicDir);
     $this->executeShellCommand($command, $doit);
 
     // Clear cache
-    $command = sprintf('%s cache:clear --env=prod', nbConfig::get('Symfony2_deploy_symfony-exe-path'));
+    $command = sprintf('php %s cache:clear --env=prod', $exePath);
     $this->executeShellCommand($command, $doit);
 
     // Change ownership
     $command = new nbChangeOwnershipCommand();
-    $commandLine = sprintf('%s %s %s --doit', nbConfig::get('Symfony2_deploy_public-dir'), nbConfig::get('web_user'), nbConfig::get('web_group'));
+    $commandLine = sprintf('%s %s %s --doit', $publicDir, $webUser, $webGroup);
     $this->executeCommand($command, $commandLine, $doit, $verbose);
 
     $command = new nbChangeOwnershipCommand();
-    $commandLine = sprintf('%s %s %s --doit', nbConfig::get('Symfony2_deploy_symfony-root-dir'), nbConfig::get('web_user'), nbConfig::get('web_group'));
+    $commandLine = sprintf('%s %s %s --doit', $symfonyRootDir, $webUser, $webGroup);
     $this->executeCommand($command, $commandLine, $doit, $verbose);
 
     // Check permissions
