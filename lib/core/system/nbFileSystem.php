@@ -295,6 +295,9 @@ class nbFileSystem
 
   public static function formatPermissions($file)
   {
+    // Required since a cache is created upon stats
+    // see http://www.php.net/manual/en/function.clearstatcache.php
+    clearstatcache();
     $perms = fileperms($file);
 
     if(($perms & 0xC000) == 0xC000) {

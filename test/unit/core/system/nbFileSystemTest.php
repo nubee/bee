@@ -221,19 +221,24 @@ if(php_uname('s') == 'Linux') {
 
   $filename = $sandboxDir . '/file1';
   $fs->touch($filename);
-  $perms = fileperms($filename);
+  $perms = get_perms($filename);
   echo $fs->formatPermissions($filename);
-  $t->ok($perms & 0x0080);  // user write
+  $t->ok($perms & 0x0080, 'User has write permission');  
 
   $fs->chmod($filename, 0440);
-  $perms = fileperms($filename);
+  $perms = get_perms($filename);
   echo $fs->formatPermissions($filename);
-  $t->ok(!($perms & 0x0080));  // user write
+  $t->ok(!($perms & 0x0080), 'User has no write permission');
 
   $fs->chmod($filename, 0744);
-  $perms = fileperms($filename);
+  $perms = get_perms($filename);
   echo $fs->formatPermissions($filename);
-  $t->ok($perms & 0x0080);  // user write
+  $t->ok($perms & 0x0080, 'User has write permission');
 
   $fs->rmdir($sandboxDir, true, true);
+}
+
+function get_perms($filename) {
+   clearstatcache();
+   return fileperms($filename);
 }
