@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(php_uname('s') == 'Linux' ? 35 : 31);
+$t = new lime_test(php_uname('s') == 'Linux' ? 34 : 31);
 
 $dataDir = nbConfig::get('nb_data_dir') . '/system';
 $sandboxDir = nbConfig::get('nb_sandbox_dir');
