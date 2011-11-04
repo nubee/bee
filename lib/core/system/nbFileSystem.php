@@ -247,10 +247,15 @@ class nbFileSystem
     $fsr->doSearch();
   }
 
-  public static function chmod($file, $mode)
+  public static function chmod($file, $mode, $umask = 0000)
   {
+    $currentUmask = umask();
+    umask($umask);
+    
     if(!chmod($file, $mode))
       throw new Exception('[nbFileSystem::chmod] chmod command failed');
+
+    umask($currentUmask);
   }
   
   public static function chmodRecursive($path, $filemode, $dirmode)
