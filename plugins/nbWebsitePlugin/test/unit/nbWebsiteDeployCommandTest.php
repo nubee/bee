@@ -2,12 +2,11 @@
 
 require_once dirname(__FILE__) . '/../bootstrap/unit.php';
 
-//setup
+// Setup
 $fileSystem->mkdir(nbConfig::get('archive_archive-dir_destination-dir'), true);
 $fileSystem->mkdir(nbConfig::get('app_prod_dir'), true);
 
-if(php_uname('s') == 'Linux')
-{
+if(php_uname('s') == 'Linux') {
   $t = new lime_test(3);
   $t->comment('Website deploy');
 
@@ -19,11 +18,10 @@ if(php_uname('s') == 'Linux')
   $commandLine = '--config-file --doit';
   $t->ok($cmd->run($parser, $commandLine), 'Website deployed successfully');
 
-  $t->ok(is_file(nbConfig::get('app_prod_dir').'/filetoSync1'), 'File deployed successfully');
-  $t->ok(is_file(nbConfig::get('app_prod_dir').'/filetoSync2'), 'File deployed successfully');
+  $t->ok(is_file(nbConfig::get('app_prod_dir') . '/filetoSync1'), 'File deployed successfully');
+  $t->ok(is_file(nbConfig::get('app_prod_dir') . '/filetoSync2'), 'File deployed successfully');
 }
-else
-{
+else {
   $t = new lime_test(1);
   $t->comment('Website deploy');
 
@@ -36,6 +34,6 @@ else
   $t->ok($cmd->run($parser, $commandLine), 'Website deployed successfully');
 }
 
-//tear down
+// Tear down
 $fileSystem->rmdir(nbConfig::get('archive_archive-dir_destination-dir'), true);
 $fileSystem->rmdir(nbConfig::get('app_prod_dir'), true);

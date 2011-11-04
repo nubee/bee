@@ -27,7 +27,7 @@ filesystem:
     include-from: %include_list%
     
   change-ownership:
-    dir:   %app_source_dir%
+    dir:   %app_prod_dir%
     user:  %web_user%
     group: %web_group%
 
