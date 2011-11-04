@@ -73,16 +73,16 @@ TXT
 
     // Change ownership
     $command = new nbChangeOwnershipCommand();
-    $commandLine = sprintf('%s %s %s --doit', $publicDir, $webUser, $webGroup);
+    $commandLine = sprintf('%s %s %s', $publicDir, $webUser, $webGroup);
     $this->executeCommand($command, $commandLine, $doit, $verbose);
 
     $command = new nbChangeOwnershipCommand();
-    $commandLine = sprintf('%s %s %s --doit', $symfonyRootDir, $webUser, $webGroup);
+    $commandLine = sprintf('%s %s %s', $symfonyRootDir, $webUser, $webGroup);
     $this->executeCommand($command, $commandLine, $doit, $verbose);
 
     // Check permissions
     $command = new nbMultiChangeModeCommand();
-    $commandLine = sprintf('%s --doit', $configFilename);
+    $commandLine = sprintf('%s', $configFilename);
     $this->executeCommand($command, $commandLine, $doit, $verbose);
 
     // Put site online
