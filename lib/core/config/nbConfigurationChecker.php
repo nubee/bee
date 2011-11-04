@@ -78,7 +78,7 @@ class nbConfigurationChecker {
         }
         
         if(isset($options[nbConfiguration::DIR_EXISTS])) {
-//          $this->logLine(sprintf('Check if directory "%s" exists', $firstKey), nbLogger::INFO);
+          $this->logLine(sprintf('Check if directory "%s" exists', $firstKey), nbLogger::INFO);
           // Check if the key exists, when the key is not required
           // Otherwise, the required test will fail
           if(isset($first[$key]) && !is_dir($firstKey)) {
@@ -98,17 +98,19 @@ class nbConfigurationChecker {
         }
       }
       
-      if($key == nbConfiguration::REQUIRED) {
+      if($key === nbConfiguration::REQUIRED) {
         //$this->logLine(sprintf('Field "%s" is required', $key), nbLogger::INFO);
         // Whatever value of required will set "required" to true
         $options[nbConfiguration::REQUIRED] = $value;// || $childRequired;
       }
       
-      if($key == nbConfiguration::DIR_EXISTS) {
+      if($key === nbConfiguration::DIR_EXISTS) {
+        //$this->logLine(sprintf('Field "%s" is a directory', $key), nbLogger::INFO);
         $options[nbConfiguration::DIR_EXISTS] = $value;
       }
 
-      if($key == nbConfiguration::FILE_EXISTS) {
+      if($key === nbConfiguration::FILE_EXISTS) {
+        //$this->logLine(sprintf('Field "%s" is a file', $key), nbLogger::INFO);
         $options[nbConfiguration::FILE_EXISTS] = $value;
       }
       

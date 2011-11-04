@@ -1,0 +1,11 @@
+app:
+  field0: %app_field1%/%app_field2%
+  field1: value1
+  field2: %app_field1%
+  field3: %app_field0%/%app_field2%
+  array1: 
+    - { key1: %app_field1% }
+    - { key2: value2 }
+  array2: 
+    - { key3: value3 }
+#    - { key2: %app_field1%/%app_field2% }

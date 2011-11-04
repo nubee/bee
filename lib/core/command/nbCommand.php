@@ -305,6 +305,9 @@ abstract class nbCommand
   public function checkConfiguration($configDir, $configFilename) {
     $configFile = $this->parser->checkDefaultConfigurationDirs($configFilename);
 
+    if(!file_exists($configFile)) 
+      throw new InvalidArgumentException(sprintf('Config file "%s" does not exist', $configFilename));
+
     // Check configuration
     $checker = new nbConfigurationChecker(array(
       'logger' => $this->getLogger(),
@@ -316,7 +319,7 @@ abstract class nbCommand
     $configuration->add(sfYaml::load($configFile), '', true);
 
     try {
-      $checker->check($configDir . $this->getTemplateConfigFilename(), $configuration);
+      $checker->check($configDir . '/' . $this->getTemplateConfigFilename(), $configuration);
     }
     catch (Exception $e) {
       $this->logLine('Configuration file doesn\'t match the template', nbLogger::ERROR);
@@ -337,7 +340,7 @@ abstract class nbCommand
   public function loadConfiguration($configDir, $configFilename) {
     $configFile = $this->checkConfiguration($configDir, $configFilename);
     
-    $yamlParser = new nbYamlConfigParser(new nbConfiguration());
+    $yamlParser = new nbYamlConfigParser();
     $yamlParser->parseFile($configFile, '', true);
   }
 

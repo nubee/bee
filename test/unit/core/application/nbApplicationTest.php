@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$t = new lime_test(34);
+$t = new lime_test(39);
 
 $fooArgument = new nbArgument('foo');
 $barOption = new nbOption('bar');
@@ -166,3 +166,24 @@ $t->is($foo->getLog(), 'Log message', 'command "foo" has logged correctly');
 
 $application->run('foo');
 $t->is($foo->getLog(), 'Log message', 'command "foo" has no log');
+
+
+$t->comment('nbApplicationTest - Test load dummy configuration');
+$dummy = new DummyCommandWithConfiguration();
+
+$serviceContainer->commandLoader->reset();
+$serviceContainer->commandLoader->addCommands(array($dummy));
+
+
+$application->run('dummyconfig');
+$t->is($dummy->getConfig('app_field0'), 'value1/value1', 'command has replaced tokens correctly');
+$t->is($dummy->getConfig('app_field1'), 'value1', 'command has loaded configuration correctly');
+$t->is($dummy->getConfig('app_field2'), 'value1', 'command has replaced tokens correctly');
+$t->is($dummy->getConfig('app_field3'), 'value1/value1/value1', 'command has replaced tokens correctly');
+
+$array = array(
+  array('key1' => 'value1'),
+  array('key2' => 'value2'),
+);
+
+$t->is($dummy->getConfig('app_array1'), $array, 'command has replaced array tokens correctly');

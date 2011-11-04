@@ -34,7 +34,7 @@ TXT
     $include = '';
     
     if(isset($options['config-file'])) {
-      $configDir = nbConfig::get('nb_plugins_dir') . '/nbFileSystemPlugin/config/';
+      $configDir = nbConfig::get('nb_plugins_dir') . '/nbFileSystemPlugin/config';
       $configFilename = $options['config-file'];
 
       $this->checkConfiguration($configDir, $configFilename);

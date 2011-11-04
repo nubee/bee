@@ -97,12 +97,17 @@ class nbConfiguration
 
     foreach(nbArrayUtils::getAssociative($config) as $path => $value) {
       if(is_array($value)) {
-        if(!nbArrayUtils::isAssociative($value)) 
-          $replaceTokens = $this->replaceTokens($value, $prefix, $path . '_');
+        if(!nbArrayUtils::isAssociative($value)) {
+          //echo 'Checking non associative path: ' . $path . "\n";
+          if($this->replaceTokens($value, $prefix, $path . '_'))
+            $replaceTokens = true;
+        }
         else  {
+          //echo 'Checking associative path: ' . $path . "\n";
           foreach($value as $i => $v) {
             //echo $v. "\n";
-            $replaceTokens = $this->replaceTokens($v, $prefix, $path . '_' . $i . '_');
+            if($this->replaceTokens($v, $prefix, $path . '_' . $i . '_'))
+              $replaceTokens = true;
           }
         }
       }

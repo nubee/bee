@@ -116,6 +116,7 @@ try {
 } catch (Exception $e) {
   $t->fail('->new doesn\'t throws exception');
 }
+
 /*
 $t->comment('nbCommandTest - Test options defined in nbConfig');
 $optionOptional = new nbOption('foo', '', nbOption::PARAMETER_OPTIONAL, '', 'defaultvalue');
