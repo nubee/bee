@@ -39,9 +39,6 @@ TXT
 
     $this->loadConfiguration($configDir, $configFilename);
 
-    $configParser = new nbYamlConfigParser();
-    $configParser->parseFile($pluginConfigFile);
-
     // Put site offline
     // TODO
 
