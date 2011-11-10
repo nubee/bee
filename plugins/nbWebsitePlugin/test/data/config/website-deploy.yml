@@ -6,8 +6,8 @@ exclude_list:      %web_base_dir%/config/exclude-list-website-plugin
 include_list:      %web_base_dir%/config/include-list-website-plugin
 app_source_dir:    %web_base_dir%/sourceTestSite
 app_prod_dir:      %web_base_dir%/../sandbox/%app_name%
-web_user:          www-data
-web_group:         www-data
+web_user:          %test_machine_user%
+web_group:         %test_machine_group%
 db_name:           dbtest
 db_username:       dbuser
 db_password:       
