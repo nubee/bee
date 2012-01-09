@@ -65,4 +65,4 @@ test:
     version-high: 4
   check-website: http://di-side.com
   application:   frontend
-  enviroment:    prod
+  environment:    prod

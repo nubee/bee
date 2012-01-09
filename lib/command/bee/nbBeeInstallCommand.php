@@ -47,7 +47,7 @@ TXT
         $this->executeShellCommand('ln -s ' . $dest . '/bee /usr/bin/bee');
       }
       else if(PHP_OS == "WINNT") {
-        $this->logLine('Remember to add ' . $dest . ' to your Path enviroment variable', nbLogger::COMMENT);
+        $this->logLine('Remember to add ' . $dest . ' to your Path environment variable', nbLogger::COMMENT);
       }
       else
         throw new Exception("Operating System not supported");

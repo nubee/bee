@@ -4,7 +4,7 @@ class nbSymfonyGoOnlineCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('symfony:go-online')
-      ->setBriefDescription('Puts a symfony application online in a specified enviroment')
+      ->setBriefDescription('Puts a symfony application online in a specified environment')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 
@@ -15,7 +15,7 @@ TXT
     $this->setArguments(new nbArgumentSet(array(
         new nbArgument('symfony-path', nbArgument::REQUIRED, 'Symfony executable path'),
         new nbArgument('application', nbArgument::REQUIRED, 'Symfony application'),
-        new nbArgument('enviroment', nbArgument::REQUIRED, 'Symfony enviroment')
+        new nbArgument('environment', nbArgument::REQUIRED, 'Symfony environment')
       )));
 
     $this->setOptions(new nbOptionSet(array(
@@ -25,7 +25,7 @@ TXT
   protected function execute(array $arguments = array(), array $options = array()) {
     $path = $arguments['symfony-path'];
     $application = $arguments['application'];
-    $environment = $arguments['enviroment'];
+    $environment = $arguments['environment'];
     
     $website = sprintf('%s/%s (%s)', $path, $application, $environment);
     

@@ -20,7 +20,7 @@ TXT
       )));
 
     $this->setOptions(new nbOptionSet(array(
-        new nbOption('env', 'e', nbOption::PARAMETER_REQUIRED, 'Enviroment'),
+        new nbOption('env', 'e', nbOption::PARAMETER_REQUIRED, 'Environment'),
       )));
   }
 

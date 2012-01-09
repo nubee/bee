@@ -11,4 +11,4 @@ $fileSystem = nbFileSystem::getInstance();
 $symfonyRootDir = nbConfig::get('symfony_project-deploy_symfony-root-dir');
 $symfonyExePath = nbConfig::get('symfony_project-deploy_symfony-exe-path');
 $application    = nbConfig::get('test_application');
-$environment    = nbConfig::get('test_enviroment');
+$environment    = nbConfig::get('test_environment');
