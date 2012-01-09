@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites failures="0" errors="0" tests="678" assertions="678" skipped="1">
+  <testsuite name="nbBeeInstallCommandTest" file="E:\git\bee\test\unit\command\bee\nbBeeInstallCommandTest.php" failures="0" errors="0" skipped="0" tests="0" assertions="0"/>
+  <testsuite name="nbCheckConfigurationCommandTest" file="E:\git\bee\test\unit\command\bee\nbCheckConfigurationCommandTest.php" failures="0" errors="0" skipped="0" tests="5" assertions="5">
+    <testcase name="Project configuration checked successfully" file="E:\git\bee\test\unit\command\bee\nbCheckConfigurationCommandTest.php" line="20" assertions="1"/>
+    <testcase name="Config file without required field not checked" file="E:\git\bee\test\unit\command\bee\nbCheckConfigurationCommandTest.php" line="27" assertions="1"/>
+    <testcase name="Config file without required child not checked" file="E:\git\bee\test\unit\command\bee\nbCheckConfigurationCommandTest.php" line="35" assertions="1"/>
+    <testcase name="No config file to check exists" file="E:\git\bee\test\unit\command\bee\nbCheckConfigurationCommandTest.php" line="43" assertions="1"/>
+    <testcase name="No template file to check exists" file="E:\git\bee\test\unit\command\bee\nbCheckConfigurationCommandTest.php" line="51" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbConfigurePluginCommandTest" file="E:\git\bee\test\unit\command\bee\nbConfigurePluginCommandTest.php" failures="0" errors="0" skipped="0" tests="3" assertions="3">
+    <testcase name="Plugin configured" file="E:\git\bee\test\unit\command\bee\nbConfigurePluginCommandTest.php" line="28" assertions="1"/>
+    <testcase name="Generated plugin config file content is correct" file="E:\git\bee\test\unit\command\bee\nbConfigurePluginCommandTest.php" line="32" assertions="1"/>
+    <testcase name="Generated command config file content is correct" file="E:\git\bee\test\unit\command\bee\nbConfigurePluginCommandTest.php" line="36" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbEnablePluginCommandTest" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" failures="0" errors="0" skipped="0" tests="12" assertions="12">
+    <testcase name="Command nbGenerateProjectCommand called successfully" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="28" assertions="1"/>
+    <testcase name="bee.yml added to the destination dir :E:\git\bee\test\bootstrap/../../test/sandbox/.bee/bee.yml" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="30" assertions="1"/>
+    <testcase name="config.yml added to the destination dir :E:\git\bee\test\bootstrap/../../test/sandbox/.bee/config.yml" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="31" assertions="1"/>
+    <testcase name="nbDummyPlugin not found" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="36" assertions="1"/>
+    <testcase name="Plugin enabled successfully" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="38" assertions="1"/>
+    <testcase name="nbDummyPlugin found" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="39" assertions="1"/>
+    <testcase name="plugin nbNonExistentPlugin not exists" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="49" assertions="1"/>
+    <testcase name="nbFileSystemPlugin not enabled" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="55" assertions="1"/>
+    <testcase name="Plugin nbFileSystemPlugin enabled" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="58" assertions="1"/>
+    <testcase name="nbDummyPlugin enabled" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="59" assertions="1"/>
+    <testcase name="nbFileSystemPlugin enabled" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="60" assertions="1"/>
+    <testcase name="configuration file added to the destination dir: E:\git\bee\test\bootstrap/../../test/sandbox/.bee/filesystem-plugin.yml" file="E:\git\bee\test\unit\command\bee\nbEnablePluginCommandTest.php" line="61" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbGenerateCommandCommandTest" file="E:\git\bee\test\unit\command\bee\nbGenerateCommandCommandTest.php" failures="0" errors="0" skipped="0" tests="6" assertions="6">
+    <testcase name="Command create new CommandFile in command folder" file="E:\git\bee\test\unit\command\bee\nbGenerateCommandCommandTest.php" line="13" assertions="1"/>
+    <testcase name="Command can overwrite a file" file="E:\git\bee\test\unit\command\bee\nbGenerateCommandCommandTest.php" line="16" assertions="1"/>
+    <testcase name="Command create new CommandFile in command folder" file="E:\git\bee\test\unit\command\bee\nbGenerateCommandCommandTest.php" line="19" assertions="1"/>
+    <testcase name="Command can create default (non namespace) commands" file="E:\git\bee\test\unit\command\bee\nbGenerateCommandCommandTest.php" line="22" assertions="1"/>
+    <testcase name="Command can create default (non namespace) commands" file="E:\git\bee\test\unit\command\bee\nbGenerateCommandCommandTest.php" line="25" assertions="1"/>
+    <testcase name="Command accept --directory option" file="E:\git\bee\test\unit\command\bee\nbGenerateCommandCommandTest.php" line="30" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbGenerateConfigurationCommandTest" file="E:\git\bee\test\unit\command\bee\nbGenerateConfigurationCommandTest.php" failures="0" errors="0" skipped="0" tests="3" assertions="3">
+    <testcase name="Project configuration generate successfully" file="E:\git\bee\test\unit\command\bee\nbGenerateConfigurationCommandTest.php" line="19" assertions="1"/>
+    <testcase name="Generated file content is correct" file="E:\git\bee\test\unit\command\bee\nbGenerateConfigurationCommandTest.php" line="23" assertions="1"/>
+    <testcase name="No template file to check exists" file="E:\git\bee\test\unit\command\bee\nbGenerateConfigurationCommandTest.php" line="32" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbGeneratePluginCommandTest" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" failures="0" errors="0" skipped="0" tests="18" assertions="18">
+    <testcase name="Command create new pluginName directory in plugin folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="16" assertions="1"/>
+    <testcase name="Command create new command directory in pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="17" assertions="1"/>
+    <testcase name="Command create new config directory in pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="18" assertions="1"/>
+    <testcase name="Command create new lib directory in pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="19" assertions="1"/>
+    <testcase name="Command create new test directory in pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="20" assertions="1"/>
+    <testcase name="Command create new vendor directory in pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="21" assertions="1"/>
+    <testcase name="otherDir folder created" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="25" assertions="1"/>
+    <testcase name="Command create new command directory in pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="28" assertions="1"/>
+    <testcase name="Command create new config directory in pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="29" assertions="1"/>
+    <testcase name="Command create new lib directory in pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="30" assertions="1"/>
+    <testcase name="Command create new test directory in pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="31" assertions="1"/>
+    <testcase name="Command create new vendor directory in pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="32" assertions="1"/>
+    <testcase name="otherDir folder removed" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="33" assertions="1"/>
+    <testcase name="Command create new command directory in pluginOtherDir/pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="38" assertions="1"/>
+    <testcase name="Command create new config directory in pluginOtherDir/pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="39" assertions="1"/>
+    <testcase name="Command create new lib directory in pluginOtherDir/pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="40" assertions="1"/>
+    <testcase name="Command create new test directory in pluginOtherDir/pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="41" assertions="1"/>
+    <testcase name="Command create new vendor directory in pluginOtherDir/pluginName folder" file="E:\git\bee\test\unit\command\bee\nbGeneratePluginCommandTest.php" line="42" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbGenerateProjectCommandTest" file="E:\git\bee\test\unit\command\bee\nbGenerateProjectCommandTest.php" failures="0" errors="0" skipped="0" tests="7" assertions="7">
+    <testcase name="Command nbGenerateProjectCommand called successfully" file="E:\git\bee\test\unit\command\bee\nbGenerateProjectCommandTest.php" line="14" assertions="1"/>
+    <testcase name="bee.yml added to the destination dir :E:\git\bee\test\bootstrap/../../test/sandbox/.bee/bee.yml" file="E:\git\bee\test\unit\command\bee\nbGenerateProjectCommandTest.php" line="16" assertions="1"/>
+    <testcase name="config.yml added to the destination dir :E:\git\bee\test\bootstrap/../../test/sandbox/.bee/config.yml" file="E:\git\bee\test\unit\command\bee\nbGenerateProjectCommandTest.php" line="17" assertions="1"/>
+    <testcase name="Exception nbFileSystem::copy() thrown" file="E:\git\bee\test\unit\command\bee\nbGenerateProjectCommandTest.php" line="24" assertions="1"/>
+    <testcase name="Command nbGenerateProjectCommand called successfully" file="E:\git\bee\test\unit\command\bee\nbGenerateProjectCommandTest.php" line="27" assertions="1"/>
+    <testcase name="bee.yml added to the destination dir :E:\git\bee\test\bootstrap/../../test/sandbox/.bee/bee.yml" file="E:\git\bee\test\unit\command\bee\nbGenerateProjectCommandTest.php" line="29" assertions="1"/>
+    <testcase name="config.yml added to the destination dir :E:\git\bee\test\bootstrap/../../test/sandbox/.bee/config.yml" file="E:\git\bee\test\unit\command\bee\nbGenerateProjectCommandTest.php" line="30" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbPrintConfigurationCommandTest" file="E:\git\bee\test\unit\command\bee\nbPrintConfigurationCommandTest.php" failures="0" errors="0" skipped="0" tests="2" assertions="2">
+    <testcase name="Project configuration printed successfully" file="E:\git\bee\test\unit\command\bee\nbPrintConfigurationCommandTest.php" line="16" assertions="1"/>
+    <testcase name="No config file to print exists" file="E:\git\bee\test\unit\command\bee\nbPrintConfigurationCommandTest.php" line="24" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbHelpCommandTest" file="E:\git\bee\test\unit\command\nbHelpCommandTest.php" failures="0" errors="0" skipped="0" tests="3" assertions="3">
+    <testcase name="-&gt;getName() is &quot;help&quot;" file="E:\git\bee\test\unit\command\nbHelpCommandTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;run() throws an Exception if command is not found" file="E:\git\bee\test\unit\command\nbHelpCommandTest.php" line="30" assertions="1"/>
+    <testcase name="-&gt;run() didn't call nbApplication::formatHelpString()" file="E:\git\bee\test\unit\command\nbHelpCommandTest.php" line="32" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbShellExecuteCommandTest" file="E:\git\bee\test\unit\command\shell\nbShellExecuteCommandTest.php" failures="0" errors="0" skipped="0" tests="5" assertions="5">
+    <testcase name="-&gt;getAlias() returns null if param isn't an alias" file="E:\git\bee\test\unit\command\shell\nbShellExecuteCommandTest.php" line="16" assertions="1"/>
+    <testcase name="-&gt;getAlias() returns real command if param is an alias" file="E:\git\bee\test\unit\command\shell\nbShellExecuteCommandTest.php" line="19" assertions="1"/>
+    <testcase name="-&gt;getAlias() returns real command if param is an alias" file="E:\git\bee\test\unit\command\shell\nbShellExecuteCommandTest.php" line="20" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\command\shell\nbShellExecuteCommandTest.php" line="24" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\command\shell\nbShellExecuteCommandTest.php" line="29" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbLimeTestCommandTest" file="E:\git\bee\test\unit\command\test\nbLimeTestCommandTest.php" failures="0" errors="0" skipped="0" tests="1" assertions="1">
+    <testcase name="no tests" file="E:\git\bee\test\unit\command\test\nbLimeTestCommandTest.php" line="5" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbApplicationTest" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" failures="0" errors="0" skipped="0" tests="39" assertions="39">
+    <testcase name="-&gt;getName() is &quot;UNDEFINED&quot;" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="12" assertions="1"/>
+    <testcase name="-&gt;getVersion() is &quot;UNDEFINED&quot;" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="13" assertions="1"/>
+    <testcase name="__construct() returns an application with arguments" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="14" assertions="1"/>
+    <testcase name="__construct() returns an application with options" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="15" assertions="1"/>
+    <testcase name="__construct() returns an application without commands" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="16" assertions="1"/>
+    <testcase name="__construct() returns an application with an argument" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="19" assertions="1"/>
+    <testcase name="__construct() returns an application with 2 arguments" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="20" assertions="1"/>
+    <testcase name="__construct() returns an application with an option" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="23" assertions="1"/>
+    <testcase name="__construct() returns an application with 5 options" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="24" assertions="1"/>
+    <testcase name="-&gt;run() executes command &quot;foo&quot;" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="37" assertions="1"/>
+    <testcase name="-&gt;run() executes command &quot;bar test&quot;" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="39" assertions="1"/>
+    <testcase name="-&gt;run() executes command &quot;bar test&quot;" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="40" assertions="1"/>
+    <testcase name="-&gt;run() executes command &quot;bas -f&quot;" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="42" assertions="1"/>
+    <testcase name="-&gt;run() executes command &quot;bas -f&quot;" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="43" assertions="1"/>
+    <testcase name="-&gt;run() executes command &quot;fas&quot; with alias &quot;fou&quot;" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="45" assertions="1"/>
+    <testcase name="nbApplication::verifyOption() throws if there are some options in beeApplication and in new command" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="65" assertions="1"/>
+    <testcase name="nbApplication::verifyOption() doesn't throw if there are different options in beeApplication and in new command" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="70" assertions="1"/>
+    <testcase name="nbApplication::verifyOption() doesn't throw if there are different options in beeApplication and in new command" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="78" assertions="1"/>
+    <testcase name="option &quot;--config&quot; overrides nbConfig property" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="94" assertions="1"/>
+    <testcase name="command &quot;foo&quot; has executed" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="95" assertions="1"/>
+    <testcase name="option &quot;--config&quot; overrides nbConfig property" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="104" assertions="1"/>
+    <testcase name="command &quot;foo&quot; has executed" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="105" assertions="1"/>
+    <testcase name="option &quot;--config&quot; overrides nbConfig property" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="114" assertions="1"/>
+    <testcase name="command &quot;foo&quot; has executed" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="115" assertions="1"/>
+    <testcase name="option &quot;--config&quot; overrides nbConfig property" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="124" assertions="1"/>
+    <testcase name="command &quot;foo&quot; has executed" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="125" assertions="1"/>
+    <testcase name="option &quot;--config&quot; creates nbConfig property" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="134" assertions="1"/>
+    <testcase name="command &quot;foo&quot; has executed" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="135" assertions="1"/>
+    <testcase name="option &quot;--config&quot; creates multiple nbConfig properties" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="144" assertions="1"/>
+    <testcase name="option &quot;--config&quot; creates multiple nbConfig properties" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="145" assertions="1"/>
+    <testcase name="command &quot;foo&quot; has executed" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="146" assertions="1"/>
+    <testcase name="option --enable-plugin enables a single plugin" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="154" assertions="1"/>
+    <testcase name="command &quot;foo&quot; has logged correctly" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="165" assertions="1"/>
+    <testcase name="command &quot;foo&quot; has no log" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="168" assertions="1"/>
+    <testcase name="command has replaced tokens correctly" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="179" assertions="1"/>
+    <testcase name="command has loaded configuration correctly" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="180" assertions="1"/>
+    <testcase name="command has replaced tokens correctly" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="181" assertions="1"/>
+    <testcase name="command has replaced tokens correctly" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="182" assertions="1"/>
+    <testcase name="command has replaced array tokens correctly" file="E:\git\bee\test\unit\core\application\nbApplicationTest.php" line="189" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbBeeApplicationTest" file="E:\git\bee\test\unit\core\application\nbBeeApplicationTest.php" failures="0" errors="0" skipped="0" tests="4" assertions="4">
+    <testcase name="-&gt;getName() is &quot;bee&quot;" file="E:\git\bee\test\unit\core\application\nbBeeApplicationTest.php" line="16" assertions="1"/>
+    <testcase name="-&gt;getVersion() is &quot;0.1.0&quot;" file="E:\git\bee\test\unit\core\application\nbBeeApplicationTest.php" line="17" assertions="1"/>
+    <testcase name="-&gt;run() outputs application version" file="E:\git\bee\test\unit\core\application\nbBeeApplicationTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;run() outputs long application version" file="E:\git\bee\test\unit\core\application\nbBeeApplicationTest.php" line="21" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbAutoloadTest" file="E:\git\bee\test\unit\core\autoload\nbAutoloadTest.php" failures="0" errors="0" skipped="0" tests="4" assertions="4">
+    <testcase name="class &quot;TestClass&quot; not found before &quot;register&quot;" file="E:\git\bee\test\unit\core\autoload\nbAutoloadTest.php" line="17" assertions="1"/>
+    <testcase name="autoload included &quot;TestClass&quot; file" file="E:\git\bee\test\unit\core\autoload\nbAutoloadTest.php" line="22" assertions="1"/>
+    <testcase name="-&gt;addDirectory($dir, *.php, false) didn't included files recursively " file="E:\git\bee\test\unit\core\autoload\nbAutoloadTest.php" line="23" assertions="1"/>
+    <testcase name="-&gt;addDirectory($dir, *.php, true) included &quot;SubClass&quot; recursively" file="E:\git\bee\test\unit\core\autoload\nbAutoloadTest.php" line="26" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbAliasCommandTest" file="E:\git\bee\test\unit\core\command\nbAliasCommandTest.php" failures="0" errors="0" skipped="0" tests="8" assertions="8">
+    <testcase name="-&gt;getFullName() returns a name without &quot;:&quot;" file="E:\git\bee\test\unit\core\command\nbAliasCommandTest.php" line="15" assertions="1"/>
+    <testcase name="-&gt;getArguments() returns 1 argument" file="E:\git\bee\test\unit\core\command\nbAliasCommandTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;getOptions() returns 1 options" file="E:\git\bee\test\unit\core\command\nbAliasCommandTest.php" line="19" assertions="1"/>
+    <testcase name="-&gt;getBriefDescription() returns a the contained command description" file="E:\git\bee\test\unit\core\command\nbAliasCommandTest.php" line="22" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbAliasCommandTest.php" line="25" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbAliasCommandTest.php" line="26" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbAliasCommandTest.php" line="30" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbAliasCommandTest.php" line="31" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbArgumentSetTest" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" failures="0" errors="0" skipped="0" tests="27" assertions="27">
+    <testcase name="-&gt;__construct() has no arguments" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="16" assertions="1"/>
+    <testcase name="-&gt;__construct() has no required arguments" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="17" assertions="1"/>
+    <testcase name="-&gt;__construct() builds an empty set" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;__construct() has no argument &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="19" assertions="1"/>
+    <testcase name="-&gt;__construct() has 1 argument" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="23" assertions="1"/>
+    <testcase name="-&gt;__contruct() has no required arguments" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="24" assertions="1"/>
+    <testcase name="-&gt;__construct() built a set with argument &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="25" assertions="1"/>
+    <testcase name="-&gt;addArguments() added an array of arguments" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="31" assertions="1"/>
+    <testcase name="-&gt;addArguments() does not clear previous arguments" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="33" assertions="1"/>
+    <testcase name="-&gt;addArgument() added argument &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="39" assertions="1"/>
+    <testcase name="-&gt;addArgument() throws an InvalidArgumentException if an argument with the same name is added" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="46" assertions="1"/>
+    <testcase name="-&gt;addArgument() throws an InvalidArgumentException if there is an array parameter already registered" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="55" assertions="1"/>
+    <testcase name="-&gt;addArgument() throws an InvalidArgumentException if you try to add a required argument after an optional one" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="65" assertions="1"/>
+    <testcase name="-&gt;getArgument() returns an nbArgument by its name" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="71" assertions="1"/>
+    <testcase name="-&gt;getArgument() throws a RangeException exception if the argument name does not exist" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="77" assertions="1"/>
+    <testcase name="-&gt;hasArgument() returns true if an nbArgument exists for the given name" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="83" assertions="1"/>
+    <testcase name="-&gt;hasArgument() returns false if an nbArgument does not exists for the given name" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="84" assertions="1"/>
+    <testcase name="-&gt;countRequired() returns the number of required arguments" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="89" assertions="1"/>
+    <testcase name="-&gt;countRequired() returns the number of required arguments" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="91" assertions="1"/>
+    <testcase name="-&gt;count() returns the number of arguments" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="97" assertions="1"/>
+    <testcase name="-&gt;count() returns the number of arguments" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="99" assertions="1"/>
+    <testcase name="-&gt;getDefaultValues() returns the default values for each argument" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="113" assertions="1"/>
+    <testcase name="-&gt;getDefaultValues() return the default values for each argument" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="119" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot;&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="123" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot; [foo]&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="125" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot; required [foo]&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="127" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot; required [foo] [array1] ... [arrayN]&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentSetTest.php" line="129" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbArgumentTest" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" failures="0" errors="0" skipped="0" tests="19" assertions="19">
+    <testcase name="-&gt;getName() is &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="9" assertions="1"/>
+    <testcase name="-&gt;getValue() returns &quot;default&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="10" assertions="1"/>
+    <testcase name="-&gt;getDescription() is &quot;The argument&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="11" assertions="1"/>
+    <testcase name="argument name can't be empty" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;getName() argument name is &quot;command&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="23" assertions="1"/>
+    <testcase name="-&gt;isRequired() argument is required" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="24" assertions="1"/>
+    <testcase name="-&gt;getValue() throws if required argument has not been set" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="31" assertions="1"/>
+    <testcase name="-&gt;getValue() returns 'list'" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="35" assertions="1"/>
+    <testcase name="-&gt;getName() argument name is &quot;command&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="39" assertions="1"/>
+    <testcase name="-&gt;isRequired() argument is not required" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="40" assertions="1"/>
+    <testcase name="-&gt;__construct() throws an Exception if the mode is not valid" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="49" assertions="1"/>
+    <testcase name="-&gt;isArray() returns true if the argument can be an array" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="54" assertions="1"/>
+    <testcase name="-&gt;isArray() returns true if the argument can be an array" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="56" assertions="1"/>
+    <testcase name="-&gt;isArray() returns false if the argument can not be an array" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="58" assertions="1"/>
+    <testcase name="-&gt;getValue() returns &quot;value&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="62" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot;[foo]&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="66" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="69" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot;[foo1] ... [fooN]&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="72" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot;foo1 ... fooN&quot;" file="E:\git\bee\test\unit\core\command\nbArgumentTest.php" line="75" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbChainCommandTest" file="E:\git\bee\test\unit\core\command\nbChainCommandTest.php" failures="0" errors="0" skipped="0" tests="9" assertions="9">
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbChainCommandTest.php" line="29" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbChainCommandTest.php" line="33" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbChainCommandTest.php" line="34" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbChainCommandTest.php" line="38" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbChainCommandTest.php" line="39" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbChainCommandTest.php" line="40" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbChainCommandTest.php" line="45" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbChainCommandTest.php" line="46" assertions="1"/>
+    <testcase name="" file="E:\git\bee\test\unit\core\command\nbChainCommandTest.php" line="47" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbCommandLineParserTest" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" failures="0" errors="0" skipped="1" tests="108" assertions="108">
+    <testcase name="__construct() creates a new nbArgumentsSet if none given" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="11" assertions="1"/>
+    <testcase name="__construct() creates a new nbOptionSet if none given" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="12" assertions="1"/>
+    <testcase name="__construct() takes an array as its first argument" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="15" assertions="1"/>
+    <testcase name="__construct()  builds an argument set with an empty array as its first argument" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="16" assertions="1"/>
+    <testcase name="__construct() takes a nbOptionSet as its second argument" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="19" assertions="1"/>
+    <testcase name="__construct() builds an option set with an empty array as its second argument" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="20" assertions="1"/>
+    <testcase name="-&gt;setArguments() sets the parser argument set" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="26" assertions="1"/>
+    <testcase name="-&gt;addArguments() does not clear the argument set" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="32" assertions="1"/>
+    <testcase name="-&gt;setOptions() sets the parser option set" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="38" assertions="1"/>
+    <testcase name="-&gt;addOptions() does not clear the option set" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="44" assertions="1"/>
+    <testcase name="-&gt;parse() parses CLI options" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="89" assertions="1"/>
+    <testcase name="-&gt;parse() parses CLI options" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="90" assertions="1"/>
+    <testcase name="-&gt;parse() parses CLI options" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="91" assertions="1"/>
+    <testcase name="-&gt;parse() parses CLI options" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="108" assertions="1"/>
+    <testcase name="-&gt;parse() parses CLI options" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="109" assertions="1"/>
+    <testcase name="-&gt;parse() parses CLI options" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="110" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() returns the value for the given option name" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="115" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() returns the value for the given option name" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="115" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() returns the value for the given option name" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="115" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() throws a nbCommandException if the option name does not exist" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="122" assertions="1"/>
+    <testcase name="-&gt;getArgumentValue() returns the value for the given argument name" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="128" assertions="1"/>
+    <testcase name="-&gt;getArgumentValue() returns the value for the given argument name" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="128" assertions="1"/>
+    <testcase name="-&gt;getArgumentValue() throws a nbCommandException if the argument name does not exist" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="135" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue() returns true for the option &quot;foo3&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="139" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue() returns false for the argument &quot;foo15&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="140" assertions="1"/>
+    <testcase name="-&gt;hasArgumentValue() returns true for the argument &quot;foo1&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="143" assertions="1"/>
+    <testcase name="-&gt;hasArgumentValue() returns false for the argument &quot;foo3&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="144" assertions="1"/>
+    <testcase name="-&gt;isValid() returns false if the arguments are not valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="150" assertions="1"/>
+    <testcase name="-&gt;getErrors() returns an array of errors" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="151" assertions="1"/>
+    <testcase name="-&gt;isValid() returns false if the arguments are not valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="156" assertions="1"/>
+    <testcase name="-&gt;getErrors() returns an array of errors" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="157" assertions="1"/>
+    <testcase name="-&gt;isValid() returns false if the options are not valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="162" assertions="1"/>
+    <testcase name="-&gt;getErrors() returns an array of errors" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="163" assertions="1"/>
+    <testcase name="-&gt;isValid() returns false if the options are not valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="168" assertions="1"/>
+    <testcase name="-&gt;getErrors() returns an array of errors" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="169" assertions="1"/>
+    <testcase name="-&gt;isValid() returns true if the options are valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="178" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() returns &quot;argfoo&quot; if param is &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="179" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() returns &quot;argbar&quot; if param is &quot;bar&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="180" assertions="1"/>
+    <testcase name="-&gt;isValid() returns true if the options are valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="183" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() returns &quot;argfoo&quot; if param is &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="184" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() returns &quot;&quot; if param is &quot;bar&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="185" assertions="1"/>
+    <testcase name="-&gt;isValid() returns true if the options are valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="189" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() returns &quot;argfoo&quot; if param is &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="191" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() returns &quot;&quot; if param is &quot;bar&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="192" assertions="1"/>
+    <testcase name="-&gt;isValid() returns false if the options are not valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="195" assertions="1"/>
+    <testcase name="-&gt;isValid() returns false if the options are not valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="200" assertions="1"/>
+    <testcase name="-&gt;getErrors() returns an array of errors" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="201" assertions="1"/>
+    <testcase name="-&gt;isValid() returns false if the options are not valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="206" assertions="1"/>
+    <testcase name="-&gt;getErrors() returns an array of errors" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="207" assertions="1"/>
+    <testcase name="-&gt;isValid() returns false if the options are not valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="211" assertions="1"/>
+    <testcase name="-&gt;getErrors() returns an array of errors" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="212" assertions="1"/>
+    <testcase name="-&gt;isValid() returns false if the options are not valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="216" assertions="1"/>
+    <testcase name="-&gt;getErrors() returns an array of errors" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="217" assertions="1"/>
+    <testcase name="-&gt;isValid() returns false if the options are not valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="221" assertions="1"/>
+    <testcase name="-&gt;getErrors() returns an array of errors" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="222" assertions="1"/>
+    <testcase name="-&gt;parse() with &quot;--&quot; stops parsing the command line" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="228" assertions="1"/>
+    <testcase name="-&gt;parse() with command line set as array" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="241" assertions="1"/>
+    <testcase name="-&gt;parse() parse with success the commandline &quot;foo1'arg&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="254" assertions="1"/>
+    <testcase name="-&gt;getArgumentValue() return &quot;foo1'arg&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="255" assertions="1"/>
+    <testcase name="-&gt;parse() parse with success the commandline 'foo1&quot;arg'" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="258" assertions="1"/>
+    <testcase name="-&gt;parse() return 'foo1&quot;arg'" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="259" assertions="1"/>
+    <testcase name="# TODO how is work?" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="262" assertions="1"/>
+    <testcase name="-&gt;parse() parse with success the empty commandline" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="273" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue() returns &quot;false&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="274" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue() returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="278" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() returns &quot;defaultvalue&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="279" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue() returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="283" assertions="1"/>
+    <testcase name="-&gt;getOptionValue() returns &quot;avalue&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="284" assertions="1"/>
+    <testcase name="-&gt;parse() with config file option and default value" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="295" assertions="1"/>
+    <testcase name="-&gt;parse() with config file option and set value" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="299" assertions="1"/>
+    <testcase name="-&gt;parse() error when config file has no default value" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="316" assertions="1"/>
+    <testcase name="-&gt;parse() success with config file" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="339" assertions="1"/>
+    <testcase name="-&gt;hasArgumentValue(argumentRequired) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="340" assertions="1"/>
+    <testcase name="-&gt;getArgumentValue(argumentRequired) returns &quot;fooRequiredCfg&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="341" assertions="1"/>
+    <testcase name="-&gt;hasArgumentValue(argOptional) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="342" assertions="1"/>
+    <testcase name="-&gt;getArgumentValue(argumentOptional) returns &quot;fooOptionalCfg&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="343" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue(optionWithParameter) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="344" assertions="1"/>
+    <testcase name="-&gt;getOptionValue(optionWithParameter) returns &quot;barParameterCfg&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="345" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue(optionDisabledCfg) returns &quot;false&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="346" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue(optionCfg) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="347" assertions="1"/>
+    <testcase name="-&gt;getOptionValue(optionCfg) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="348" assertions="1"/>
+    <testcase name="-&gt;parse() success with config file" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="353" assertions="1"/>
+    <testcase name="-&gt;hasArgumentValue(argumentRequired) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="354" assertions="1"/>
+    <testcase name="-&gt;getArgumentValue(argumentRequired) returns &quot;bar&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="355" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue(optionWithParameter) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="356" assertions="1"/>
+    <testcase name="-&gt;getOptionValue(optionWithParameter) returns &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="357" assertions="1"/>
+    <testcase name="-&gt;hasArgumentValue(argOptional) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="358" assertions="1"/>
+    <testcase name="-&gt;getArgumentValue(argumentOptional) returns &quot;fooOptionalCfg&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="359" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue(optionDisabledCfg) returns &quot;false&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="360" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue(optionCfg) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="361" assertions="1"/>
+    <testcase name="-&gt;getOptionValue(optionCfg) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="362" assertions="1"/>
+    <testcase name="-&gt;hasArgumentValue(argumentRequired) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="366" assertions="1"/>
+    <testcase name="-&gt;getArgumentValue(argumentRequired) returns &quot;bar&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="367" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue(optionWithParameter) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="368" assertions="1"/>
+    <testcase name="-&gt;getOptionValue(optionWithParameter) returns &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="369" assertions="1"/>
+    <testcase name="-&gt;hasArgumentValue(argOptional) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="370" assertions="1"/>
+    <testcase name="-&gt;getArgumentValue(argumentOptional) returns &quot;fooOptionalCfg&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="371" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue(optionDisabledCfg) returns &quot;false&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="372" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue(optionCfg) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="373" assertions="1"/>
+    <testcase name="-&gt;getOptionValue(optionCfg) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="374" assertions="1"/>
+    <testcase name="-&gt;hasOptionValue(otherOptionWithParameter) returns &quot;true&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="375" assertions="1"/>
+    <testcase name="-&gt;getOptionValue(otherOptionWithParameter) returns &quot;bar2ParameterDefault&quot;" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="376" assertions="1"/>
+    <testcase name="Default configuration dir is E:\git\bee\test\bootstrap/../../test/data/config" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="382" assertions="1"/>
+    <testcase name="File was found in E:\git\bee\test\bootstrap/../../test/data/config" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="387" assertions="1"/>
+    <testcase name="File doesn't exists" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="388" assertions="1"/>
+    <testcase name="The file exists: E:\git\bee\test\bootstrap/../../test/data/config/config.ok.yml" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="396" assertions="1"/>
+    <testcase name="File doesn't exists" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="398" assertions="1"/>
+    <testcase name="Only file (not dir) is valid" file="E:\git\bee\test\unit\core\command\nbCommandLineParserTest.php" line="399" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbCommandLoaderTest" file="E:\git\bee\test\unit\core\command\nbCommandLoaderTest.php" failures="0" errors="0" skipped="0" tests="6" assertions="6">
+    <testcase name="-&gt;getCommands() after ctor is empty" file="E:\git\bee\test\unit\core\command\nbCommandLoaderTest.php" line="14" assertions="1"/>
+    <testcase name="-&gt;loadCommands() has loaded 0 commands" file="E:\git\bee\test\unit\core\command\nbCommandLoaderTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;loadCommands() has loaded 1 commands" file="E:\git\bee\test\unit\core\command\nbCommandLoaderTest.php" line="22" assertions="1"/>
+    <testcase name="-&gt;loadCommands() has loaded 1 commands" file="E:\git\bee\test\unit\core\command\nbCommandLoaderTest.php" line="23" assertions="1"/>
+    <testcase name="-&gt;loadCommandAliases() has loaded 1 alias" file="E:\git\bee\test\unit\core\command\nbCommandLoaderTest.php" line="28" assertions="1"/>
+    <testcase name="-&gt;loadCommandAliases() has loaded 1 alias with no namespace" file="E:\git\bee\test\unit\core\command\nbCommandLoaderTest.php" line="34" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbCommandSetTest" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" failures="0" errors="0" skipped="0" tests="35" assertions="35">
+    <testcase name="-&gt;__construct() has no commands" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="13" assertions="1"/>
+    <testcase name="-&gt;__construct() builds an empty set" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="14" assertions="1"/>
+    <testcase name="-&gt;__construct() has no command &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="15" assertions="1"/>
+    <testcase name="-&gt;__construct() has 1 command" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="19" assertions="1"/>
+    <testcase name="-&gt;__construct() built a set with command &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="20" assertions="1"/>
+    <testcase name="-&gt;__construct() built a set with command &quot;:foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="21" assertions="1"/>
+    <testcase name="-&gt;__construct() built a set with command &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="22" assertions="1"/>
+    <testcase name="-&gt;__construct() built a set with command &quot;:foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="23" assertions="1"/>
+    <testcase name="-&gt;addCommands() added an array of commands" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="29" assertions="1"/>
+    <testcase name="-&gt;addCommands() does not clear previous commands" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="31" assertions="1"/>
+    <testcase name="-&gt;addCommand() added command &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="37" assertions="1"/>
+    <testcase name="-&gt;addCommand() throws an InvalidCommandException if an command with the same name is added" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="44" assertions="1"/>
+    <testcase name="-&gt;getCommand() returns an nbCommand by its name" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="50" assertions="1"/>
+    <testcase name="-&gt;getCommand() throws a RangeException exception if the command name does not exist" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="56" assertions="1"/>
+    <testcase name="-&gt;getCommand() returns an nbCommand by its shortcut" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="59" assertions="1"/>
+    <testcase name="-&gt;hasCommand() returns true if an nbCommand exists with name &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="64" assertions="1"/>
+    <testcase name="-&gt;hasCommand() returns true if an nbCommand exists with shortcut &quot;f&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="65" assertions="1"/>
+    <testcase name="-&gt;hasCommand() returns false if an nbCommand does not exists with shortcut &quot;bar&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="66" assertions="1"/>
+    <testcase name="-&gt;count() returns the number of commands" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="72" assertions="1"/>
+    <testcase name="-&gt;count() returns the number of commands" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="74" assertions="1"/>
+    <testcase name="-&gt;hasCommand() returns true for shortcut &quot;f&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="82" assertions="1"/>
+    <testcase name="-&gt;hasCommand() returns true for shortcut &quot;f&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="83" assertions="1"/>
+    <testcase name="-&gt;hasCommand() returns false for shortcut &quot;u&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="84" assertions="1"/>
+    <testcase name="-&gt;hasCommand() returns false for shortcut &quot;b&quot; because ambiguous" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="85" assertions="1"/>
+    <testcase name="-&gt;hasCommand() returns false for shortcut &quot;ns:b&quot; because ambiguous" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="86" assertions="1"/>
+    <testcase name="-&gt;hasCommand() returns true for shortcut &quot;ns:bar&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="87" assertions="1"/>
+    <testcase name="-&gt;getCommand() returns a valid command for shortcut &quot;f&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="88" assertions="1"/>
+    <testcase name="-&gt;getByShortcut() throw a RangeException for shortcut &quot;u&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="95" assertions="1"/>
+    <testcase name="-&gt;getByShortcut() throw a RangeException for shortcut &quot;b&quot; because ambiguous" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="103" assertions="1"/>
+    <testcase name="-&gt;getByShortcut() throw a RangeException for shortcut &quot;ns:ba&quot; because ambiguous" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="111" assertions="1"/>
+    <testcase name="-&gt;hasCommand() returns true for alias &quot;b&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="118" assertions="1"/>
+    <testcase name="-&gt;hasCommand() returns true for alias &quot;bar&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="119" assertions="1"/>
+    <testcase name="-&gt;getCommand() returns a command for alias &quot;b&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="120" assertions="1"/>
+    <testcase name="-&gt;getCommand() returns a command for alias &quot;bar&quot;" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="121" assertions="1"/>
+    <testcase name="-&gt;new doesn't throws exception" file="E:\git\bee\test\unit\core\command\nbCommandSetTest.php" line="128" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbCommandTest" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" failures="0" errors="0" skipped="0" tests="40" assertions="40">
+    <testcase name="command name can't be empty" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="19" assertions="1"/>
+    <testcase name="command name can't be empty" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="26" assertions="1"/>
+    <testcase name="-&gt;__construct() returns a command with no arguments" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="30" assertions="1"/>
+    <testcase name="-&gt;__construct() returns a command with no options" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="31" assertions="1"/>
+    <testcase name="-&gt;getName() returns a command with name &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="34" assertions="1"/>
+    <testcase name="-&gt;getName() returns a command with name &quot;bar&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="35" assertions="1"/>
+    <testcase name="-&gt;getNamespace() returns an empty namespace" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="38" assertions="1"/>
+    <testcase name="-&gt;getNamespace() returns a namespace &quot;ns&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="39" assertions="1"/>
+    <testcase name="-&gt;getFullName() returns a name without &quot;:&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="42" assertions="1"/>
+    <testcase name="-&gt;__construct() returns &quot;ns:bar&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="43" assertions="1"/>
+    <testcase name="-&gt;getArguments() returns 0 arguments" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="46" assertions="1"/>
+    <testcase name="-&gt;getArguments() returns 1 argument" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="47" assertions="1"/>
+    <testcase name="-&gt;getArguments() returns 0 arguments" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="48" assertions="1"/>
+    <testcase name="-&gt;addArgument() added 1 argument" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="52" assertions="1"/>
+    <testcase name="-&gt;getOptions() returns 0 options" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="55" assertions="1"/>
+    <testcase name="-&gt;getOptions() returns 0 options" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="56" assertions="1"/>
+    <testcase name="-&gt;getOptions() returns 1 option" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="57" assertions="1"/>
+    <testcase name="-&gt;addOption() added 1 option" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="61" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() is true with &quot;f&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="68" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() is true with &quot;:f&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="69" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() is true with &quot;b&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="70" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() is true with &quot;:b&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="71" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() is true with &quot;n:b&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="72" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() is true with &quot;ns:b&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="73" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() is true with &quot;b&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="74" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() is true with &quot;:b&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="75" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() is true with &quot;ns:d&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="76" assertions="1"/>
+    <testcase name="-&gt;getBriefDescrition() is &quot;&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="80" assertions="1"/>
+    <testcase name="-&gt;getBriefDescrition() is &quot;command brief description&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="82" assertions="1"/>
+    <testcase name="-&gt;getDescription() is &quot;&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="86" assertions="1"/>
+    <testcase name="-&gt;getDescription() is &quot;command description&quot;" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="88" assertions="1"/>
+    <testcase name="-&gt;hasAliases() returns false" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="92" assertions="1"/>
+    <testcase name="-&gt;hasAlias() returns false" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="93" assertions="1"/>
+    <testcase name="-&gt;hasAliases() returns true" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="95" assertions="1"/>
+    <testcase name="-&gt;hasAlias() returns true" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="96" assertions="1"/>
+    <testcase name="-&gt;setAliases() sets 2 alias" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="100" assertions="1"/>
+    <testcase name="-&gt;hasAlias() returns true" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="101" assertions="1"/>
+    <testcase name="-&gt;hasAlias() returns true" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="102" assertions="1"/>
+    <testcase name="-&gt;setAlias() throws an InvalidArgumentException if command alias already defined" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="109" assertions="1"/>
+    <testcase name="-&gt;new doesn't throws exception" file="E:\git\bee\test\unit\core\command\nbCommandTest.php" line="115" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbOptionSetTest" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" failures="0" errors="0" skipped="0" tests="29" assertions="29">
+    <testcase name="-&gt;__construct() has no options" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;__construct() has no required options" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="19" assertions="1"/>
+    <testcase name="-&gt;__construct() builds an empty set" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="20" assertions="1"/>
+    <testcase name="-&gt;__construct() has no option &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="21" assertions="1"/>
+    <testcase name="-&gt;__construct() has 1 option" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="25" assertions="1"/>
+    <testcase name="-&gt;__contruct() has no required options" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="26" assertions="1"/>
+    <testcase name="-&gt;__construct() built a set with option &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="27" assertions="1"/>
+    <testcase name="-&gt;addOptions() added an array of options" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="33" assertions="1"/>
+    <testcase name="-&gt;addOptions() does not clear previous options" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="35" assertions="1"/>
+    <testcase name="-&gt;addOption() added option &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="41" assertions="1"/>
+    <testcase name="-&gt;addOption() throws an InvalidOptionException if an option with the same name is added" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="48" assertions="1"/>
+    <testcase name="-&gt;getOption() returns an nbOption by its name" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="54" assertions="1"/>
+    <testcase name="-&gt;getOption() throws a RangeException exception if the option name does not exist" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="60" assertions="1"/>
+    <testcase name="-&gt;getOption() returns an nbOption by its shortcut" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="63" assertions="1"/>
+    <testcase name="-&gt;hasOption() returns true if an nbOption exists for the given name" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="68" assertions="1"/>
+    <testcase name="-&gt;hasOption() returns true if an nbOption exists for the given shortcut" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="69" assertions="1"/>
+    <testcase name="-&gt;hasOption() returns false if an nbOption does not exists for the given name" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="70" assertions="1"/>
+    <testcase name="-&gt;countRequired() returns the number of required options" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="75" assertions="1"/>
+    <testcase name="-&gt;countRequired() returns the number of required options" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="77" assertions="1"/>
+    <testcase name="-&gt;count() returns the number of options" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="83" assertions="1"/>
+    <testcase name="-&gt;count() returns the number of options" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="85" assertions="1"/>
+    <testcase name="-&gt;getDefaultValues() returns the default values for each option" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="99" assertions="1"/>
+    <testcase name="-&gt;getDefaultValues() return the default values for each option" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="105" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() returns true for shortcut &quot;f&quot;" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="113" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() returns false for shortcut &quot;u&quot;" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="114" assertions="1"/>
+    <testcase name="-&gt;getByShortcut() returns a valid option for shortcut &quot;f&quot;" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="115" assertions="1"/>
+    <testcase name="-&gt;getByShortcut() throw a RangeException for shortcut &quot;u&quot;" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="122" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot;&quot;" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="127" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot; [-f|--foo]&quot;" file="E:\git\bee\test\unit\core\command\nbOptionSetTest.php" line="129" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbOptionTest" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" failures="0" errors="0" skipped="0" tests="37" assertions="37">
+    <testcase name="Couldn't create option without name" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="14" assertions="1"/>
+    <testcase name="Couldn't create option with name shorter than 3 letters" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="23" assertions="1"/>
+    <testcase name="Couldn't create option with shortcut longer than 1 letter" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="32" assertions="1"/>
+    <testcase name="-&gt;getName() is &quot;foo&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="38" assertions="1"/>
+    <testcase name="shortcut is optional" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="39" assertions="1"/>
+    <testcase name="default description is empty string" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="40" assertions="1"/>
+    <testcase name="default mode is &quot;nbOption::PARAMETER_NONE&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="41" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() returns false if option has not shortcut" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="42" assertions="1"/>
+    <testcase name="-&gt;hasShortcut() returns true if option has shortcut" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="46" assertions="1"/>
+    <testcase name="-&gt;getShortcut() returns shortcut if present" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="47" assertions="1"/>
+    <testcase name="-&gt;getDescription() returns the description" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="48" assertions="1"/>
+    <testcase name="-&gt;hasParameter() returns true if mode is &quot;nbOption::PARAMETER_OPTIONAL&quot; or &quot;nbOption::PARAMETER_REQUIRED&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="52" assertions="1"/>
+    <testcase name="-&gt;hasOptionalParameter() returns true if mode is &quot;nbOption::PARAMETER_OPTIONAL&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="53" assertions="1"/>
+    <testcase name="-&gt;hasRequiredParameter() returns true if mode is &quot;nbOption::PARAMETER_REQUIRED&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="54" assertions="1"/>
+    <testcase name="__construct() throws &quot;InvalidArgumentexception&quot; if mode is not valid" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="61" assertions="1"/>
+    <testcase name="-&gt;getValue() throws LogicException if option has &quot;nbOption::PARAMETER_NONE&quot; mode" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="72" assertions="1"/>
+    <testcase name="-&gt;getValue() throws LogicException if option has &quot;nbOption::PARAMETER_REQUIRED&quot; mode and null value" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="81" assertions="1"/>
+    <testcase name="-&gt;getValue() returns &quot;$value&quot; if option has &quot;nbOption::PARAMETER_OPTIONAL&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="85" assertions="1"/>
+    <testcase name="-&gt;setValue() throws LogicException if option has &quot;nbOption::PARAMETER_NONE&quot; mode" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="94" assertions="1"/>
+    <testcase name="-&gt;setValue() sets correct value" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="99" assertions="1"/>
+    <testcase name="option with mode &quot;nbOption::PARAMETER_NONE&quot; can't have default value" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="107" assertions="1"/>
+    <testcase name="-&gt;getValue() returns default value" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="111" assertions="1"/>
+    <testcase name="-&gt;getValue() returns new value" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="113" assertions="1"/>
+    <testcase name="option with mode &quot;nbOption::PARAMETER_REQUIRED&quot; can't have default value" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="121" assertions="1"/>
+    <testcase name="option with array without mode has no parameter" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="129" assertions="1"/>
+    <testcase name="option can be array with no parameter" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="132" assertions="1"/>
+    <testcase name="option can be array with no parameter" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="133" assertions="1"/>
+    <testcase name="-&gt;isArray() returns true if the argument can be an array" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="136" assertions="1"/>
+    <testcase name="-&gt;isArray() returns false if the argument cannot be an array" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="139" assertions="1"/>
+    <testcase name="-&gt;setValue() must receive an array if option mode is &quot;nbOption::IS_ARRAY&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="147" assertions="1"/>
+    <testcase name="-&gt;getValue() returns an empty array if option has IS_ARRAY mode" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="151" assertions="1"/>
+    <testcase name="-&gt;setValue() append parameter to value if option has IS_ARRAY mode" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="153" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot;[--foo]&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="157" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot;[--foo=[FOO]]&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="160" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot;[--foo=FOO]&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="163" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot;[--foo] ... [--foo]&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="166" assertions="1"/>
+    <testcase name="-&gt;__toString() returns &quot;[-f|--foo]&quot;" file="E:\git\bee\test\unit\core\command\nbOptionTest.php" line="169" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbConfigTest" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" failures="0" errors="0" skipped="0" tests="25" assertions="25">
+    <testcase name="-&gt;getAll() returns all configuration keys" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="11" assertions="1"/>
+    <testcase name="-&gt;getAll() returns all configuration keys" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="13" assertions="1"/>
+    <testcase name="-&gt;remove() removes a sigle configuration key" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;reset() remove all keys" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="25" assertions="1"/>
+    <testcase name="-&gt;reset() remove all keys" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="27" assertions="1"/>
+    <testcase name="nbConfig::has() returns false if key is not present" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="31" assertions="1"/>
+    <testcase name="nbConfig::has() returns true if key is present" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="33" assertions="1"/>
+    <testcase name="nbConfig::has() returns true if &quot;key path&quot; is present" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="37" assertions="1"/>
+    <testcase name="nbConfig::get() returns null if key in not present" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="41" assertions="1"/>
+    <testcase name="nbConfig::get() returns default value if key in not present" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="42" assertions="1"/>
+    <testcase name="nbConfig::get() returns an array if key has subkeys" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="44" assertions="1"/>
+    <testcase name="nbConfig::get() parse a &quot;key path&quot; and returns leaf value" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="45" assertions="1"/>
+    <testcase name="nbConfig::set() sets a new value for key" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="51" assertions="1"/>
+    <testcase name="nbConfig::set() sets a new value for key" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="54" assertions="1"/>
+    <testcase name="nbConfig::set() sets a new value for key" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="57" assertions="1"/>
+    <testcase name="nbConfig::set() sets a new value for key" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="58" assertions="1"/>
+    <testcase name="nbConfig::set() sets a new value for key" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="61" assertions="1"/>
+    <testcase name="nbConfig::add() old and new values" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="71" assertions="1"/>
+    <testcase name="nbConfig::add() old and new values" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="75" assertions="1"/>
+    <testcase name="nbConfig::add() old and new values" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="79" assertions="1"/>
+    <testcase name="nbConfig::add() old and new values" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="83" assertions="1"/>
+    <testcase name="nbConfig::add() can set a prefix for 1st level keys" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="91" assertions="1"/>
+    <testcase name="nbConfig::add() can set a prefix for 1st level keys" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="92" assertions="1"/>
+    <testcase name="::add() can replace tokens" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="103" assertions="1"/>
+    <testcase name="::add() can replace tokens" file="E:\git\bee\test\unit\core\config\nbConfigTest.php" line="104" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbConfigurationCheckerTest" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" failures="0" errors="0" skipped="0" tests="16" assertions="16">
+    <testcase name="Project configuration checked successfully" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="26" assertions="1"/>
+    <testcase name="Config file without required field not checked successfully" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="34" assertions="1"/>
+    <testcase name="Config file has errors" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="37" assertions="1"/>
+    <testcase name="Config file has 2 errors" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="38" assertions="1"/>
+    <testcase name="Config file has errors formatted correctly" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="47" assertions="1"/>
+    <testcase name="Config file without required child not checked successfully" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="56" assertions="1"/>
+    <testcase name="Config file has errors" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="59" assertions="1"/>
+    <testcase name="Config file has 1 errors" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="60" assertions="1"/>
+    <testcase name="No config file to check exists" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="68" assertions="1"/>
+    <testcase name="No template file to check exists" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="76" assertions="1"/>
+    <testcase name="No directory exists (and it should be)" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="84" assertions="1"/>
+    <testcase name="No file exists (and it should be)" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="92" assertions="1"/>
+    <testcase name="Whole configuration without required fields not checked successfully" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="103" assertions="1"/>
+    <testcase name="Configuration has errors" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="106" assertions="1"/>
+    <testcase name="Configuration has 1 error" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="107" assertions="1"/>
+    <testcase name="Configuration has no errors" file="E:\git\bee\test\unit\core\config\nbConfigurationCheckerTest.php" line="111" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbConfigurationGeneratorTest" file="E:\git\bee\test\unit\core\config\nbConfigurationGeneratorTest.php" failures="0" errors="0" skipped="0" tests="5" assertions="5">
+    <testcase name="Configuration generated successfully" file="E:\git\bee\test\unit\core\config\nbConfigurationGeneratorTest.php" line="19" assertions="1"/>
+    <testcase name="Generated file content is correct" file="E:\git\bee\test\unit\core\config\nbConfigurationGeneratorTest.php" line="23" assertions="1"/>
+    <testcase name="Cannot overwrite file" file="E:\git\bee\test\unit\core\config\nbConfigurationGeneratorTest.php" line="30" assertions="1"/>
+    <testcase name="Can overwrite file is &quot;force&quot; option set" file="E:\git\bee\test\unit\core\config\nbConfigurationGeneratorTest.php" line="33" assertions="1"/>
+    <testcase name="No template file to check exists" file="E:\git\bee\test\unit\core\config\nbConfigurationGeneratorTest.php" line="41" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbConfigurationPrinterTest" file="E:\git\bee\test\unit\core\config\nbConfigurationPrinterTest.php" failures="0" errors="0" skipped="0" tests="3" assertions="3">
+    <testcase name="No config file to print exists" file="E:\git\bee\test\unit\core\config\nbConfigurationPrinterTest.php" line="22" assertions="1"/>
+    <testcase name="Printed text is formatted correctly" file="E:\git\bee\test\unit\core\config\nbConfigurationPrinterTest.php" line="37" assertions="1"/>
+    <testcase name="Printed text is formatted correctly with errors" file="E:\git\bee\test\unit\core\config\nbConfigurationPrinterTest.php" line="57" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbConfigurationTest" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" failures="0" errors="0" skipped="0" tests="27" assertions="27">
+    <testcase name="-&gt;getAll() returns all configuration keys" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="10" assertions="1"/>
+    <testcase name="-&gt;getAll() returns all configuration keys" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="12" assertions="1"/>
+    <testcase name="-&gt;remove() removes a sigle configuration key" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="21" assertions="1"/>
+    <testcase name="-&gt;reset() remove all keys" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="29" assertions="1"/>
+    <testcase name="-&gt;reset() remove all keys" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="31" assertions="1"/>
+    <testcase name="$configuration-&gt;has() returns false if key is not present" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="37" assertions="1"/>
+    <testcase name="$configuration-&gt;has() returns true if key is present" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="39" assertions="1"/>
+    <testcase name="$configuration-&gt;has() returns true if &quot;key path&quot; is present" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="43" assertions="1"/>
+    <testcase name="$configuration-&gt;get() returns null if key in not present" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="50" assertions="1"/>
+    <testcase name="$configuration-&gt;get() returns default value if key in not present" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="51" assertions="1"/>
+    <testcase name="$configuration-&gt;get() returns an array if key has subkeys" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="53" assertions="1"/>
+    <testcase name="$configuration-&gt;get() parse a &quot;key path&quot; and returns leaf value" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="54" assertions="1"/>
+    <testcase name="$configuration-&gt;set() sets a new value for key" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="61" assertions="1"/>
+    <testcase name="$configuration-&gt;set() sets a new value for key" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="64" assertions="1"/>
+    <testcase name="$configuration-&gt;set() sets a new value for key" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="67" assertions="1"/>
+    <testcase name="$configuration-&gt;set() sets a new value for key" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="68" assertions="1"/>
+    <testcase name="$configuration-&gt;set() sets a new value for key" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="71" assertions="1"/>
+    <testcase name="$configuration-&gt;add() old and new values" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="82" assertions="1"/>
+    <testcase name="$configuration-&gt;add() old and new values" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="86" assertions="1"/>
+    <testcase name="$configuration-&gt;add() old and new values" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="90" assertions="1"/>
+    <testcase name="$configuration-&gt;add() old and new values" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="94" assertions="1"/>
+    <testcase name="$configuration-&gt;add() can set a prefix for 1st level keys" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="104" assertions="1"/>
+    <testcase name="$configuration-&gt;add() can set a prefix for 1st level keys" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="105" assertions="1"/>
+    <testcase name="-&gt;add() can replace tokens" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="120" assertions="1"/>
+    <testcase name="-&gt;add() can replace child tokens" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="121" assertions="1"/>
+    <testcase name="-&gt;add() can replace array tokens" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="122" assertions="1"/>
+    <testcase name="-&gt;add() will not replace a value if not set" file="E:\git\bee\test\unit\core\config\nbConfigurationTest.php" line="123" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbYamlConfigParserTest" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" failures="0" errors="0" skipped="0" tests="16" assertions="16">
+    <testcase name="-&gt;parse() parse a yaml string and set configuration keys" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="26" assertions="1"/>
+    <testcase name="-&gt;parse() by default does not replace tokens" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="27" assertions="1"/>
+    <testcase name="-&gt;parse() by default does not replace tokens" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="28" assertions="1"/>
+    <testcase name="-&gt;parse() can accept a prefix for config keys" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="32" assertions="1"/>
+    <testcase name="-&gt;parse() can accept a prefix for config keys" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="33" assertions="1"/>
+    <testcase name="-&gt;parse() can replace tokens" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="37" assertions="1"/>
+    <testcase name="-&gt;parse() can replace tokens" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="38" assertions="1"/>
+    <testcase name="-&gt;parse() can replace tokens" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="39" assertions="1"/>
+    <testcase name="-&gt;parse() can replace tokens" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="40" assertions="1"/>
+    <testcase name="-&gt;parse() can replace tokens with prefix" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="44" assertions="1"/>
+    <testcase name="-&gt;parse() can replace tokens with prefix" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="45" assertions="1"/>
+    <testcase name="-&gt;parseFile() parse a yaml file and set configuration" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="55" assertions="1"/>
+    <testcase name="-&gt;parseFile() by default does not replace tokens" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="59" assertions="1"/>
+    <testcase name="-&gt;parseFile() throws if file doesn\'t exist" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="66" assertions="1"/>
+    <testcase name="-&gt;parseFile() can replace tokens" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="74" assertions="1"/>
+    <testcase name="-&gt;parseFile() can replace tokens" file="E:\git\bee\test\unit\core\config\nbYamlConfigParserTest.php" line="75" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbAnsiColorFormatterTest" file="E:\git\bee\test\unit\core\formatter\nbAnsiColorFormatterTest.php" failures="0" errors="0" skipped="0" tests="3" assertions="3">
+    <testcase name="Output is formatted" file="E:\git\bee\test\unit\core\formatter\nbAnsiColorFormatterTest.php" line="9" assertions="1"/>
+    <testcase name="Output is formatted twice" file="E:\git\bee\test\unit\core\formatter\nbAnsiColorFormatterTest.php" line="10" assertions="1"/>
+    <testcase name="Output with nested tags is correctly formatted " file="E:\git\bee\test\unit\core\formatter\nbAnsiColorFormatterTest.php" line="12" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbFormatterTest" file="E:\git\bee\test\unit\core\formatter\nbFormatterTest.php" failures="0" errors="0" skipped="0" tests="2" assertions="2">
+    <testcase name="-&gt;format() formats &quot;&lt;info&gt;test&lt;/info&gt;&quot; as &quot;test&quot;" file="E:\git\bee\test\unit\core\formatter\nbFormatterTest.php" line="11" assertions="1"/>
+    <testcase name="-&gt;formatLine() formats &quot;test&quot; as &quot;test\n&quot;" file="E:\git\bee\test\unit\core\formatter\nbFormatterTest.php" line="12" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbLoggerTest" file="E:\git\bee\test\unit\core\logger\nbLoggerTest.php" failures="0" errors="0" skipped="0" tests="9" assertions="9">
+    <testcase name="-&gt;log() has written &quot;test&quot;" file="E:\git\bee\test\unit\core\logger\nbLoggerTest.php" line="14" assertions="1"/>
+    <testcase name="-&gt;formatLevel() has ERROR level" file="E:\git\bee\test\unit\core\logger\nbLoggerTest.php" line="17" assertions="1"/>
+    <testcase name="-&gt;formatLevel() has INFO level" file="E:\git\bee\test\unit\core\logger\nbLoggerTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;formatLevel() has COMMENT level" file="E:\git\bee\test\unit\core\logger\nbLoggerTest.php" line="19" assertions="1"/>
+    <testcase name="-&gt;formatLevel() has QUESTION level" file="E:\git\bee\test\unit\core\logger\nbLoggerTest.php" line="20" assertions="1"/>
+    <testcase name="-&gt;format() formats &quot;text&quot; as &quot;&lt;info&gt;text&lt;/info&quot;" file="E:\git\bee\test\unit\core\logger\nbLoggerTest.php" line="22" assertions="1"/>
+    <testcase name="-&gt;logLine() has written &quot;test&quot; with line feed" file="E:\git\bee\test\unit\core\logger\nbLoggerTest.php" line="26" assertions="1"/>
+    <testcase name="-&gt;log() has printed an array" file="E:\git\bee\test\unit\core\logger\nbLoggerTest.php" line="30" assertions="1"/>
+    <testcase name="-&gt;log() has printed an array" file="E:\git\bee\test\unit\core\logger\nbLoggerTest.php" line="33" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbConsoleOutputTest" file="E:\git\bee\test\unit\core\output\nbConsoleOutputTest.php" failures="0" errors="0" skipped="0" tests="1" assertions="1">
+    <testcase name="-&gt;write() has written &quot;test&quot;" file="E:\git\bee\test\unit\core\output\nbConsoleOutputTest.php" line="15" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbStreamOutputTest" file="E:\git\bee\test\unit\core\output\nbStreamOutputTest.php" failures="0" errors="0" skipped="0" tests="2" assertions="2">
+    <testcase name="-&gt;write() has written &quot;test&quot;" file="E:\git\bee\test\unit\core\output\nbStreamOutputTest.php" line="12" assertions="1"/>
+    <testcase name="-&gt;getStream() now is empty" file="E:\git\bee\test\unit\core\output\nbStreamOutputTest.php" line="13" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbPluginLoaderTest" file="E:\git\bee\test\unit\core\plugin\nbPluginLoaderTest.php" failures="0" errors="0" skipped="0" tests="6" assertions="6">
+    <testcase name="-&gt;loadPlugin() adds plugin/lib to autoload" file="E:\git\bee\test\unit\core\plugin\nbPluginLoaderTest.php" line="14" assertions="1"/>
+    <testcase name="-&gt;loadPlugin() adds plugin/command to autoload" file="E:\git\bee\test\unit\core\plugin\nbPluginLoaderTest.php" line="15" assertions="1"/>
+    <testcase name="-&gt;loadPlugin() adds plugin/command to autoload" file="E:\git\bee\test\unit\core\plugin\nbPluginLoaderTest.php" line="16" assertions="1"/>
+    <testcase name="-&gt;getPlugins() returns an array of loaded plugin names" file="E:\git\bee\test\unit\core\plugin\nbPluginLoaderTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;loadAllPlugins() loads all plugins" file="E:\git\bee\test\unit\core\plugin\nbPluginLoaderTest.php" line="22" assertions="1"/>
+    <testcase name="-&gt;loadPlugin() adds plugin/vendor to autoload" file="E:\git\bee\test\unit\core\plugin\nbPluginLoaderTest.php" line="23" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbProcShellTest" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" failures="0" errors="0" skipped="0" tests="20" assertions="20">
+    <testcase name="-&gt;execute() has succeeded" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="13" assertions="1"/>
+    <testcase name="-&gt;execute() writes to console" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="14" assertions="1"/>
+    <testcase name="-&gt;getOutput() returns a message" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="15" assertions="1"/>
+    <testcase name="-&gt;getError() returns an empty message" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="16" assertions="1"/>
+    <testcase name="-&gt;execute() return code is &quot;0&quot;" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="17" assertions="1"/>
+    <testcase name="-&gt;execute() has succeeded" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="25" assertions="1"/>
+    <testcase name="-&gt;execute() don't writes to console" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="26" assertions="1"/>
+    <testcase name="-&gt;getOutput() returns a message" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="27" assertions="1"/>
+    <testcase name="-&gt;getError() returns an empty message" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="28" assertions="1"/>
+    <testcase name="-&gt;execute() return code is &quot;0&quot;" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="29" assertions="1"/>
+    <testcase name="-&gt;execute() has failed" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="37" assertions="1"/>
+    <testcase name="-&gt;execute() writes to console" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="38" assertions="1"/>
+    <testcase name="-&gt;getOutput() returns an empty message" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="39" assertions="1"/>
+    <testcase name="-&gt;getError() returns a message" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="40" assertions="1"/>
+    <testcase name="-&gt;execute() return code isn't &quot;0&quot;" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="41" assertions="1"/>
+    <testcase name="-&gt;execute() has failed" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="49" assertions="1"/>
+    <testcase name="-&gt;execute() don't writes to console" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="50" assertions="1"/>
+    <testcase name="-&gt;getOutput() returns an empty message" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="51" assertions="1"/>
+    <testcase name="-&gt;getError() returns a message" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="52" assertions="1"/>
+    <testcase name="-&gt;execute() return code isn't &quot;0&quot;" file="E:\git\bee\test\unit\core\shell\nbProcShellTest.php" line="53" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbFileFinderTest" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" failures="0" errors="0" skipped="0" tests="32" assertions="32">
+    <testcase name="-&gt;create() returns a &quot;file&quot; finder." file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="12" assertions="1"/>
+    <testcase name="-&gt;create(&quot;dir&quot;) returns a &quot;directory&quot; finder." file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="15" assertions="1"/>
+    <testcase name="-&gt;create(&quot;any&quot;) returns an &quot;any&quot; finder." file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;create(&quot;file&quot;) returns an &quot;file&quot; finder." file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="21" assertions="1"/>
+    <testcase name="-&gt;setType(&quot;dir&quot;) returns a &quot;directory&quot; finder." file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="26" assertions="1"/>
+    <testcase name="-&gt;setType(&quot;any&quot;) returns an &quot;any&quot; finder." file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="27" assertions="1"/>
+    <testcase name="-&gt;setType(&quot;file&quot;) returns a &quot;file&quot; finder." file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="28" assertions="1"/>
+    <testcase name="-&gt;add() found 3 files" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="35" assertions="1"/>
+    <testcase name="-&gt;add() found Class1.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="39" assertions="1"/>
+    <testcase name="-&gt;add() found Class2.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="39" assertions="1"/>
+    <testcase name="-&gt;add() found Class3.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="39" assertions="1"/>
+    <testcase name="-&gt;remove() found 1 files" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="49" assertions="1"/>
+    <testcase name="-&gt;remove(&quot;*.php&quot;) found Class.java" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="51" assertions="1"/>
+    <testcase name="-&gt;add()-&gt;remove() found 1 file" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="58" assertions="1"/>
+    <testcase name="-&gt;prune() found 3 files" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="65" assertions="1"/>
+    <testcase name="-&gt;prune() found Class.java" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="69" assertions="1"/>
+    <testcase name="-&gt;prune() found Class1.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="69" assertions="1"/>
+    <testcase name="-&gt;prune() found Class2.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="69" assertions="1"/>
+    <testcase name="-&gt;discard() found 3 files" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="79" assertions="1"/>
+    <testcase name="-&gt;discard() found Class1.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="83" assertions="1"/>
+    <testcase name="-&gt;discard() found Class2.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="83" assertions="1"/>
+    <testcase name="-&gt;discard() found Class3.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="83" assertions="1"/>
+    <testcase name="-&gt;add() found 3 files" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="94" assertions="1"/>
+    <testcase name="-&gt;add() found Class1.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="96" assertions="1"/>
+    <testcase name="-&gt;add() found Class2.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="96" assertions="1"/>
+    <testcase name="-&gt;add() found Class3.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="96" assertions="1"/>
+    <testcase name="-&gt;discard() found 3 files" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="105" assertions="1"/>
+    <testcase name="-&gt;discard() found Class1.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="107" assertions="1"/>
+    <testcase name="-&gt;discard() found Class2.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="107" assertions="1"/>
+    <testcase name="-&gt;discard() found Class3.php" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="107" assertions="1"/>
+    <testcase name="-&gt;execute() calls &quot;callbackFunction&quot; 3 times" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="131" assertions="1"/>
+    <testcase name="-&gt;execute() calls &quot;callbackMethod&quot; 3 times" file="E:\git\bee\test\unit\core\system\nbFileFinderTest.php" line="137" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbFileSystemTest" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" failures="0" errors="0" skipped="0" tests="31" assertions="31">
+    <testcase name="-&gt;getFileName() returns &quot;Class1.php&quot;" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="14" assertions="1"/>
+    <testcase name="mkdir() creates dir if it not exists" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="19" assertions="1"/>
+    <testcase name="$fs-&gt;mkdir() does not trow if directory already exists" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="23" assertions="1"/>
+    <testcase name="$fs-&gt;mkdir() throws if directory name already exists as file" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="34" assertions="1"/>
+    <testcase name="$fs-&gt;mkdir() throws if parent directory doesn't exist" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="42" assertions="1"/>
+    <testcase name="$fs-&gt;mkdir() can create parent folders" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="46" assertions="1"/>
+    <testcase name="$fs-&gt;rmdir() removes directory" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="54" assertions="1"/>
+    <testcase name="$fs-&gt;rmdir() removes only empty folders" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="65" assertions="1"/>
+    <testcase name="$fs-&gt;rmdir() can remove folder recursively" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="69" assertions="1"/>
+    <testcase name="$fs-&gt;rmdir() throws if folder doesn't exist" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="76" assertions="1"/>
+    <testcase name="$fs-&gt;rmdir() doesn't remove files" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="84" assertions="1"/>
+    <testcase name="$fs-&gt;touch() create empty file" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="92" assertions="1"/>
+    <testcase name="$fs-&gt;touch() throws if parent folder doesn't exist" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="99" assertions="1"/>
+    <testcase name="$fs-&gt;delete() remove file" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="107" assertions="1"/>
+    <testcase name="$fs-&gt;delete() can't delete folder" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="114" assertions="1"/>
+    <testcase name="$fs-&gt;copy() throws if source file doesn't exist" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="126" assertions="1"/>
+    <testcase name="$fs-&gt;copy() throws if destination file already exists" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="137" assertions="1"/>
+    <testcase name="$fs-&gt;copy() can overwrite destination file" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="142" assertions="1"/>
+    <testcase name="$fs-&gt;copy() doesn't remove source file" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="150" assertions="1"/>
+    <testcase name="$fs-&gt;copy() copies source file to destination file" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="151" assertions="1"/>
+    <testcase name="$fs-&gt;copy() copies source file in another folder maintaining the filename" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="157" assertions="1"/>
+    <testcase name="$fs-&gt;copy() copies source file in another file creating all the needed folders" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="160" assertions="1"/>
+    <testcase name="$fs-&gt;move() move folder to destination folder" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="175" assertions="1"/>
+    <testcase name="$fs-&gt;move() move folder contents" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="176" assertions="1"/>
+    <testcase name="$fs-&gt;move() remove from old source the dir moved" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="177" assertions="1"/>
+    <testcase name="$fs-&gt;move() doesn't remove parent folders" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="178" assertions="1"/>
+    <testcase name="$fs-&gt;move() moves file" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="187" assertions="1"/>
+    <testcase name="$fs-&gt;move() moves file" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="188" assertions="1"/>
+    <testcase name="$fs-&gt;move() throws if the source doesn't exist" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="196" assertions="1"/>
+    <testcase name="$fs-&gt;move() throws if the destination doesn't exist" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="207" assertions="1"/>
+    <testcase name="$fs-&gt;move() renames folder in &quot;destination&quot; if basename(&quot;destination&quot;) doesn't exist" file="E:\git\bee\test\unit\core\system\nbFileSystemTest.php" line="212" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbArrayUtilsTest" file="E:\git\bee\test\unit\core\util\nbArrayUtilsTest.php" failures="0" errors="0" skipped="0" tests="8" assertions="8">
+    <testcase name="nbArrayUtils::getAssociative() returns an associative array of all config keys" file="E:\git\bee\test\unit\core\util\nbArrayUtilsTest.php" line="10" assertions="1"/>
+    <testcase name="nbArrayUtils::getAssociative() returns an associative array of all config keys" file="E:\git\bee\test\unit\core\util\nbArrayUtilsTest.php" line="13" assertions="1"/>
+    <testcase name="nbArrayUtils::getAssociative() returns an associative array of all config keys" file="E:\git\bee\test\unit\core\util\nbArrayUtilsTest.php" line="17" assertions="1"/>
+    <testcase name="nbArrayUtils::getAssociative() returns an associative array of all config keys" file="E:\git\bee\test\unit\core\util\nbArrayUtilsTest.php" line="21" assertions="1"/>
+    <testcase name="nbArrayUtils::getAssociative() returns an associative array of all config keys" file="E:\git\bee\test\unit\core\util\nbArrayUtilsTest.php" line="24" assertions="1"/>
+    <testcase name="nbArrayUtils::getAssociative() returns an associative array of all config keys" file="E:\git\bee\test\unit\core\util\nbArrayUtilsTest.php" line="30" assertions="1"/>
+    <testcase name="nbArrayUtils::getAssociative() returns an associative array of all config keys" file="E:\git\bee\test\unit\core\util\nbArrayUtilsTest.php" line="45" assertions="1"/>
+    <testcase name="nbArrayUtils::getAssociative() returns an associative array of all config keys" file="E:\git\bee\test\unit\core\util\nbArrayUtilsTest.php" line="64" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbGlobTest" file="E:\git\bee\test\unit\core\util\nbGlobTest.php" failures="0" errors="0" skipped="0" tests="1" assertions="1">
+    <testcase name="-&gt;globToRegex(&quot;*.php&quot;) returns regexp &quot;#^(?=[^\.])[^/]*\.php$#&quot;" file="E:\git\bee\test\unit\core\util\nbGlobTest.php" line="8" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbNumberCompareTest" file="E:\git\bee\test\unit\core\util\nbNumberCompareTest.php" failures="0" errors="0" skipped="0" tests="0" assertions="0"/>
+  <testsuite name="nbProgressTest" file="E:\git\bee\test\unit\core\util\nbProgressTest.php" failures="0" errors="0" skipped="0" tests="9" assertions="9">
+    <testcase name="-&gt;getProgress() with 0 is always 0" file="E:\git\bee\test\unit\core\util\nbProgressTest.php" line="10" assertions="1"/>
+    <testcase name="-&gt;getProgress() with maxValue is always 100" file="E:\git\bee\test\unit\core\util\nbProgressTest.php" line="11" assertions="1"/>
+    <testcase name="-&gt;getProgress() returns 50" file="E:\git\bee\test\unit\core\util\nbProgressTest.php" line="14" assertions="1"/>
+    <testcase name="-&gt;getProgress() with 0 is always 0" file="E:\git\bee\test\unit\core\util\nbProgressTest.php" line="17" assertions="1"/>
+    <testcase name="-&gt;getProgress() with maxValue is always 100" file="E:\git\bee\test\unit\core\util\nbProgressTest.php" line="18" assertions="1"/>
+    <testcase name="-&gt;getProgress() returns null" file="E:\git\bee\test\unit\core\util\nbProgressTest.php" line="19" assertions="1"/>
+    <testcase name="-&gt;getProgress() returns 50" file="E:\git\bee\test\unit\core\util\nbProgressTest.php" line="20" assertions="1"/>
+    <testcase name="-&gt;getProgress() returns 25" file="E:\git\bee\test\unit\core\util\nbProgressTest.php" line="21" assertions="1"/>
+    <testcase name="-&gt;getProgress() returns 25" file="E:\git\bee\test\unit\core\util\nbProgressTest.php" line="22" assertions="1"/>
+  </testsuite>
+  <testsuite name="nbStringTest" file="E:\git\bee\test\unit\core\util\nbStringTest.php" failures="0" errors="0" skipped="0" tests="32" assertions="32">
+    <testcase name="Uncamelize simpleTest =&gt; simple_test (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="23" assertions="1"/>
+    <testcase name="Uncamelize easy =&gt; easy (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="23" assertions="1"/>
+    <testcase name="Uncamelize HTML =&gt; html (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="23" assertions="1"/>
+    <testcase name="Uncamelize simpleXML =&gt; simple_xml (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="23" assertions="1"/>
+    <testcase name="Uncamelize PDFLoad =&gt; pdf_load (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="23" assertions="1"/>
+    <testcase name="Uncamelize startMIDDLELast =&gt; start_middle_last (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="23" assertions="1"/>
+    <testcase name="Uncamelize AString =&gt; a_string (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="23" assertions="1"/>
+    <testcase name="Uncamelize Some4Numbers234 =&gt; some4_numbers234 (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="23" assertions="1"/>
+    <testcase name="Uncamelize TEST123String =&gt; test123_string (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="23" assertions="1"/>
+    <testcase name="Camelize simple_test =&gt; simpleTest (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="41" assertions="1"/>
+    <testcase name="Camelize easy =&gt; easy (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="41" assertions="1"/>
+    <testcase name="Camelize HTML =&gt; html (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="41" assertions="1"/>
+    <testcase name="Camelize simple_xml =&gt; simpleXml (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="41" assertions="1"/>
+    <testcase name="Camelize pdf_load =&gt; pdfLoad (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="41" assertions="1"/>
+    <testcase name="Camelize start_Middle_Last =&gt; startMiddleLast (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="41" assertions="1"/>
+    <testcase name="Camelize a_sTrInG =&gt; aString (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="41" assertions="1"/>
+    <testcase name="Camelize some4_numbers234 =&gt; some4Numbers234 (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="41" assertions="1"/>
+    <testcase name="Camelize test123_string =&gt; test123String (separator: &quot;_&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="41" assertions="1"/>
+    <testcase name="Uncamelize simpleTest =&gt; simple-test (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="57" assertions="1"/>
+    <testcase name="Uncamelize simpleXML =&gt; simple-xml (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="57" assertions="1"/>
+    <testcase name="Uncamelize PDFLoad =&gt; pdf-load (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="57" assertions="1"/>
+    <testcase name="Uncamelize startMIDDLELast =&gt; start-middle-last (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="57" assertions="1"/>
+    <testcase name="Uncamelize AString =&gt; a-string (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="57" assertions="1"/>
+    <testcase name="Uncamelize Some4Numbers234 =&gt; some4-numbers234 (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="57" assertions="1"/>
+    <testcase name="Uncamelize TEST123String =&gt; test123-string (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="57" assertions="1"/>
+    <testcase name="Camelize simple-test =&gt; simpleTest (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="73" assertions="1"/>
+    <testcase name="Camelize SIMPLE-XML =&gt; simpleXml (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="73" assertions="1"/>
+    <testcase name="Camelize pdf-Load =&gt; pdfLoad (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="73" assertions="1"/>
+    <testcase name="Camelize start-middle-last =&gt; startMiddleLast (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="73" assertions="1"/>
+    <testcase name="Camelize a-string =&gt; aString (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="73" assertions="1"/>
+    <testcase name="Camelize some4-numbers234 =&gt; some4Numbers234 (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="73" assertions="1"/>
+    <testcase name="Camelize test123-string =&gt; test123String (separator: &quot;-&quot;)" file="E:\git\bee\test\unit\core\util\nbStringTest.php" line="73" assertions="1"/>
+  </testsuite>
+</testsuites>
