@@ -46,7 +46,7 @@ TXT
     if(isset($options['directory']))
       $targetDir = $options['directory'];
     if(isset($options['plugin']))
-      $targetDir = 'plugin/' . $options['plugin'] . '/command';
+      $targetDir = nbConfig::get('nb_plugins_dir').'/' . $options['plugin'] . '/command';
     if(!isset($options['plugin']) && !isset($options['directory']))
       $targetDir = nbConfig::get('nb_command_dir');
 

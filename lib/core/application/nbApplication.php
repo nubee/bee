@@ -73,6 +73,13 @@ abstract class nbApplication
       $this->logger->logLine('');
       $this->logger->logLine($e->getMessage(), nbLogger::ERROR);
     }
+    catch(Exception $e) {
+      $this->logger->logLine('');
+      $helpCmd = new nbHelpCommand();
+      $this->logger->log($helpCmd->formatHelp($command));
+      $this->logger->logLine('');
+      $this->logger->logLine($e->getMessage(), nbLogger::ERROR);
+    }
   }
 
   public function getName()
