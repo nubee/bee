@@ -1,6 +1,6 @@
 <?php
 
-class nbMysqlRestoreCommand extends nbMysqlAbstractCommand
+class nbMysqlRestoreCommand extends nbCommand
 {
 
   protected function configure()

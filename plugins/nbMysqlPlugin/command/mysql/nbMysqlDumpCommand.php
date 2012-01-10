@@ -1,6 +1,6 @@
 <?php
 
-class nbMysqlDumpCommand extends nbMysqlAbstractCommand {
+class nbMysqlDumpCommand extends nbCommand {
 
   protected function configure() {
     $this->setName('mysql:dump')
