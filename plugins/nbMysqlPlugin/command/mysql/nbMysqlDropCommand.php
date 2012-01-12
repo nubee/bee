@@ -24,11 +24,11 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $mysqlUsername = $arguments['mysql-username'];
-    $mysqlPassword = $arguments['mysql-password'];
+    $mysqlPassword = isset($arguments['mysql-password']) ? $arguments['mysql-password'] : '';
     $dbName = $arguments['db-name'];
     $this->logLine(sprintf('Dropping database %s', $dbName));
 
-    $cmd = sprintf('mysql -u%s %s -e "drop database %s"', $mysqlUsername, nbMysqlUtils::formatPasswordOption($mysqlPassword), $dbName);
+    $cmd = sprintf('mysqladmin -u%s %s drop  %s --force', $mysqlUsername, nbMysqlUtils::formatPasswordOption($mysqlPassword), $dbName);
 
     $this->executeShellCommand($cmd);
     $this->logLine(sprintf('Database %s dropped', $dbName));

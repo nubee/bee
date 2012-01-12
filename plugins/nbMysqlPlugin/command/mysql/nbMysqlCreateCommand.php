@@ -26,7 +26,7 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array()) {
     $mysqlUsername = $arguments['mysql-username'];
-    $mysqlPassword = $arguments['mysql-password'];
+    $mysqlPassword = isset($arguments['mysql-password']) ? $arguments['mysql-password'] : '';
     $dbName = $arguments['db-name'];
     $username = isset($options['username']) ? $options['username'] : null;
     $password = isset($options['password']) ? $options['password'] : null;
@@ -36,8 +36,7 @@ TXT
       $this->logLine(sprintf('Database %s created', $dbName));
 
       if ($username) {
-        $cmd = sprintf('mysql -u%s %s -e "grant all privileges on %s.* to \'%s\'@\'localhost\' %s"', $mysqlUsername, nbMysqlUtils::formatPasswordOption($mysqlPassword), $dbName, $username, ($password ? sprintf(' identified by \'%s\'', $password) : ''));
-
+        $cmd = sprintf('mysql -u%s %s mysql -e "grant all privileges on %s.* to \'%s\'@\'localhost\' %s"', $mysqlUsername, nbMysqlUtils::formatPasswordOption($mysqlPassword), $dbName, $username, ($password ? sprintf(' identified by \'%s\'', $password) : ''));
         $this->executeShellCommand($cmd);
         $this->logLine(sprintf('Database user %s successfully created', $username));
       }

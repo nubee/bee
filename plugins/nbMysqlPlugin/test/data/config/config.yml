@@ -1,11 +1,12 @@
 mysql:
-  db-name:        dbtest
-  mysql-username: %mysql_admin-username%
-  mysql-password: %mysql_admin-password%
-  username:       fakeUsername
-  password:       fakePassword
-  dump-path:      test/sandbox
-  dump-filename:  plugins/nbMysqlPlugin/test/data/dbtest-xxx.sql
+  db-name:                      dbTestMysqlPlugin
+  temp-admin-username:          nbMysqlAdmin
+  temp-admin-password:          passw0rd
+  temp-admin-with-no-password:  nbMysqlAdminNP
+  username:                     fakeUsername
+  password:                     fakePassword
+  dump-path:                    test/sandbox
+  dump-filename:                plugins/nbMysqlPlugin/test/data/dbtest-xxx.sql
 
   
   

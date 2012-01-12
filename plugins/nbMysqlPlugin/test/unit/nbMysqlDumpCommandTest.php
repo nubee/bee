@@ -8,7 +8,9 @@ $t = new lime_test(4);
 $t->comment('Mysql Dump Command');
 
 // Setup
-createDb($mysqlUsername, $mysqlPassword, $dbName, $username, $password);
+createDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName, $username, $password);
+createDatabaseUserWithGrantsOnDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName, $username, $password);
+
 $cmd = new nbMysqlDumpCommand();
 
 $commandLine = sprintf('%s %s %s %s', $dbName, $dumpPath, $username, $password);
@@ -35,4 +37,6 @@ $t->ok(file_exists($dumpFile), 'Dump file exists');
 $fs->delete($dumpFile);
 
 // Tear down
-dropDb($mysqlUsername, $mysqlPassword, $dbName);
+dropDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName);
+dropDatabaseUser($mysqlAdminUsername, $mysqlAdminPassword, $username);
+

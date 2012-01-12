@@ -6,7 +6,8 @@ $t = new lime_test(2);
 $t->comment('Mysql Restore Command');
 
 // Setup
-createDb($mysqlUsername, $mysqlPassword, $dbName, $username, $password);
+createDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName);
+createDatabaseUserWithGrantsOnDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName, $username, $password);
 
 $cmd = new nbMysqlRestoreCommand();
 $commandLine = sprintf('%s %s %s %s', $dbName, $dumpFilename, $username, $password);
@@ -19,4 +20,5 @@ $commandLine = '--config-file=mysql-plugin.yml';
 $t->ok($cmd->run($parser, $commandLine), 'MysqlRestore executed successfully');
 
 // Tear down
-dropDb($mysqlUsername, $mysqlPassword, $dbName);
+dropDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName);
+dropDatabaseUser($mysqlAdminUsername, $mysqlAdminPassword, $username);
