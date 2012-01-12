@@ -27,7 +27,7 @@ function createDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName) {
 
 function dropDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName) {
   try {
-    $cmd = sprintf('mysqladmin -u%s %s drop %s --force"', $mysqlAdminUsername, ($mysqlAdminPassword != '' ? '-p' . $mysqlAdminPassword : ''), $dbName);
+    $cmd = sprintf('mysqladmin -u%s %s drop %s --force', $mysqlAdminUsername, ($mysqlAdminPassword != '' ? '-p' . $mysqlAdminPassword : ''), $dbName);
     $shell = new nbShell();
     $shell->execute($cmd, true);
   } catch (Exception $e) {
