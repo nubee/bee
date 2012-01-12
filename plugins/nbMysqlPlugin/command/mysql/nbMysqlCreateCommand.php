@@ -30,19 +30,14 @@ TXT
     $dbName = $arguments['db-name'];
     $username = isset($options['username']) ? $options['username'] : null;
     $password = isset($options['password']) ? $options['password'] : null;
-    try {
-      $cmd = sprintf('mysqladmin -u%s %s create %s', $mysqlUsername, nbMysqlUtils::formatPasswordOption($mysqlPassword), $dbName);
-      $this->executeShellCommand($cmd);
-      $this->logLine(sprintf('Database %s created', $dbName));
+    $cmd = sprintf('mysqladmin -u%s %s create %s', $mysqlUsername, nbMysqlUtils::formatPasswordOption($mysqlPassword), $dbName);
+    $this->executeShellCommand($cmd);
+    $this->logLine(sprintf('Database %s created', $dbName));
 
-      if ($username) {
-        $cmd = sprintf('mysql -u%s %s mysql -e "grant all privileges on %s.* to \'%s\'@\'localhost\' %s"', $mysqlUsername, nbMysqlUtils::formatPasswordOption($mysqlPassword), $dbName, $username, ($password ? sprintf(' identified by \'%s\'', $password) : ''));
-        $this->executeShellCommand($cmd);
-        $this->logLine(sprintf('Database user %s successfully created', $username));
-      }
-    } catch (Exception $e) {
-      $this->logLine(sprintf('Error creating database %s ', $dbName), nbLogger::ERROR);
-      return false;
+    if ($username) {
+      $cmd = sprintf('mysql -u%s %s mysql -e "grant all privileges on %s.* to \'%s\'@\'localhost\' %s"', $mysqlUsername, nbMysqlUtils::formatPasswordOption($mysqlPassword), $dbName, $username, ($password ? sprintf(' identified by \'%s\'', $password) : ''));
+      $this->executeShellCommand($cmd);
+      $this->logLine(sprintf('Database user %s successfully created', $username));
     }
     return true;
   }
