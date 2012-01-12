@@ -18,7 +18,7 @@ TXT
         new nbArgument('db-name', nbArgument::REQUIRED, 'Database name'),
         new nbArgument('dump-filename', nbArgument::REQUIRED, 'Database dump filename'),
         new nbArgument('username', nbArgument::REQUIRED, 'Database username'),
-        new nbArgument('password', nbArgument::REQUIRED, 'Database password')
+        new nbArgument('password', nbArgument::OPTIONAL, 'Database password',null)
       )));
   }
 
@@ -27,14 +27,14 @@ TXT
     $dbName   = $arguments['db-name'];
     $filename = $arguments['dump-filename'];
     $username = $arguments['username'];
-    $password = $arguments['password'];
+    $password = isset($arguments['password']) ? $arguments['password'] : null;
     
     if(!file_exists($filename))
       throw new InvalidArgumentException('Database dump file: ' . $filename . ' does not exist');
     
     $this->logLine('Restoring ' . $filename . ' to database ' . $dbName);
     
-    $cmd = sprintf('mysql -u%s -p%s %s < %s', $username, $password, $dbName, $filename);
+    $cmd = sprintf('mysql -u%s %s %s < %s', $username, nbMysqlUtils::formatPasswordOption($password), $dbName, $filename);
     $this->logLine($cmd);
     $this->executeShellCommand($cmd);
     

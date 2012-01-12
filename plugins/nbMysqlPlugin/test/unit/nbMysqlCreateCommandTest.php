@@ -1,8 +1,9 @@
 <?php
 
 require_once dirname(__FILE__) . '/../bootstrap/unit.php';
+if (!checkMysql()) return true;
 
-$t = new lime_test(4);
+$t = new lime_test(5);
 // Setup
 createAdminUser($mysqlAdminUsername, $mysqlAdminPassword, $tempAdminUsername, $tempAdminPassword);
 
@@ -42,5 +43,18 @@ $t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'Command MysqlCreate 
 // Tear down
 dropDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName);
 dropDatabaseUser($mysqlAdminUsername, $mysqlAdminPassword, $tempAdminUsernameWithNoPassword);
-dropDatabaseUser($mysqlAdminUsername, $mysqlAdminPassword, $username);
 
+// Setup
+createAdminUser($mysqlAdminUsername, $mysqlAdminPassword, $tempAdminUsername, $tempAdminPassword);
+
+$cmd = new nbMysqlCreateCommand();
+$parser = new nbCommandLineParser();
+$parser->setDefaultConfigurationDirs(dirname(__FILE__) . '/../data/config');
+
+$commandLine = '--config-file=mysql-plugin.yml';
+$t->ok($cmd->run($parser, $commandLine), 'MysqlCreate executed successfully from config file');
+
+// Tear down
+dropDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName);
+dropDatabaseUser($mysqlAdminUsername, $mysqlAdminPassword, $tempAdminUsername);
+dropDatabaseUser($mysqlAdminUsername, $mysqlAdminPassword, $username);

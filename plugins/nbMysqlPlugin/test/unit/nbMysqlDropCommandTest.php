@@ -1,8 +1,9 @@
 <?php
 
 require_once dirname(__FILE__) . '/../bootstrap/unit.php';
+if (!checkMysql()) return true;
 
-$t = new lime_test(2);
+$t = new lime_test(3);
 $t->comment('Mysql Drop Command');
 
 // Setup
@@ -29,4 +30,13 @@ $t->ok($cmd->run(new nbCommandLineParser(), $commandLine), 'MysqlDrop executed s
 //TearDown
 dropDatabaseUser($mysqlAdminUsername, $mysqlAdminPassword, $tempAdminUsernameWithNoPassword);
 
+// Setup
+createDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName);
+
+$cmd = new nbMysqlDropCommand();
+$parser = new nbCommandLineParser();
+$parser->setDefaultConfigurationDirs(dirname(__FILE__) . '/../data/config');
+
+$commandLine = '--config-file=mysql-plugin.yml';
+$t->ok($cmd->run($parser, $commandLine), 'MysqlDrop executed successfully from config file');
 

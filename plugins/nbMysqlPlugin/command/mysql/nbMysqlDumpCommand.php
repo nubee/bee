@@ -16,7 +16,7 @@ TXT
         new nbArgument('db-name', nbArgument::REQUIRED, 'Database name'),
         new nbArgument('dump-path', nbArgument::REQUIRED, 'Database dump path'),
         new nbArgument('username', nbArgument::REQUIRED, 'Database username'),
-        new nbArgument('password', nbArgument::REQUIRED, 'Database password')
+        new nbArgument('password', nbArgument::OPTIONAL, 'Database password', null)
       )));
   }
 
@@ -24,14 +24,14 @@ TXT
     $dbName = $arguments['db-name'];
     $path = $arguments['dump-path'];
     $username = $arguments['username'];
-    $password = $arguments['password'];
+    $password = isset($arguments['password']) ? $arguments['password'] : null;
 
     $timestamp = date('YmdHi', time());
     $dump = sprintf('%s/%s-%s.sql', $path, $dbName, $timestamp);
 
     $this->logLine(sprintf('Dumping database "%s" to "%s"', $dbName, $dump));
 
-    $cmd = sprintf('mysqldump -u%s -p%s %s > %s', $username, $password, $dbName, $dump);
+    $cmd = sprintf('mysqldump -u%s %s %s > %s', $username, nbMysqlUtils::formatPasswordOption($password), $dbName, $dump);
 
     $this->executeShellCommand($cmd);
     $this->logLine('MySql database dumped!');
