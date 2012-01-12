@@ -17,7 +17,7 @@ $dumpFilename = nbConfig::get('mysql_dump-filename');
 
 function createDb($mysqlAdminUsername, $mysqlAdminPassword, $dbName) {
   try {
-    $cmd = sprintf('mysqladmin -u%s %s create %s"', $mysqlAdminUsername, ($mysqlAdminPassword != '' ? '-p' . $mysqlAdminPassword : ''), $dbName);
+    $cmd = sprintf('mysqladmin -u%s %s create %s', $mysqlAdminUsername, ($mysqlAdminPassword != '' ? '-p' . $mysqlAdminPassword : ''), $dbName);
     $shell = new nbShell();
     $shell->execute($cmd, true);
   } catch (Exception $e) {
