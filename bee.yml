@@ -5,7 +5,7 @@ project:
   commands:
     test:
       unit: "lime:test"
-      all: ["test:unit ", "test:plugin"]
+      all: ["test:unit", "test:plugin"]
 #    default:
 #      integrate: ["git:pull", "lime:test", "test:plugin"]
   bee:  # bee extra configuration keys
