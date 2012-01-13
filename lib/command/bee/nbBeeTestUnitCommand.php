@@ -6,15 +6,15 @@
  * @package    bee
  * @subpackage command
  */
-class nbLimeTestCommand extends nbCommand
+class nbBeeTestUnitCommand extends nbCommand
 {
 
   protected function configure()
   {
-    $this->setName('lime:test')
-      ->setBriefDescription('Runs lime unit tests')
+    $this->setName('bee:test-unit')
+      ->setBriefDescription('Runs bee unit tests')
       ->setDescription(<<<TXT
-The <info>{$this->getFullName()}</info> command runs unit tests using lime.
+The <info>{$this->getFullName()}</info> command runs bee unit tests using lime.
 TXT
     );
 

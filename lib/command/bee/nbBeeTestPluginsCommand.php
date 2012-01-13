@@ -6,11 +6,11 @@
  * @package    bee
  * @subpackage command
  */
-class nbTestPluginsCommand extends nbApplicationCommand
+class nbBeeTestPluginsCommand extends nbCommand
 {
   protected function configure()
   {
-    $this->setName('test:plugin')
+    $this->setName('bee:test-plugins')
       ->setBriefDescription('Runs unit tests for bee plugins')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command
@@ -30,9 +30,7 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $commandSet = $this->getApplication()->getCommands();
-    $testCmd = $commandSet->getCommand('lime:test');
-
+    $testCmd = new nbBeeTestUnitCommand();
     $pluginTestDirs = nbConfig::get('nb_plugin_test_dirs');
 
     $options['dir'] = $pluginTestDirs;
