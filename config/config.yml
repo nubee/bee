@@ -9,3 +9,8 @@ nb:
   default_plugins: ~
   output:
     color:         "true"
+
+symfony:
+  defaults:
+    exec-path: ./symfony
+    test-enviroment: lime

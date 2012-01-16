@@ -44,9 +44,12 @@ TXT
 
       $configParser = sfYaml::load($beeConfig);
       $configParser['project']['type'] = $projectType;
-
-      $yml = sfYaml::dump($configParser, 99);
       
+      if($projectType == 'symfony'){
+        $configParser['project']['symfony']['exec-path'] = nbConfig::get('symfony_defaults_exec-path') ;
+        $configParser['project']['symfony']['test-enviroment'] = nbConfig::get('symfony_defaults_test-enviroment') ;        
+      }
+      $yml = sfYaml::dump($configParser, 99);      
       file_put_contents($beeConfig, $yml);
     }
 

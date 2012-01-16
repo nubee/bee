@@ -18,23 +18,28 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $projectType = nbConfig::get('project_type');
-    if ($projectType == "bee") {
-      $unitTest = new nbBeeTestUnitCommand();
-      $unitTest->run(new nbCommandLineParser(), '', true);
+    if (nbConfig::has('project_type')) {
+      $projectType = nbConfig::get('project_type');
 
-      $pluginsTest = new nbBeeTestPluginsCommand();
-      $pluginsTest->run(new nbCommandLineParser(), '', true);
-    } else {
-      try {
-        $commandSet = $this->getApplication()->getCommands();
-        $testAllCmd = $commandSet->getCommand($projectType.':test-all');
-        $testAllCmd->run(new nbCommandLineParser(), '', true);
-        
-      } catch (Exception $e) {
-        $this->logLine($e->getMessage(), nbLogger::ERROR);
+      if ($projectType == "bee") {
+        $unitTest = new nbBeeTestUnitCommand();
+        $unitTest->run(new nbCommandLineParser(), '', true);
+
+        $pluginsTest = new nbBeeTestPluginsCommand();
+        $pluginsTest->run(new nbCommandLineParser(), '', true);
+      } else {
+        try {
+          $commandSet = $this->getApplication()->getCommands();
+          $testAllCmd = $commandSet->getCommand($projectType . ':test-all');
+          $testAllCmd->run(new nbCommandLineParser(), '', true);
+        } catch (Exception $e) {
+          $this->logLine($e->getMessage(), nbLogger::ERROR);
+        }
       }
     }
+    else throw new Exception('Project type not defined');
   }
+  
+    
 
 }

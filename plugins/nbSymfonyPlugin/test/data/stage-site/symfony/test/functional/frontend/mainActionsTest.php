@@ -4,16 +4,16 @@ include(dirname(__FILE__).'/../../bootstrap/functional.php');
 
 $browser = new sfTestFunctional(new sfBrowser());
 
-$browser->
-  get('/main/index')->
-
-  with('request')->begin()->
-    isParameter('module', 'main')->
-    isParameter('action', 'index')->
-  end()->
-
-  with('response')->begin()->
-    isStatusCode(200)->
-    checkElement('tr', 'email')->
-  end()
-;
+//$browser->
+//  get('/main/index')->
+//
+//  with('request')->begin()->
+//    isParameter('module', 'main')->
+//    isParameter('action', 'index')->
+//  end()->
+//
+//  with('response')->begin()->
+//    isStatusCode(200)->
+//    //checkElement('tr', 'email')->
+//  end()
+//;
