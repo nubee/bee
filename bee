@@ -1,3 +1,10 @@
-#!/usr/bin/env php
-<?php
-include dirname(__FILE__) . '/bee.php';
+#!/bin/bash
+BEE_PHP=""
+
+if [ "${OSTYPE}" == "cygwin" ]; then
+  BEE_PHP="`cygpath -w \`dirname $BASH_SOURCE\`/bee.php`"
+elif [ "${OSTYPE}" == "linux-gnu" ]; then
+  BEE_PHP="`dirname \`readlink /usr/bin/bee\``/bee.php"
+fi
+
+/usr/bin/env php $BEE_PHP "$@"
