@@ -5,8 +5,10 @@ if [ "${OSTYPE}" == "cygwin" ]; then
   BEE_PHP="`cygpath -w \`dirname $BASH_SOURCE\`/bee.php`"
 /usr/bin/env php $BEE_PHP "$@"
 elif [ "${OSTYPE}" == "linux-gnu" ]; then
+#bee is installed
   if [ -e "/usr/bin/bee" ]; then
         BEE_PHP="`dirname \`readlink /usr/bin/bee\``/bee.php"
+#bee is executed locally
   else
         BEE_PHP="`dirname $0`/bee.php"
   fi
