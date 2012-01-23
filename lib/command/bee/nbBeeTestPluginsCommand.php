@@ -35,7 +35,8 @@ TXT
 
     $options['dir'] = $pluginTestDirs;
     $options['exclude-project-folder'] = true;
-    $testCmd->execute($arguments, $options);
+    $ret = $testCmd->execute($arguments, $options);
+    return $ret;
   }
 
 }

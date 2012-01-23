@@ -41,11 +41,12 @@ TXT
     $fs->mkdir($pluginDir . '/command');
     $fs->mkdir($pluginDir . '/config');
     $fs->mkdir($pluginDir . '/lib');
+    $fs->mkdir($pluginDir . '/lib/vendor');
     $fs->mkdir($pluginDir . '/test');
-    $fs->mkdir($pluginDir . '/test/config');
+    $fs->mkdir($pluginDir . '/test/bootstrap');
     $fs->mkdir($pluginDir . '/test/data');
+    $fs->mkdir($pluginDir . '/test/data/config');
     $fs->mkdir($pluginDir . '/test/unit');
-    $fs->mkdir($pluginDir . '/vendor');
   }
 
 }

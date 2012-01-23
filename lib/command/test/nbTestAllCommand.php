@@ -23,17 +23,23 @@ TXT
 
       if ($projectType == "bee") {
         $unitTest = new nbBeeTestUnitCommand();
-        $unitTest->run(new nbCommandLineParser(), '', true);
+        $retUnit = $unitTest->run(new nbCommandLineParser(), '', true);
 
         $pluginsTest = new nbBeeTestPluginsCommand();
-        $pluginsTest->run(new nbCommandLineParser(), '', true);
+        $retPlugin = $pluginsTest->run(new nbCommandLineParser(), '', true);
+        if($retUnit == 0 or $retPlugin ==0)
+          return 0;
+        else
+          return 1;
       } else {
         try {
           $commandSet = $this->getApplication()->getCommands();
           $testAllCmd = $commandSet->getCommand($projectType . ':test-all');
           $testAllCmd->run(new nbCommandLineParser(), '', true);
+          return true;
         } catch (Exception $e) {
           $this->logLine($e->getMessage(), nbLogger::ERROR);
+          return false;
         }
       }
     }

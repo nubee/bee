@@ -19,6 +19,7 @@ TXT
     $this->setOptions(new nbOptionSet(array(
                 new nbOption('force', 'f', nbOption::PARAMETER_NONE, 'Overwrites the existing configuration'),
                 new nbOption('type', 't', nbOption::PARAMETER_REQUIRED, 'define the project type for custom task behavior'),
+                new nbOption('repository-type', 'r', nbOption::PARAMETER_REQUIRED, 'define the project type for custom task behavior'),
             )));
   }
 
@@ -30,6 +31,7 @@ TXT
     $configDir = $fs->sanitizeDir($projectDir) . '/.bee';
     $force = isset($options['force']) ? true : false;
     $projectType = isset($options['type']) ? $options['type'] : '';
+    $repositoryType = isset($options['repository-type']) ? $options['repository-type'] : '';
 
     $fs->mkdir($configDir, true);
     $fs->copy(nbConfig::get('nb_bee_dir') . '/data/config/bee.yml', $configDir . '/bee.yml', $force);
@@ -44,12 +46,18 @@ TXT
 
       $configParser = sfYaml::load($beeConfig);
       $configParser['project']['type'] = $projectType;
-      
-      if($projectType == 'symfony'){
-        $configParser['project']['symfony']['exec-path'] = nbConfig::get('symfony_defaults_exec-path') ;
-        $configParser['project']['symfony']['test-enviroment'] = nbConfig::get('symfony_defaults_test-enviroment') ;        
+
+      if ($projectType == 'symfony') {
+        $configParser['project']['symfony']['exec-path'] = nbConfig::get('symfony_defaults_exec-path');
+        $configParser['project']['symfony']['test-enviroment'] = nbConfig::get('symfony_defaults_test-enviroment');
       }
-      $yml = sfYaml::dump($configParser, 99);      
+      if ($repositoryType != '') {
+        $configParser['project']['repository']['type'] = $repositoryType;
+        if ($repositoryType == 'git') {
+          $configParser['project']['repository']['root-directory'] = $projectDir;
+        }
+      }
+      $yml = sfYaml::dump($configParser, 99);
       file_put_contents($beeConfig, $yml);
     }
 
