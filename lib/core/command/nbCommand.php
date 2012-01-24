@@ -344,4 +344,13 @@ abstract class nbCommand
     $yamlParser->parseFile($configFile, '', true);
   }
 
+  protected function askConfirmation($message)
+  {
+    $this->logLine($message, nbLogger::QUESTION);
+    $response = fgets(STDIN);
+    if(strtolower(trim($response)) != 'y') {
+      return false;
+    }
+    return true;
+  }
 }
