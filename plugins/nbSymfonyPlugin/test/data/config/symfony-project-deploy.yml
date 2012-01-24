@@ -36,6 +36,7 @@ filesystem:
     target-dir:   %app_prod_dir%
     exclude-from: %exclude_list%
     include-from: %include_list%
+    delete: true
 
 mysql:
   dump:

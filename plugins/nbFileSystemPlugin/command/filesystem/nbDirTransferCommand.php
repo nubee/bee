@@ -53,7 +53,9 @@ TXT
     $sourceDir = nbFileSystem::sanitizeDir($arguments['source-dir']) . '/';
     $targetDir = nbFileSystem::sanitizeDir($arguments['target-dir']);
     
-    $cmd = sprintf('rsync -azoChpA %s %s %s %s %s %s %s', ($this->isVerbose() ? '-v' : ''), $doit, $include, $exclude, $delete, $sourceDir, $targetDir);
+    $cmd = sprintf('rsync -azoChpAv %s %s %s %s %s %s',  $doit, $include, $exclude, $delete, $sourceDir, $targetDir);
+
+    if(!isset($options['doit'])) $this->logLine('Executing command: '.$cmd);
     
     $this->executeShellCommand($cmd);
     $this->logLine('Folders synchronization completed');

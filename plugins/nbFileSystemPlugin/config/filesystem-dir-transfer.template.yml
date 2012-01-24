@@ -4,3 +4,4 @@ filesystem:
     target-dir:    { required: true, dir-exists: true }
     exclude-from:  { default: .bee/exclude-list, file-exists: true }
     include-from:  { default: .bee/include-list, file-exists: true }
+    delete:  { default: false }

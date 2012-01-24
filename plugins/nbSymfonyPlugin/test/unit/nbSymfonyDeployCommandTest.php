@@ -7,13 +7,20 @@ $cacheDir = $symfonyRootDir . '/cache';
 
 $fileSystem->mkdir(nbConfig::get('archive_archive-dir_destination-dir'));
 
-$t = new lime_test(1);
-$t->comment('Symfony Deploy');
+$t = new lime_test(2);
+$cmd = new nbSymfonyDeployCommand();
+$parser = new nbCommandLineParser();
+$parser->setDefaultConfigurationDirs(array(dirname(__FILE__) . '/../data/config'));
+
+$t->comment('Symfony Deploy dry run');
+$commandLine = '--config-file ';
+$t->ok($cmd->run($parser, $commandLine), 'Symfony project deployed successfully');
 
 $cmd = new nbSymfonyDeployCommand();
 $parser = new nbCommandLineParser();
 $parser->setDefaultConfigurationDirs(array(dirname(__FILE__) . '/../data/config'));
 
+$t->comment('Symfony Deploy');
 $commandLine = '--config-file --doit';
 $t->ok($cmd->run($parser, $commandLine), 'Symfony project deployed successfully');
 
