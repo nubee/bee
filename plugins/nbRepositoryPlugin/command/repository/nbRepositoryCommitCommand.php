@@ -136,7 +136,7 @@ TXT
 
   private function askConfirmation($message)
   {
-    fwrite(STDOUT, $message . "\n");
+    $this->logLine($message, nbLogger::QUESTION);
     $response = fgets(STDIN);
     if(strtolower(trim($response)) != 'y') {
       return false;
