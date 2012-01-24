@@ -14,3 +14,7 @@ symfony:
   defaults:
     exec-path: ./symfony
     test-enviroment: lime
+android:
+  defaults:
+    test: 
+      build-file: test/build.xml

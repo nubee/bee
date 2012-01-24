@@ -32,38 +32,44 @@ TXT
     $force = isset($options['force']) ? true : false;
     $projectType = isset($options['type']) ? $options['type'] : '';
     $repositoryType = isset($options['repository-type']) ? $options['repository-type'] : '';
-
+    
     $fs->mkdir($configDir, true);
     $fs->copy(nbConfig::get('nb_bee_dir') . '/data/config/bee.yml', $configDir . '/bee.yml', $force);
     $fs->copy(nbConfig::get('nb_bee_dir') . '/data/config/config.yml', $configDir . '/config.yml', $force);
+    $beeConfig = $configDir . '/bee.yml';
+    $configParser = sfYaml::load($beeConfig);
 
     // add project type
     if ($projectType != '') {
-      $beeConfig = $configDir . '/bee.yml';
 
       if (!file_exists($beeConfig))
         throw new Exception($beeConfig . ' not found');
 
-      $configParser = sfYaml::load($beeConfig);
       $configParser['project']['type'] = $projectType;
 
       if ($projectType == 'symfony') {
         $configParser['project']['symfony']['exec-path'] = nbConfig::get('symfony_defaults_exec-path');
         $configParser['project']['symfony']['test-enviroment'] = nbConfig::get('symfony_defaults_test-enviroment');
       }
-      if ($repositoryType != '') {
-        $configParser['project']['repository']['type'] = $repositoryType;
-        if ($repositoryType == 'git') {
-          $configParser['project']['repository']['root-directory'] = $projectDir;
-        }
+
+      if ($projectType == 'android') {
+        $configParser['project']['android']['test']['build-file'] = nbConfig::get('android_defaults_test_build-file');
       }
-      $yml = sfYaml::dump($configParser, 99);
-      file_put_contents($beeConfig, $yml);
     }
+
+    if ($repositoryType != '') {
+      $configParser['project']['repository']['type'] = $repositoryType;
+      if ($repositoryType == 'git') {
+        $configParser['project']['repository']['root-directory'] = $projectDir;
+      }
+    }
+    $yml = sfYaml::dump($configParser, 99);
+    file_put_contents($beeConfig, $yml);
 
     $this->logLine('bee project generated!');
 
     return true;
   }
+
 
 }

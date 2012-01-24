@@ -20,22 +20,23 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    if (nbConfig::has('project_type') and nbConfig::get('project_type')=='symfony') {
-    $symfonyExecutable = sprintf('%s/%s', nbFileSystem::sanitizeDir(nbConfig::get('project_symfony_exec-path')), 'symfony');
-    $symfonyTestEnviroment = nbConfig::get('project_symfony_test-enviroment');
-    $this->logLine(sprintf('Launching all test for %s enviroment', $symfonyTestEnviroment));
-    if ($symfonyTestEnviroment == 'lime') {
-      $cmd = sprintf('php %s test:all', $symfonyExecutable);
-      $this->executeShellCommand($cmd);
-    } else if ($symfonyTestEnviroment == 'phpunit'){
-      $cmd = sprintf('php %s phpunit:test-all', $symfonyExecutable);
-      $this->executeShellCommand($cmd);      
-    } else {
-      return false;
+    if (nbConfig::has('project_type') and nbConfig::get('project_type') == 'symfony') {
+      $symfonyExecutable = sprintf('%s/%s', nbFileSystem::sanitizeDir(nbConfig::get('project_symfony_exec-path')), 'symfony');
+      $symfonyTestEnviroment = nbConfig::get('project_symfony_test-enviroment');
+      $this->logLine(sprintf('Launching all test for %s enviroment', $symfonyTestEnviroment));
+      if ($symfonyTestEnviroment == 'lime') {
+        $cmd = sprintf('php %s test:all', $symfonyExecutable);
+        $this->executeShellCommand($cmd);
+      } else if ($symfonyTestEnviroment == 'phpunit') {
+        $cmd = sprintf('php %s phpunit:test-all', $symfonyExecutable);
+        $this->executeShellCommand($cmd);
+      } else {
+        return false;
+      }
+      return true;
     }
-    return true;
-    }
-    else throw new Exception('This isn\'t a symfony project');
+    else
+      throw new Exception('This isn\'t a symfony project');
   }
 
 }
