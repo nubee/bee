@@ -5,6 +5,6 @@ all:
   doctrine:
     class: sfDoctrineDatabase
     param:
-      dsn:      mysql:host=localhost;dbname=testapp_dev
+      dsn:      mysql:host=localhost;dbname=nbSymfonyPlugintest_dev
       username: testappadmin
-      password: db@dm1n!
+      password: testpwd

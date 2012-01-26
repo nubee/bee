@@ -1,36 +1,25 @@
 web_base_dir:      { required: true }
 app_name:          { required: true }
-archive_dir:       { required: true, default: /backup/directory, dir-exists: true }
+app_source_dir:    { required: true, default: ./, dir-exists: true }
 exclude_list:      { required: true, default: .bee/exclude-list_symfony-plugin, file-exists: true }
 include_list:      { default: .bee/include-list_symfony-plugin, file-exists: true }
-app_source_dir:    { required: true, default: ./, dir-exists: true }
 app_prod_dir:      { required: true, default: %web_base_dir%/%app_name%, dir-exists: true }
 web_user:          { required: true, default: www-data }
 web_group:         { required: true, default: www-data }
 symfony_root_dir:  { required: true, default: %app_prod_dir%/symfony, dir-exists: true }
 db_name:           { required: true }
 db_username:       { required: true }
-db_password:       
-db_dump_dir:       { required: true, default: %archive_dir%, dir-exists: true }
+db_password:
+environment:       { required: true }
 
 symfony:
-  project-deploy:
+  project-deploy-init:
     symfony-root-dir:  { required: true, default: %symfony_root_dir%, dir-exists: true }
     symfony-exe-path:  { required: true, default: %symfony_root_dir%/symfony, file-exists: true }
     site-dir:          { required: true, default: %app_prod_dir%, dir-exists: true }
     site-user:         { required: true, default: %web_user% }
     site-group:        { required: true, default: %web_group% }
-    site-applications:
-      app1:
-        name: { required: true, default: frontend }
-        env:  { required: true, default: prod }
-#        app2:
-#          name: backend
-#          env: prod
-archive:
-  archive-dir:
-    source-dir:      { required: true, default: %app_prod_dir%, dir-exists: true }
-    destination-dir: { required: true, default: %archive_dir%, dir-exists: true }
+    environment:       { required: true }
 
 filesystem:
   dir-transfer:
@@ -38,11 +27,11 @@ filesystem:
     target-dir:   { required: true, default: %app_prod_dir%, dir-exists: true }
     exclude-from: { required: true, default: %exclude_list%, file-exists: true }
     include-from: { default: %include_list%, file-exists: true }
-    delete:       { required: false, default: true }
 
 mysql:
-  dump:
-    db-name:   { required: true, default: %db_name% }
-    dump-path: { required: true, default: %db_dump_dir%, dir-exists: true }
-    username:  { required: true, default: %db_username% }
-    password:  { default: %db_password% }
+  create:
+    db-name:        { required: true, default: %mysql_db-name% }
+    mysql-username: { required: true, default: %mysql_mysql-username% }
+    mysql-password: { required: true, default: %mysql_mysql-password% }
+    username:       { required: true, default: %mysql_username% }
+    password:       { required: true, default: %mysql_password% }

@@ -6,3 +6,4 @@ symfony_root_dir:  { required: true, default: %app_prod_dir%/symfony, dir-exists
 symfony:
   doctrine-build:
     symfony-root-dir:  { required: true, default: %symfony_root_dir%, dir-exists: true }
+    environment:  { required: true}

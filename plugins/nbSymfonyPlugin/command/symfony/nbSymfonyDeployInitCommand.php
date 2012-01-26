@@ -1,10 +1,10 @@
 <?php
 
-class nbSymfonyDeployCommand extends nbApplicationCommand {
+class nbSymfonyDeployInitCommand extends nbApplicationCommand {
 
   protected function configure() {
-    $this->setName('symfony:project-deploy')
-            ->setBriefDescription('Deploys a symfony project')
+    $this->setName('symfony:project-deploy-init')
+            ->setBriefDescription('Deploys a symfony project with initialization of the enviroment')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 
@@ -13,7 +13,6 @@ TXT
     );
 
     $this->setArguments(new nbArgumentSet(array(
-                new nbArgument('environment', nbArgument::REQUIRED, 'Environment name ( stage | prod )'),
             )));
 
 
@@ -45,24 +44,8 @@ TXT
 
     $this->loadConfiguration($configDir, $configFilename);
 
-    $symfonyRootDir = nbConfig::get('symfony_project-deploy_symfony-root-dir');
+    $symfonyRootDir = nbConfig::get('symfony_project-deploy-init_symfony-root-dir');
     
-    // Put site offline
-    if (nbConfig::has('symfony_project-deploy_site-applications')) {
-      foreach (nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
-        $cmd = new nbSymfonyGoOfflineCommand();
-        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
-        $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-      }
-    }
-
-    // Archive site directory
-    if (nbConfig::has('archive_archive-dir')) {
-      $cmd = new nbArchiveDirCommand();
-      $cmdLine = sprintf('--config-file=%s --create-destination-dir', $configFilename);
-      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-    }
-
     // Sync project
     if (nbConfig::has('filesystem_dir-transfer')) {
       $cmd = new nbDirTransferCommand();
@@ -72,40 +55,43 @@ TXT
       if (!$cmd->run($parser, $cmdLine))
         throw new Exception('Error executing: ' . $cmd);
     }
-
+     
     // Check dirs
     $cmd = new nbSymfonyCheckDirsCommand();
-    $cmdLine = nbConfig::get('symfony_project-deploy_symfony-exe-path');
+    $cmdLine = nbConfig::get('symfony_project-deploy-init_symfony-exe-path');
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
     // Check permissions
     $cmd = new nbSymfonyCheckPermissionsCommand();
-    $cmdLine = nbConfig::get('symfony_project-deploy_symfony-exe-path');
+    $cmdLine = nbConfig::get('symfony_project-deploy-init_symfony-exe-path');
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
     // Change ownership
     $cmd = new nbChangeOwnershipCommand();
-    $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-user'), nbConfig::get('symfony_project-deploy_site-group'));
+    $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy-init_site-user'), nbConfig::get('symfony_project-deploy-init_site-group'));
     try {
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     } catch (Exception $e) {
       $this->logLine('Cannot change permissions', nbLogger::ERROR);
     }
-
+    
+    // Create database
+    $cmd = new nbMysqlCreateCommand();
+    $cmdLine = sprintf('--config-file=%s', $configFilename);
+    $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    
+    
+    // Doctrine build
+    $cmd = new nbSymfonyDoctrineBuildCommand();
+    $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy-init_environment'), '-f');
+    $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    
+    
     // Clear cache
     $cmd = new nbSymfonyClearCacheCommand();
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
-    // Put site online
-    if (nbConfig::has('symfony_project-deploy_site-applications')) {
-      foreach (nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
-        $cmd = new nbSymfonyGoOnlineCommand();
-        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
-
-        $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-      }
-    }
-    $this->logLine('Symfony project deployed successfully');
+    $this->logLine('Symfony project init executed successfully');
 
     return true;
   }

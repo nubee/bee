@@ -1,11 +1,4 @@
-/nbproject/private/
-/test/sandbox/.bee/
-/%ProgramFiles%/
-/.netbeans/
-/plugins/nbSymfonyPlugin/test/data/testapp/.bee/
-/plugins/nbSymfonyPlugin/test/data/stageSite/.bee/
-/.bee/
-/plugins/nbSymfonyPlugin/test/data/prodSite/.bee/
-/plugins/nbSymfonyPlugin/test/data/stageSite_1/.bee/
-/test/sandbox/.bee
-/%web_base_dir%/
+.netbeans/
+.bee
+plugins/nbSymfonyPlugin/test/data/production-site/symfony/log
+plugins/nbSymfonyPlugin/test/data/stage-site/symfony/log
