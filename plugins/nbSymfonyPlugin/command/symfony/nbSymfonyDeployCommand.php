@@ -59,10 +59,24 @@ TXT
     // Archive site directory
     if (nbConfig::has('archive_archive-dir')) {
       $cmd = new nbArchiveDirCommand();
-      $cmdLine = sprintf('--config-file=%s --create-destination-dir', $configFilename);
+      $cmdLine = sprintf('--config-file=%s', $configFilename);
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
+    // Mysql dump
+    if (nbConfig::has('mysql_dump')) {
+      $cmd = new nbMysqlDumpCommand();
+      $cmdLine = sprintf('--config-file=%s', $configFilename);
+      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    }
+
+    // Doctrine migration
+    if (nbConfig::get('symfony_project-deploy_migration') == true) {
+      $cmd = new nbSymfonyDoctrineMigrateAllCommand();
+      $cmdLine = sprintf('%s %s ', $symfonyRootDir, nbConfig::get('symfony_project-deploy_environment'));
+      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    }
+    
     // Sync project
     if (nbConfig::has('filesystem_dir-transfer')) {
       $cmd = new nbDirTransferCommand();
@@ -75,12 +89,10 @@ TXT
 
     // Check dirs
     $cmd = new nbSymfonyCheckDirsCommand();
-    $cmdLine = nbConfig::get('symfony_project-deploy_symfony-exe-path');
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
     // Check permissions
     $cmd = new nbSymfonyCheckPermissionsCommand();
-    $cmdLine = nbConfig::get('symfony_project-deploy_symfony-exe-path');
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
     // Change ownership

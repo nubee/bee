@@ -20,6 +20,8 @@ symfony:
     site-dir:          { required: true, default: %app_prod_dir%, dir-exists: true }
     site-user:         { required: true, default: %web_user% }
     site-group:        { required: true, default: %web_group% }
+    environment:       { required: true }
+    migration:         { required: true, default false }
     site-applications:
       app1:
         name: { required: true, default: frontend }
@@ -31,14 +33,14 @@ archive:
   archive-dir:
     source-dir:      { required: true, default: %app_prod_dir%, dir-exists: true }
     destination-dir: { required: true, default: %archive_dir%, dir-exists: true }
-
+    create-destination-dir: { required: false, default: false }
 filesystem:
   dir-transfer:
     source-dir:   { required: true, default: %app_source_dir%, dir-exists: true }
     target-dir:   { required: true, default: %app_prod_dir%, dir-exists: true }
     exclude-from: { required: true, default: %exclude_list%, file-exists: true }
     include-from: { default: %include_list%, file-exists: true }
-    delete:       { required: false, default: true }
+    delete:       { required: false, default: false }
 
 mysql:
   dump:

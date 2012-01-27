@@ -58,12 +58,10 @@ TXT
      
     // Check dirs
     $cmd = new nbSymfonyCheckDirsCommand();
-    $cmdLine = nbConfig::get('symfony_project-deploy-init_symfony-exe-path');
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
     // Check permissions
     $cmd = new nbSymfonyCheckPermissionsCommand();
-    $cmdLine = nbConfig::get('symfony_project-deploy-init_symfony-exe-path');
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
     // Change ownership

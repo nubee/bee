@@ -8,9 +8,9 @@ app_prod_dir:     %web_base_dir%/production-site
 web_user:         www-data
 web_group:        www-data
 symfony_root_dir: %app_prod_dir%/symfony
-db_name:          dbtest
-db_username:      dbuser
-db_password:      
+db_name:          nbSymfonyPlugintest_dev
+db_username:      testappadmin
+db_password:      testpwd
 db_dump_dir:      %archive_dir%
 
 symfony:
@@ -24,12 +24,15 @@ symfony:
       app1:
         name: frontend
         env:  prod
+    environment:       prod
+    migration: true
+
         
 archive:
   archive-dir:
     source-dir:      %app_prod_dir%
     destination-dir: %archive_dir%
-
+    create-destination-dir: true
 filesystem:
   dir-transfer:
     source-dir:   %app_source_dir%
