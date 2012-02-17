@@ -95,9 +95,22 @@ TXT
     $cmd = new nbSymfonyCheckPermissionsCommand();
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
-    // Change ownership
+    // Change dirs ownership
+    $webUser = nbConfig::get('symfony_project-deploy_site-user');
+    $webGroup = nbConfig::get('symfony_project-deploy_site-group');
+
     $cmd = new nbChangeOwnershipCommand();
-    $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-user'), nbConfig::get('symfony_project-deploy_site-group'));
+    $cmdLine = sprintf('%s %s %s --doit', $symfonyRootDir, $webUser, $webGroup);
+    try {
+      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    } catch (Exception $e) {
+      $this->logLine('Cannot change permissions', nbLogger::ERROR);
+    }
+    
+    $webDir = nbConfig::get('web_dir');
+    
+    $cmd = new nbChangeOwnershipCommand();
+    $cmdLine = sprintf('%s %s %s --doit', $webDir, $webUser, $webGroup);
     try {
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     } catch (Exception $e) {
