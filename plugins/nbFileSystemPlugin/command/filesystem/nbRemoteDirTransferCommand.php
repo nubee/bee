@@ -41,14 +41,14 @@ TXT
     $remoteServer = $arguments['remote-server'];
     $remotePath = nbFileSystem::sanitizeDir($arguments['remote-dir']);
     
-    if(isset($s['exclude-from']) && file_exists($s['exclude-from']))
-      $exclude = ' --exclude-from \'' . $s['exclude-from'] . '\' ';
+    if(isset($options['exclude-from']) && file_exists($options['exclude-from']))
+      $exclude = ' --exclude-from \'' . $options['exclude-from'] . '\' ';
     
-    if(isset($s['include-from']) && file_exists($s['include-from']))
-      $include = ' --include-from \'' . $s['include-from'] . '\' ';
+    if(isset($options['include-from']) && file_exists($options['include-from']))
+      $include = ' --include-from \'' . $options['include-from'] . '\' ';
     
-    $doit = isset($s['doit']) ? '' : '--dry-run';
-    $delete = isset($s['delete']) ? '--delete' : '';
+    $doit = isset($options['doit']) ? '' : '--dry-run';
+    $delete = isset($options['delete']) ? '--delete' : '';
     
     $cmd = sprintf('rsync -azvoChpA %s %s %s %s %s -e ssh %s@%s:%s', 
       $doit, $include, $exclude, $delete, $sourceDir, 

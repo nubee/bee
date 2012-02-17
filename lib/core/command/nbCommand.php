@@ -296,8 +296,9 @@ abstract class nbCommand
   public function executeShellCommand($command, $doit = true, $successCode = 1) {
     $shell = new nbShell();
     $code = $shell->execute($command, $doit);
-    if($code != $successCode)
+    if($code != $successCode) {
       throw new Exception(sprintf('Command "%s" exited with error: %s', $command, $code));
+    }
     
     return $shell->getOutput();
   }

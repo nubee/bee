@@ -21,7 +21,7 @@ symfony:
     site-user:         { required: true, default: %web_user% }
     site-group:        { required: true, default: %web_group% }
     environment:       { required: true }
-    migration:         { required: true, default false }
+    migration:         { required: true, default: disabled }
     site-applications:
       app1:
         name: { required: true, default: frontend }

@@ -71,7 +71,7 @@ TXT
     }
 
     // Doctrine migration
-    if (nbConfig::get('symfony_project-deploy_migration') == true) {
+    if (nbConfig::get('symfony_project-deploy_migration') == 'enabled') {
       $cmd = new nbSymfonyDoctrineMigrateAllCommand();
       $cmdLine = sprintf('%s %s ', $symfonyRootDir, nbConfig::get('symfony_project-deploy_environment'));
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
