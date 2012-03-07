@@ -41,7 +41,7 @@ filesystem:
     delete:       { required: false, default: false }
 
 mysql:
-  comment:     { default: "comment mysql and all nested items if app has no database" }
+  comment:     { default: "comment mysql and all nested items if app has got no database" }
   db_name:     
   db_username: 
   db_password: 

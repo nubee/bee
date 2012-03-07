@@ -6,16 +6,12 @@ include_list:      { default: .bee/include-list_symfony-plugin, file-exists: tru
 app_prod_dir:      { required: true, default: %web_base_dir%/%app_name%, dir-exists: true }
 web_user:          { required: true, default: www-data }
 web_group:         { required: true, default: www-data }
-symfony_root_dir:  { required: true, default: %app_prod_dir%/symfony, dir-exists: true }
-db_name:           { required: true }
-db_username:       { required: true }
-db_password:
-environment:       { required: true }
+web_dir:           { required: true, default: %web_base_dir%/%app_name%/httpdocs, dir-exists: true }
 
 symfony:
   project-deploy-init:
-    symfony-root-dir:  { required: true, default: %symfony_root_dir%, dir-exists: true }
-    symfony-exe-path:  { required: true, default: %symfony_root_dir%/symfony, file-exists: true }
+    symfony-root-dir:  { required: true, default: %symfony_root_dir% }
+    symfony-exe-path:  { required: true, default: %symfony_root_dir%/symfony }
     site-dir:          { required: true, default: %app_prod_dir%, dir-exists: true }
     site-user:         { required: true, default: %web_user% }
     site-group:        { required: true, default: %web_group% }
@@ -29,9 +25,14 @@ filesystem:
     include-from: { default: %include_list%, file-exists: true }
 
 mysql:
+  comment:     { default: "comment mysql and all nested items if app has got no database" }
+  db_name: 
+  db_username: 
+  db_password: 
+
   create:
-    db-name:        { required: true, default: %mysql_db-name% }
-    mysql-username: { required: true, default: %mysql_mysql-username% }
-    mysql-password: { required: true, default: %mysql_mysql-password% }
-    username:       { required: true, default: %mysql_username% }
-    password:       { required: true, default: %mysql_password% }
+    db-name:        { default: %mysql_db_name% }
+    mysql-username: { default: mysql_username }
+    mysql-password: { default: mysql_password }
+    username:       { default: %mysql_db_username% }
+    password:       { default: %mysql_db_password% }

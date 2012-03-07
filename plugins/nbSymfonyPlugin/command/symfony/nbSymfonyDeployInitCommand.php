@@ -44,8 +44,6 @@ TXT
 
     $this->loadConfiguration($configDir, $configFilename);
 
-    $symfonyRootDir = nbConfig::get('symfony_project-deploy-init_symfony-root-dir');
-    
     // Sync project
     if (nbConfig::has('filesystem_dir-transfer')) {
       $cmd = new nbDirTransferCommand();
@@ -55,7 +53,9 @@ TXT
       if (!$cmd->run($parser, $cmdLine))
         throw new Exception('Error executing: ' . $cmd);
     }
-     
+    
+    $symfonyRootDir = nbConfig::get('symfony_project-deploy-init_symfony-root-dir');
+
     // Check dirs
     $cmd = new nbSymfonyCheckDirsCommand();
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
@@ -74,16 +74,16 @@ TXT
     }
     
     // Create database
-    $cmd = new nbMysqlCreateCommand();
-    $cmdLine = sprintf('--config-file=%s', $configFilename);
-    $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-    
-    
+    if (nbConfig::has('mysql_create')) {
+      $cmd = new nbMysqlCreateCommand();
+      $cmdLine = sprintf('--config-file=%s', $configFilename);
+      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+      
     // Doctrine build
-    $cmd = new nbSymfonyDoctrineBuildCommand();
-    $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy-init_environment'), '-f');
-    $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-    
+      $cmd = new nbSymfonyDoctrineBuildCommand();
+      $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy-init_environment'), '-f');
+      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    }
     
     // Clear cache
     $cmd = new nbSymfonyClearCacheCommand();
