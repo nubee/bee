@@ -9,7 +9,6 @@ app_prod_dir:      prodSite
 app_stage_dir:     stageSite
 web_user:          adam
 web_group:         adam
-symfony_root_dir:  %data_dir%/%app_prod_dir%/symfony
 migration_version: 2
 database:          dbtest
 db_username:       dbtestadmin
@@ -19,8 +18,8 @@ dump_file:         %plugins_dir%/nbMysqlPlugin/test/data/dbtest-xxx.sql
 
 symfony:
   project-deploy:
-    symfony-root-dir: %symfony_root_dir%
-    symfony-exe-path: %symfony_root_dir%/symfony
+    symfony-root-dir: %data_dir%/%app_prod_dir%/symfony
+    symfony-exe-path: %data_dir%/%app_prod_dir%/symfony/symfony
     site-dir:         %data_dir%/%app_prod_dir%
     site-user:        %web_user%
     site-group:       %web_group%
