@@ -8,12 +8,11 @@ app_prod_dir:      { required: true, default: %web_base_dir%/%app_name%, dir-exi
 web_user:          { required: true, default: www-data }
 web_group:         { required: true, default: www-data }
 web_dir:           { required: true, default: %web_base_dir%/%app_name%/httpdocs, dir-exists: true }
-symfony_root_dir:  { required: true, default: %app_prod_dir%/symfony, dir-exists: true }
 
 symfony:
   project-deploy:
-    symfony-root-dir:  { required: true, default: %symfony_root_dir%, dir-exists: true }
-    symfony-exe-path:  { required: true, default: %symfony_root_dir%/symfony, file-exists: true }
+    symfony-root-dir:  { required: true, default: %app_prod_dir%/symfony, dir-exists: true }
+    symfony-exe-path:  { required: true, default: %app_prod_dir%/symfony/symfony, file-exists: true }
     site-dir:          { required: true, default: %app_prod_dir%, dir-exists: true }
     site-user:         { required: true, default: %web_user% }
     site-group:        { required: true, default: %web_group% }
@@ -42,13 +41,8 @@ filesystem:
 
 mysql:
   comment:     { default: "comment mysql and all nested items if app has got no database" }
-  db_name:     
-  db_username: 
-  db_password: 
-  db_dump_dir: { default: %archive_dir%, dir-exists: true }
-
   dump:
-    db-name:   { default: %mysql_db_name% }
-    dump-path: { default: %mysql_db_dump_dir%, dir-exists: true }
-    username:  { default: %mysql_db_username% }
-    password:  { default: %mysql_db_password% }
+    db-name:   { default: db_name }
+    dump-path: { default: %archive_dir%, dir-exists: true }
+    username:  { default: db_username }
+    password:  { default: db_password }
