@@ -13,10 +13,7 @@ symfony:
   project-deploy:
     symfony-root-dir:  { required: true, default: %app_prod_dir%/symfony, dir-exists: true }
     symfony-exe-path:  { required: true, default: %app_prod_dir%/symfony/symfony, file-exists: true }
-    site-dir:          { required: true, default: %app_prod_dir%, dir-exists: true }
-    site-user:         { required: true, default: %web_user% }
-    site-group:        { required: true, default: %web_group% }
-    environment:       { required: true }
+    environment:       { required: true, default: prod }
     migration:         { required: true, default: disabled }
     site-applications:
       app1:

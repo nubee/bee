@@ -4,7 +4,7 @@ class nbSymfonyDeployCommand extends nbApplicationCommand {
 
   protected function configure() {
     $this->setName('symfony:project-deploy')
-            ->setBriefDescription('Deploys a symfony project')
+            ->setBriefDescription('Deploys a symfony project. (use with sudo)')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 
@@ -51,7 +51,11 @@ TXT
     if (nbConfig::has('symfony_project-deploy_site-applications')) {
       foreach (nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
         $cmd = new nbSymfonyGoOfflineCommand();
-        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
+        $cmdLine = sprintf('%s %s %s',
+          $symfonyRootDir,
+          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'),
+          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
+        
         $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
       }
     }
@@ -96,8 +100,8 @@ TXT
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
     // Change dirs ownership
-    $webUser = nbConfig::get('symfony_project-deploy_site-user');
-    $webGroup = nbConfig::get('symfony_project-deploy_site-group');
+    $webUser = nbConfig::get('web_user');
+    $webGroup = nbConfig::get('web_group');
 
     $cmd = new nbChangeOwnershipCommand();
     $cmdLine = sprintf('%s %s %s --doit', $symfonyRootDir, $webUser, $webGroup);
@@ -125,7 +129,10 @@ TXT
     if (nbConfig::has('symfony_project-deploy_site-applications')) {
       foreach (nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
         $cmd = new nbSymfonyGoOnlineCommand();
-        $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'), nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
+        $cmdLine = sprintf('%s %s %s',
+          $symfonyRootDir,
+          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'),
+          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
 
         $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
       }

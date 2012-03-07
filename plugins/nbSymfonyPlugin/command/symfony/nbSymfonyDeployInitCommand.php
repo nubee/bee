@@ -4,7 +4,7 @@ class nbSymfonyDeployInitCommand extends nbApplicationCommand {
 
   protected function configure() {
     $this->setName('symfony:project-deploy-init')
-            ->setBriefDescription('Deploys a symfony project with initialization of the enviroment')
+            ->setBriefDescription('Deploys a symfony project with initialization of the enviroment. (use with sudo)')
             ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 
@@ -65,8 +65,11 @@ TXT
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
     // Change ownership
+    $webUser = nbConfig::get('web_user');
+    $webGroup = nbConfig::get('web_group');
+
     $cmd = new nbChangeOwnershipCommand();
-    $cmdLine = sprintf('%s %s %s', $symfonyRootDir, nbConfig::get('symfony_project-deploy-init_site-user'), nbConfig::get('symfony_project-deploy-init_site-group'));
+    $cmdLine = sprintf('%s %s %s', $symfonyRootDir, $webUser, $webGroup);
     try {
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     } catch (Exception $e) {

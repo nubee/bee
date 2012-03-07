@@ -12,10 +12,7 @@ symfony:
   project-deploy-init:
     symfony-root-dir:  { required: true, default: %app_prod_dir%/symfony }
     symfony-exe-path:  { required: true, default: %app_prod_dir%/symfony/symfony }
-    site-dir:          { required: true, default: %app_prod_dir%, dir-exists: true }
-    site-user:         { required: true, default: %web_user% }
-    site-group:        { required: true, default: %web_group% }
-    environment:       { required: true }
+    environment:       { required: true, default: prod }
 
 filesystem:
   dir-transfer:
