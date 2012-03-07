@@ -17,7 +17,6 @@ abstract class BaseUserForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'         => new sfWidgetFormInputHidden(),
       'email'      => new sfWidgetFormInputText(),
-      'test'       => new sfWidgetFormInputText(),
       'created_at' => new sfWidgetFormDateTime(),
       'updated_at' => new sfWidgetFormDateTime(),
     ));
@@ -25,16 +24,12 @@ abstract class BaseUserForm extends BaseFormDoctrine
     $this->setValidators(array(
       'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'email'      => new sfValidatorString(array('max_length' => 255)),
-      'test'       => new sfValidatorString(array('max_length' => 255)),
       'created_at' => new sfValidatorDateTime(),
       'updated_at' => new sfValidatorDateTime(),
     ));
 
     $this->validatorSchema->setPostValidator(
-      new sfValidatorAnd(array(
-        new sfValidatorDoctrineUnique(array('model' => 'User', 'column' => array('email'))),
-        new sfValidatorDoctrineUnique(array('model' => 'User', 'column' => array('test'))),
-      ))
+      new sfValidatorDoctrineUnique(array('model' => 'User', 'column' => array('email')))
     );
 
     $this->widgetSchema->setNameFormat('user[%s]');
