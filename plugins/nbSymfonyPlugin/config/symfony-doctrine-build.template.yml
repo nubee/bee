@@ -1,9 +1,8 @@
 web_base_dir:      { required: true }
 app_name:          { required: true }
 app_prod_dir:      { required: true, default: %web_base_dir%/%app_name%, dir-exists: true }
-symfony_root_dir:  { required: true, default: %app_prod_dir%/symfony, dir-exists: true }
 
 symfony:
   doctrine-build:
-    symfony-root-dir:  { required: true, default: %symfony_root_dir%, dir-exists: true }
+    symfony-root-dir:  { required: true, default: %app_prod_dir%/symfony, dir-exists: true }
     environment:  { required: true}

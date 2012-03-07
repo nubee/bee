@@ -47,7 +47,7 @@ TXT
     // Sync project
     if (nbConfig::has('filesystem_dir-transfer')) {
       $cmd = new nbDirTransferCommand();
-      $cmdLine = sprintf('%s --config-file=%s', $doit?'--doit':'', $configFilename);
+      $cmdLine = sprintf('%s --config-file=%s', $doit ? '--doit' : '', $configFilename);
       $parser = new nbCommandLineParser();
       $parser->setDefaultConfigurationDirs($this->getParser()->getDefaultConfigurationDirs());
       if (!$cmd->run($parser, $cmdLine))
@@ -64,12 +64,22 @@ TXT
     $cmd = new nbSymfonyCheckPermissionsCommand();
     $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
 
-    // Change ownership
+    // Change dirs ownership
     $webUser = nbConfig::get('web_user');
     $webGroup = nbConfig::get('web_group');
 
     $cmd = new nbChangeOwnershipCommand();
-    $cmdLine = sprintf('%s %s %s', $symfonyRootDir, $webUser, $webGroup);
+    $cmdLine = sprintf('%s %s %s --doit', $symfonyRootDir, $webUser, $webGroup);
+    try {
+      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    } catch (Exception $e) {
+      $this->logLine('Cannot change permissions', nbLogger::ERROR);
+    }
+    
+    $webDir = nbConfig::get('web_dir');
+    
+    $cmd = new nbChangeOwnershipCommand();
+    $cmdLine = sprintf('%s %s %s --doit', $webDir, $webUser, $webGroup);
     try {
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     } catch (Exception $e) {
