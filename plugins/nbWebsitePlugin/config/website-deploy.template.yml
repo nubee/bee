@@ -1,6 +1,6 @@
 web_base_dir:      { required: true }
 app_name:          { required: true }
-backup_dir:       { required: true, default: /backup/%app_name% }
+backup_dir:        { required: true, default: /backup/%app_name% }
 exclude_list:      { required: true, default: .bee/exclude.lst, file-exists: true }
 include_list:      { default: .bee/include.lst, file-exists: true }
 app_source_dir:    { required: true, default: ./httpdocs, dir-exists: true }

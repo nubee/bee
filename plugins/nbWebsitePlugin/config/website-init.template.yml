@@ -1,0 +1,7 @@
+web_base_dir:       { required: true }
+app_name:           { required: true }
+
+database_name:      
+database_user:      
+database_pass:      
+database_dump_file: 
