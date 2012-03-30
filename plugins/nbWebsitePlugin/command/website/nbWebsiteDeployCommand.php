@@ -59,7 +59,7 @@ TXT
     // Change ownership
     if(nbConfig::has('filesystem_change-ownership')) {
       $cmd = new nbChangeOwnershipCommand();
-      $cmdLine = '--config-file=' . $configFilename;
+      $cmdLine = '--doit --config-file=' . $configFilename;
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
     
