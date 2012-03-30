@@ -24,6 +24,7 @@ TXT
   protected function execute(array $arguments = array(), array $options = array())
   {
     $this->logLine('Initialising website', nbLogger::COMMENT);
+    
 
     // bee project must be defined
     if(!is_dir('./.bee') && !file_exists('./bee.yml')) {
