@@ -1,8 +1,8 @@
 web_base_dir:      { required: true }
 app_name:          { required: true }
 archive_dir:       { required: true, default: /backup/directory, dir-exists: true }
-exclude_list:      { required: true, default: .bee/exclude-list_website-plugin, file-exists: true }
-include_list:      { default: .bee/include-list_website-plugin, file-exists: true }
+exclude_list:      { required: true, default: .bee/exclude.lst, file-exists: true }
+include_list:      { default: .bee/include.lst, file-exists: true }
 app_source_dir:    { required: true, default: ./, dir-exists: true }
 app_prod_dir:      { required: true, default: %web_base_dir%/%app_name%, dir-exists: true }
 web_user:          { required: true, default: www-data }

@@ -59,7 +59,14 @@ TXT
     // Change ownership
     if(nbConfig::has('filesystem_change-ownership')) {
       $cmd = new nbChangeOwnershipCommand();
-      $cmdLine = '--doit --config-file=' . $configFilename;
+      $cmdLine = '--config-file=' . $configFilename;
+      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    }
+    
+    // Database dump
+    if(nbConfig::has('mysql_dump')) {
+      $cmd = new nbMysqlDumpCommand();
+      $cmdLine = '--config-file=' . $configFilename;
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
     
