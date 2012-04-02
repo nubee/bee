@@ -6,25 +6,32 @@ class nbWebsiteInitCommand extends nbApplicationCommand
   protected function configure()
   {
     $this->setName('website:init')
-      ->setBriefDescription('Initliazes a generic website project (creates and restores database, makes directories for backup and website app')
+      ->setBriefDescription('Initliazes a generic website project (creates and restores database, makes directories for website application)')
       ->setDescription(<<<TXT
 The <info>{$this->getFullName()}</info> command:
 
   <info>./bee {$this->getFullName()}</info>
 TXT
     );
+  
+    $this->setArguments(new nbArgumentSet(array(
+        new nbArgument('app-name', nbArgument::REQUIRED, 'Application name'),
+        new nbArgument('web-base-dir', nbArgument::REQUIRED, 'Directory that contains the application')
+      )));
 
     $this->setOptions(new nbOptionSet(array(
+        new nbOption('db-name', '', nbOption::PARAMETER_REQUIRED, 'The database required by the application'),
+        new nbOption('db-user', '', nbOption::PARAMETER_REQUIRED, 'The database user'),
+        new nbOption('db-pass', '', nbOption::PARAMETER_REQUIRED, 'The database user password'),
+        new nbOption('db-dump-file', '', nbOption::PARAMETER_REQUIRED, 'Dump file used to populate the database'),
         new nbOption('mysql-user', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root user', 'root'),
         new nbOption('mysql-pass', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root password', ''),
-        new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Make the changes!'),
       )));
   }
 
   protected function execute(array $arguments = array(), array $options = array())
   {
     $this->logLine('Initialising website', nbLogger::COMMENT);
-    
 
     // bee project must be defined
     if(!is_dir('./.bee') && !file_exists('./bee.yml')) {
@@ -36,56 +43,52 @@ TXT
     
     // Enable required plugins for website:deploy
     $cmd = new nbEnablePluginCommand();
-    $cmdLine = 'nbArchivePlugin';
-    $this->executeCommand($cmd, $cmdLine, true, true);
-    $cmdLine = 'nbFileSystemPlugin';
-    $this->executeCommand($cmd, $cmdLine, true, true);
-    $cmdLine = 'nbMysqlPlugin';
-    $this->executeCommand($cmd, $cmdLine, true, true);
-    $cmdLine = 'nbWebsitePlugin';
-    $this->executeCommand($cmd, $cmdLine, true, true);
+    $cmdLine = 'nbArchivePlugin -f';
+    $this->executeCommand($cmd, $cmdLine, true, false);
+    $cmdLine = 'nbFileSystemPlugin -f';
+    $this->executeCommand($cmd, $cmdLine, true, false);
+    $cmdLine = 'nbMysqlPlugin -f';
+    $this->executeCommand($cmd, $cmdLine, true, false);
+    $cmdLine = 'nbWebsitePlugin -f';
+    $this->executeCommand($cmd, $cmdLine, true, false);
     
-    // Deletes non required config files
-    $this->getFileSystem()->delete('archive-*');
-    $this->getFileSystem()->delete('filesystem-*');
-    $this->getFileSystem()->delete('mysql-*');
+    $this->executeShellCommand('rm -f ./.bee/archive-*');
+    $this->executeShellCommand('rm -f ./.bee/filesystem-*');
+    $this->executeShellCommand('rm -f ./.bee/mysql-*');
     
-    if(!isset($options['config-file']))
-      throw new Exception('--config-file option required (CHANGE THIS)');
-
-    $doit = isset($options['doit']);
-    $verbose = isset($options['verbose']) || !$doit;
-
-    $configDir = nbConfig::get('nb_plugins_dir') . '/nbWebsitePlugin/config/';
-    $configFilename = $options['config-file'];
-    
-    $this->loadConfiguration($configDir, $configFilename);
-
     // Makes app directory
-    $appDirectoy = sprintf('%s/%s/httpdocs', nbConfig::get('web_base_dir'), nbConfig::get('app_name'));
-    $this->getFileSystem()->mkdir($appDirectoy, true);
+    $appName = $arguments['app-name'];
+    $webBaseDir = nbFileSystem::sanitizeDir($arguments['web-base-dir']);
+    
+    $appDirectoy = sprintf('%s/%s/httpdocs', $webBaseDir, $appName);
+    
+    if (!is_dir($appDirectoy)) {
+      $this->getFileSystem()->mkdir($appDirectoy, true);
+    }
 
     // Creates the database
-    $dbName = nbConfig::get('database_name');
-    $dbUser = nbConfig::get('database_user');
-    $dbPass = nbConfig::get('database_pass');
-    $mysqlUser = $options['mysql-user'];
-    $mysqlPass = $options['mysql-pass'];
+    $dbName = isset($options['db-name']) ? $options['db-name'] : null;
+    $dbUser = isset($options['db-user']) ? $options['db-user'] : null;
+    $dbPass = isset($options['db-pass']) ? $options['db-pass'] : null;
+    $mysqlUser = isset($options['mysql-user']) ? $options['mysql-user'] : 'root';
+    $mysqlPass = isset($options['mysql-pass']) ? $options['mysql-pass'] : '';
     
     if($dbName && $dbUser && $dbPass) {
       $cmd = new nbMysqlCreateCommand();
-      $cmdLine = sprintf('%s --doit');
-      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+      $cmdLine = sprintf('%s %s %s --username=%s --password=%s', $dbName, $mysqlUser, $mysqlPass, $dbUser, $dbPass);
+      $this->executeCommand($cmd, $cmdLine, true, false);
     }
     
-    // Database dump
-    if(nbConfig::has('mysql_dump')) {
-      $cmd = new nbMysqlDumpCommand();
-      $cmdLine = '--config-file=' . $configFilename;
-      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    // Restores the database
+    $dbDumpFile = isset($options['db-dump-file']) ? $options['db-dump-file'] : null;
+    
+    if(is_file($dbDumpFile)) {
+      $cmd = new nbMysqlRestoreCommand();
+      $cmdLine = sprintf('%s %s %s %s', $dbName, $dbDumpFile, $dbUser, $dbPass);
+      $this->executeCommand($cmd, $cmdLine, true, false);
     }
     
-    $this->logLine('Website deployed successfully');
+    $this->logLine('Website initialized successfully');
 
     return true;
   }
