@@ -49,6 +49,13 @@ TXT
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
+    // Database dump
+    if(nbConfig::has('mysql_dump')) {
+      $cmd = new nbMysqlDumpCommand();
+      $cmdLine = '--config-file=' . $configFilename;
+      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    }
+
     // Sync project
     if(nbConfig::has('filesystem_dir-transfer')) {
       $cmd = new nbDirTransferCommand();
@@ -60,13 +67,6 @@ TXT
     if(nbConfig::has('filesystem_change-ownership')) {
       $cmd = new nbChangeOwnershipCommand();
       $cmdLine = '--doit --config-file=' . $configFilename;
-      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-    }
-    
-    // Database dump
-    if(nbConfig::has('mysql_dump')) {
-      $cmd = new nbMysqlDumpCommand();
-      $cmdLine = '--config-file=' . $configFilename;
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
     
