@@ -1,29 +1,46 @@
-web_base_dir:         { required: true, defaut: insert_your_domain_path }
-app_name:             { required: true }
-backup_dir:           { required: true, default: /backup/%app_name% }
-exclude_list:         { required: true, default: .bee/exclude.lst, file-exists: true }
-include_list:         { default: .bee/include.lst, file-exists: true }
-app_source_dir:       { required: true, default: ./httpdocs, dir-exists: true }
-app_prod_dir:         { required: true, default: %web_base_dir%/%app_name%/httpdocs, dir-exists: true }
-web_user:             { required: true, default: www-data }
-web_group:            { required: true, default: www-data }
-db_name:              { required: true }
-db_username:          { required: true }
-db_password:       
+comment:        { default: "example: website.com" }
+website_name:   { required: true }
+
+comment:        { default: "example: /var/www/%website_name% or /var/www/website.com/subdomains/%website_name%" }
+deploy_dir:     { required: true, dir-exists: true }
+
+comment:        { default: "check these files!" }
+exclude_list:   { required: true, default: .bee/exclude-list, file-exists: true }
+include_list:   { required: true, default: .bee/include-list, file-exists: true }
+
+backup_dir:     { required: true, default: /backup/%website_name% }
+
+comment:        { default: "refer to your local project" }
+web_source_dir: { required: true, default: ./httpdocs, dir-exists: true }
+
+comment:        { default: "refer to your production website" }
+web_prod_dir:   { required: true, default: %deploy_dir%/httpdocs, dir-exists: true }
+
+web_user:       { required: true, default: www-data }
+web_group:      { required: true, default: www-data }
+
+comment:        { default: "leave empty if website has not database" }
+db_name:        { required: true }
+db_username:    { required: true }
+db_password:
+
+
+
+comment:              { default: "do not change!" }
 
 archive:
   archive-dir:
-    source-dir:       { required: true, default: %app_prod_dir%, dir-exists: true }
+    source-dir:       { required: true, default: %deploy_dir%, dir-exists: true }
     destination-dir:  { required: true, default: %backup_dir% }
 
 filesystem:
   dir-transfer:
-    source-dir:       { required: true, default: %app_source_dir%, dir-exists: true }
-    target-dir:       { required: true, default: %app_prod_dir%, dir-exists: true }
+    source-dir:       { required: true, default: %web_source_dir%, dir-exists: true }
+    target-dir:       { required: true, default: %web_prod_dir%, dir-exists: true }
     exclude-from:     { required: true, default: %exclude_list%, file-exists: true }
-    include-from:     { default: %include_list%, file-exists: true }
+    include-from:     { required: true, default: %include_list%, file-exists: true }
   change-ownership:
-    dir:              { required: true, default: %app_prod_dir%, dir-exists: true }
+    dir:              { required: true, default: %web_prod_dir%, dir-exists: true }
     user:             { required: true, default: %web_user% }
     group:            { required: true, default: %web_group% }
 
@@ -33,58 +50,3 @@ mysql:
     dump-path:        { required: true, default: %backup_dir% }
     username:         { required: true, default: %db_username% }
     password:         { default: %db_password% }
-
-
-
-
-
-
-#comment: website.com
-#website_name:
-#
-#comment: /var/www/%website_name% or /var/www/website.com/subdomains/%website_name%
-#deploy_dir:
-#
-#comment: check these files!
-#exclude_list:         .bee/exclude-list
-#include_list:         .bee/include-list
-#
-#backup_dir:           /backup/%website_name%
-#
-#comment: refer to your local project
-#web_source_dir:       ./httpdocs
-#
-#comment: refer to your production website
-#web_prod_dir:         %deploy_dir%/httpdocs
-#
-#web_user:             www-data
-#web_group:            www-data
-#
-#comment: leave empty if website has not database
-#db_name:
-#db_username:
-#db_password:
-#
-#comment: do not change
-#archive:
-#  archive-dir:
-#    source-dir:       { required: true, default: %app_prod_dir%, dir-exists: true }
-#    destination-dir:  { required: true, default: %backup_dir% }
-#
-#filesystem:
-#  dir-transfer:
-#    source-dir:       { required: true, default: %app_source_dir%, dir-exists: true }
-#    target-dir:       { required: true, default: %app_prod_dir%, dir-exists: true }
-#    exclude-from:     { required: true, default: %exclude_list%, file-exists: true }
-#    include-from:     { default: %include_list%, file-exists: true }
-#  change-ownership:
-#    dir:              { required: true, default: %app_prod_dir%, dir-exists: true }
-#    user:             { required: true, default: %web_user% }
-#    group:            { required: true, default: %web_group% }
-#
-#mysql:
-#  dump:
-#    db-name:          { required: true, default: %db_name% }
-#    dump-path:        { required: true, default: %backup_dir% }
-#    username:         { required: true, default: %db_username% }
-#    password:         { default: %db_password% }
