@@ -80,7 +80,7 @@ TXT
     
     if(is_file($dbDumpFile)) {
       $cmd = new nbMysqlRestoreCommand();
-      $cmdLine = sprintf('%s %s %s %s', $dbName, $dbDumpFile, $dbUser, $dbPass);
+      $cmdLine = sprintf('%s %s %s %s', $dbName, $dbDumpFile, $mysqlUser, $mysqlPass);
       $this->executeCommand($cmd, $cmdLine, true, false);
     }
     
