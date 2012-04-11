@@ -20,9 +20,7 @@ TXT
 
     $this->setOptions(new nbOptionSet(array(
         new nbOption('change-web-dir', '', nbOption::PARAMETER_REQUIRED, 'Changes the name of the web dirctory (if not specified default is "httpdocs")'),
-        new nbOption('db-name', '', nbOption::PARAMETER_REQUIRED, 'If specified creates the database'),
-        new nbOption('db-user', '', nbOption::PARAMETER_REQUIRED, 'The user of the database (requires --db-name)'),
-        new nbOption('db-pass', '', nbOption::PARAMETER_REQUIRED, 'The password for the user of the database (requires --db-name and --db-user)'),
+        new nbOption('db-params', '', nbOption::PARAMETER_REQUIRED, 'If specified creates the database. The option param must be like this: "name:the_database user:the_user pass:the_pass"'),
         new nbOption('db-dump-file', '', nbOption::PARAMETER_REQUIRED, 'Dump file used to populate the database'),
         new nbOption('mysql-user', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root user', 'root'),
         new nbOption('mysql-pass', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root password', ''),
@@ -66,23 +64,13 @@ TXT
     }
 
     // Creates the database
-    $dbName = isset($options['db-name']) ? $options['db-name'] : null;
-    $dbUser = isset($options['db-user']) ? $options['db-user'] : null;
-    $dbPass = isset($options['db-pass']) ? $options['db-pass'] : null;
+    $dbParams = isset($options['db-params']) ? $options['db-params'] : null;
     $mysqlUser = isset($options['mysql-user']) ? $options['mysql-user'] : 'root';
     $mysqlPass = isset($options['mysql-pass']) ? $options['mysql-pass'] : '';
     
-    if($dbName) {
-      $cmdLine = sprintf('%s %s %s', $dbName, $mysqlUser, $mysqlPass);
-      
-      if($dbUser) {
-        $cmdLine = $cmdLine . sprintf(' --username=%s', $dbUser);
-        
-        if($dbPass) {
-          $cmdLine = $cmdLine . sprintf(' --password=%s', $dbPass);
-        }
-      }
-      
+    if($dbParams) {
+      preg_match('/name:(.+) user:(.+) pass:(.+)/', $dbParams, $params);
+      $cmdLine = sprintf('%s %s %s --username=%s --password=%s', $params[1], $mysqlUser, $mysqlPass, $params[2], $params[3]);
       $cmd = new nbMysqlCreateCommand();
       $this->executeCommand($cmd, $cmdLine, true, false);
     }
