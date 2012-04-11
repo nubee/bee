@@ -20,7 +20,9 @@ TXT
 
     $this->setOptions(new nbOptionSet(array(
         new nbOption('change-web-dir', '', nbOption::PARAMETER_REQUIRED, 'Changes the name of the web dirctory (if not specified default is "httpdocs")'),
-        new nbOption('db-params', '', nbOption::PARAMETER_REQUIRED, 'If specified creates the database. The option param must be like this: "name:the_database user:the_user pass:the_pass"'),
+        new nbOption('db-name', '', nbOption::PARAMETER_REQUIRED, 'If specified creates the database'),
+        new nbOption('db-user', '', nbOption::PARAMETER_REQUIRED, 'The user of the database (requires --db-name)'),
+        new nbOption('db-pass', '', nbOption::PARAMETER_REQUIRED, 'The password for the user of the database (requires --db-name and --db-user)'),
         new nbOption('db-dump-file', '', nbOption::PARAMETER_REQUIRED, 'Dump file used to populate the database'),
         new nbOption('mysql-user', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root user', 'root'),
         new nbOption('mysql-pass', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root password', ''),
@@ -64,13 +66,14 @@ TXT
     }
 
     // Creates the database
-    $dbParams = isset($options['db-params']) ? $options['db-params'] : null;
+    $dbName = isset($options['db-name']) ? $options['db-name'] : null;
+    $dbUser = isset($options['db-user']) ? $options['db-user'] : null;
+    $dbPass = isset($options['db-pass']) ? $options['db-pass'] : null;
     $mysqlUser = isset($options['mysql-user']) ? $options['mysql-user'] : 'root';
     $mysqlPass = isset($options['mysql-pass']) ? $options['mysql-pass'] : '';
     
-    if($dbParams) {
-      preg_match('/name:(.+) user:(.+) pass:(.+)/', $dbParams, $params);
-      $cmdLine = sprintf('%s %s %s --username=%s --password=%s', $params[1], $mysqlUser, $mysqlPass, $params[2], $params[3]);
+    if ($dbName && $dbUser && $dbPass) {
+      $cmdLine = sprintf('%s %s %s --username=%s --password=%s', $dbName, $mysqlUser, $mysqlPass, $dbUser, $dbPass);
       $cmd = new nbMysqlCreateCommand();
       $this->executeCommand($cmd, $cmdLine, true, false);
     }
@@ -78,7 +81,12 @@ TXT
     // Restores the database
     $dbDumpFile = isset($options['db-dump-file']) ? $options['db-dump-file'] : null;
     
-    if(is_file($dbDumpFile)) {
+    if (is_file($dbDumpFile)) {
+      if (!$dbName) {
+        $this->logLine('<error>You must specify the database name (use option: --db-name)</error>');
+        return false;
+      }
+      
       $cmd = new nbMysqlRestoreCommand();
       $cmdLine = sprintf('%s %s %s %s', $dbName, $dbDumpFile, $mysqlUser, $mysqlPass);
       $this->executeCommand($cmd, $cmdLine, true, false);
