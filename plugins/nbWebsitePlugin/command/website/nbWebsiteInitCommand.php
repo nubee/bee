@@ -15,14 +15,14 @@ TXT
     );
   
     $this->setArguments(new nbArgumentSet(array(
-        new nbArgument('app-name', nbArgument::REQUIRED, 'Application name'),
-        new nbArgument('web-base-dir', nbArgument::REQUIRED, 'Directory that contains the application')
+        new nbArgument('deploy-dir', nbArgument::REQUIRED, 'The production application directory (ie: /var/www/website.com, /var/www/website.com/subdomains/beta)')
       )));
 
     $this->setOptions(new nbOptionSet(array(
-        new nbOption('db-name', '', nbOption::PARAMETER_REQUIRED, 'The database required by the application'),
-        new nbOption('db-user', '', nbOption::PARAMETER_REQUIRED, 'The database user'),
-        new nbOption('db-pass', '', nbOption::PARAMETER_REQUIRED, 'The database user password'),
+        new nbOption('change-web-dir', '', nbOption::PARAMETER_REQUIRED, 'Changes the name of the web dirctory (if not specified default is "httpdocs")'),
+        new nbOption('db-name', '', nbOption::PARAMETER_REQUIRED, 'If specified creates the database'),
+        new nbOption('db-user', '', nbOption::PARAMETER_REQUIRED, 'The user of the database (requires --db-name)'),
+        new nbOption('db-pass', '', nbOption::PARAMETER_REQUIRED, 'The password for the user of the database (requires --db-name and --db-user)'),
         new nbOption('db-dump-file', '', nbOption::PARAMETER_REQUIRED, 'Dump file used to populate the database'),
         new nbOption('mysql-user', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root user', 'root'),
         new nbOption('mysql-pass', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root password', ''),
@@ -57,10 +57,9 @@ TXT
     $this->executeShellCommand('rm -f ./.bee/mysql-*');
     
     // Makes app directory
-    $appName = $arguments['app-name'];
-    $webBaseDir = nbFileSystem::sanitizeDir($arguments['web-base-dir']);
-    
-    $appDirectoy = sprintf('%s/%s/httpdocs', $webBaseDir, $appName);
+    $deployDir = nbFileSystem::sanitizeDir($arguments['deploy-dir']);
+    $webDir = isset($options['change-web-dir']) ? $options['change-web-dir'] : 'httpdocs';
+    $appDirectoy = sprintf('%s/%s', $deployDir, $webDir);
     
     if (!is_dir($appDirectoy)) {
       $this->getFileSystem()->mkdir($appDirectoy, true);
@@ -73,9 +72,18 @@ TXT
     $mysqlUser = isset($options['mysql-user']) ? $options['mysql-user'] : 'root';
     $mysqlPass = isset($options['mysql-pass']) ? $options['mysql-pass'] : '';
     
-    if($dbName && $dbUser && $dbPass) {
+    if($dbName) {
+      $cmdLine = sprintf('%s %s %s', $dbName, $mysqlUser, $mysqlPass);
+      
+      if($dbUser) {
+        $cmdLine = $cmdLine . sprintf(' --username=%s', $dbUser);
+        
+        if($dbPass) {
+          $cmdLine = $cmdLine . sprintf(' --password=%s', $dbPass);
+        }
+      }
+      
       $cmd = new nbMysqlCreateCommand();
-      $cmdLine = sprintf('%s %s %s --username=%s --password=%s', $dbName, $mysqlUser, $mysqlPass, $dbUser, $dbPass);
       $this->executeCommand($cmd, $cmdLine, true, false);
     }
     
