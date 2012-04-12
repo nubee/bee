@@ -33,6 +33,7 @@ TXT
     $beeConfig  = $configDir . '/bee.yml';
     $force = isset($options['force']);
     $pluginPath = $allPluginsDir . '/' . $pluginName;
+    $verbose = isset($options['verbose']);
 
     if(!file_exists($pluginPath))
       throw new Exception('plugin ' . $pluginName . ' not found in ' . nbConfig::get('nb_plugins_dir'));
@@ -55,6 +56,7 @@ TXT
       $yml = sfYaml::dump($configParser, 99);
 
       file_put_contents($beeConfig, $yml);
+      $this->logLine('Enabling plugin ' . $pluginName);
     }
     else {
       $this->logLine('Plugin ' . $pluginName . ' already installed');
@@ -71,7 +73,9 @@ TXT
       $target = sprintf('%s/%s', $configDir, str_replace('.template.yml', '.yml', basename($file)));
       
       $generator->generate($file, $target, $force);
-      $this->logLine('file+: ' . $target, nbLogger::INFO);
+      
+      if ($verbose)
+        $this->logLine('file+: ' . $target, nbLogger::INFO);
     }
 
     return true;
