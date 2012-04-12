@@ -92,18 +92,4 @@ TXT
 
     $this->logLine('Done: Symfony2:deploy', nbLogger::COMMENT);
   }
-
-  private function executeCommand(nbCommand $command, $commandLine, $doit, $verbose) {
-    if ($doit) {
-      $parser = new nbCommandLineParser();
-      $parser->setDefaultConfigurationDirs($this->getParser()->getDefaultConfigurationDirs());
-
-      if (!$command->run($parser, sprintf('%s --doit', $commandLine)))
-        throw new Exception('Error executing: ' . $cmd);
-    }
-
-    if ($verbose)
-      $this->logLine(sprintf("  <comment>Executing command: %s</comment>\n   %s\n", $command->getFullName(), $commandLine));
-  }
-
 }
