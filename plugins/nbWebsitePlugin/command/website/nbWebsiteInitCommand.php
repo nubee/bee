@@ -56,7 +56,7 @@ TXT
     $this->executeShellCommand('rm -f ./.bee/filesystem-*');
     $this->executeShellCommand('rm -f ./.bee/mysql-*');
     
-    // Makes app directory
+    // Makes web directory
     $deployDir = nbFileSystem::sanitizeDir($arguments['deploy-dir']);
     $webDir = isset($options['change-web-dir']) ? $options['change-web-dir'] : 'httpdocs';
     $appDirectoy = sprintf('%s/%s', $deployDir, $webDir);
@@ -96,19 +96,4 @@ TXT
 
     return true;
   }
-
-  private function executeCommand(nbCommand $command, $commandLine, $doit, $verbose)
-  {
-    if($doit) {
-      $parser = new nbCommandLineParser();
-      $parser->setDefaultConfigurationDirs($this->getParser()->getDefaultConfigurationDirs());
-
-      if(!$command->run($parser, $commandLine))
-        throw new Exception('Error executing: ' . $cmd);
-    }
-
-    if($verbose)
-      $this->logLine(sprintf("  <comment>Executing command: %s</comment>\n   %s\n", $command->getFullName(), $commandLine));
-  }
-
 }

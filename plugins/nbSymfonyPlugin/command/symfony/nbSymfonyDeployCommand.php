@@ -3,28 +3,21 @@
 class nbSymfonyDeployCommand extends nbApplicationCommand {
 
   protected function configure() {
-    $this->setName('symfony:project-deploy')
+    $this->setName('symfony:deploy')
             ->setBriefDescription('Deploys a symfony project. (use with sudo)')
             ->setDescription(<<<TXT
-The <info>{$this->getFullName()}</info> command:
-
-  <info>./bee {$this->getFullName()}</info>
+Example:
+  
+  <info>./bee symfony:deploy --config-file=.bee/symfony-deploy.yml -x</info>
 TXT
     );
 
-    $this->setArguments(new nbArgumentSet(array(
-                new nbArgument('environment', nbArgument::REQUIRED, 'Environment name ( stage | prod )'),
-            )));
-
-
     $this->setOptions(new nbOptionSet(array(
-                new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Make the changes!'),
-            )));
+        new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Makes the changes!'),
+      )));
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $this->logLine('Deploying symfony project', nbLogger::COMMENT);
-
     // bee project must be defined
     if (!is_dir('./.bee') && !file_exists('./bee.yml')) {
       $message = 'No bee project defined!';
@@ -45,76 +38,90 @@ TXT
 
     $this->loadConfiguration($configDir, $configFilename);
 
-    $symfonyRootDir = nbConfig::get('symfony_project-deploy_symfony-root-dir');
+    // Variables from config
+    $deployDir = nbConfig::get('deploy_dir');
+    $excludeList = nbConfig::get('exclude_list');
+    $includeList = nbConfig::get('include_list');
+    $backupDir = nbConfig::get('backup_dir');
+    $webSourceDir = nbConfig::get('web_source_dir');
+    $symfonySourceDir = nbConfig::get('symfony_source_dir');
+    $webProdDir = nbConfig::get('web_prod_dir');
+    $symfonyProdDir = nbConfig::get('symfony_prod_dir');
+    $webUser = nbConfig::get('web_user');
+    $webGroup = nbConfig::get('web_group');
+    $dbName = nbConfig::get('db_name');
+    $dbUser = nbConfig::get('db_user');
+    $dbPass = nbConfig::get('db_pass');
+    $symfonyEnvironment = nbConfig::get('symfony_environment');
+    $symfonyApplications = nbConfig::get('symfony_applications');
     
-    // Put site offline
-    if (nbConfig::has('symfony_project-deploy_site-applications')) {
-      foreach (nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
+    $isFirstDeploy = !file_exists(sprintf('%s/symfony', $symfonyProdDir));
+    $this->logLine(sprintf('Deploying symfony project %s', !$isFirstDeploy ?: '(First deploy)'));
+
+    // Put applications offline
+    if (!$isFirstDeploy) {
+      foreach ($symfonyApplications as $application) {
         $cmd = new nbSymfonyGoOfflineCommand();
-        $cmdLine = sprintf('%s %s %s',
-          $symfonyRootDir,
-          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'),
-          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
-        
+        $cmdLine = sprintf('%s %s %s', $symfonyProdDir, $application, $symfonyEnvironment);
         $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
       }
     }
 
     // Archive site directory
-    if (nbConfig::has('archive_archive-dir')) {
+    if (!$isFirstDeploy) {
       $cmd = new nbArchiveDirCommand();
-      $cmdLine = sprintf('--config-file=%s', $configFilename);
+      $cmdLine = sprintf('%s %s --create-destination-dir', $deployDir, $backupDir);
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
-    // Mysql dump
-    if (nbConfig::has('mysql_dump')) {
-      $cmd = new nbMysqlDumpCommand();
-      $cmdLine = sprintf('--config-file=%s', $configFilename);
-      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    // Dump database
+    if (!$isFirstDeploy) {
+      if ($dbName && $dbUser && $dbPass) {
+        $cmd = new nbMysqlDumpCommand();
+        $cmdLine = sprintf('%s %s %s %s', $dbName, $backupDir, $dbUser, $dbPass);
+        $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+      }
     }
 
-    // Doctrine migration
-    if (nbConfig::get('symfony_project-deploy_migration') == 'enabled') {
-      $cmd = new nbSymfonyDoctrineMigrateAllCommand();
-      $cmdLine = sprintf('%s %s ', $symfonyRootDir, nbConfig::get('symfony_project-deploy_environment'));
-      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-    }
-    
-    // Sync project
-    if (nbConfig::has('filesystem_dir-transfer')) {
-      $cmd = new nbDirTransferCommand();
-      $cmdLine = sprintf('%s --config-file=%s', $doit?'--doit':'', $configFilename);
-      $parser = new nbCommandLineParser();
-      $parser->setDefaultConfigurationDirs($this->getParser()->getDefaultConfigurationDirs());
-      if (!$cmd->run($parser, $cmdLine))
-        throw new Exception('Error executing: ' . $cmd);
-    }
+    // Sync web directory
+    $cmd = new nbDirTransferCommand();
+    $cmdLine = sprintf('%s %s --exclude-from=%s --include-from=%s --doit --delete',
+      $webSourceDir,
+      $webProdDir,
+      $excludeList,
+      $includeList
+    );
+    $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+
+    // Sync symfony directory   
+    $cmd = new nbDirTransferCommand();
+    $cmdLine = sprintf('%s %s --exclude-from=%s --include-from=%s --doit --delete',
+      $symfonySourceDir,
+      $symfonyProdDir,
+      $excludeList,
+      $includeList
+    );
+    $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
 
     // Check dirs
     $cmd = new nbSymfonyCheckDirsCommand();
-    $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
+    $this->executeCommand($cmd, $symfonyProdDir, $doit, $verbose);
 
     // Check permissions
     $cmd = new nbSymfonyCheckPermissionsCommand();
-    $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
+    $this->executeCommand($cmd, $symfonyProdDir, $doit, $verbose);
 
     // Change dirs ownership
-    $webUser = nbConfig::get('web_user');
-    $webGroup = nbConfig::get('web_group');
-
     $cmd = new nbChangeOwnershipCommand();
-    $cmdLine = sprintf('%s %s %s --doit', $symfonyRootDir, $webUser, $webGroup);
+    $cmdLine = sprintf('%s %s %s --doit', $symfonyProdDir, $webUser, $webGroup);
     try {
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     } catch (Exception $e) {
       $this->logLine('Cannot change permissions', nbLogger::ERROR);
     }
     
-    $webDir = nbConfig::get('web_dir');
-    
     $cmd = new nbChangeOwnershipCommand();
-    $cmdLine = sprintf('%s %s %s --doit', $webDir, $webUser, $webGroup);
+    $cmdLine = sprintf('%s %s %s --doit', $webProdDir, $webUser, $webGroup);
     try {
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     } catch (Exception $e) {
@@ -123,36 +130,19 @@ TXT
 
     // Clear cache
     $cmd = new nbSymfonyClearCacheCommand();
-    $this->executeCommand($cmd, $symfonyRootDir, $doit, $verbose);
+    $this->executeCommand($cmd, $symfonyProdDir, $doit, $verbose);
 
     // Put site online
-    if (nbConfig::has('symfony_project-deploy_site-applications')) {
-      foreach (nbConfig::get('symfony_project-deploy_site-applications') as $key => $value) {
+    if (!$isFirstDeploy) {
+      foreach (nbConfig::get('symfony_applications') as $application) {
         $cmd = new nbSymfonyGoOnlineCommand();
-        $cmdLine = sprintf('%s %s %s',
-          $symfonyRootDir,
-          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_name'),
-          nbConfig::get('symfony_project-deploy_site-applications_' . $key . '_env'));
-
+        $cmdLine = sprintf('%s %s %s', $symfonyProdDir, $application, $symfonyEnvironment);
         $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
       }
     }
+
     $this->logLine('Symfony project deployed successfully');
 
     return true;
   }
-
-  private function executeCommand(nbCommand $command, $commandLine, $doit, $verbose) {
-    if ($doit) {
-      $parser = new nbCommandLineParser();
-      $parser->setDefaultConfigurationDirs($this->getParser()->getDefaultConfigurationDirs());
-
-      if (!$command->run($parser, $commandLine))
-        throw new Exception('Error executing: ' . $cmd);
-    }
-
-    if ($verbose)
-      $this->logLine(sprintf("  <comment>Executing command: %s</comment>\n   %s\n", $command->getFullName(), $commandLine));
-  }
-
 }

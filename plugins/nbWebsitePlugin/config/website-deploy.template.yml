@@ -20,33 +20,6 @@ web_user:       { required: true, default: www-data }
 web_group:      { required: true, default: www-data }
 
 comment6:       { default: "leave empty if website has not database" }
-db_name:        { required: true }
-db_username:    { required: true }
+db_name:
+db_username:
 db_password:
-
-
-
-comment7:             { default: "do not change!" }
-
-archive:
-  archive-dir:
-    source-dir:       { required: true, default: %deploy_dir%, dir-exists: true }
-    destination-dir:  { required: true, default: %backup_dir% }
-
-filesystem:
-  dir-transfer:
-    source-dir:       { required: true, default: %web_source_dir%, dir-exists: true }
-    target-dir:       { required: true, default: %web_prod_dir%, dir-exists: true }
-    exclude-from:     { required: true, default: %exclude_list%, file-exists: true }
-    include-from:     { required: true, default: %include_list%, file-exists: true }
-  change-ownership:
-    dir:              { required: true, default: %web_prod_dir%, dir-exists: true }
-    user:             { required: true, default: %web_user% }
-    group:            { required: true, default: %web_group% }
-
-mysql:
-  dump:
-    db-name:          { required: true, default: %db_name% }
-    dump-path:        { required: true, default: %backup_dir% }
-    username:         { required: true, default: %db_username% }
-    password:         { default: %db_password% }

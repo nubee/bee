@@ -88,7 +88,7 @@ TXT
     
     if (is_file($dbDumpFile)) {
       if (!$dbName) {
-        $this->logLine('<error>You must specify the database name (use option: --db-name)</error>');
+        $this->logLine('You must specify the database name (use option: --db-name)', nbLogger::ERROR);
         return false;
       }
       
@@ -101,18 +101,4 @@ TXT
 
     return true;
   }
-
-  private function executeCommand(nbCommand $command, $commandLine, $doit, $verbose) {
-    if ($doit) {
-      $parser = new nbCommandLineParser();
-      $parser->setDefaultConfigurationDirs($this->getParser()->getDefaultConfigurationDirs());
-
-      if (!$command->run($parser, $commandLine))
-        throw new Exception('Error executing: ' . $cmd);
-    }
-
-    if ($verbose)
-      $this->logLine(sprintf("  <comment>Executing command: %s</comment>\n   %s\n", $command->getFullName(), $commandLine));
-  }
-
 }

@@ -303,6 +303,19 @@ abstract class nbCommand
     return $shell->getOutput();
   }
   
+  protected function executeCommand(nbCommand $command, $commandLine, $doit, $verbose) {
+    if ($doit) {
+      $parser = new nbCommandLineParser();
+      $parser->setDefaultConfigurationDirs($this->getParser()->getDefaultConfigurationDirs());
+
+      if (!$command->run($parser, $commandLine))
+        throw new Exception('Error executing: ' . $command);
+    }
+
+    if ($verbose)
+      $this->logLine(sprintf("%s %s\n", $command->getFullName(), $commandLine), nbLogger::COMMENT);
+  }
+  
   public function checkConfiguration($configDir, $configFilename) {
     $configFile = $this->parser->checkDefaultConfigurationDirs($configFilename);
 
