@@ -8,9 +8,13 @@ class nbWebsiteInitCommand extends nbApplicationCommand
     $this->setName('website:init')
       ->setBriefDescription('Initliazes a generic website project (creates and restores database, makes directories for website application)')
       ->setDescription(<<<TXT
-The <info>{$this->getFullName()}</info> command:
+Examples:
 
-  <info>./bee {$this->getFullName()}</info>
+  Creates the deploy dir and the web dir (if they do not exist) and enables plugins
+  <info>./bee website:init /var/www/website.com</info>
+
+  Creates the database and the user (mysql user and pass are usually required)
+  <info>./bee website:init /var/www/website.com --db-name=dbname --db-user=dbuser --db-pass=dbPaZZ --mysql-user=root --mysql-pass=Pa55</info>
 TXT
     );
   
@@ -31,7 +35,7 @@ TXT
 
   protected function execute(array $arguments = array(), array $options = array())
   {
-    $this->logLine('Initialising website', nbLogger::COMMENT);
+    $this->logLine('Initialising website');
 
     // bee project must be defined
     if(!is_dir('./.bee') && !file_exists('./bee.yml')) {
@@ -83,7 +87,7 @@ TXT
     
     if (is_file($dbDumpFile)) {
       if (!$dbName) {
-        $this->logLine('<error>You must specify the database name (use option: --db-name)</error>');
+        $this->logLine('You must specify the database name (use option: --db-name)', nbLogger::ERROR);
         return false;
       }
       

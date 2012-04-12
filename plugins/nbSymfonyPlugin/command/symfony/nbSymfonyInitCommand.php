@@ -6,9 +6,13 @@ class nbSymfonyInitCommand extends nbApplicationCommand {
     $this->setName('symfony:init')
             ->setBriefDescription('Initliazes a symfony website project (creates and restores database, makes directories for symfony application)')
             ->setDescription(<<<TXT
-The <info>{$this->getFullName()}</info> command:
+Examples:
 
-  <info>./bee {$this->getFullName()}</info>
+  Creates the deploy dir, the web dir and the symfony dir (if they do not exist) and enables plugins
+  <info>./bee symfony:init /var/www/website.com</info>
+
+  Creates the database and the user (mysql user and pass are usually required)
+  <info>./bee symfony:init /var/www/website.com --db-name=dbname --db-user=dbuser --db-pass=dbPaZZ --mysql-user=root --mysql-pass=Pa55</info>
 TXT
     );
 

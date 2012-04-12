@@ -6,8 +6,15 @@ class nbSymfonyDeployCommand extends nbApplicationCommand {
     $this->setName('symfony:deploy')
             ->setBriefDescription('Deploys a symfony project. (use with sudo)')
             ->setDescription(<<<TXT
-Example:
+Examples:
+
+  Shows the list of commands will run
+  <info>./bee symfony:deploy</info>
+
+  Deploys the project (you have to run with sudo)
+  <info>./bee symfony:deploy -x</info>
   
+  Deploys the project (but reads the configuration from <comment>other-config.yml</comment>)
   <info>./bee symfony:deploy --config-file=.bee/symfony-deploy.yml -x</info>
 TXT
     );
@@ -29,13 +36,9 @@ TXT
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
     
-    // Load configuration
-    if (!isset($options['config-file']))
-      throw new Exception('--config-file option required (CHANGE THIS)');
-
+    // Loads configuration
     $configDir = nbConfig::get('nb_plugins_dir') . '/nbSymfonyPlugin/config/';
-    $configFilename = $options['config-file'];
-
+    $configFilename = isset($options['config-file']) ? $options['config-file'] : '.bee/symfony-deploy.yml';
     $this->loadConfiguration($configDir, $configFilename);
 
     // Variables from config

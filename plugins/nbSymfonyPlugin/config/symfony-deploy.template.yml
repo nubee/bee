@@ -1,34 +1,34 @@
-comment1:             { default: "example: website.com" }
+comment-website:      { default: "example: website.com" }
 website_name:         { required: true }
 
-comment2:             { default: "example: /var/www/%website_name% or /var/www/website.com/subdomains/%website_name%" }
+comment-deploy-dir:   { default: "example: /var/www/%website_name% or /var/www/website.com/subdomains/%website_name%" }
 deploy_dir:           { required: true, dir-exists: true }
 
-comment3:             { default: "check these files!" }
+comment-lists:        { default: "check these files!" }
 exclude_list:         { required: true, default: .bee/exclude-list, file-exists: true }
 include_list:         { required: true, default: .bee/include-list, file-exists: true }
 
 backup_dir:           { required: true, default: /backup/%website_name% }
 
-comment4:             { default: "refer to your local project" }
+comment-source-dir:   { default: "refer to your local project" }
 web_source_dir:       { required: true, default: ./httpdocs, dir-exists: true }
 symfony_source_dir:   { required: true, default: ./symfony, dir-exists: true }
 
-comment5:             { default: "refer to your production website" }
+comment-prod-dir:     { default: "refer to your production website" }
 web_prod_dir:         { required: true, default: %deploy_dir%/httpdocs, dir-exists: true }
 symfony_prod_dir:     { required: true, default: %deploy_dir%/symfony, dir-exists: true }
 
 web_user:             { required: true, default: www-data }
 web_group:            { required: true, default: www-data }
 
-comment6:             { default: "leave empty if website has not database" }
+comment-database:     { default: "leave empty if website has not database" }
 db_name:
 db_user:
 db_pass:
 
 symfony_environment:  { required: true, default: prod }
 
-comment7:             { default: "add or change application names (like 2: backend)" }
+comment-applications: { default: "add or change application names (like 2: backend)" }
 symfony_applications:
   1:                  { required: true, default: frontend }
 #  2:                  { required: true, default: backend }

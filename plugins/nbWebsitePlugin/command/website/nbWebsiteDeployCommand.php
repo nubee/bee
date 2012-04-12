@@ -8,9 +8,16 @@ class nbWebsiteDeployCommand extends nbApplicationCommand
     $this->setName('website:deploy')
       ->setBriefDescription('Deploys a generic website project')
       ->setDescription(<<<TXT
-Example:
+Examples:
 
-  <info>./bee website:deploy --config-file=.bee/website-deploy.yml -x</info>
+  Shows the list of commands will run
+  <info>./bee website:deploy</info>
+
+  Deploys the project (you have to run with sudo)
+  <info>./bee website:deploy -x</info>
+  
+  Deploys the project (but reads the configuration from <comment>other-config.yml</comment>)
+  <info>./bee website:deploy --config-file=.bee/other-config.yml -x</info>
 TXT
     );
 
@@ -29,15 +36,12 @@ TXT
       throw new InvalidArgumentException($message);
     }
     
-    if(!isset($options['config-file']))
-      throw new Exception('--config-file option required (CHANGE THIS)');
-
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
 
+    // Loads configuration
     $configDir = nbConfig::get('nb_plugins_dir') . '/nbWebsitePlugin/config/';
-    $configFilename = $options['config-file'];
-    
+    $configFilename = isset($options['config-file']) ? $options['config-file'] : '.bee/website-deploy.yml';
     $this->loadConfiguration($configDir, $configFilename);
 
     // Variables from config
