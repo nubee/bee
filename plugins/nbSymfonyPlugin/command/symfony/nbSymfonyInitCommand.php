@@ -69,6 +69,7 @@ TXT
       $webDir = isset($options['change-web-dir']) ? $options['change-web-dir'] : 'httpdocs';
       $webDir = sprintf('%s/%s', $deployDir, $webDir);
 
+      $this->logLine('... Creating/Checking dir' . $webDir, nbLogger::INFO);
       if (!is_dir($webDir)) {
         $this->getFileSystem()->mkdir($webDir, true);
       }
@@ -76,6 +77,7 @@ TXT
       $symfonyDir = isset($options['change-sf-dir']) ? $options['change-sf-dir'] : 'symfony';
       $symfonyDir = sprintf('%s/%s', $deployDir, $symfonyDir);
 
+      $this->logLine('... Creating/Checking dir' . $symfonyDir, nbLogger::INFO);
       if (!is_dir($symfonyDir)) {
         $this->getFileSystem()->mkdir($symfonyDir, true);
       }

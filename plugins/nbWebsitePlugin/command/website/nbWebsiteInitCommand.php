@@ -69,10 +69,11 @@ TXT
     $deployDir = isset($arguments['deploy-dir']) ? nbFileSystem::sanitizeDir($arguments['deploy-dir']) : null;
     if ($deployDir) {
       $webDir = isset($options['change-web-dir']) ? $options['change-web-dir'] : 'httpdocs';
-      $appDirectoy = sprintf('%s/%s', $deployDir, $webDir);
+      $webDir = sprintf('%s/%s', $deployDir, $webDir);
 
-      if (!is_dir($appDirectoy)) {
-        $this->getFileSystem()->mkdir($appDirectoy, true);
+      $this->logLine('... Creating/Checking dir' . $webDir, nbLogger::INFO);
+      if (!is_dir($webDir)) {
+        $this->getFileSystem()->mkdir($webDir, true);
       }
     }
 
