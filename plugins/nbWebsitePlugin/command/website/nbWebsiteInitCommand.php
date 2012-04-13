@@ -31,8 +31,8 @@ TXT
 
     $this->setOptions(new nbOptionSet(array(
         new nbOption('change-web-dir', '', nbOption::PARAMETER_REQUIRED, 'Changes the name of the web dirctory (if not specified default is "httpdocs")'),
-        new nbOption('db-name', '', nbOption::PARAMETER_REQUIRED, 'If specified creates the database'),
-        new nbOption('db-user', '', nbOption::PARAMETER_REQUIRED, 'The user of the database (requires --db-name)'),
+        new nbOption('db-name', '', nbOption::PARAMETER_REQUIRED, 'To create a database use with --db-user AND --db-pass; to populate an existing database use with --db-dump-file'),
+        new nbOption('db-user', '', nbOption::PARAMETER_REQUIRED, 'The user of the database (requires --db-name and --db-pass)'),
         new nbOption('db-pass', '', nbOption::PARAMETER_REQUIRED, 'The password for the user of the database (requires --db-name and --db-user)'),
         new nbOption('db-dump-file', '', nbOption::PARAMETER_REQUIRED, 'Dump file used to populate the database'),
         new nbOption('mysql-user', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root user', 'root'),
