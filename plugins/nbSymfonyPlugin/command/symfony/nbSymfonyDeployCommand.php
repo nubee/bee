@@ -59,7 +59,7 @@ TXT
     $symfonyApplications = nbConfig::get('symfony_applications');
     
     $isFirstDeploy = !file_exists(sprintf('%s/symfony', $symfonyProdDir));
-    $this->logLine(sprintf('Deploying symfony project %s', !$isFirstDeploy ?: '(First deploy)'));
+    $this->logLine(sprintf('Deploying symfony project %s', !$isFirstDeploy ?: '(First deploy)'), nbLogger::INFO);
 
     // Put applications offline
     if (!$isFirstDeploy) {
@@ -144,7 +144,7 @@ TXT
       }
     }
 
-    $this->logLine('Symfony project deployed successfully');
+    $this->logLine('Symfony project deployed successfully', nbLogger::INFO);
 
     return true;
   }

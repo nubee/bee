@@ -8,16 +8,23 @@ class nbSymfonyInitCommand extends nbApplicationCommand {
             ->setDescription(<<<TXT
 Examples:
 
-  Creates the deploy dir, the web dir and the symfony dir (if they do not exist) and enables plugins
+  Enables plugins required by <info>symfony:deploy</info>
+  <info>./bee symfony:init</info>
+  
+  Creates the deploy dir, the web dir and the symfony dir (if they do not exist)
   <info>./bee symfony:init /var/www/website.com</info>
 
   Creates the database and the user (mysql user and pass are usually required)
-  <info>./bee symfony:init /var/www/website.com --db-name=dbname --db-user=dbuser --db-pass=dbPaZZ --mysql-user=root --mysql-pass=Pa55</info>
+  Database will be created ONLY if <comment>--db-name</comment>, <comment>--db-user</comment>, <comment>--db-pass</comment> options are specified
+  <info>./bee symfony:init --db-name=dbname --db-user=dbuser --db-pass=dbPaZZ --mysql-user=root --mysql-pass=Pa55</info>
+  
+  Populates the database (use mysql user and pass)
+  <info>./bee symfony:init --db-name=dbname --db-dump-file=/my/project/db/dump.sql --mysql-user=root --mysql-pass=Pa55</info>
 TXT
     );
 
     $this->setArguments(new nbArgumentSet(array(
-        new nbArgument('deploy-dir', nbArgument::REQUIRED, 'The production application directory (ie: /var/www/website.com, /var/www/website.com/subdomains/beta)')
+        new nbArgument('deploy-dir', nbArgument::OPTIONAL, 'The production application directory (ie: /var/www/website.com, /var/www/website.com/subdomains/beta)')
       )));
 
     $this->setOptions(new nbOptionSet(array(
@@ -33,7 +40,7 @@ TXT
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $this->logLine('Initialising symfony website', nbLogger::COMMENT);
+    $this->logLine('Initialising symfony website', nbLogger::INFO);
 
     // bee project must be defined
     if(!is_dir('./.bee') && !file_exists('./bee.yml')) {
@@ -56,20 +63,22 @@ TXT
     $cmdLine = 'nbSymfonyPlugin -f';
     $this->executeCommand($cmd, $cmdLine, true, $verbose);
     
-    // Makes app directory
-    $deployDir = nbFileSystem::sanitizeDir($arguments['deploy-dir']);
-    $webDir = isset($options['change-web-dir']) ? $options['change-web-dir'] : 'httpdocs';
-    $webDir = sprintf('%s/%s', $deployDir, $webDir);
-    
-    if (!is_dir($webDir)) {
-      $this->getFileSystem()->mkdir($webDir, true);
-    }
-    
-    $symfonyDir = isset($options['change-sf-dir']) ? $options['change-sf-dir'] : 'symfony';
-    $symfonyDir = sprintf('%s/%s', $deployDir, $symfonyDir);
-    
-    if (!is_dir($symfonyDir)) {
-      $this->getFileSystem()->mkdir($symfonyDir, true);
+    // Makes deploy directories
+    $deployDir = isset($arguments['deploy-dir']) ? nbFileSystem::sanitizeDir($arguments['deploy-dir']) : null;
+    if ($deployDir) {
+      $webDir = isset($options['change-web-dir']) ? $options['change-web-dir'] : 'httpdocs';
+      $webDir = sprintf('%s/%s', $deployDir, $webDir);
+
+      if (!is_dir($webDir)) {
+        $this->getFileSystem()->mkdir($webDir, true);
+      }
+
+      $symfonyDir = isset($options['change-sf-dir']) ? $options['change-sf-dir'] : 'symfony';
+      $symfonyDir = sprintf('%s/%s', $deployDir, $symfonyDir);
+
+      if (!is_dir($symfonyDir)) {
+        $this->getFileSystem()->mkdir($symfonyDir, true);
+      }
     }
 
     // Creates the database
@@ -99,7 +108,7 @@ TXT
       $this->executeCommand($cmd, $cmdLine, true, $verbose);
     }
     
-    $this->logLine('Symfony website initialized successfully');
+    $this->logLine('Symfony website initialized successfully', nbLogger::INFO);
 
     return true;
   }

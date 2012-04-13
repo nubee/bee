@@ -57,7 +57,7 @@ TXT
     $dbUser = nbConfig::get('db_user');
     $dbPass = nbConfig::get('db_pass');
     
-    $this->logLine('Deploying website');
+    $this->logLine('Deploying website', nbLogger::INFO);
     
     // Archive site directory
     $cmd = new nbArchiveDirCommand();
@@ -90,7 +90,7 @@ TXT
       $this->logLine('Cannot change permissions', nbLogger::ERROR);
     }
     
-    $this->logLine('Website deployed successfully');
+    $this->logLine('Website deployed successfully', nbLogger::INFO);
 
     return true;
   }
