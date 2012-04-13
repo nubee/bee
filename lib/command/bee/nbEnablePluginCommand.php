@@ -20,6 +20,7 @@ TXT
       )));
 
     $this->setOptions(new nbOptionSet(array(
+        new nbOption('no-configuration', 'n', nbOption::PARAMETER_NONE, 'If specified, configuration files will not generated'),
         new nbOption('force', 'f', nbOption::PARAMETER_NONE, 'Overwrites the existing configuration'),
       )));
   }
@@ -56,12 +57,16 @@ TXT
       $yml = sfYaml::dump($configParser, 99);
 
       file_put_contents($beeConfig, $yml);
-      $this->logLine('Enabling plugin ' . $pluginName);
+      $this->logLine('Installing plugin ' . $pluginName);
     }
     else {
       $this->logLine('Plugin ' . $pluginName . ' already installed');
     }
 
+    // Configuration will not generated
+    if (isset($options['no-configuration']))
+      return true;
+    
     // Configure plugin
     $pluginConfigDir = sprintf('%s/%s/config', $allPluginsDir, $pluginName);
     $files = nbFileFinder::create('file')->add('*.template.yml')->in($pluginConfigDir);

@@ -45,20 +45,18 @@ TXT
       throw new InvalidArgumentException($message);
     }
     
+    $verbose = isset($options['verbose']);
+    
     // Enable required plugins for website:deploy
     $cmd = new nbEnablePluginCommand();
-    $cmdLine = 'nbArchivePlugin -f';
-    $this->executeCommand($cmd, $cmdLine, true, false);
-    $cmdLine = 'nbFileSystemPlugin -f';
-    $this->executeCommand($cmd, $cmdLine, true, false);
-    $cmdLine = 'nbMysqlPlugin -f';
-    $this->executeCommand($cmd, $cmdLine, true, false);
+    $cmdLine = 'nbArchivePlugin --no-configuration';
+    $this->executeCommand($cmd, $cmdLine, true, $verbose);
+    $cmdLine = 'nbFileSystemPlugin --no-configuration';
+    $this->executeCommand($cmd, $cmdLine, true, $verbose);
+    $cmdLine = 'nbMysqlPlugin --no-configuration';
+    $this->executeCommand($cmd, $cmdLine, true, $verbose);
     $cmdLine = 'nbWebsitePlugin -f';
-    $this->executeCommand($cmd, $cmdLine, true, false);
-    
-    $this->executeShellCommand('rm -f ./.bee/archive-*');
-    $this->executeShellCommand('rm -f ./.bee/filesystem-*');
-    $this->executeShellCommand('rm -f ./.bee/mysql-*');
+    $this->executeCommand($cmd, $cmdLine, true, $verbose);
     
     // Makes web directory
     $deployDir = nbFileSystem::sanitizeDir($arguments['deploy-dir']);
@@ -79,7 +77,7 @@ TXT
     if ($dbName && $dbUser && $dbPass) {
       $cmdLine = sprintf('%s %s %s --username=%s --password=%s', $dbName, $mysqlUser, $mysqlPass, $dbUser, $dbPass);
       $cmd = new nbMysqlCreateCommand();
-      $this->executeCommand($cmd, $cmdLine, true, false);
+      $this->executeCommand($cmd, $cmdLine, true, $verbose);
     }
     
     // Restores the database
@@ -93,7 +91,7 @@ TXT
       
       $cmd = new nbMysqlRestoreCommand();
       $cmdLine = sprintf('%s %s %s %s', $dbName, $dbDumpFile, $mysqlUser, $mysqlPass);
-      $this->executeCommand($cmd, $cmdLine, true, false);
+      $this->executeCommand($cmd, $cmdLine, true, $verbose);
     }
     
     $this->logLine('Website initialized successfully');
