@@ -52,6 +52,17 @@ TXT
     
     $verbose = isset($options['verbose']);
     
+    $files = nbFileFinder::create('file')
+      ->add('symfony-*')
+      ->remove('.')->remove('..')
+      ->in('.bee');
+    
+    foreach ($files as $file) {
+      $backupDir = dirname($file);
+      $backupFile = 'backup_' . basename($file);
+      $this->getFileSystem()->copy($file, sprintf('%s/%s', $backupDir, $backupFile), true);
+    }
+
     // Enable required plugins for website:deploy
     $cmd = new nbEnablePluginCommand();
     $cmdLine = 'nbFileSystemPlugin --no-configuration';
