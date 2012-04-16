@@ -55,7 +55,7 @@ TXT
     $webSourceDir = nbConfig::get('web_source_dir');
     $webProdDir = nbConfig::get('web_prod_dir');
     $webUser = nbConfig::get('web_user');
-    $webGroup = nbConfig::get('web_group');
+//    $webGroup = nbConfig::get('web_group');
     $dbName = nbConfig::get('db_name');
     $dbUser = nbConfig::get('db_user');
     $dbPass = nbConfig::get('db_pass');
@@ -77,24 +77,17 @@ TXT
     // Sync web directory
     $cmd = new nbDirTransferCommand();
     $delete = isset($options['delete']) ? '--delete' : '';
-    $cmdLine = sprintf('%s %s --exclude-from=%s --include-from=%s --doit %s',
+    $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s',
       $webSourceDir,
       $webProdDir,
+      $webUser,
       $excludeList,
       $includeList,
+      $doit ? '--doit' : '',
       $delete
     );
-    $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-    
-    // Change ownership
-    $cmd = new nbChangeOwnershipCommand();
-    $cmdLine = sprintf('%s %s %s --doit', $webProdDir, $webUser, $webGroup);
-    try {
-      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-    } catch (Exception $e) {
-      $this->logLine('Cannot change permissions', nbLogger::ERROR);
-    }
-    
+    $this->executeCommand($cmd, $cmdLine, true, $verbose);
+
     $this->logLine('Website deployed successfully', nbLogger::INFO);
 
     return true;

@@ -54,7 +54,7 @@ TXT
     $webProdDir = nbConfig::get('web_prod_dir');
     $symfonyProdDir = nbConfig::get('symfony_prod_dir');
     $webUser = nbConfig::get('web_user');
-    $webGroup = nbConfig::get('web_group');
+//    $webGroup = nbConfig::get('web_group');
     $dbName = nbConfig::get('db_name');
     $dbUser = nbConfig::get('db_user');
     $dbPass = nbConfig::get('db_pass');
@@ -125,23 +125,6 @@ TXT
     // Check permissions
     $cmd = new nbSymfonyCheckPermissionsCommand();
     $this->executeCommand($cmd, $symfonyProdDir, $doit, $verbose);
-
-//    // Change dirs ownership
-//    $cmd = new nbChangeOwnershipCommand();
-//    $cmdLine = sprintf('%s %s %s --doit', $symfonyProdDir, $webUser, $webGroup);
-//    try {
-//      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-//    } catch (Exception $e) {
-//      $this->logLine('Cannot change permissions', nbLogger::ERROR);
-//    }
-//    
-//    $cmd = new nbChangeOwnershipCommand();
-//    $cmdLine = sprintf('%s %s %s --doit', $webProdDir, $webUser, $webGroup);
-//    try {
-//      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-//    } catch (Exception $e) {
-//      $this->logLine('Cannot change permissions', nbLogger::ERROR);
-//    }
 
     // Clear cache
     $cmd = new nbSymfonyClearCacheCommand();
