@@ -23,6 +23,7 @@ TXT
 
     $this->setOptions(new nbOptionSet(array(
         new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Makes the changes!'),
+        new nbOption('delete', 'd', nbOption::PARAMETER_NONE, 'Enables --delete option in rsync'),
       )));
   }
 
@@ -45,11 +46,12 @@ TXT
     $this->loadConfiguration($configDir, $configFilename);
 
     // Variables from config
+    $websiteName = nbConfig::get('website_name');
 //    $deployDir = nbConfig::get('deploy_dir');
     $excludeList = nbConfig::get('exclude_list');
     $includeList = nbConfig::get('include_list');
-    $backupFromDir = nbConfig::get('backup_from_dir');
-    $backupToDir = nbConfig::get('backup_to_dir');
+    $backupSources = nbConfig::get('backup_sources');
+    $backupDestination = nbConfig::get('backup_destination');
     $webSourceDir = nbConfig::get('web_source_dir');
     $webProdDir = nbConfig::get('web_prod_dir');
     $webUser = nbConfig::get('web_user');
@@ -61,24 +63,26 @@ TXT
     $this->logLine('Deploying website', nbLogger::INFO);
     
     // Archive site directory
-    $cmd = new nbArchiveDirCommand();
-    $cmdLine = sprintf('%s %s --create-destination-dir', $backupFromDir, $backupToDir);
+    $cmd = new nbArchiveCommand();
+    $cmdLine = sprintf('%s/%s.tgz %s --add-timestamp --force', $backupDestination, $websiteName, implode(' ', $backupSources));
     $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
 
     // Dump database
     if ($dbName && $dbUser && $dbPass) {
       $cmd = new nbMysqlDumpCommand();
-      $cmdLine = sprintf('%s %s %s %s', $dbName, $backupToDir, $dbUser, $dbPass);
+      $cmdLine = sprintf('%s %s %s %s', $dbName, $backupDestination, $dbUser, $dbPass);
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
     // Sync web directory
     $cmd = new nbDirTransferCommand();
-    $cmdLine = sprintf('%s %s --exclude-from=%s --include-from=%s --doit --delete',
+    $delete = isset($options['delete']) ? '--delete' : '';
+    $cmdLine = sprintf('%s %s --exclude-from=%s --include-from=%s --doit %s',
       $webSourceDir,
       $webProdDir,
       $excludeList,
-      $includeList
+      $includeList,
+      $delete
     );
     $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     

@@ -54,8 +54,6 @@ TXT
     
     // Enable required plugins for website:deploy
     $cmd = new nbEnablePluginCommand();
-    $cmdLine = 'nbArchivePlugin --no-configuration';
-    $this->executeCommand($cmd, $cmdLine, true, $verbose);
     $cmdLine = 'nbFileSystemPlugin --no-configuration';
     $this->executeCommand($cmd, $cmdLine, true, $verbose);
     $cmdLine = 'nbMysqlPlugin --no-configuration';

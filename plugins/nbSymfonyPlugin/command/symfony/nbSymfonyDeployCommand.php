@@ -21,6 +21,7 @@ TXT
 
     $this->setOptions(new nbOptionSet(array(
         new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Makes the changes!'),
+        new nbOption('delete', 'd', nbOption::PARAMETER_NONE, 'Enables --delete option in rsync'),
       )));
   }
 
@@ -42,10 +43,12 @@ TXT
     $this->loadConfiguration($configDir, $configFilename);
 
     // Variables from config
-    $deployDir = nbConfig::get('deploy_dir');
+    $websiteName = nbConfig::get('website_name');
+//    $deployDir = nbConfig::get('deploy_dir');
     $excludeList = nbConfig::get('exclude_list');
     $includeList = nbConfig::get('include_list');
-    $backupDir = nbConfig::get('backup_dir');
+    $backupSources = nbConfig::get('backup_sources');
+    $backupDestination = nbConfig::get('backup_destination');
     $webSourceDir = nbConfig::get('web_source_dir');
     $symfonySourceDir = nbConfig::get('symfony_source_dir');
     $webProdDir = nbConfig::get('web_prod_dir');
@@ -72,8 +75,8 @@ TXT
 
     // Archive site directory
     if (!$isFirstDeploy) {
-      $cmd = new nbArchiveDirCommand();
-      $cmdLine = sprintf('%s %s --create-destination-dir', $deployDir, $backupDir);
+      $cmd = new nbArchiveCommand();
+      $cmdLine = sprintf('%s/%s.tgz %s --add-timestamp --force', $backupDestination, $websiteName, implode(' ', $backupSources));
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
@@ -81,28 +84,33 @@ TXT
     if (!$isFirstDeploy) {
       if ($dbName && $dbUser && $dbPass) {
         $cmd = new nbMysqlDumpCommand();
-        $cmdLine = sprintf('%s %s %s %s', $dbName, $backupDir, $dbUser, $dbPass);
+        $cmdLine = sprintf('%s %s %s %s', $dbName, $backupDestination, $dbUser, $dbPass);
         $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
       }
     }
 
+    // --delete option for sync
+    $delete = isset($options['delete']) ? '--delete' : '';
+    
     // Sync web directory
     $cmd = new nbDirTransferCommand();
-    $cmdLine = sprintf('%s %s --exclude-from=%s --include-from=%s --doit --delete',
+    $cmdLine = sprintf('%s %s --exclude-from=%s --include-from=%s --doit %s',
       $webSourceDir,
       $webProdDir,
       $excludeList,
-      $includeList
+      $includeList,
+      $delete
     );
     $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
 
     // Sync symfony directory   
     $cmd = new nbDirTransferCommand();
-    $cmdLine = sprintf('%s %s --exclude-from=%s --include-from=%s --doit --delete',
+    $cmdLine = sprintf('%s %s --exclude-from=%s --include-from=%s --doit %s',
       $symfonySourceDir,
       $symfonyProdDir,
       $excludeList,
-      $includeList
+      $includeList,
+      $delete
     );
     $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
 

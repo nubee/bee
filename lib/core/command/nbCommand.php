@@ -293,11 +293,10 @@ abstract class nbCommand
     return $this->verbose;
   }
   
-  public function executeShellCommand($command, $doit = true, $successCode = 1) {
+  public function executeShellCommand($command, $doit = true) {
     $shell = new nbShell();
-    $code = $shell->execute($command, $doit);
-    if($code != $successCode) {
-      throw new Exception(sprintf('Command "%s" exited with error: %s', $command, $code));
+    if(!$shell->execute($command, $doit)) {
+      throw new Exception(sprintf('Command "%s" exited with error: %s', $command, $shell->getReturnCode()));
     }
     
     return $shell->getOutput();
@@ -308,8 +307,7 @@ abstract class nbCommand
       $parser = new nbCommandLineParser();
       $parser->setDefaultConfigurationDirs($this->getParser()->getDefaultConfigurationDirs());
 
-      if (!$command->run($parser, $commandLine))
-        throw new Exception('Error executing: ' . $command);
+      $command->run($parser, $commandLine);
     }
 
     if ($verbose)

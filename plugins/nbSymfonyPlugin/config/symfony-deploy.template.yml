@@ -8,8 +8,17 @@ comment-lists:        { default: "check these files!" }
 exclude_list:         { required: true, default: .bee/exclude-list, file-exists: true }
 include_list:         { required: true, default: .bee/include-list, file-exists: true }
 
-backup_dir:           { required: true, default: /backup/%website_name% }
+comment-backup:       { default: "you can define multiple source directories (use absolute paths). You must define one destination directory (use absolute path)" }
+backup_sources:
+  1:                  { required: true, default: %deploy_dir%/httpdocs }
+  2:                  { default: %deploy_dir%/symfony }
+backup_destination:   { required: true, default: /backup/%website_name% }
 
+#comment-sync-dirs:    { default: "you can add or modify directories to sync: from -> refer to your local project; to -> refer to your production website" }
+#sync_dirs:
+#  web:                { from: { required: true, default: ./httpdocs, dir-exists: true }, to: { required: true, default: %deploy_dir%/httpdocs, dir-exists: true } }
+#  symfony:            { from: { required: true, default: ./symfony, dir-exists: true }, to: { required: true, default: %deploy_dir%/symfony, dir-exists: true } }
+  
 comment-source-dir:   { default: "refer to your local project" }
 web_source_dir:       { required: true, default: ./httpdocs, dir-exists: true }
 symfony_source_dir:   { required: true, default: ./symfony, dir-exists: true }
