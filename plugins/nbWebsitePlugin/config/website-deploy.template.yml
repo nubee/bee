@@ -8,7 +8,8 @@ comment-lists:      { default: "check these files!" }
 exclude_list:       { required: true, default: .bee/exclude-list, file-exists: true }
 include_list:       { required: true, default: .bee/include-list, file-exists: true }
 
-backup_dir:         { required: true, default: /backup/%website_name% }
+backup_from_dir:    { required: true, default: %deploy_dir% }
+backup_to_dir:      { required: true, default: /backup/%website_name% }
 
 comment-source-dir: { default: "refer to your local project" }
 web_source_dir:     { required: true, default: ./httpdocs, dir-exists: true }

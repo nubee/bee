@@ -45,10 +45,11 @@ TXT
     $this->loadConfiguration($configDir, $configFilename);
 
     // Variables from config
-    $deployDir = nbConfig::get('deploy_dir');
+//    $deployDir = nbConfig::get('deploy_dir');
     $excludeList = nbConfig::get('exclude_list');
     $includeList = nbConfig::get('include_list');
-    $backupDir = nbConfig::get('backup_dir');
+    $backupFromDir = nbConfig::get('backup_from_dir');
+    $backupToDir = nbConfig::get('backup_to_dir');
     $webSourceDir = nbConfig::get('web_source_dir');
     $webProdDir = nbConfig::get('web_prod_dir');
     $webUser = nbConfig::get('web_user');
@@ -61,13 +62,13 @@ TXT
     
     // Archive site directory
     $cmd = new nbArchiveDirCommand();
-    $cmdLine = sprintf('%s %s --create-destination-dir', $deployDir, $backupDir);
+    $cmdLine = sprintf('%s %s --create-destination-dir', $backupFromDir, $backupToDir);
     $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
 
     // Dump database
     if ($dbName && $dbUser && $dbPass) {
       $cmd = new nbMysqlDumpCommand();
-      $cmdLine = sprintf('%s %s %s %s', $dbName, $backupDir, $dbUser, $dbPass);
+      $cmdLine = sprintf('%s %s %s %s', $dbName, $backupToDir, $dbUser, $dbPass);
       $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
     }
 
