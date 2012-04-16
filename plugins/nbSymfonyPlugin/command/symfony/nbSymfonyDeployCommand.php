@@ -94,25 +94,29 @@ TXT
     
     // Sync web directory
     $cmd = new nbDirTransferCommand();
-    $cmdLine = sprintf('%s %s --exclude-from=%s --include-from=%s --doit %s',
+    $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s',
       $webSourceDir,
       $webProdDir,
+      $webUser,
       $excludeList,
       $includeList,
+      $doit ? '--doit' : '',
       $delete
     );
-    $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    $this->executeCommand($cmd, $cmdLine, true, $verbose);
 
     // Sync symfony directory   
     $cmd = new nbDirTransferCommand();
-    $cmdLine = sprintf('%s %s --exclude-from=%s --include-from=%s --doit %s',
+    $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s',
       $symfonySourceDir,
       $symfonyProdDir,
+      $webUser,
       $excludeList,
       $includeList,
+      $doit ? '--doit' : '',
       $delete
     );
-    $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    $this->executeCommand($cmd, $cmdLine, true, $verbose);
 
     // Check dirs
     $cmd = new nbSymfonyCheckDirsCommand();
@@ -122,22 +126,22 @@ TXT
     $cmd = new nbSymfonyCheckPermissionsCommand();
     $this->executeCommand($cmd, $symfonyProdDir, $doit, $verbose);
 
-    // Change dirs ownership
-    $cmd = new nbChangeOwnershipCommand();
-    $cmdLine = sprintf('%s %s %s --doit', $symfonyProdDir, $webUser, $webGroup);
-    try {
-      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-    } catch (Exception $e) {
-      $this->logLine('Cannot change permissions', nbLogger::ERROR);
-    }
-    
-    $cmd = new nbChangeOwnershipCommand();
-    $cmdLine = sprintf('%s %s %s --doit', $webProdDir, $webUser, $webGroup);
-    try {
-      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
-    } catch (Exception $e) {
-      $this->logLine('Cannot change permissions', nbLogger::ERROR);
-    }
+//    // Change dirs ownership
+//    $cmd = new nbChangeOwnershipCommand();
+//    $cmdLine = sprintf('%s %s %s --doit', $symfonyProdDir, $webUser, $webGroup);
+//    try {
+//      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+//    } catch (Exception $e) {
+//      $this->logLine('Cannot change permissions', nbLogger::ERROR);
+//    }
+//    
+//    $cmd = new nbChangeOwnershipCommand();
+//    $cmdLine = sprintf('%s %s %s --doit', $webProdDir, $webUser, $webGroup);
+//    try {
+//      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+//    } catch (Exception $e) {
+//      $this->logLine('Cannot change permissions', nbLogger::ERROR);
+//    }
 
     // Clear cache
     $cmd = new nbSymfonyClearCacheCommand();

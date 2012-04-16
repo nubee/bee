@@ -23,7 +23,8 @@ TXT
         new nbOption('doit',         'x', nbOption::PARAMETER_NONE,     'Execute synchronization'),
         new nbOption('delete',       'd', nbOption::PARAMETER_NONE,     'Deletes from remote'),
         new nbOption('exclude-from', 'e', nbOption::PARAMETER_REQUIRED, 'Exclude file'),
-        new nbOption('include-from', 'i', nbOption::PARAMETER_REQUIRED, 'Include file')
+        new nbOption('include-from', 'i', nbOption::PARAMETER_REQUIRED, 'Include file'),
+        new nbOption('owner',        'o', nbOption::PARAMETER_REQUIRED, 'Execute rsync with the specified owner')
       )));
   }
 
@@ -55,6 +56,10 @@ TXT
     
     $cmd = sprintf('rsync -azoChpAv %s %s %s %s %s %s',  $doit, $include, $exclude, $delete, $sourceDir, $targetDir);
 
+    $owner = isset($options['owner']) ? $options['owner'] : null;
+    if($owner)
+      $cmd = sprintf('sudo -u %s %s', $owner, $cmd);
+    
     if(!isset($options['doit'])) $this->logLine('Executing command: '.$cmd);
     
     $this->executeShellCommand($cmd);
