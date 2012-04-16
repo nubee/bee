@@ -27,7 +27,7 @@ TXT
     $password = isset($arguments['password']) ? $arguments['password'] : null;
 
     $timestamp = date('YmdHi', time());
-    $dump = sprintf('%s/%s-%s.sql', $path, $dbName, $timestamp);
+    $dump = sprintf('%s/%s-%s.sql', $path, $timestamp, $dbName);
 
     $this->logLine(sprintf('Dumping database "%s" to "%s"', $dbName, $dump));
 
