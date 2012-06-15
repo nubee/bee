@@ -1,0 +1,7 @@
+.svn
+.netbeans
+.bee
+nbproject
+bee.yml
+Symfony/app/logs
+Symfony/app/cache

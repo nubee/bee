@@ -4,22 +4,29 @@ class nbSymfony2DeployCommand extends nbApplicationCommand {
 
   protected function configure() {
     $this->setName('Symfony2:deploy')
-      ->setBriefDescription('Deploys a symfony 2 project')
-      ->setDescription(<<<TXT
-The <info>{$this->getFullName()}</info> command:
+            ->setBriefDescription('Deploys a Symfony2 project. (use with sudo)')
+            ->setDescription(<<<TXT
+Examples:
 
-  <info>./bee {$this->getFullName()}</info>
+  Shows the list of commands will run
+  <info>./bee Symfony2:deploy</info>
+
+  Deploys the project (you have to run with sudo)
+  <info>./bee Symfony2:deploy -x</info>
+  
+  Deploys the project (but reads the configuration from <comment>other-config.yml</comment>)
+  <info>./bee Symfony2:deploy --config-file=.bee/symfony2-deploy.yml -x</info>
 TXT
     );
 
     $this->setOptions(new nbOptionSet(array(
-        new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Make the changes!'),
+        new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Makes the changes!'),
+        new nbOption('delete', 'd', nbOption::PARAMETER_NONE, 'Enables --delete option in rsync'),
       )));
   }
 
   protected function execute(array $arguments = array(), array $options = array()) {
-    $this->logLine('Deploying symfony2 project', nbLogger::COMMENT);
-
+    // bee project must be defined
     if (!is_dir('./.bee') && !file_exists('./bee.yml')) {
       $message = 'No bee project defined!';
       $message .= "\n\n  Run: bee bee:generate-project";
@@ -27,69 +34,96 @@ TXT
       throw new InvalidArgumentException($message);
     }
 
-    if (!isset($options['config-file']))
-      throw new Exception('--config-file option required (CHANGE THIS)');
-
     $doit = isset($options['doit']);
     $verbose = isset($options['verbose']) || !$doit;
-
-    // Load configuration
+    
+    // Loads configuration
     $configDir = nbConfig::get('nb_plugins_dir') . '/nbSymfony2Plugin/config/';
-    $configFilename = $options['config-file'];
-
+    $configFilename = isset($options['config-file']) ? $options['config-file'] : '.bee/symfony2-deploy.yml';
     $this->loadConfiguration($configDir, $configFilename);
 
-    // Setup config parameters
-    $exePath = nbConfig::get('Symfony2_deploy_symfony-exe-path');
-    $publicDir = nbConfig::get('Symfony2_deploy_public-dir');
+    // Variables from config
+    $websiteName = nbConfig::get('website_name');
+//    $deployDir = nbConfig::get('deploy_dir');
+    $excludeList = nbConfig::get('exclude_list');
+    $includeList = nbConfig::get('include_list');
+    $backupSources = nbConfig::get('backup_sources');
+    $backupDestination = nbConfig::get('backup_destination');
+    $webSourceDir = nbConfig::get('web_source_dir');
+    $symfonySourceDir = nbConfig::get('symfony_source_dir');
+    $webProdDir = nbConfig::get('web_prod_dir');
+    $symfonyProdDir = nbConfig::get('symfony_prod_dir');
     $webUser = nbConfig::get('web_user');
-    $webGroup = nbConfig::get('web_group');
-    $symfonyRootDir = nbConfig::get('Symfony2_deploy_symfony-root-dir');
+//    $webGroup = nbConfig::get('web_group');
+    $dbName = nbConfig::get('db_name');
+    $dbUser = nbConfig::get('db_user');
+    $dbPass = nbConfig::get('db_pass');
+    $symfonyEnvironment = nbConfig::get('symfony_environment');
+    
+    $isFirstDeploy = !file_exists(sprintf('%s/Symfony', $symfonyProdDir));
+    $this->logLine(sprintf('Deploying symfony project %s', !$isFirstDeploy ? '' : '(First deploy)'), nbLogger::INFO);
 
-
-    // Put site offline
-    // TODO
+    // Intall vendors (php bin/vendors install)
+    if ($isFirstDeploy) {
+      $cmdLine = sprintf('php %s/bin/vendors install', $symfonySourceDir);
+      $this->executeShellCommand($cmdLine, $doit);
+    }
 
     // Archive site directory
-    $command = new nbArchiveDirCommand();
-    $commandLine = sprintf('--config-file=%s --create-destination-dir', $configFilename);
-    $this->executeCommand($command, $commandLine, $doit, $verbose);
+    if (!$isFirstDeploy) {
+      $cmd = new nbArchiveCommand();
+      $cmdLine = sprintf('%s/%s.tgz %s --add-timestamp --force', $backupDestination, $websiteName, implode(' ', $backupSources));
+      $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+    }
 
     // Dump database
-    $command = new nbMysqlDumpCommand();
-    $commandLine = '--config-file=' . $configFilename;
-    $this->executeCommand($command, $commandLine, $doit, $verbose);
+    if (!$isFirstDeploy) {
+      if ($dbName && $dbUser && $dbPass) {
+        $cmd = new nbMysqlDumpCommand();
+        $cmdLine = sprintf('%s %s %s %s', $dbName, $backupDestination, $dbUser, $dbPass);
+        $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+      }
+    }
+    
+    // --delete option for sync
+    $delete = isset($options['delete']) ? '--delete' : '';
+    
+    // Sync web directory
+    $cmd = new nbDirTransferCommand();
+    $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s',
+      $webSourceDir,
+      $webProdDir,
+      $webUser,
+      $excludeList,
+      $includeList,
+      $doit ? '--doit' : '',
+      $delete
+    );
+    $this->executeCommand($cmd, $cmdLine, true, $verbose);
 
-    // Sync project
-    $command = new nbDirTransferCommand();
-    $commandLine = '--delete --config-file=' . $configFilename;
-    $this->executeCommand($command, $commandLine, $doit, $verbose);
-
-    // Install assets
-    $command = sprintf('php %s assets:install %s', $exePath, $publicDir);
-    $this->executeShellCommand($command, $doit);
-
+    // Sync symfony directory
+    $cmd = new nbDirTransferCommand();
+    $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s',
+      $symfonySourceDir,
+      $symfonyProdDir,
+      $webUser,
+      $excludeList,
+      $includeList,
+      $doit ? '--doit' : '',
+      $delete
+    );
+    $this->executeCommand($cmd, $cmdLine, true, $verbose);
+    
     // Clear cache
-    $command = sprintf('php %s cache:clear --env=prod', $exePath);
-    $this->executeShellCommand($command, $doit);
+    $cmdLine = sprintf('php %s/app/console cache:clear --env=%s', $symfonySourceDir, $symfonyEnvironment);
+    $this->executeShellCommand($cmdLine, $doit);
+    
+    // Publish assets
+    $cmdLine = sprintf('php %s/app/console assetic:dump --no-debug --env=%s', $symfonySourceDir, $symfonyEnvironment);
+    $this->executeShellCommand($cmdLine, $doit);
 
-    // Change ownership
-    $command = new nbChangeOwnershipCommand();
-    $commandLine = sprintf('%s %s %s', $publicDir, $webUser, $webGroup);
-    $this->executeCommand($command, $commandLine, $doit, $verbose);
+    $this->logLine('Symfony2 project deployed successfully', nbLogger::INFO);
 
-    $command = new nbChangeOwnershipCommand();
-    $commandLine = sprintf('%s %s %s', $symfonyRootDir, $webUser, $webGroup);
-    $this->executeCommand($command, $commandLine, $doit, $verbose);
-
-    // Check permissions
-    $command = new nbMultiChangeModeCommand();
-    $commandLine = sprintf('%s', $configFilename);
-    $this->executeCommand($command, $commandLine, $doit, $verbose);
-
-    // Put site online
-    // TODO
-
-    $this->logLine('Done: Symfony2:deploy', nbLogger::COMMENT);
+    return true;
   }
 }

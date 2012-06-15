@@ -1,69 +1,38 @@
-web_base_dir:      { required: true }
-app_name:          { required: true }
-archive_dir:       { required: true, default: /backup/directory, dir-exists: true }
-exclude_list:      { required: true, default: .bee/exclude-list-symfony2-plugin, file-exists: true }
-include_list:      { default: .bee/include-list-symfony2-plugin, file-exists: true }
-app_source_dir:    { required: true, default: ./, dir-exists: true }
-app_prod_dir:      { required: true, default: %web_base_dir%/%app_name%, dir-exists: true }
-web_user:          { required: true, default: www-data }
-web_group:         { required: true, default: www-data }
-symfony_root_dir:  { required: true, default: %app_prod_dir%/Symfony, dir-exists: true }
-db_name:           { required: true }
-db_username:       { required: true }
-db_password:       
-db_dump_dir:       { required: true, default: %archive_dir%, dir-exists: true }
+comment-website:      { default: "example: website.com" }
+website_name:         { required: true }
 
-Symfony2:
-  deploy:
-    symfony-root-dir:  { required: true, default: %symfony_root_dir%, dir-exists: true }
-    symfony-exe-path:  { required: true, default: %symfony_root_dir%/app/console, file-exists: true }
-    site-dir:          { required: true, default: %app_prod_dir%, dir-exists: true }
-    site-user:         { required: true, default: %web_user% }
-    site-group:        { required: true, default: %web_group% }
-    public-dir:        { required: true, default: %app_prod_dir%/httpdocs, dir-exists: true }
-    uploads-dir:       { required: true, default: %Symfony2_deploy_public-dir%/uploads, dir-exists: true }
+comment-deploy-dir:   { default: "example: /var/www/%website_name% or /var/www/website.com/subdomains/%website_name%" }
+deploy_dir:           { required: true, dir-exists: true }
 
-archive:
-  archive-dir:
-    source-dir:      { required: true, default: %app_prod_dir%, dir-exists: true }
-    destination-dir: { required: true, default: %archive_dir%, dir-exists: true }
+comment-lists:        { default: "check these files!" }
+exclude_list:         { required: true, default: .bee/exclude-list, file-exists: true }
+include_list:         { required: true, default: .bee/include-list, file-exists: true }
 
-filesystem:
-  dir-transfer:
-    source-dir:   { required: true, default: %app_source_dir%, dir-exists: true }
-    target-dir:   { required: true, default: %app_prod_dir%, dir-exists: true }
-    exclude-from: { required: true, default: %exclude_list%, file-exists: true }
-    include-from: { default: %include_list%, file-exists: true }
+comment-backup:       { default: "you can define multiple source directories (use absolute paths). You must define one destination directory (use absolute path)" }
+backup_sources:
+  1:                  { required: true, default: %deploy_dir%/httpdocs }
+  2:                  { default: %deploy_dir%/Symfony }
+backup_destination:   { required: true, default: /backup/%website_name% }
+
+#comment-sync-dirs:    { default: "you can add or modify directories to sync: from -> refer to your local project; to -> refer to your production website" }
+#sync_dirs:
+#  web:                { from: { required: true, default: ./httpdocs, dir-exists: true }, to: { required: true, default: %deploy_dir%/httpdocs, dir-exists: true } }
+#  symfony:            { from: { required: true, default: ./symfony, dir-exists: true }, to: { required: true, default: %deploy_dir%/symfony, dir-exists: true } }
   
-  multi-change-mode:
-    - 
-      directory: { required: true, default: %Symfony2_deploy_public-dir%, dir-exists: true }
-      dir-mode:  { required: true, default: 555 }
-      file-mode: { required: true, default: 444 }
+comment-source-dir:   { default: "refer to your local project" }
+web_source_dir:       { required: true, default: ./httpdocs, dir-exists: true }
+symfony_source_dir:   { required: true, default: ./Symfony, dir-exists: true }
 
-    - 
-      directory: { required: true, default: %Symfony2_deploy_uploads-dir%, dir-exists: true }
-      dir-mode:  { required: true, default: 755 }
-      file-mode: { required: true, default: 644 }
+comment-prod-dir:     { default: "refer to your production website" }
+web_prod_dir:         { required: true, default: %deploy_dir%/httpdocs, dir-exists: true }
+symfony_prod_dir:     { required: true, default: %deploy_dir%/Symfony, dir-exists: true }
 
-    - 
-      directory: { required: true, default: %Symfony2_deploy_symfony-root-dir%, dir-exists: true }
-      dir-mode:  { required: true, default: 555 }
-      file-mode: { required: true, default: 444 }
+web_user:             { required: true, default: www-data }
+web_group:            { required: true, default: www-data }
 
-    - 
-      directory: { required: true, default: %Symfony2_deploy_symfony-root-dir%/app/cache, dir-exists: true }
-      dir-mode:  { required: true, default: 755 }
-      file-mode: { required: true, default: 644 }
+comment-database:     { default: "leave empty if website has not database" }
+db_name:
+db_user:
+db_pass:
 
-    - 
-      directory: { required: true, default: %Symfony2_deploy_symfony-root-dir%/app/logs, dir-exists: true }
-      dir-mode:  { required: true, default: 755 }
-      file-mode: { required: true, default: 644 }
-
-mysql:
-  dump:
-    db-name:   { required: true, default: %db_name% }
-    dump-path: { required: true, default: %db_dump_dir%, dir-exists: true }
-    username:  { required: true, default: %db_username% }
-    password:  { default: %db_password% }
+symfony_environment:  { required: true, default: prod }
