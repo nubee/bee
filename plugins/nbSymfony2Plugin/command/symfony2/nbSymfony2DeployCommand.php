@@ -60,14 +60,8 @@ TXT
     $dbPass = nbConfig::get('db_pass');
     $symfonyEnvironment = nbConfig::get('symfony_environment');
     
-    $isFirstDeploy = !file_exists(sprintf('%s/Symfony', $symfonyProdDir));
+    $isFirstDeploy = !file_exists(sprintf('%s/app/console', $symfonyProdDir)) || !file_exists(sprintf('%s/vendor/symfony', $symfonyProdDir));
     $this->logLine(sprintf('Deploying symfony project %s', !$isFirstDeploy ? '' : '(First deploy)'), nbLogger::INFO);
-
-    // Intall vendors (php bin/vendors install)
-    if ($isFirstDeploy) {
-      $cmdLine = sprintf('php %s/bin/vendors install', $symfonySourceDir);
-      $this->executeShellCommand($cmdLine, $doit);
-    }
 
     // Archive site directory
     if (!$isFirstDeploy) {
@@ -114,12 +108,21 @@ TXT
     );
     $this->executeCommand($cmd, $cmdLine, true, $verbose);
     
-    // Clear cache
-    $cmdLine = sprintf('php %s/app/console cache:clear --env=%s', $symfonySourceDir, $symfonyEnvironment);
-    $this->executeShellCommand($cmdLine, $doit);
-    
-    // Publish assets
-    $cmdLine = sprintf('php %s/app/console assetic:dump --no-debug --env=%s', $symfonySourceDir, $symfonyEnvironment);
+    // Intall vendors (php bin/vendors install)
+    if ($isFirstDeploy) {
+      $cmdLine = sprintf('php %s/bin/vendors install', $symfonyProdDir);
+      $this->executeShellCommand($cmdLine, $doit);
+    } else {
+      // Clear cache
+      $cmdLine = sprintf('php %s/app/console cache:clear --env=%s', $symfonyProdDir, $symfonyEnvironment);
+      $this->executeShellCommand($cmdLine, $doit);
+
+      // Publish assets
+      $cmdLine = sprintf('php %s/app/console assets:install %s --env=%s', $symfonyProdDir, $webProdDir, $symfonyEnvironment);
+      $this->executeShellCommand($cmdLine, $doit);
+    }
+
+    $cmdLine = sprintf('php %s/app/console assetic:dump --no-debug --env=%s', $symfonyProdDir, $symfonyEnvironment);
     $this->executeShellCommand($cmdLine, $doit);
 
     $this->logLine('Symfony2 project deployed successfully', nbLogger::INFO);

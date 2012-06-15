@@ -3,5 +3,6 @@
 .bee
 nbproject
 bee.yml
+Symfony/vendor
 Symfony/app/logs
 Symfony/app/cache
