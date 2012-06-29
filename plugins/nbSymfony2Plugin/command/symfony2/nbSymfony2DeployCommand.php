@@ -26,6 +26,8 @@ TXT
         $this->setOptions(new nbOptionSet(array(
                 new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Makes the changes!'),
                 new nbOption('delete', 'd', nbOption::PARAMETER_NONE, 'Enables --delete option in rsync'),
+                new nbOption('no-backup', '', nbOption::PARAMETER_NONE, 'Disable directories backup'),
+                new nbOption('no-dump', '', nbOption::PARAMETER_NONE, 'Disable database dump'),
             )));
     }
 
@@ -69,7 +71,7 @@ TXT
         $this->logLine(sprintf('Deploying symfony project %s', !$isFirstDeploy ? '' : '(First deploy)'), nbLogger::INFO);
 
         // Archive site directory
-        if (!$isFirstDeploy) {
+        if (!$isFirstDeploy && !isset($options['no-backup'])) {
             $cmd = new nbArchiveCommand();
             $cmdLine = sprintf('%s/%s.tgz %s --add-timestamp --force', $backupDestination, $websiteName, implode(' ', $backupSources));
             $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
@@ -77,7 +79,7 @@ TXT
 
         // Dump database
         if (!$isFirstDeploy) {
-            if ($dbName && $dbUser && $dbPass) {
+            if ($dbName && $dbUser && $dbPass && !isset($options['no-dump'])) {
                 $cmd = new nbMysqlDumpCommand();
                 $cmdLine = sprintf('%s %s %s %s', $dbName, $backupDestination, $dbUser, $dbPass);
                 $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
@@ -118,22 +120,24 @@ TXT
             $cmdLine = sprintf('php %s/bin/vendors install', $symfonyProdDir);
             $this->executeShellCommand($cmdLine, $doit);
         } else {
-            // Clear cache
-            $cmdLine = sprintf('php %s/app/console cache:clear --env=%s', $symfonyProdDir, $symfonyEnvironment);
-            $this->executeShellCommand($cmdLine, $doit);
-
             // Publish assets
             $cmdLine = sprintf('php %s/app/console assets:install %s --env=%s', $symfonyProdDir, $webProdDir, $symfonyEnvironment);
+            $this->executeShellCommand($cmdLine, $doit);
+
+            // Clear cache
+            $cmdLine = sprintf('php %s/app/console cache:clear --env=%s --no-debug', $symfonyProdDir, $symfonyEnvironment);
             $this->executeShellCommand($cmdLine, $doit);
         }
 
         $cmdLine = sprintf('php %s/app/console assetic:dump --no-debug --env=%s', $symfonyProdDir, $symfonyEnvironment);
         $this->executeShellCommand($cmdLine, $doit);
         
-        $this->getFileSystem()->chmodRecursive($webProdDir, 0755, 0755);
-        $this->getFileSystem()->chownRecursive($webProdDir, $webUser, $webGroup);
-        $this->getFileSystem()->chmodRecursive($symfonyProdDir, 0755, 0755);
-        $this->getFileSystem()->chownRecursive($symfonyProdDir, $webUser, $webGroup);
+        if ($doit) {
+            $this->getFileSystem()->chmodRecursive($webProdDir, 0755, 0755);
+            $this->getFileSystem()->chownRecursive($webProdDir, $webUser, $webGroup);
+            $this->getFileSystem()->chmodRecursive($symfonyProdDir, 0755, 0755);
+            $this->getFileSystem()->chownRecursive($symfonyProdDir, $webUser, $webGroup);
+        }
 
         $this->logLine('Symfony2 project deployed successfully', nbLogger::INFO);
 

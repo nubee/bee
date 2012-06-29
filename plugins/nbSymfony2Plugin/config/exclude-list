@@ -3,6 +3,7 @@
 .bee
 nbproject
 bee.yml
-Symfony/vendor
-Symfony/app/logs
-Symfony/app/cache
+vendor
+app/logs
+app/cache
+app/config/parameters.ini
