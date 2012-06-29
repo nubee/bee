@@ -131,9 +131,9 @@ TXT
         $this->executeShellCommand($cmdLine, $doit);
         
         $this->getFileSystem()->chmodRecursive($webProdDir, 0755, 0755);
-        $this->getFileSystem()->chown($webProdDir, $webUser, $webGroup);
+        $this->getFileSystem()->chownRecursive($webProdDir, $webUser, $webGroup);
         $this->getFileSystem()->chmodRecursive($symfonyProdDir, 0755, 0755);
-        $this->getFileSystem()->chown($symfonyProdDir, $webUser, $webGroup);
+        $this->getFileSystem()->chownRecursive($symfonyProdDir, $webUser, $webGroup);
 
         $this->logLine('Symfony2 project deployed successfully', nbLogger::INFO);
 

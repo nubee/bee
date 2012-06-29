@@ -93,7 +93,7 @@ TXT
         }
 
         $this->getFileSystem()->chmodRecursive($webDir, 0755, 0755);
-        $this->getFileSystem()->chown($webDir, $webUser, $webGroup);
+        $this->getFileSystem()->chownRecursive($webDir, $webUser, $webGroup);
 
         $symfonyDir = isset($options['change-sf-dir']) ? $options['change-sf-dir'] : 'Symfony';
         $symfonyDir = sprintf('%s/%s', $deployDir, $symfonyDir);
@@ -104,7 +104,7 @@ TXT
         }
 
         $this->getFileSystem()->chmodRecursive($symfonyDir, 0755, 0755);
-        $this->getFileSystem()->chown($symfonyDir, $webUser, $webGroup);
+        $this->getFileSystem()->chownRecursive($symfonyDir, $webUser, $webGroup);
 
         // Creates the database
         $dbName = isset($options['db-name']) ? $options['db-name'] : null;
