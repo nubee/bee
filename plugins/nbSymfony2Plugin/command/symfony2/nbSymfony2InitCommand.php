@@ -6,8 +6,10 @@ class nbSymfony2InitCommand extends nbApplicationCommand
     protected function configure()
     {
         $this->setName('Symfony2:init')
-            ->setBriefDescription('** run with sudo ** Initliazes a Symfony2 website project (creates and restores database, makes directories for symfony application)')
+            ->setBriefDescription('Initliazes a Symfony2 website project (creates and restores database, makes directories for symfony application) (use with sudo)')
             ->setDescription(<<<TXT
+** Execute with sudo **
+
 Examples:
 
   Enables plugins required by <info>Symfony2:deploy</info>
@@ -101,7 +103,7 @@ TXT
             $this->getFileSystem()->mkdir($symfonyDir, true);
         }
 
-        $this->getFileSystem()->chmodRecursive($webDir, 0755, 0755);
+        $this->getFileSystem()->chmodRecursive($symfonyDir, 0755, 0755);
         $this->getFileSystem()->chown($symfonyDir, $webUser, $webGroup);
 
         // Creates the database

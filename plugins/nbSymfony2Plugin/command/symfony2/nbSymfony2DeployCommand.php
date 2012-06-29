@@ -8,6 +8,8 @@ class nbSymfony2DeployCommand extends nbApplicationCommand
         $this->setName('Symfony2:deploy')
             ->setBriefDescription('Deploys a Symfony2 project. (use with sudo)')
             ->setDescription(<<<TXT
+** Execute with sudo **
+
 Examples:
 
   Shows the list of commands will run
