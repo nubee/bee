@@ -59,7 +59,7 @@ TXT
         $webProdDir = nbConfig::get('web_prod_dir');
         $symfonyProdDir = nbConfig::get('symfony_prod_dir');
         $webUser = nbConfig::get('web_user');
-//        $webGroup = nbConfig::get('web_group');
+        $webGroup = nbConfig::get('web_group');
         $dbName = nbConfig::get('db_name');
         $dbUser = nbConfig::get('db_user');
         $dbPass = nbConfig::get('db_pass');
@@ -129,6 +129,11 @@ TXT
 
         $cmdLine = sprintf('php %s/app/console assetic:dump --no-debug --env=%s', $symfonyProdDir, $symfonyEnvironment);
         $this->executeShellCommand($cmdLine, $doit);
+        
+        $this->getFileSystem()->chmodRecursive($webProdDir, 0755, 0755);
+        $this->getFileSystem()->chown($webProdDir, $webUser, $webGroup);
+        $this->getFileSystem()->chmodRecursive($symfonyProdDir, 0755, 0755);
+        $this->getFileSystem()->chown($symfonyProdDir, $webUser, $webGroup);
 
         $this->logLine('Symfony2 project deployed successfully', nbLogger::INFO);
 
