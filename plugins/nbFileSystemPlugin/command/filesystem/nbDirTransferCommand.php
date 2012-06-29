@@ -54,7 +54,7 @@ TXT
     $sourceDir = nbFileSystem::sanitizeDir($arguments['source-dir']) . '/';
     $targetDir = nbFileSystem::sanitizeDir($arguments['target-dir']);
     
-    $cmd = sprintf('rsync -azoChpAv %s %s %s %s %s %s',  $doit, $include, $exclude, $delete, $sourceDir, $targetDir);
+    $cmd = sprintf('rsync -rzChv %s %s %s %s %s %s',  $doit, $include, $exclude, $delete, $sourceDir, $targetDir);
 
     $owner = isset($options['owner']) ? $options['owner'] : null;
     if($owner)
