@@ -61,7 +61,7 @@ TXT
         $webProdDir = nbConfig::get('web_prod_dir');
         $symfonyProdDir = nbConfig::get('symfony_prod_dir');
         $webUser = nbConfig::get('web_user');
-//    $webGroup = nbConfig::get('web_group');
+        $webGroup = nbConfig::get('web_group');
         $dbName = nbConfig::get('db_name');
         $dbUser = nbConfig::get('db_user');
         $dbPass = nbConfig::get('db_pass');
@@ -125,14 +125,21 @@ TXT
         );
         $this->executeCommand($cmd, $cmdLine, true, $verbose);
 
-        // Check dirs
-        $cmd = new nbSymfonyCheckDirsCommand();
-        $this->executeCommand($cmd, $symfonyProdDir, $doit, $verbose);
+//        // Check dirs
+//        $cmd = new nbSymfonyCheckDirsCommand();
+//        $this->executeCommand($cmd, $symfonyProdDir, $doit, $verbose);
+//
+//        // Check permissions
+//        $cmd = new nbSymfonyCheckPermissionsCommand();
+//        $this->executeCommand($cmd, $symfonyProdDir, $doit, $verbose);
 
-        // Check permissions
-        $cmd = new nbSymfonyCheckPermissionsCommand();
-        $this->executeCommand($cmd, $symfonyProdDir, $doit, $verbose);
-
+        if ($doit) {
+            $this->getFileSystem()->chmodRecursive($webProdDir, 0755, 0755);
+            $this->getFileSystem()->chownRecursive($webProdDir, $webUser, $webGroup);
+            $this->getFileSystem()->chmodRecursive($symfonyProdDir, 0755, 0755);
+            $this->getFileSystem()->chownRecursive($symfonyProdDir, $webUser, $webGroup);
+        }
+        
         // Clear cache
         $cmd = new nbSymfonyClearCacheCommand();
         $this->executeCommand($cmd, $symfonyProdDir, $doit, $verbose);
