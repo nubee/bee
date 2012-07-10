@@ -79,7 +79,7 @@ TXT
         $cmdLine = 'nbSymfony2Plugin -f';
         $this->executeCommand($cmd, $cmdLine, true, $verbose);
 
-        // Makes deploy directories
+        // Make deploy directories
         $deployDir = nbFileSystem::sanitizeDir($arguments['deploy-dir']);
         $webUser = $arguments['web-user'];
         $webGroup = isset($arguments['web-group']) ? $arguments['web-group'] : $arguments['web-user'];
@@ -106,7 +106,7 @@ TXT
         $this->getFileSystem()->chmodRecursive($symfonyDir, 0755, 0755);
         $this->getFileSystem()->chownRecursive($symfonyDir, $webUser, $webGroup);
 
-        // Creates the database
+        // Create the database
         $dbName = isset($options['db-name']) ? $options['db-name'] : null;
         $dbUser = isset($options['db-user']) ? $options['db-user'] : null;
         $dbPass = isset($options['db-pass']) ? $options['db-pass'] : null;
@@ -119,7 +119,7 @@ TXT
             $this->executeCommand($cmd, $cmdLine, true, $verbose);
         }
 
-        // Restores the database
+        // Restore the database
         $dbDumpFile = isset($options['db-dump-file']) ? $options['db-dump-file'] : null;
 
         if (is_file($dbDumpFile)) {
