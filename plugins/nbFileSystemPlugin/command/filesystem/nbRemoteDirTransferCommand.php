@@ -50,7 +50,7 @@ TXT
     $doit = isset($options['doit']) ? '' : '--dry-run';
     $delete = isset($options['delete']) ? '--delete' : '';
     
-    $cmd = sprintf('rsync -azvoChpA %s %s %s %s %s -e ssh %s@%s:%s', 
+    $cmd = sprintf('rsync -rzChv %s %s %s %s %s -e ssh %s@%s:%s', 
       $doit, $include, $exclude, $delete, $sourceDir, 
       $remoteUser, $remoteServer, $remotePath);
     
