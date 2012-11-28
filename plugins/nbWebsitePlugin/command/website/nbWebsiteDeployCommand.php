@@ -24,6 +24,8 @@ TXT
         $this->setOptions(new nbOptionSet(array(
             new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Makes the changes!'),
             new nbOption('delete', 'd', nbOption::PARAMETER_NONE, 'Enables --delete option in rsync'),
+            new nbOption('no-backup', '', nbOption::PARAMETER_NONE, 'Disable directories backup'),
+            new nbOption('no-dump', '', nbOption::PARAMETER_NONE, 'Disable database dump'),
         )));
     }
 
@@ -57,12 +59,14 @@ TXT
         $this->logLine('Deploying website', nbLogger::INFO);
 
         // Archive site directory
-        $cmd = new nbArchiveCommand();
-        $cmdLine = sprintf('%s/%s.tgz %s --add-timestamp --force', $backupDestination, $websiteName, implode(' ', $backupSources));
-        $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+        if (!isset($options['no-backup'])) {
+            $cmd = new nbArchiveCommand();
+            $cmdLine = sprintf('%s/%s.tgz %s --add-timestamp --force', $backupDestination, $websiteName, implode(' ', $backupSources));
+            $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
+        }
 
         // Dump database
-        if ($dbName && $dbUser && $dbPass) {
+        if ($dbName && $dbUser && $dbPass && !isset($options['no-dump'])) {
             $cmd = new nbMysqlDumpCommand();
             $cmdLine = sprintf('%s %s %s %s', $dbName, $backupDestination, $dbUser, $dbPass);
             $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
@@ -71,8 +75,8 @@ TXT
         // Sync web directory
         $cmd = new nbDirTransferCommand();
         $delete = isset($options['delete']) ? '--delete' : '';
-        $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s', $webSourceDir, $webProdDir, $webUser, $excludeList, $includeList, $doit ? '--doit' : '', $delete
-        );
+        $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s',
+            $webSourceDir, $webProdDir, $webUser, $excludeList, $includeList, $doit ? '--doit' : '', $delete);
         $this->executeCommand($cmd, $cmdLine, true, $verbose);
 
         $this->logLine('Website deployed successfully', nbLogger::INFO);
