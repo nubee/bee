@@ -17,30 +17,24 @@ Examples:
 
   Deploys the project (you have to run with sudo)
   <info>./bee Symfony2:deploy -x</info>
-  
+
   Deploys the project (but reads the configuration from <comment>other-config.yml</comment>)
   <info>./bee Symfony2:deploy --config-file=.bee/symfony2-deploy.yml -x</info>
 TXT
         );
 
         $this->setOptions(new nbOptionSet(array(
-                new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Makes the changes!'),
-                new nbOption('delete', 'd', nbOption::PARAMETER_NONE, 'Enables --delete option in rsync'),
-                new nbOption('no-backup', '', nbOption::PARAMETER_NONE, 'Disable directories backup'),
-                new nbOption('no-dump', '', nbOption::PARAMETER_NONE, 'Disable database dump'),
-            )));
+            new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Makes the changes!'),
+            new nbOption('delete', 'd', nbOption::PARAMETER_NONE, 'Enables --delete option in rsync'),
+            new nbOption('no-backup', '', nbOption::PARAMETER_NONE, 'Disable directories backup'),
+            new nbOption('no-dump', '', nbOption::PARAMETER_NONE, 'Disable database dump'),
+        )));
     }
 
     protected function execute(array $arguments = array(), array $options = array())
     {
-        // bee project must be defined
-        if (!is_dir('./.bee') && !file_exists('./bee.yml')) {
-            $message = 'No bee project defined!';
-            $message .= "\n\n  Run: bee bee:generate-project";
-
-            throw new InvalidArgumentException($message);
-        }
-
+        $this->checkBeeProject();
+        
         $doit = isset($options['doit']);
         $verbose = isset($options['verbose']) || !$doit;
 
@@ -91,27 +85,13 @@ TXT
 
         // Sync web directory
         $cmd = new nbDirTransferCommand();
-        $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s',
-            $webSourceDir,
-            $webProdDir,
-            $webUser,
-            $excludeList,
-            $includeList,
-            $doit ? '--doit' : '',
-            $delete
+        $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s', $webSourceDir, $webProdDir, $webUser, $excludeList, $includeList, $doit ? '--doit' : '', $delete
         );
         $this->executeCommand($cmd, $cmdLine, true, $verbose);
 
         // Sync symfony directory
         $cmd = new nbDirTransferCommand();
-        $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s',
-            $symfonySourceDir,
-            $symfonyProdDir,
-            $webUser,
-            $excludeList,
-            $includeList,
-            $doit ? '--doit' : '',
-            $delete
+        $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s', $symfonySourceDir, $symfonyProdDir, $webUser, $excludeList, $includeList, $doit ? '--doit' : '', $delete
         );
         $this->executeCommand($cmd, $cmdLine, true, $verbose);
 
@@ -131,7 +111,7 @@ TXT
 
         $cmdLine = sprintf('php %s/app/console assetic:dump --no-debug --env=%s', $symfonyProdDir, $symfonyEnvironment);
         $this->executeShellCommand($cmdLine, $doit);
-        
+
         if ($doit) {
             $this->getFileSystem()->chmodRecursive($webProdDir, 0755, 0755);
             $this->getFileSystem()->chownRecursive($webProdDir, $webUser, $webGroup);

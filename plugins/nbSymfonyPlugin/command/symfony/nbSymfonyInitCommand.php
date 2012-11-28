@@ -14,49 +14,43 @@ Examples:
 
   Enables plugins required by <info>symfony:deploy</info>
   <info>./bee symfony:init</info>
-  
+
   Creates the deploy dir, the web dir and the symfony dir (if they do not exist)
   <info>./bee symfony:init /var/www/website.com</info>
 
   Creates the database and the user (mysql user and pass are usually required)
   Database will be created ONLY if <comment>--db-name</comment>, <comment>--db-user</comment>, <comment>--db-pass</comment> options are specified
   <info>./bee symfony:init --db-name=dbname --db-user=dbuser --db-pass=dbPaZZ --mysql-user=root --mysql-pass=Pa55</info>
-  
+
   Populates the database (use mysql user and pass)
   <info>./bee symfony:init --db-name=dbname --db-dump-file=/my/project/db/dump.sql --mysql-user=root --mysql-pass=Pa55</info>
 TXT
         );
 
         $this->setArguments(new nbArgumentSet(array(
-                new nbArgument('deploy-dir', nbArgument::REQUIRED, 'The production application directory (ie: /var/www/website.com, /var/www/website.com/subdomains/beta)'),
-                new nbArgument('web-user', nbArgument::REQUIRED, 'The owner of production directory'),
-                new nbArgument('web-group', nbArgument::OPTIONAL, 'The group of production directory (if not set, default is the value of web-user)')
-            )));
+            new nbArgument('deploy-dir', nbArgument::REQUIRED, 'The production application directory (ie: /var/www/website.com, /var/www/website.com/subdomains/beta)'),
+            new nbArgument('web-user', nbArgument::REQUIRED, 'The owner of production directory'),
+            new nbArgument('web-group', nbArgument::OPTIONAL, 'The group of production directory (if not set, default is the value of web-user)')
+        )));
 
         $this->setOptions(new nbOptionSet(array(
-                new nbOption('change-web-dir', '', nbOption::PARAMETER_REQUIRED, 'Changes the name of the web directory (if not specified default is "httpdocs")'),
-                new nbOption('change-sf-dir', '', nbOption::PARAMETER_REQUIRED, 'Changes the name of the symfony directory (if not specified default is "symfony")'),
-                new nbOption('db-name', '', nbOption::PARAMETER_REQUIRED, 'To create a database use with --db-user AND --db-pass; to populate an existing database use with --db-dump-file'),
-                new nbOption('db-user', '', nbOption::PARAMETER_REQUIRED, 'The user of the database (requires --db-name and --db-pass)'),
-                new nbOption('db-pass', '', nbOption::PARAMETER_REQUIRED, 'The password for the user of the database (requires --db-name and --db-user)'),
-                new nbOption('db-dump-file', '', nbOption::PARAMETER_REQUIRED, 'Dump file used to populate the database (requires --db-name)'),
-                new nbOption('mysql-user', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root user', 'root'),
-                new nbOption('mysql-pass', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root password', ''),
-            )));
+            new nbOption('change-web-dir', '', nbOption::PARAMETER_REQUIRED, 'Changes the name of the web directory (if not specified default is "httpdocs")'),
+            new nbOption('change-sf-dir', '', nbOption::PARAMETER_REQUIRED, 'Changes the name of the symfony directory (if not specified default is "symfony")'),
+            new nbOption('db-name', '', nbOption::PARAMETER_REQUIRED, 'To create a database use with --db-user AND --db-pass; to populate an existing database use with --db-dump-file'),
+            new nbOption('db-user', '', nbOption::PARAMETER_REQUIRED, 'The user of the database (requires --db-name and --db-pass)'),
+            new nbOption('db-pass', '', nbOption::PARAMETER_REQUIRED, 'The password for the user of the database (requires --db-name and --db-user)'),
+            new nbOption('db-dump-file', '', nbOption::PARAMETER_REQUIRED, 'Dump file used to populate the database (requires --db-name)'),
+            new nbOption('mysql-user', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root user', 'root'),
+            new nbOption('mysql-pass', '', nbOption::PARAMETER_OPTIONAL, 'The mysql root password', ''),
+        )));
     }
 
     protected function execute(array $arguments = array(), array $options = array())
     {
+        $this->checkBeeProject();
+
         $this->logLine('Initialising symfony website', nbLogger::INFO);
-
-        // bee project must be defined
-        if (!is_dir('./.bee') && !file_exists('./bee.yml')) {
-            $message = 'No bee project defined!';
-            $message .= "\n\n  Run: bee bee:generate-project";
-
-            throw new InvalidArgumentException($message);
-        }
-
+        
         $verbose = isset($options['verbose']);
 
         $files = nbFileFinder::create('file')
@@ -91,7 +85,7 @@ TXT
         if (!is_dir($webDir)) {
             $this->getFileSystem()->mkdir($webDir, true);
         }
-        
+
         $this->getFileSystem()->chmodRecursive($webDir, 0755, 0755);
         $this->getFileSystem()->chownRecursive($webDir, $webUser, $webGroup);
 
@@ -102,7 +96,7 @@ TXT
         if (!is_dir($symfonyDir)) {
             $this->getFileSystem()->mkdir($symfonyDir, true);
         }
-        
+
         $this->getFileSystem()->chmodRecursive($symfonyDir, 0755, 0755);
         $this->getFileSystem()->chownRecursive($symfonyDir, $webUser, $webGroup);
 

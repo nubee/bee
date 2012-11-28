@@ -17,7 +17,7 @@ Examples:
 
   Deploys the project (you have to run with sudo)
   <info>./bee symfony:deploy -x</info>
-  
+
   Deploys the project (but reads the configuration from <comment>other-config.yml</comment>)
   <info>./bee symfony:deploy --config-file=.bee/symfony-deploy.yml -x</info>
 TXT
@@ -33,14 +33,8 @@ TXT
 
     protected function execute(array $arguments = array(), array $options = array())
     {
-        // bee project must be defined
-        if (!is_dir('./.bee') && !file_exists('./bee.yml')) {
-            $message = 'No bee project defined!';
-            $message .= "\n\n  Run: bee bee:generate-project";
-
-            throw new InvalidArgumentException($message);
-        }
-
+        $this->checkBeeProject();
+        
         $doit = isset($options['doit']);
         $verbose = isset($options['verbose']) || !$doit;
 
@@ -112,7 +106,7 @@ TXT
         );
         $this->executeCommand($cmd, $cmdLine, true, $verbose);
 
-        // Sync symfony directory   
+        // Sync symfony directory
         $cmd = new nbDirTransferCommand();
         $cmdLine = sprintf('%s %s --owner=%s --exclude-from=%s --include-from=%s %s %s',
             $symfonySourceDir,
@@ -139,7 +133,7 @@ TXT
             $this->getFileSystem()->chmodRecursive($symfonyProdDir, 0755, 0755);
             $this->getFileSystem()->chownRecursive($symfonyProdDir, $webUser, $webGroup);
         }
-        
+
         // Clear cache
         $cmd = new nbSymfonyClearCacheCommand();
         $this->executeCommand($cmd, $symfonyProdDir, $doit, $verbose);

@@ -1,6 +1,6 @@
 project:
-  name: bee
-  description: bee is a project automation tool written in PHP
+  name: the project name
+  description: a simple description
 #  commands:
 #    test:
 #      unit: "lime:test"
@@ -11,6 +11,8 @@ project:
     enabled_plugins: ~
   repository:
     type: git
+    root-directory: /set/an/absolute/path
+  test-command: the test command
   shell:
     aliases:
       myAlias: echo "you called myAlias"

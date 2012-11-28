@@ -66,7 +66,7 @@ abstract class nbApplication
     try {
       $command->run($this->parser, $commandLine, $this->verbose);
     }
-    catch(Exception $e) {
+    catch(InvalidArgumentException $e) {
       $this->logger->logLine('');
       $helpCmd = new nbHelpCommand();
       $this->logger->log($helpCmd->formatHelp($command));
@@ -74,10 +74,6 @@ abstract class nbApplication
       $this->logger->logLine($e->getMessage(), nbLogger::ERROR);
     }
     catch(Exception $e) {
-      $this->logger->logLine('');
-      $helpCmd = new nbHelpCommand();
-      $this->logger->log($helpCmd->formatHelp($command));
-      $this->logger->logLine('');
       $this->logger->logLine($e->getMessage(), nbLogger::ERROR);
     }
   }
@@ -86,7 +82,7 @@ abstract class nbApplication
   {
     return $this->name;
   }
-  
+
   public function getVersion()
   {
     return $this->version;
@@ -272,14 +268,14 @@ abstract class nbApplication
   {
     if(!$this->parser->hasArgumentValue('command'))
       return;
-    
+
     $argument = $this->parser->getArgumentValue('command');
 
     $currentCommand = $this->getCommand($argument);
 
     if(null == $currentCommand)
       return;
-    
+
     foreach($currentCommand->getOptionsArray() as $cmdOption) {
       if($this->options->hasOption($cmdOption->getName()))
         throw new Exception(sprintf('[nbApplication::VerifyOption] The "%s" option name already exists in beeApplication.', $cmdOption->getName()));
