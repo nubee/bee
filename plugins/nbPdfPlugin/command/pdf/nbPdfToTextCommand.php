@@ -19,6 +19,7 @@ TXT
         )));
 
         $this->setOptions(new nbOptionSet(array(
+            new nbOption('unicode', 'u', nbOption::PARAMETER_NONE, 'Use unicode encoding'),
         )));
     }
 
@@ -30,6 +31,7 @@ TXT
 
         $pdf2text = new PDF2Text();
         $pdf2text->setFilename($file);
+        $pdf2text->setUnicode(isset($options['unicode']));
         $pdf2text->decodePDF();
         $output = $pdf2text->output();
 
