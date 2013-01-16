@@ -1,0 +1,38 @@
+comment-website:      { default: "example: website.com" }
+website_name:         { required: true }
+
+comment-deploy-dir:   { default: "example: /var/www/%website_name% or /var/www/website.com/subdomains/%website_name%" }
+deploy_dir:           { required: true, dir-exists: true }
+
+comment-lists:        { default: "check these files!" }
+exclude_list:         { required: true, default: .bee/exclude-list, file-exists: true }
+include_list:         { required: true, default: .bee/include-list, file-exists: true }
+
+comment-backup:       { default: "you can define multiple source directories (use absolute paths). You must define one destination directory (use absolute path)" }
+backup_sources:
+  1:                  { required: true, default: %deploy_dir%/httpdocs }
+  2:                  { default: %deploy_dir%/Symfony }
+backup_destination:   { required: true, default: /backup/%website_name% }
+
+#comment-sync-dirs:    { default: "you can add or modify directories to sync: from -> refer to your local project; to -> refer to your production website" }
+#sync_dirs:
+#  web:                { from: { required: true, default: ./httpdocs, dir-exists: true }, to: { required: true, default: %deploy_dir%/httpdocs, dir-exists: true } }
+#  symfony:            { from: { required: true, default: ./symfony, dir-exists: true }, to: { required: true, default: %deploy_dir%/symfony, dir-exists: true } }
+  
+comment-source-dir:   { default: "refer to your local project" }
+web_source_dir:       { required: true, default: ./httpdocs, dir-exists: true }
+symfony_source_dir:   { required: true, default: ./Symfony, dir-exists: true }
+
+comment-prod-dir:     { default: "refer to your production website" }
+web_prod_dir:         { required: true, default: %deploy_dir%/httpdocs, dir-exists: true }
+symfony_prod_dir:     { required: true, default: %deploy_dir%/Symfony, dir-exists: true }
+
+web_user:             { required: true, default: www-data }
+web_group:            { required: true, default: www-data }
+
+comment-database:     { default: "leave empty if website has not database" }
+db_name:
+db_user:
+db_pass:
+
+symfony_environment:  { required: true, default: prod }
