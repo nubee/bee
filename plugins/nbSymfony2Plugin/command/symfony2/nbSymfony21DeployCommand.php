@@ -1,25 +1,25 @@
 <?php
 
-class nbSymfony2DeployCommand extends nbApplicationCommand
+class nbSymfony21DeployCommand extends nbApplicationCommand
 {
 
     protected function configure()
     {
-        $this->setName('Symfony2:deploy')
-            ->setBriefDescription('Deploys a Symfony2 project. (use with sudo)')
+        $this->setName('Symfony21:deploy')
+            ->setBriefDescription('Deploys a Symfony 2.1 project. (use with sudo)')
             ->setDescription(<<<TXT
 ** Execute with sudo **
 
 Examples:
 
   Shows the list of commands will run
-  <info>./bee Symfony2:deploy</info>
+  <info>./bee Symfony21:deploy</info>
 
   Deploys the project
-  <info>./bee Symfony2:deploy -x -d</info>
+  <info>./bee Symfony21:deploy -x -d</info>
 
   Deploys the project with no dump and no backup
-  <info>./bee Symfony2:deploy -x -d --no-dump --no-backup</info>
+  <info>./bee Symfony21:deploy -x -d --no-dump --no-backup</info>
 TXT
         );
 
@@ -95,9 +95,23 @@ TXT
         );
         $this->executeCommand($cmd, $cmdLine, true, $verbose);
 
-        // Intall vendors (php bin/vendors install)
         if ($isFirstDeploy) {
-            $cmdLine = sprintf('php %s/bin/vendors install', $symfonyProdDir);
+            // Copy parameters.yml
+            $parametersSource = sprintf('%s/app/config/parameters.yml.dist', $symfonySourceDir);
+            $parametersDestination = sprintf('%s/app/config/parameters.yml', $symfonyProdDir);
+            if ($doit) {
+                $this->getFileSystem()->copy($parametersSource, $parametersDestination);
+            } else {
+                $this->logLine(sprintf('Copy file %s to %s', $parametersSource, $parametersDestination), nbLogger::INFO);
+            }
+
+            // Run composer
+            if (!file_exists(sprintf('%s/composer.phar', $symfonyProdDir))) {
+                $cmdLine = sprintf('curl -s https://getcomposer.org/installer | php -- --install-dir=%s', $symfonyProdDir);
+                $this->executeShellCommand($cmdLine, $doit);
+            }
+
+            $cmdLine = sprintf('php %1$s/composer.phar --working-dir=%1$s install', $symfonyProdDir);
             $this->executeShellCommand($cmdLine, $doit);
         } else {
             // Publish assets
@@ -119,7 +133,7 @@ TXT
             $this->getFileSystem()->chownRecursive($symfonyProdDir, $webUser, $webGroup);
         }
 
-        $this->logLine('Symfony2 project deployed successfully', nbLogger::INFO);
+        $this->logLine('Symfony 2.1 project deployed successfully', nbLogger::INFO);
 
         return true;
     }
