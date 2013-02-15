@@ -104,16 +104,17 @@ TXT
             } else {
                 $this->logLine(sprintf('Copy file %s to %s', $parametersSource, $parametersDestination), nbLogger::INFO);
             }
-
-            // Run composer
+        } else {
+            // Download composer
             if (!file_exists(sprintf('%s/composer.phar', $symfonyProdDir))) {
                 $cmdLine = sprintf('curl -s https://getcomposer.org/installer | php -- --install-dir=%s', $symfonyProdDir);
                 $this->executeShellCommand($cmdLine, $doit);
             }
 
+            // Run composer
             $cmdLine = sprintf('php %1$s/composer.phar --working-dir=%1$s install', $symfonyProdDir);
             $this->executeShellCommand($cmdLine, $doit);
-        } else {
+
             // Publish assets
             $cmdLine = sprintf('php %s/app/console assets:install %s --env=%s', $symfonyProdDir, $webProdDir, $symfonyEnvironment);
             $this->executeShellCommand($cmdLine, $doit);
