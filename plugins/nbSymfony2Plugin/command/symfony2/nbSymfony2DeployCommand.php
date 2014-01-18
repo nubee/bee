@@ -59,6 +59,7 @@ TXT
         $dbName = nbConfig::get('db_name');
         $dbUser = nbConfig::get('db_user');
         $dbPass = nbConfig::get('db_pass');
+        $dbHost = nbConfig::get('db_host');
         $symfonyEnvironment = nbConfig::get('symfony_environment');
 
         $isFirstDeploy = !file_exists(sprintf('%s/app/console', $symfonyProdDir)) || !file_exists(sprintf('%s/vendor/symfony', $symfonyProdDir));
@@ -73,9 +74,9 @@ TXT
 
         // Dump database
         if (!$isFirstDeploy) {
-            if ($dbName && $dbUser && $dbPass && !isset($options['no-dump'])) {
+            if ($dbName && $dbUser && !isset($options['no-dump'])) {
                 $cmd = new nbMysqlDumpCommand();
-                $cmdLine = sprintf('%s %s %s %s', $dbName, $backupDestination, $dbUser, $dbPass);
+                $cmdLine = sprintf('%s %s %s %s', $dbName, $backupDestination, $dbUser, $dbPass, $dbHost);
                 $this->executeCommand($cmd, $cmdLine, $doit, $verbose);
             }
         }
