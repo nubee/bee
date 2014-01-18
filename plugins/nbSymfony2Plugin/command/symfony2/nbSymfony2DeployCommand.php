@@ -1,6 +1,6 @@
 <?php
 
-class nbSymfony21DeployCommand extends nbApplicationCommand
+class nbSymfony2DeployCommand extends nbApplicationCommand
 {
 
     protected function configure()

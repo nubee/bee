@@ -33,7 +33,7 @@ TXT
 
     $this->logLine(sprintf('Dumping database "%s" to "%s"', $dbName, $dump));
 
-    $cmd = sprintf('mysqldump -u%s %s -h%s %s > %s', $username, nbMysqlUtils::formatPasswordOption($password), $host, $dbName, $dump);
+        $cmd = sprintf('mysqldump -u%s %s -h%s %s > %s', $username, nbMysqlUtils::formatPasswordOption($password), $host, $dbName, $dump);
 
     $this->executeShellCommand($cmd);
     $this->logLine('MySql database dumped!');
