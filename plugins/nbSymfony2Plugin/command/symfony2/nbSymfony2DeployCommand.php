@@ -1,12 +1,12 @@
 <?php
 
-class nbSymfony2DeployCommand extends nbApplicationCommand
+class nbSymfony21DeployCommand extends nbApplicationCommand
 {
 
     protected function configure()
     {
         $this->setName('Symfony2:deploy')
-            ->setBriefDescription('Deploys a Symfony2 project. (use with sudo)')
+            ->setBriefDescription('Deploys a Symfony 2 project. (use with sudo)')
             ->setDescription(<<<TXT
 ** Execute with sudo **
 
@@ -21,14 +21,14 @@ Examples:
   Deploys the project with no dump and no backup
   <info>./bee Symfony2:deploy -x -d --no-dump --no-backup</info>
 TXT
-        );
+            );
 
         $this->setOptions(new nbOptionSet(array(
-            new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Makes the changes!'),
-            new nbOption('delete', 'd', nbOption::PARAMETER_NONE, 'Enables --delete option in rsync'),
-            new nbOption('no-backup', '', nbOption::PARAMETER_NONE, 'Disable directories backup'),
-            new nbOption('no-dump', '', nbOption::PARAMETER_NONE, 'Disable database dump'),
-        )));
+                new nbOption('doit', 'x', nbOption::PARAMETER_NONE, 'Makes the changes!'),
+                new nbOption('delete', 'd', nbOption::PARAMETER_NONE, 'Enables --delete option in rsync'),
+                new nbOption('no-backup', '', nbOption::PARAMETER_NONE, 'Disable directories backup'),
+                new nbOption('no-dump', '', nbOption::PARAMETER_NONE, 'Disable database dump'),
+            )));
     }
 
     protected function execute(array $arguments = array(), array $options = array())
@@ -95,11 +95,26 @@ TXT
         );
         $this->executeCommand($cmd, $cmdLine, true, $verbose);
 
-        // Intall vendors (php bin/vendors install)
         if ($isFirstDeploy) {
-            $cmdLine = sprintf('php %s/bin/vendors install', $symfonyProdDir);
-            $this->executeShellCommand($cmdLine, $doit);
+            // Copy parameters.yml
+            $parametersSource = sprintf('%s/app/config/parameters.yml.dist', $symfonySourceDir);
+            $parametersDestination = sprintf('%s/app/config/parameters.yml', $symfonyProdDir);
+            if ($doit) {
+                $this->getFileSystem()->copy($parametersSource, $parametersDestination);
+            } else {
+                $this->logLine(sprintf('Copy file %s to %s', $parametersSource, $parametersDestination), nbLogger::INFO);
+            }
         } else {
+            // Download composer
+            if (!file_exists(sprintf('%s/composer.phar', $symfonyProdDir))) {
+                $cmdLine = sprintf('curl -s https://getcomposer.org/installer | php -- --install-dir=%s', $symfonyProdDir);
+                $this->executeShellCommand($cmdLine, $doit);
+            }
+
+            // Run composer
+            $cmdLine = sprintf('php %1$s/composer.phar --working-dir=%1$s install', $symfonyProdDir);
+            $this->executeShellCommand($cmdLine, $doit);
+
             // Publish assets
             $cmdLine = sprintf('php %s/app/console assets:install %s --env=%s', $symfonyProdDir, $webProdDir, $symfonyEnvironment);
             $this->executeShellCommand($cmdLine, $doit);
@@ -109,7 +124,7 @@ TXT
             $this->executeShellCommand($cmdLine, $doit);
         }
 
-        $cmdLine = sprintf('php %s/app/console assetic:dump --no-debug --env=%s', $symfonyProdDir, $symfonyEnvironment);
+        $cmdLine = sprintf('php %s/app/console assetic:dump --no-debug --env=%s --symlink', $symfonyProdDir, $symfonyEnvironment);
         $this->executeShellCommand($cmdLine, $doit);
 
         if ($doit) {
@@ -119,7 +134,7 @@ TXT
             $this->getFileSystem()->chownRecursive($symfonyProdDir, $webUser, $webGroup);
         }
 
-        $this->logLine('Symfony2 project deployed successfully', nbLogger::INFO);
+        $this->logLine('Symfony 2 project deployed successfully', nbLogger::INFO);
 
         return true;
     }
